@@ -1,10 +1,10 @@
-import { Content } from '@prismicio/client'
+import { PostDocument } from "prismic-types";
 
-import PostPreview from '../components/post-preview'
+import PostPreview from "../components/post-preview";
 
 type MoreStoriesProps = {
-  posts: Content.PostDocument[]
-}
+  posts: PostDocument[];
+};
 
 export default function MoreStories({ posts }: MoreStoriesProps) {
   return (
@@ -26,5 +26,5 @@ export default function MoreStories({ posts }: MoreStoriesProps) {
         ))}
       </div>
     </section>
-  )
+  );
 }
