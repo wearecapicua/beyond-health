@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { predicate } from "@prismicio/client";
 import { asImageSrc, asText } from "@prismicio/helpers";
 
-import { CMS_NAME } from "../../lib/constants";
 import { PostDocumentWithAuthor } from "../../lib/types";
 import { createClient } from "../../lib/prismic";
 
@@ -25,8 +24,6 @@ type PostProps = {
 
 export default function Post({ post, morePosts, preview }: PostProps) {
   const router = useRouter();
-
-  const title = `${asText(post.data.title)} | Beyond Health`;
   return (
     <Layout preview={preview}>
       <Container>
@@ -37,7 +34,7 @@ export default function Post({ post, morePosts, preview }: PostProps) {
           <>
             <article>
               <Head>
-                <title>{title}</title>
+                <title>{`${asText(post.data.title)} | Beyond Health`}</title>
                 <meta
                   property="og:image"
                   content={asImageSrc(post.data.cover_image, {

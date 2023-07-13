@@ -1,20 +1,20 @@
-import { PrismicText } from '@prismicio/react'
-import { asText, isFilled } from '@prismicio/helpers'
-import { DateField, ImageField, TitleField } from '@prismicio/types'
+import { PrismicText } from "@prismicio/react";
+import { asText, isFilled } from "@prismicio/helpers";
+import { DateField, ImageField, TitleField } from "@prismicio/types";
 
-import { AuthorContentRelationshipField } from '../lib/types'
+import { AuthorContentRelationshipField } from "../lib/types";
 
-import Avatar from '../components/avatar'
-import Date from '../components/date'
-import CoverImage from '../components/cover-image'
-import PostTitle from '../components/post-title'
+import Avatar from "../components/avatar";
+import Date from "../components/date";
+import CoverImage from "../components/cover-image";
+import PostTitle from "../components/post-title";
 
 type PostHeaderProps = {
-  title: TitleField
-  coverImage: ImageField
-  date: DateField
-  author: AuthorContentRelationshipField
-}
+  title: TitleField;
+  coverImage: ImageField;
+  date: DateField;
+  author: AuthorContentRelationshipField;
+};
 
 export default function PostHeader({
   title,
@@ -22,13 +22,14 @@ export default function PostHeader({
   date,
   author,
 }: PostHeaderProps) {
+  const postHasAuthor = isFilled.contentRelationship(author);
   return (
     <>
       <PostTitle>
         <PrismicText field={title} />
       </PostTitle>
       <div className="hidden md:block md:mb-12">
-        {isFilled.contentRelationship(author) && (
+        {postHasAuthor && (
           <Avatar
             name={asText(author.data.name)}
             picture={author.data.picture}
@@ -40,7 +41,7 @@ export default function PostHeader({
       </div>
       <div className="max-w-2xl mx-auto">
         <div className="block md:hidden mb-6">
-          {isFilled.contentRelationship(author) && (
+          {postHasAuthor && (
             <Avatar
               name={asText(author.data.name)}
               picture={author.data.picture}
@@ -52,5 +53,5 @@ export default function PostHeader({
         </div>
       </div>
     </>
-  )
+  );
 }

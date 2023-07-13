@@ -223,6 +223,7 @@ declare module "@prismicio/client" {
     (
       repositoryNameOrEndpoint: string,
       options?: prismic.ClientConfig
+      // @ts-ignore
     ): prismic.Client<AllDocumentTypes>;
   }
   namespace Content {

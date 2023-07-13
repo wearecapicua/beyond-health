@@ -24,17 +24,17 @@ const routes: prismic.Route[] = [
  *
  * @param config - Configuration for the Prismic client.
  */
-export const createClient = ({
-  previewData,
-  req,
-  ...config
-}: prismicNext.CreateClientConfig = {}) => {
-  const client = prismic.createClient(sm.apiEndpoint, {
+export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
+  const client = prismic.createClient(sm.repositoryName, {
     routes,
     ...config,
   });
 
-  prismicNext.enableAutoPreviews({ client, previewData, req });
+  prismicNext.enableAutoPreviews({
+    client,
+    previewData: config.previewData,
+    req: config.req,
+  });
 
   return client;
 };
