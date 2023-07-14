@@ -16,12 +16,12 @@ export default function MoreStories({ posts }: MoreStoriesProps) {
         {posts.map((post) => (
           <PostPreview
             key={post.uid}
-            href={post.url}
+            href={post.url ?? "#"}
             title={post.data.title}
             coverImage={post.data.cover_image}
             date={post.data.date}
             author={post.data.author}
-            excerpt={post.data.excerpt}
+            excerpt={post.data.excerpt ?? ""}
           />
         ))}
       </div>

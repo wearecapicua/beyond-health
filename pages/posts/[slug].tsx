@@ -37,11 +37,13 @@ export default function Post({ post, morePosts, preview }: PostProps) {
                 <title>{`${asText(post.data.title)} | Beyond Health`}</title>
                 <meta
                   property="og:image"
-                  content={asImageSrc(post.data.cover_image, {
-                    width: 1200,
-                    height: 600,
-                    fit: "crop",
-                  })}
+                  content={
+                    asImageSrc(post.data.cover_image, {
+                      width: 1200,
+                      height: 600,
+                      fit: "crop",
+                    })!
+                  }
                 />
               </Head>
               <PostHeader
@@ -70,6 +72,11 @@ export async function getStaticProps({
 }: GetStaticPropsContext<{ slug: string }>): Promise<
   GetStaticPropsResult<PostProps>
 > {
+  if (!params?.slug) {
+    return {
+      notFound: true,
+    };
+  }
   const client = createClient({ previewData });
 
   const [post, morePosts] = await Promise.all([
