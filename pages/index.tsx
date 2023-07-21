@@ -1,3 +1,5 @@
+import { signIn, useSession } from "next-auth/react";
+
 import Head from "next/head";
 import Container from "../components/container";
 import MoreStories from "../components/more-stories";
@@ -7,6 +9,7 @@ import Layout from "../components/layout";
 import { createClient } from "../lib/prismic";
 import { PostDocumentWithAuthor } from "../lib/types";
 import { GetStaticPropsContext, GetStaticPropsResult } from "next";
+import LoginButton from "components/login";
 
 type IndexProps = {
   preview: boolean;
@@ -24,6 +27,7 @@ export default function Index({ preview, allPosts }: IndexProps) {
         </Head>
         <Container>
           <Intro />
+
           {heroPost && (
             <HeroPost
               title={heroPost.data.title}

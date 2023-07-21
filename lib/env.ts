@@ -7,6 +7,7 @@ const env = z
     awsRegion: z.string().nonempty(),
     googleClientId: z.string().nonempty(),
     googleClientSecret: z.string().nonempty(),
+    vercelEnv: z.string().default("localhost"),
   })
   .parse({
     awsAccessKeyId: process.env.NEXT_AUTH_AWS_ACCESS_KEY,
@@ -14,6 +15,7 @@ const env = z
     awsRegion: process.env.NEXT_AUTH_AWS_REGION,
     googleClientId: process.env.GOOGLE_CLIENT_ID,
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    vercelEnv: process.env.VERCEL_ENV,
   });
 
 export default env;

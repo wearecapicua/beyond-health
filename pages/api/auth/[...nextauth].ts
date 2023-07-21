@@ -1,4 +1,8 @@
-import { DynamoDB, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDB,
+  DynamoDBClientConfig,
+  ListTablesCommand,
+} from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
@@ -22,6 +26,7 @@ const client = DynamoDBDocument.from(new DynamoDB(config), {
   },
 });
 
+const tableName = `${env.vercelEnv}-beyond-health-users`;
 export default NextAuth({
   providers: [
     GoogleProvider({
@@ -29,5 +34,7 @@ export default NextAuth({
       clientSecret: env.googleClientSecret,
     }),
   ],
-  adapter: DynamoDBAdapter(client) as DefaultAdapter,
+  adapter: DynamoDBAdapter(client, {
+    tableName,
+  }) as DefaultAdapter,
 });
