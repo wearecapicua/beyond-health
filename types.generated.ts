@@ -49,16 +49,27 @@ export type AuthorDocument<Lang extends string = string> =
 /** Content for Post documents */
 interface PostDocumentData {
   /**
-   * Title field in *Post*
+   * Product name field in *Post*
    *
    * - **Field Type**: Title
-   * - **Placeholder**: Title of the post
-   * - **API ID Path**: post.title
+   * - **Placeholder**: Name of the product
+   * - **API ID Path**: post.name
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
    *
    */
-  title: prismicT.TitleField;
+  name: prismicT.TitleField;
+  /**
+   * Description field in *Post*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Description of the product
+   * - **API ID Path**: post.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  description: prismicT.KeyTextField;
   /**
    * Date field in *Post*
    *
@@ -82,27 +93,27 @@ interface PostDocumentData {
    */
   author: prismicT.RelationField<"author">;
   /**
-   * Excerpt field in *Post*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: Short summary of the post
-   * - **API ID Path**: post.excerpt
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
-   *
-   */
-  excerpt: prismicT.KeyTextField;
-  /**
    * Cover Image field in *Post*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
-   * - **API ID Path**: post.cover_image
+   * - **API ID Path**: post.image
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/core-concepts/image
    *
    */
-  cover_image: prismicT.ImageField<never>;
+  image: prismicT.ImageField<never>;
+  /**
+   * Price field in *Post*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Price in USD
+   * - **API ID Path**: post.price
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  price: prismicT.NumberField;
   /**
    * Slice Zone field in *Post*
    *

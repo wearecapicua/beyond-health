@@ -27,7 +27,8 @@ const client = DynamoDBDocument.from(new DynamoDB(config), {
 });
 
 const tableName = `${env.vercelEnv}-beyond-health-users`;
-export default NextAuth({
+
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: env.googleClientId,
@@ -37,4 +38,6 @@ export default NextAuth({
   adapter: DynamoDBAdapter(client, {
     tableName,
   }) as DefaultAdapter,
-});
+};
+
+export default NextAuth(authOptions);

@@ -1,0 +1,63 @@
+import React, { useState } from "react";
+
+import StripeTestCards from "./StripeTestCards";
+
+import * as config from "stripe.config";
+import useStripe from "lib/useStripe";
+import { formatAmountForDisplay } from "lib/stripeUtils";
+import { fetchPostJSON } from "lib/http";
+import Button from "components/Button";
+import { type CheckoutSessionBody } from "pages/api/checkout_sessions";
+import type Stripe from "stripe";
+
+type Props = {
+  productId: string;
+  price: number;
+};
+
+const CheckoutForm = (props: Props) => {
+  const stripe = useStripe();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!stripe) {
+      console.error("Failed to load Stripe.js");
+      return;
+    }
+
+    // Create a Checkout Session.
+    const response = await fetchPostJSON<
+      CheckoutSessionBody,
+      Stripe.Checkout.Session
+    >("/api/checkout_sessions", {
+      productId: props.productId,
+    });
+
+    // Redirect to Checkout.
+    const { error } = await stripe.redirectToCheckout({
+      // Make the id field from the Checkout Session creation API response
+      // available to this file, so you can provide it as parameter here
+      // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+      sessionId: response.id,
+    });
+    console.error({ error });
+    // If `redirectToCheckout` fails due to a browser or network
+    // error, display the localized error message to your customer
+    // using `error.message`.
+    console.warn(error.message);
+    setLoading(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <StripeTestCards />
+      <Button type="submit" disabled={loading}>
+        Buy for {formatAmountForDisplay(props.price, config.CURRENCY)}
+      </Button>
+    </form>
+  );
+};
+
+export default CheckoutForm;

@@ -13,7 +13,7 @@ type HeroPostProps = {
   title: TitleField;
   coverImage: ImageField;
   date: DateField;
-  excerpt: string;
+  description: string;
   author: AuthorContentRelationshipField;
   href: string;
 };
@@ -22,7 +22,7 @@ export default function HeroPost({
   title,
   coverImage,
   date,
-  excerpt,
+  description,
   author,
   href,
 }: HeroPostProps) {
@@ -43,7 +43,7 @@ export default function HeroPost({
           </div>
         </div>
         <div>
-          <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
+          <p className="text-lg leading-relaxed mb-4">{description}</p>
           {isFilled.contentRelationship(author) && author.data && (
             <Avatar
               name={asText(author.data.name)}

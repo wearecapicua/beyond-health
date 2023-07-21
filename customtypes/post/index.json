@@ -3,30 +3,32 @@
   "label": "Post",
   "repeatable": true,
   "status": true,
+  "format": "custom",
   "json": {
     "Main": {
-      "title": {
+      "uid": {
+        "type": "UID",
+        "config": { "label": "UID", "placeholder": "URL slug for the post" }
+      },
+      "name": {
         "type": "StructuredText",
         "config": {
-          "label": "Title",
-          "placeholder": "Title of the post",
+          "label": "Product name",
+          "placeholder": "Name of the product",
           "allowTargetBlank": false,
           "single": "heading1"
         }
       },
-      "uid": {
-        "type": "UID",
+      "description": {
+        "type": "Text",
         "config": {
-          "label": "UID",
-          "placeholder": "URL slug for the post"
+          "label": "Description",
+          "placeholder": "Description of the product"
         }
       },
       "date": {
         "type": "Date",
-        "config": {
-          "label": "Date",
-          "placeholder": "Date of publication"
-        }
+        "config": { "label": "Date", "placeholder": "Date of publication" }
       },
       "author": {
         "type": "Link",
@@ -36,32 +38,21 @@
           "customtypes": ["author"]
         }
       },
-      "excerpt": {
-        "type": "Text",
-        "config": {
-          "label": "Excerpt",
-          "placeholder": "Short summary of the post"
-        }
-      },
-      "cover_image": {
+      "image": {
         "type": "Image",
-        "config": {
-          "label": "Cover Image",
-          "constraint": {},
-          "thumbnails": []
-        }
+        "config": { "label": "Cover Image", "constraint": {}, "thumbnails": [] }
+      },
+      "price": {
+        "type": "Number",
+        "config": { "label": "Price", "placeholder": "Price in USD" }
       },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "text": {
-              "type": "SharedSlice"
-            },
-            "image": {
-              "type": "SharedSlice"
-            }
+            "text": { "type": "SharedSlice" },
+            "image": { "type": "SharedSlice" }
           }
         }
       }

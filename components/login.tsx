@@ -1,3 +1,4 @@
+import Button from "components/Button";
 import Avatar from "components/avatar";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
@@ -30,24 +31,12 @@ const LoginButton = (props: Props) => {
           )}
         </div>
 
-        <button
-          onClick={() => signOut()}
-          className="bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-1 px-4 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
-        >
-          Logout
-        </button>
+        <Button onClick={() => signOut()}>Logout</Button>
       </div>
     );
   }
 
-  return (
-    <button
-      onClick={() => signIn("google")}
-      className="my-2 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-1 px-4 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
-    >
-      Login
-    </button>
-  );
+  return <Button onClick={() => signIn("google")}>Login</Button>;
 };
 
 export default LoginButton;

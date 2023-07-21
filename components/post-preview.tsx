@@ -14,7 +14,7 @@ type PostPreviewProps = {
   title: TitleField;
   coverImage: ImageField;
   date: DateField;
-  excerpt: string;
+  description: string;
   author: AuthorContentRelationshipField;
   href: string;
 };
@@ -23,7 +23,7 @@ export default function PostPreview({
   title,
   coverImage,
   date,
-  excerpt,
+  description: excerpt,
   author,
   href,
 }: PostPreviewProps) {

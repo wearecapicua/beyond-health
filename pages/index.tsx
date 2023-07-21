@@ -30,12 +30,12 @@ export default function Index({ preview, allPosts }: IndexProps) {
 
           {heroPost && (
             <HeroPost
-              title={heroPost.data.title}
+              title={heroPost.data.name}
               href={heroPost.url ?? "#"}
-              coverImage={heroPost.data.cover_image}
+              coverImage={heroPost.data.image}
               date={heroPost.data.date}
               author={heroPost.data.author}
-              excerpt={heroPost.data.excerpt ?? ""}
+              description={heroPost.data.description ?? ""}
             />
           )}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}

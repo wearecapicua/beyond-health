@@ -15,6 +15,7 @@ import PostBody from "../../components/post-body";
 import PostHeader from "../../components/post-header";
 import PostTitle from "../../components/post-title";
 import SectionSeparator from "../../components/section-separator";
+import CheckoutForm from "components/CheckoutForm";
 
 type PostProps = {
   preview: boolean;
@@ -24,6 +25,7 @@ type PostProps = {
 
 export default function Post({ post, morePosts, preview }: PostProps) {
   const router = useRouter();
+
   return (
     <Layout preview={preview}>
       <Container>
@@ -34,11 +36,11 @@ export default function Post({ post, morePosts, preview }: PostProps) {
           <>
             <article>
               <Head>
-                <title>{`${asText(post.data.title)} | Beyond Health`}</title>
+                <title>{`${asText(post.data.name)} | Beyond Health`}</title>
                 <meta
                   property="og:image"
                   content={
-                    asImageSrc(post.data.cover_image, {
+                    asImageSrc(post.data.image, {
                       width: 1200,
                       height: 600,
                       fit: "crop",
@@ -47,12 +49,13 @@ export default function Post({ post, morePosts, preview }: PostProps) {
                 />
               </Head>
               <PostHeader
-                title={post.data.title}
-                coverImage={post.data.cover_image}
+                title={post.data.name}
+                coverImage={post.data.image}
                 date={post.data.date}
                 author={post.data.author}
               />
               <PostBody slices={post.data.slices} />
+              <CheckoutForm productId={post.id} price={post.data.price ?? 0} />
             </article>
             <SectionSeparator />
             {morePosts && morePosts.length > 0 && (
