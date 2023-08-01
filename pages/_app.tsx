@@ -3,6 +3,7 @@ import { repositoryName } from "../lib/prismic";
 import "../styles/index.css";
 import App, { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
+import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

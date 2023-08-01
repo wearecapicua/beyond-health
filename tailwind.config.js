@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+        raleway: ['Raleway', 'sans-serif'],
+      },
       colors: {
         'accent-1': '#FAFAFA',
         'accent-2': '#EAEAEA',
@@ -35,10 +39,9 @@ module.exports = {
         tight: 1.2,
       },
       fontSize: {
-        '5xl': '2.5rem',
-        '6xl': '2.75rem',
-        '7xl': '4.5rem',
-        '8xl': '6.25rem',
+        '5xl': '2.2rem',  // 35px
+        '6xl': '3.125rem', // 50px
+        '7xl': '4rem', // 64px
       },
       boxShadow: {
         small: '0 5px 10px rgba(0, 0, 0, 0.12)',
