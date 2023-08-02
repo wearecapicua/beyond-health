@@ -16,6 +16,8 @@ module.exports = {
         'accent-2': '#EAEAEA',
         'accent-7': '#333',
         'main-black': '#121213',
+        'main-light-blue': '#0657DC',
+        'main-light-blue-500': '#236ee8',
         'main-blue': '#184CA1',
         'accent-green': '#92D633',
         'accent-green-500': '#aadb65',

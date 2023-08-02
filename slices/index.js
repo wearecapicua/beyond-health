@@ -2,10 +2,16 @@
 
 import Image from './Image'
 import Text from './Text'
+import Header from './Header'
+import Subheader from './Subheader'
+import Faq from './Faq'
 
-export { Image, Text }
+export { Image, Text, Header, Subheader, Faq }
 
 export const components = {
   image: Image,
   text: Text,
+  header: Header,
+  subheader: Subheader,
+  faq: Faq
 }
