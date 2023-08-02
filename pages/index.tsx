@@ -18,8 +18,7 @@ type IndexProps = {
 };
 
 export default function Index({ preview, home }: IndexProps) {
-  //const [heroPost, ...morePosts] = allPosts;
-console.log("home", home)
+
   return (
     <>
       <Layout preview={preview} >

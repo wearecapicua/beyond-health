@@ -13,24 +13,26 @@ export default function Navbar() {
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image
-                    src="/images/beyond_health_logo.png"
-                    alt="Your Company"
-                    width="172"
-                    height="26"
-                  />
+                  <Link href="/">
+                    <Image
+                      src="/images/beyond_health_logo.png"
+                      alt="Beyond Health Logo"
+                      width="172"
+                      height="26"
+                    />
+                  </Link>
                 </div>
               </div>
               <div className="hidden sm:gap-8 sm:ml-6 sm:flex sm:items-center">
                 <div className="hidden sm:flex sm:space-x-8">
                   <Link
-                    href="#"
+                    href="/how-it-works"
                     className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
                   >
                     How it Works
                   </Link>
                   <Link
-                    href="#"
+                    href="/faqs"
                     className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
                   >
                     FAQs
