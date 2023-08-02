@@ -47,12 +47,26 @@ export type AuthorDocument<Lang extends string = string> =
     Lang
   >;
 
-type LandingPageDocumentDataSlicesSlice = never;
+type LandingPageDocumentDataSlicesSlice =
+  | HeaderSlice
+  | FaqSlice
+  | SubheaderSlice;
 
 /**
  * Content for Landing Page documents
  */
 interface LandingPageDocumentData {
+  /**
+   * Page Title field in *Landing Page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.page_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  page_title: prismic.KeyTextField;
+
   /**
    * Slice Zone field in *Landing Page*
    *
@@ -215,6 +229,120 @@ export type AllDocumentTypes =
   | PostDocument;
 
 /**
+ * Primary content in *Faq → Primary*
+ */
+export interface FaqSliceDefaultPrimary {
+  /**
+   * Question field in *Faq → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faq.primary.question
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  question: prismic.KeyTextField;
+
+  /**
+   * Answer field in *Faq → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faq.primary.answer
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  answer: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Faq Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FaqSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<FaqSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Faq*
+ */
+type FaqSliceVariation = FaqSliceDefault;
+
+/**
+ * Faq Shared Slice
+ *
+ * - **API ID**: `faq`
+ * - **Description**: Faq
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
+
+/**
+ * Primary content in *Header → Primary*
+ */
+export interface HeaderSliceDefaultPrimary {
+  /**
+   * Title field in *Header → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: header.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Subtitle field in *Header → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: header.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * CTA button text field in *Header → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: header.primary.cta_button_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_button_text: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Header Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeaderSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<HeaderSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Header*
+ */
+type HeaderSliceVariation = HeaderSliceDefault;
+
+/**
+ * Header Shared Slice
+ *
+ * - **API ID**: `header`
+ * - **Description**: Header
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeaderSlice = prismic.SharedSlice<"header", HeaderSliceVariation>;
+
+/**
  * Primary content in *Image → Primary*
  */
 export interface ImageSliceDefaultPrimary {
@@ -255,6 +383,61 @@ type ImageSliceVariation = ImageSliceDefault;
  * - **Documentation**: https://prismic.io/docs/slice
  */
 export type ImageSlice = prismic.SharedSlice<"image", ImageSliceVariation>;
+
+/**
+ * Primary content in *Subheader → Primary*
+ */
+export interface SubheaderSliceDefaultPrimary {
+  /**
+   * Title field in *Subheader → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: subheader.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Subtitle field in *Subheader → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: subheader.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Subheader Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SubheaderSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<SubheaderSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Subheader*
+ */
+type SubheaderSliceVariation = SubheaderSliceDefault;
+
+/**
+ * Subheader Shared Slice
+ *
+ * - **API ID**: `subheader`
+ * - **Description**: Subheader
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SubheaderSlice = prismic.SharedSlice<
+  "subheader",
+  SubheaderSliceVariation
+>;
 
 /**
  * Primary content in *Text → Primary*
@@ -315,9 +498,18 @@ declare module "@prismicio/client" {
       PostDocument,
       PostDocumentData,
       AllDocumentTypes,
+      FaqSlice,
+      FaqSliceVariation,
+      FaqSliceDefault,
+      HeaderSlice,
+      HeaderSliceVariation,
+      HeaderSliceDefault,
       ImageSlice,
       ImageSliceVariation,
       ImageSliceDefault,
+      SubheaderSlice,
+      SubheaderSliceVariation,
+      SubheaderSliceDefault,
       TextSlice,
       TextSliceVariation,
       TextSliceDefault,

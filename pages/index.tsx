@@ -10,15 +10,16 @@ import { createClient } from "../lib/prismic";
 import { PostDocumentWithAuthor } from "../lib/types";
 import { GetStaticPropsContext, GetStaticPropsResult } from "next";
 import LoginButton from "components/login";
+import PostBody from "components/post-body";
 
 type IndexProps = {
   preview: boolean;
   allPosts: PostDocumentWithAuthor[];
 };
 
-export default function Index({ preview, allPosts }: IndexProps) {
-  const [heroPost, ...morePosts] = allPosts;
-
+export default function Index({ preview, home }: IndexProps) {
+  //const [heroPost, ...morePosts] = allPosts;
+console.log("home", home)
   return (
     <>
       <Layout preview={preview}>
@@ -27,8 +28,8 @@ export default function Index({ preview, allPosts }: IndexProps) {
         </Head>
         <Container>
           <Intro />
-
-          {heroPost && (
+          <PostBody slices={home.data.slices} />
+          {/* {heroPost && (
             <HeroPost
               title={heroPost.data.name}
               href={heroPost.url ?? "#"}
@@ -37,8 +38,8 @@ export default function Index({ preview, allPosts }: IndexProps) {
               author={heroPost.data.author}
               description={heroPost.data.description ?? ""}
             />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+          )} */}
+          {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
         </Container>
       </Layout>
     </>
@@ -51,12 +52,11 @@ export async function getStaticProps({
 }: GetStaticPropsContext): Promise<GetStaticPropsResult<IndexProps>> {
   const client = createClient({ previewData });
 
-  const allPosts = await client.getAllByType("post", {
-    fetchLinks: ["author.name", "author.picture"],
-    orderings: [{ field: "my.post.date", direction: "desc" }],
+  const home = await client.getByUID("landing_page", "home", {
+    fetchLinks: [],
   });
 
   return {
-    props: { preview, allPosts },
+    props: { preview, home },
   };
 }

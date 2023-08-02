@@ -6,11 +6,21 @@
   "status": true,
   "json": {
     "Main": {
+      "page_title": {
+        "type": "Text",
+        "config": { "label": "Page Title", "placeholder": "" }
+      },
       "uid": { "config": { "label": "UID" }, "type": "UID" },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
-        "config": { "choices": {} }
+        "config": {
+          "choices": {
+            "header": { "type": "SharedSlice" },
+            "faq": { "type": "SharedSlice" },
+            "subheader": { "type": "SharedSlice" }
+          }
+        }
       }
     },
     "SEO & Metadata": {
