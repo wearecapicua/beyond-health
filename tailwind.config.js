@@ -47,8 +47,8 @@ module.exports = {
         small: '0 5px 10px rgba(0, 0, 0, 0.12)',
         medium: '0 8px 30px rgba(0, 0, 0, 0.12)',
       },
-      gridTemplateColumns: {
-        'footer': '2fr 1fr 1fr',
+      maxWidth: {
+        'wide': '82rem',
       }
     },
   },
