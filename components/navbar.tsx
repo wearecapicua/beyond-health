@@ -9,7 +9,7 @@ export default function Navbar() {
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl py-1 px-4 sm:px-0">
+          <div className="mx-auto max-w-wide py-1 px-4 xl:px-6">
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">

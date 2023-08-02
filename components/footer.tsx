@@ -8,13 +8,13 @@ export default function Footer() {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-wide px-4 pb-8 pt-20 sm:pt-24 lg:px-0 lg:pt-20 lg:pb-20">
+      <div className="mx-auto max-w-wide px-4 pb-8 pt-12 xl:px-6 sm:pt-24 lg:pt-20 lg:pb-20">
         <div className="xl:grid xl:grid-cols-4 xl:gap-8">
           <div className="mt-10 xl:mt-0 col-span-2 max-w-[505px]">
             <p className="mt-2 text-2xl font-semibold leading-6 text-white">
               The World's Healthiest Email! Delivered weekly
             </p>
-            <form className="mt-6 sm:flex sm:max-w-md">
+            <form className="mt-6 sm:flex">
               <label htmlFor="email-address" className="sr-only">
                 Email address
               </label>
@@ -36,7 +36,7 @@ export default function Footer() {
                 </button>
               </div>
             </form>
-            <p className="mt-9 text-xs leading-6 text-white">
+            <p className="mt-9 mb-12 text-xs leading-6 text-white xl:mb-0">
               By subscribing you agree to with our Privacy Policy and provide consent to receive updates from our company.
             </p>
           </div>
@@ -82,7 +82,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-16 border-t border-accent-green pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-24">
+        <div className="mt-16 border-t border-accent-green pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-32">
           <div className="flex space-x-6 md:order-2">
             {NAV_LINKS.bottomRow.map((item) => (
               <a key={item.name} href={item.href} className="text-white underline decoration-solid text-sm hover:text-gray-400">
@@ -90,8 +90,8 @@ export default function Footer() {
               </a>
             ))}
           </div>
-          <p className="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">
-            &copy; 2020 Your Company, Inc. All rights reserved.
+          <p className="mt-8 text-xs leading-5 text-white md:order-1 md:mt-0">
+            &copy; 2023 Beyond Pharmacy. All rights reserved.
           </p>
         </div>
       </div>
