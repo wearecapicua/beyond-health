@@ -15,7 +15,7 @@ export default function Layout({ preview, children }: LayoutProps) {
       <div className="min-h-screen">
         {preview && <Alert preview={preview} /> }
         <Navbar />
-        <main>{children}</main>
+        <main className="min-h-screen">{children}</main>
       </div>
       <Footer />
     </>

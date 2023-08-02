@@ -11,7 +11,7 @@ import Container from "../../components/container";
 import Header from "../../components/header";
 import Layout from "../../components/layout";
 import MoreStories from "../../components/more-stories";
-import PostBody from "../../components/post-body";
+import PostBody from "../../components/page-body";
 import PostHeader from "../../components/post-header";
 import PostTitle from "../../components/post-title";
 import SectionSeparator from "../../components/section-separator";

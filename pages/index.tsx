@@ -10,7 +10,7 @@ import { createClient } from "../lib/prismic";
 import { PostDocumentWithAuthor } from "../lib/types";
 import { GetStaticPropsContext, GetStaticPropsResult } from "next";
 import LoginButton from "components/login";
-import PostBody from "components/post-body";
+import PageBody from "components/page-body";
 
 type IndexProps = {
   preview: boolean;
@@ -22,25 +22,27 @@ export default function Index({ preview, home }: IndexProps) {
 console.log("home", home)
   return (
     <>
-      <Layout preview={preview}>
+      <Layout preview={preview} >
         <Head>
           <title>Beyond Health</title>
         </Head>
-        <Container>
-          <Intro />
-          <PostBody slices={home.data.slices} />
-          {/* {heroPost && (
-            <HeroPost
-              title={heroPost.data.name}
-              href={heroPost.url ?? "#"}
-              coverImage={heroPost.data.image}
-              date={heroPost.data.date}
-              author={heroPost.data.author}
-              description={heroPost.data.description ?? ""}
-            />
-          )} */}
-          {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
-        </Container>
+        <div className="bg-gray-000 min-h-screen py-10">
+          <Container>
+            {/* {<Intro />} */}
+            <PageBody slices={home.data.slices} />
+            {/* {heroPost && (
+              <HeroPost
+                title={heroPost.data.name}
+                href={heroPost.url ?? "#"}
+                coverImage={heroPost.data.image}
+                date={heroPost.data.date}
+                author={heroPost.data.author}
+                description={heroPost.data.description ?? ""}
+              />
+            )} */}
+            {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
+          </Container>
+        </div>
       </Layout>
     </>
   );

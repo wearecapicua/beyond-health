@@ -21,6 +21,7 @@ module.exports = {
         'main-blue': '#184CA1',
         'accent-green': '#92D633',
         'accent-green-500': '#aadb65',
+        'gray-000': '#EFEFEF',
         'gray-100': '#EAEAEC',
         'gray-200': '#E0E1E4',
         'gray-300': '#E0E1E6',

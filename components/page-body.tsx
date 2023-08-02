@@ -3,13 +3,13 @@ import { SliceZone } from "@prismicio/react";
 import { components } from "../slices";
 import { PostDocument } from "prismic-types";
 
-type PostBodyProps = {
+type PageBodyProps = {
   slices: PostDocument["data"]["slices"];
 };
 
-export default function PostBody({ slices }: PostBodyProps) {
+export default function PageBody({ slices }: PageBodyProps) {
   return (
-    <div className="">
+    <div>
       <SliceZone slices={slices} components={components} />
     </div>
   );
