@@ -18,7 +18,8 @@
           "choices": {
             "header": { "type": "SharedSlice" },
             "faq": { "type": "SharedSlice" },
-            "subheader": { "type": "SharedSlice" }
+            "subheader": { "type": "SharedSlice" },
+            "spacer": { "type": "SharedSlice" }
           }
         }
       }

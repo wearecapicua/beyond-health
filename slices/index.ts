@@ -6,6 +6,7 @@ export const components = {
   faq: dynamic(() => import("./Faq")),
   header: dynamic(() => import("./Header")),
   image: dynamic(() => import("./Image")),
+  spacer: dynamic(() => import("./Spacer")),
   subheader: dynamic(() => import("./Subheader")),
   text: dynamic(() => import("./Text")),
 };

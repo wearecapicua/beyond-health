@@ -50,7 +50,8 @@ export type AuthorDocument<Lang extends string = string> =
 type LandingPageDocumentDataSlicesSlice =
   | HeaderSlice
   | FaqSlice
-  | SubheaderSlice;
+  | SubheaderSlice
+  | SpacerSlice;
 
 /**
  * Content for Landing Page documents
@@ -385,6 +386,49 @@ type ImageSliceVariation = ImageSliceDefault;
 export type ImageSlice = prismic.SharedSlice<"image", ImageSliceVariation>;
 
 /**
+ * Primary content in *Spacer → Primary*
+ */
+export interface SpacerSliceDefaultPrimary {
+  /**
+   * Spacer field in *Spacer → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: spacer.primary.spacer
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  spacer: prismic.BooleanField;
+}
+
+/**
+ * Default variation for Spacer Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SpacerSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<SpacerSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Spacer*
+ */
+type SpacerSliceVariation = SpacerSliceDefault;
+
+/**
+ * Spacer Shared Slice
+ *
+ * - **API ID**: `spacer`
+ * - **Description**: Spacer
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SpacerSlice = prismic.SharedSlice<"spacer", SpacerSliceVariation>;
+
+/**
  * Primary content in *Subheader → Primary*
  */
 export interface SubheaderSliceDefaultPrimary {
@@ -507,6 +551,9 @@ declare module "@prismicio/client" {
       ImageSlice,
       ImageSliceVariation,
       ImageSliceDefault,
+      SpacerSlice,
+      SpacerSliceVariation,
+      SpacerSliceDefault,
       SubheaderSlice,
       SubheaderSliceVariation,
       SubheaderSliceDefault,

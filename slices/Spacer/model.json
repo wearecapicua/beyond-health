@@ -1,0 +1,28 @@
+{
+  "id": "spacer",
+  "type": "SharedSlice",
+  "name": "Spacer",
+  "description": "Spacer",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "spacer": {
+          "type": "Boolean",
+          "config": {
+            "label": "Spacer",
+            "placeholder_false": "small",
+            "placeholder_true": "large",
+            "default_value": false
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

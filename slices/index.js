@@ -5,6 +5,7 @@ import Text from './Text'
 import Header from './Header'
 import Subheader from './Subheader'
 import Faq from './Faq'
+import Spacer from './Spacer'
 
 export { Image, Text, Header, Subheader, Faq }
 
@@ -13,5 +14,6 @@ export const components = {
   text: Text,
   header: Header,
   subheader: Subheader,
-  faq: Faq
+  faq: Faq,
+  spacer: Spacer
 }
