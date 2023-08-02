@@ -23,7 +23,6 @@ export default function Navbar() {
               </div>
               <div className="hidden sm:gap-8 sm:ml-6 sm:flex sm:items-center">
                 <div className="hidden sm:flex sm:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link
                     href="#"
                     className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
