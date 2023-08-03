@@ -11,8 +11,7 @@ export type FaqProps = SliceComponentProps<Content.FaqSlice>;
  * Component for "Faq" Slices.
  */
 const Faq = ({ slice }: FaqProps): JSX.Element => {
-  const question = slice.primary.question
-  const answer = slice.primary.answer
+  const { question, answer } = slice.primary
 
   return (
     <div 

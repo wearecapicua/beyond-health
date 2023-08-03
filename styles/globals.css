@@ -5,17 +5,18 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Raleway', sans-serif;
   color: #121213;
   font-weight: 700;
 }
 
 h1 {
   font-size: 4rem;
+  font-family: 'Raleway', sans-serif;
 }
 
 h2 {
   font-size: 3.125rem;
+  font-family: 'Raleway', sans-serif;
 }
 
 h3 {
@@ -25,3 +26,19 @@ h3 {
 h4 {
   font-size: 1.25rem;
 }
+
+
+
+  .radial-gradient-blue-green {
+    background-image: radial-gradient(circle at bottom right, #8DC53F, #184CA1, #0657DC);
+  }
+
+  /* For older browsers */
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .radial-gradient-blue-green {
+      background-image: -webkit-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
+      background-image: -moz-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
+      background-image: -o-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
+      background-image: -ms-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
+    }
+  }

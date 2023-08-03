@@ -19,7 +19,8 @@
             "header": { "type": "SharedSlice" },
             "faq": { "type": "SharedSlice" },
             "subheader": { "type": "SharedSlice" },
-            "spacer": { "type": "SharedSlice" }
+            "spacer": { "type": "SharedSlice" },
+            "cta_section": { "type": "SharedSlice" }
           }
         }
       }

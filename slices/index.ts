@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 
 export const components = {
+  cta_section: dynamic(() => import("./CtaSection")),
   faq: dynamic(() => import("./Faq")),
   header: dynamic(() => import("./Header")),
   image: dynamic(() => import("./Image")),

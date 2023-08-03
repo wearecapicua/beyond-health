@@ -51,7 +51,8 @@ type LandingPageDocumentDataSlicesSlice =
   | HeaderSlice
   | FaqSlice
   | SubheaderSlice
-  | SpacerSlice;
+  | SpacerSlice
+  | CtaSectionSlice;
 
 /**
  * Content for Landing Page documents
@@ -228,6 +229,153 @@ export type AllDocumentTypes =
   | AuthorDocument
   | LandingPageDocument
   | PostDocument;
+
+/**
+ * Primary content in *CtaSection → Primary*
+ */
+export interface CtaSectionSliceDefaultPrimary {
+  /**
+   * Heading field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Subheading field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * CTA button text field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.cta_button_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_button_text: prismic.KeyTextField;
+
+  /**
+   * Image field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Type field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<
+    "Small" | "Medium" | "Large" | "withInfoRight" | "withInfoLeft"
+  >;
+
+  /**
+   * Info Title One field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.info_title_one
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  info_title_one: prismic.KeyTextField;
+
+  /**
+   * Info Subtitle One field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.info_subtitle_one
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  info_subtitle_one: prismic.KeyTextField;
+
+  /**
+   * Info Title Two field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.info_title_two
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  info_title_two: prismic.KeyTextField;
+
+  /**
+   * Info Subtitle Two field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.info_subtitle_two
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  info_subtitle_two: prismic.KeyTextField;
+
+  /**
+   * Info Title Three field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.info_title_three
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  info_title_three: prismic.KeyTextField;
+
+  /**
+   * Info Subtitle Three field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.info_subtitle_three
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  info_subtitle_three: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for CtaSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<CtaSectionSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *CtaSection*
+ */
+type CtaSectionSliceVariation = CtaSectionSliceDefault;
+
+/**
+ * CtaSection Shared Slice
+ *
+ * - **API ID**: `cta_section`
+ * - **Description**: CtaSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaSectionSlice = prismic.SharedSlice<
+  "cta_section",
+  CtaSectionSliceVariation
+>;
 
 /**
  * Primary content in *Faq → Primary*
@@ -542,6 +690,9 @@ declare module "@prismicio/client" {
       PostDocument,
       PostDocumentData,
       AllDocumentTypes,
+      CtaSectionSlice,
+      CtaSectionSliceVariation,
+      CtaSectionSliceDefault,
       FaqSlice,
       FaqSliceVariation,
       FaqSliceDefault,

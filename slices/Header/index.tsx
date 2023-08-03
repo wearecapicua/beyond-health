@@ -10,9 +10,7 @@ export type HeaderProps = SliceComponentProps<Content.HeaderSlice>;
  * Component for "Header" Slices.
  */
 const Header = ({ slice }: HeaderProps): JSX.Element => {
-  const title = slice.primary.title
-  const subtitle = slice.primary.subtitle
-  const ctaText = slice.primary.cta_button_text
+  const { title, subtitle, cta_button_text} = slice.primary
 
   return (
     <section
@@ -29,13 +27,13 @@ const Header = ({ slice }: HeaderProps): JSX.Element => {
               {subtitle}
             </p>
           }
-          {ctaText &&
+          {cta_button_text &&
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#"
-                className="rounded-full bg-main-light-blue px-16 py-3 text-xl font-semibold text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-full bg-main-light-blue px-16 py-3 font-semibold text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                {ctaText}
+                {cta_button_text}
               </a>
             </div>
           }

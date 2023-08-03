@@ -1,0 +1,73 @@
+{
+  "id": "cta_section",
+  "type": "SharedSlice",
+  "name": "CtaSection",
+  "description": "CtaSection",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": { "label": "Heading", "placeholder": "" }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": { "label": "Subheading", "placeholder": "" }
+        },
+        "cta_button_text": {
+          "type": "Text",
+          "config": { "label": "CTA button text", "placeholder": "" }
+        },
+        "image": {
+          "type": "Image",
+          "config": { "label": "Image", "constraint": {}, "thumbnails": [] }
+        },
+        "type": {
+          "type": "Select",
+          "config": {
+            "label": "Type",
+            "placeholder": "",
+            "options": [
+              "Small",
+              "Medium",
+              "Large",
+              "withInfoRight",
+              "withInfoLeft"
+            ]
+          }
+        },
+        "info_title_one": {
+          "type": "Text",
+          "config": { "label": "Info Title One", "placeholder": "" }
+        },
+        "info_subtitle_one": {
+          "type": "Text",
+          "config": { "label": "Info Subtitle One", "placeholder": "" }
+        },
+        "info_title_two": {
+          "type": "Text",
+          "config": { "label": "Info Title Two", "placeholder": "" }
+        },
+        "info_subtitle_two": {
+          "type": "Text",
+          "config": { "label": "Info Subtitle Two", "placeholder": "" }
+        },
+        "info_title_three": {
+          "type": "Text",
+          "config": { "label": "Info Title Three", "placeholder": "" }
+        },
+        "info_subtitle_three": {
+          "type": "Text",
+          "config": { "label": "Info Subtitle Three", "placeholder": "" }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
