@@ -29,16 +29,31 @@ h4 {
 
 
 
-  .radial-gradient-blue-green {
-    background-image: radial-gradient(circle at bottom right, #8DC53F, #184CA1, #0657DC);
-  }
+.radial-gradient-blue-green {
+  background-image: radial-gradient(circle at bottom right, #8DC53F, #184CA1, #0657DC);
+}
 
-  /* For older browsers */
-  @media screen and (-webkit-min-device-pixel-ratio: 0) {
-    .radial-gradient-blue-green {
-      background-image: -webkit-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
-      background-image: -moz-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
-      background-image: -o-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
-      background-image: -ms-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
-    }
+/* For older browsers */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .radial-gradient-blue-green {
+    background-image: -webkit-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
+    background-image: -moz-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
+    background-image: -o-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
+    background-image: -ms-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
   }
+}
+
+.cta-blue-black-fade {
+  background-color: #091C21;
+  background-image: radial-gradient(circle at left, rgba(6, 87, 220, .75), transparent 80%);
+  background-blend-mode: screen;
+}
+
+.cta-black-gray-fade {
+  background-image: linear-gradient(to right, #091C21, transparent);
+  background-blend-mode: screen;
+}
+
+.cta-black-left-fade {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 5%, #091C21 90%);
+}
