@@ -13,7 +13,8 @@ module.exports = {
       },
       colors: {
         'accent-1': '#FAFAFA',
-        'accent-2': '#EAEAEA',
+        'accent-2': 'rgba(6, 87, 220, 0.02)',
+        'accent-3': 'rgba(6, 87, 220, 0.20)',
         'accent-7': '#333',
         'main-black': '#121213',
         'main-light-blue': '#0657DC',

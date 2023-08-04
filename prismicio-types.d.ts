@@ -287,6 +287,16 @@ export interface CtaSectionSliceDefaultPrimary {
   >;
 
   /**
+   * IntroText field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Only for info slices
+   * - **API ID Path**: cta_section.primary.introtext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  introtext: prismic.KeyTextField;
+
+  /**
    * Info Title One field in *CtaSection → Primary*
    *
    * - **Field Type**: Text

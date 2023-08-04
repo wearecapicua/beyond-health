@@ -42,6 +42,13 @@
             ]
           }
         },
+        "introtext": {
+          "type": "Text",
+          "config": {
+            "label": "IntroText",
+            "placeholder": "Only for info slices"
+          }
+        },
         "info_title_one": {
           "type": "Text",
           "config": { "label": "Info Title One", "placeholder": "" }

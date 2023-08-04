@@ -46,34 +46,39 @@
 				"value": "Medium",
 				"type": "Select"
 			},
+			"introtext": {
+				"__TYPE__": "FieldContent",
+				"value": "current",
+				"type": "Text"
+			},
 			"info_title_one": {
 				"__TYPE__": "FieldContent",
-				"value": "running",
+				"value": "food",
 				"type": "Text"
 			},
 			"info_subtitle_one": {
 				"__TYPE__": "FieldContent",
-				"value": "visit",
+				"value": "made",
 				"type": "Text"
 			},
 			"info_title_two": {
 				"__TYPE__": "FieldContent",
-				"value": "cell",
+				"value": "aside",
 				"type": "Text"
 			},
 			"info_subtitle_two": {
 				"__TYPE__": "FieldContent",
-				"value": "anywhere",
+				"value": "dog",
 				"type": "Text"
 			},
 			"info_title_three": {
 				"__TYPE__": "FieldContent",
-				"value": "were",
+				"value": "great",
 				"type": "Text"
 			},
 			"info_subtitle_three": {
 				"__TYPE__": "FieldContent",
-				"value": "vertical",
+				"value": "my",
 				"type": "Text"
 			}
 		},
