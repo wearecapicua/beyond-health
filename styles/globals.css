@@ -42,6 +42,24 @@ h4 {
     background-image: -ms-radial-gradient(bottom right, circle, #8DC53F, #184CA1, #0657DC);
   }
 }
+.radial-gradient-blue-green-reverse {
+  background-image: radial-gradient(circle at bottom right, #8DC53F, #0657DC, #184CA1);
+}
+
+/* For older browsers */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .radial-gradient-blue-green {
+    background-image: -webkit-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
+    background-image: -moz-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
+    background-image: -o-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
+    background-image: -ms-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
+  }
+}
+
+.cta-light-blue-fade {
+  background: radial-gradient(circle at bottom left, #0657DC, #184CA1 75%);
+
+}
 
 .cta-blue-black-fade {
   background-color: #091C21;
