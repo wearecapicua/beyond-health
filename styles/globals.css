@@ -48,12 +48,18 @@ h4 {
 
 /* For older browsers */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .radial-gradient-blue-green {
+  .radial-gradient-blue-green-reverse {
     background-image: -webkit-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
     background-image: -moz-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
     background-image: -o-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
     background-image: -ms-radial-gradient(bottom right, circle, #8DC53F, #0657DC, #184CA1);
   }
+}
+
+.radial-light-blue-light {
+  background: radial-gradient(at left top, #0657DC, transparent),
+              radial-gradient(at bottom right, #0657DC, #184CA1);
+  background-color: #184CA1;
 }
 
 .cta-light-blue-fade {

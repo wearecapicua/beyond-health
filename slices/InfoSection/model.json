@@ -1,0 +1,51 @@
+{
+  "id": "info_section",
+  "type": "SharedSlice",
+  "name": "InfoSection",
+  "description": "InfoSection",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": { "label": "Title", "placeholder": "" }
+        },
+        "subtitle": {
+          "type": "Text",
+          "config": { "label": "Subtitle", "placeholder": "" }
+        },
+        "blurb_one_title": {
+          "type": "Text",
+          "config": { "label": "BlurbOneTitle", "placeholder": "" }
+        },
+        "blurb_one_subtitle": {
+          "type": "Text",
+          "config": { "label": "BlurbOneSubtitle", "placeholder": "" }
+        },
+        "blurb_two_title": {
+          "type": "Text",
+          "config": { "label": "BlurbTwoTitle", "placeholder": "" }
+        },
+        "blurb_two_subtitle": {
+          "type": "Text",
+          "config": { "label": "BlurbTwoSubtitle", "placeholder": "" }
+        },
+        "blurb_three_title": {
+          "type": "Text",
+          "config": { "label": "BlurbThreeTitle", "placeholder": "" }
+        },
+        "blurb_three_subtitle": {
+          "type": "Text",
+          "config": { "label": "BlurbThreeSubtitle", "placeholder": "" }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

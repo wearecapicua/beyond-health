@@ -1,0 +1,49 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"title": {
+				"__TYPE__": "FieldContent",
+				"value": "tribe",
+				"type": "Text"
+			},
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "evidence",
+				"type": "Text"
+			},
+			"blurb_one_title": {
+				"__TYPE__": "FieldContent",
+				"value": "born",
+				"type": "Text"
+			},
+			"blurb_one_subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "afternoon",
+				"type": "Text"
+			},
+			"blurb_two_title": {
+				"__TYPE__": "FieldContent",
+				"value": "water",
+				"type": "Text"
+			},
+			"blurb_two_subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "universe",
+				"type": "Text"
+			},
+			"blurb_three_title": {
+				"__TYPE__": "FieldContent",
+				"value": "rocket",
+				"type": "Text"
+			},
+			"blurb_three_subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "maybe",
+				"type": "Text"
+			}
+		},
+		"items": []
+	}
+]

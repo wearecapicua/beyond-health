@@ -52,7 +52,8 @@ type LandingPageDocumentDataSlicesSlice =
   | FaqSlice
   | SubheaderSlice
   | SpacerSlice
-  | CtaSectionSlice;
+  | CtaSectionSlice
+  | InfoSectionSlice;
 
 /**
  * Content for Landing Page documents
@@ -544,6 +545,121 @@ type ImageSliceVariation = ImageSliceDefault;
 export type ImageSlice = prismic.SharedSlice<"image", ImageSliceVariation>;
 
 /**
+ * Primary content in *InfoSection → Primary*
+ */
+export interface InfoSectionSliceDefaultPrimary {
+  /**
+   * Title field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Subtitle field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * BlurbOneTitle field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.blurb_one_title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  blurb_one_title: prismic.KeyTextField;
+
+  /**
+   * BlurbOneSubtitle field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.blurb_one_subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  blurb_one_subtitle: prismic.KeyTextField;
+
+  /**
+   * BlurbTwoTitle field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.blurb_two_title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  blurb_two_title: prismic.KeyTextField;
+
+  /**
+   * BlurbTwoSubtitle field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.blurb_two_subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  blurb_two_subtitle: prismic.KeyTextField;
+
+  /**
+   * BlurbThreeTitle field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.blurb_three_title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  blurb_three_title: prismic.KeyTextField;
+
+  /**
+   * BlurbThreeSubtitle field in *InfoSection → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: info_section.primary.blurb_three_subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  blurb_three_subtitle: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for InfoSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type InfoSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<InfoSectionSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *InfoSection*
+ */
+type InfoSectionSliceVariation = InfoSectionSliceDefault;
+
+/**
+ * InfoSection Shared Slice
+ *
+ * - **API ID**: `info_section`
+ * - **Description**: InfoSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type InfoSectionSlice = prismic.SharedSlice<
+  "info_section",
+  InfoSectionSliceVariation
+>;
+
+/**
  * Primary content in *Spacer → Primary*
  */
 export interface SpacerSliceDefaultPrimary {
@@ -712,6 +828,9 @@ declare module "@prismicio/client" {
       ImageSlice,
       ImageSliceVariation,
       ImageSliceDefault,
+      InfoSectionSlice,
+      InfoSectionSliceVariation,
+      InfoSectionSliceDefault,
       SpacerSlice,
       SpacerSliceVariation,
       SpacerSliceDefault,
