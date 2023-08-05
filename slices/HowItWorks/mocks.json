@@ -1,0 +1,39 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"step_one_title": {
+				"__TYPE__": "FieldContent",
+				"value": "shown",
+				"type": "Text"
+			},
+			"step_one_text": {
+				"__TYPE__": "FieldContent",
+				"value": "model",
+				"type": "Text"
+			},
+			"step_two_title": {
+				"__TYPE__": "FieldContent",
+				"value": "kitchen",
+				"type": "Text"
+			},
+			"step_two_text": {
+				"__TYPE__": "FieldContent",
+				"value": "adventure",
+				"type": "Text"
+			},
+			"step_three_title": {
+				"__TYPE__": "FieldContent",
+				"value": "influence",
+				"type": "Text"
+			},
+			"step_three_text": {
+				"__TYPE__": "FieldContent",
+				"value": "art",
+				"type": "Text"
+			}
+		},
+		"items": []
+	}
+]

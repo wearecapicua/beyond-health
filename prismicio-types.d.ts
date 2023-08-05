@@ -53,7 +53,8 @@ type LandingPageDocumentDataSlicesSlice =
   | SubheaderSlice
   | SpacerSlice
   | CtaSectionSlice
-  | InfoSectionSlice;
+  | InfoSectionSlice
+  | HowItWorksSlice;
 
 /**
  * Content for Landing Page documents
@@ -503,6 +504,101 @@ type HeaderSliceVariation = HeaderSliceDefault;
 export type HeaderSlice = prismic.SharedSlice<"header", HeaderSliceVariation>;
 
 /**
+ * Primary content in *HowItWorks → Primary*
+ */
+export interface HowItWorksSliceDefaultPrimary {
+  /**
+   * Step One Title field in *HowItWorks → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: how_it_works.primary.step_one_title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  step_one_title: prismic.KeyTextField;
+
+  /**
+   * Step One Text field in *HowItWorks → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: how_it_works.primary.step_one_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  step_one_text: prismic.KeyTextField;
+
+  /**
+   * Step Two Title field in *HowItWorks → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: how_it_works.primary.step_two_title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  step_two_title: prismic.KeyTextField;
+
+  /**
+   * Step Two Text field in *HowItWorks → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: how_it_works.primary.step_two_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  step_two_text: prismic.KeyTextField;
+
+  /**
+   * Step Three Title field in *HowItWorks → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: how_it_works.primary.step_three_title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  step_three_title: prismic.KeyTextField;
+
+  /**
+   * Step Three Text field in *HowItWorks → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: how_it_works.primary.step_three_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  step_three_text: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for HowItWorks Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HowItWorksSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<HowItWorksSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *HowItWorks*
+ */
+type HowItWorksSliceVariation = HowItWorksSliceDefault;
+
+/**
+ * HowItWorks Shared Slice
+ *
+ * - **API ID**: `how_it_works`
+ * - **Description**: HowItWorks
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HowItWorksSlice = prismic.SharedSlice<
+  "how_it_works",
+  HowItWorksSliceVariation
+>;
+
+/**
  * Primary content in *Image → Primary*
  */
 export interface ImageSliceDefaultPrimary {
@@ -825,6 +921,9 @@ declare module "@prismicio/client" {
       HeaderSlice,
       HeaderSliceVariation,
       HeaderSliceDefault,
+      HowItWorksSlice,
+      HowItWorksSliceVariation,
+      HowItWorksSliceDefault,
       ImageSlice,
       ImageSliceVariation,
       ImageSliceDefault,

@@ -6,6 +6,7 @@ export const components = {
   cta_section: dynamic(() => import("./CtaSection")),
   faq: dynamic(() => import("./Faq")),
   header: dynamic(() => import("./Header")),
+  how_it_works: dynamic(() => import("./HowItWorks")),
   image: dynamic(() => import("./Image")),
   info_section: dynamic(() => import("./InfoSection")),
   spacer: dynamic(() => import("./Spacer")),

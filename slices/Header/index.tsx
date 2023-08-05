@@ -23,7 +23,7 @@ const Header = ({ slice }: HeaderProps): JSX.Element => {
             {title}
           </h1>
           {subtitle && 
-            <p className="mx-auto mt-10 max-w-lg text-lg leading-8">
+            <p className="mx-auto mt-10 max-w-screen-sm text-lg leading-8">
               {subtitle}
             </p>
           }

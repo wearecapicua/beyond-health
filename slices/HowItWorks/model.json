@@ -1,0 +1,43 @@
+{
+  "id": "how_it_works",
+  "type": "SharedSlice",
+  "name": "HowItWorks",
+  "description": "HowItWorks",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "step_one_title": {
+          "type": "Text",
+          "config": { "label": "Step One Title", "placeholder": "" }
+        },
+        "step_one_text": {
+          "type": "Text",
+          "config": { "label": "Step One Text", "placeholder": "" }
+        },
+        "step_two_title": {
+          "type": "Text",
+          "config": { "label": "Step Two Title", "placeholder": "" }
+        },
+        "step_two_text": {
+          "type": "Text",
+          "config": { "label": "Step Two Text", "placeholder": "" }
+        },
+        "step_three_title": {
+          "type": "Text",
+          "config": { "label": "Step Three Title", "placeholder": "" }
+        },
+        "step_three_text": {
+          "type": "Text",
+          "config": { "label": "Step Three Text", "placeholder": "" }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

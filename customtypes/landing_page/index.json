@@ -21,7 +21,8 @@
             "subheader": { "type": "SharedSlice" },
             "spacer": { "type": "SharedSlice" },
             "cta_section": { "type": "SharedSlice" },
-            "info_section": { "type": "SharedSlice" }
+            "info_section": { "type": "SharedSlice" },
+            "how_it_works": { "type": "SharedSlice" }
           }
         }
       }
