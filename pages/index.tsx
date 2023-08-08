@@ -26,6 +26,7 @@ export default function Index({ preview, home }: IndexProps) {
         <div className="bg-gray-000 min-h-screen py-10">
           <Container>
             {/* {<Intro />} */}
+            {/* @ts-ignore */}
             <PageBody slices={home.data.slices} />
             {/* {heroPost && (
               <HeroPost
@@ -50,7 +51,7 @@ export async function getStaticProps({
   previewData,
 }: GetStaticPropsContext) {
   const client = createClient({ previewData });
-
+  /* @ts-ignore */
   const home = await client.getByUID("landing_page", "home", {
     fetchLinks: ["treatment.title", "treatment.image"]
   });

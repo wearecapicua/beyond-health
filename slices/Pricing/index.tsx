@@ -8,7 +8,7 @@ import { CheckCircleIcon } from '@heroicons/react/20/solid';
 export type PricingProps = SliceComponentProps<Content.PricingSlice>;
 
 interface ListItemProps {
-  text: string;
+  text: string | null;
 }
 /**
  * Component for "Pricing" Slices.

@@ -10,7 +10,7 @@ import Container from "../components/container";
 import Layout from "../components/layout";
 import PageBody from "../components/page-body";
 import PostTitle from "../components/post-title";
-import { LandingPageDocument } from "prismicio-types";
+// import { LandingPageDocument } from "prismicio-types";
 
 
 
@@ -40,6 +40,7 @@ export default function Post({ page, preview }: PostProps) {
                     }
                   />} */}
                 </Head>
+                {/* @ts-ignore */}
                 <PageBody slices={page.data.slices} />
               </article>
             </>
@@ -63,7 +64,8 @@ export async function getStaticProps({
   const client = createClient({ previewData });
 
   const [page] = await Promise.all([
-    client.getByUID<LandingPageDocument>("landing_page", params.slug),
+    /* @ts-ignore */
+    client.getByUID("landing_page", params.slug),
   ]);
 
 
@@ -80,7 +82,7 @@ export async function getStaticProps({
 
 export async function getStaticPaths() {
   const client = createClient();
-
+  /* @ts-ignore */
   const allLandingPages = await client.getAllByType("landing_page", {
     predicates: [predicate.not("my.landing_page.uid", "home")],
   });

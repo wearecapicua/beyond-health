@@ -38,7 +38,7 @@ const MediumCta = ({ slice }: CtaSectionProps): JSX.Element => {
         </div>
         <div className="relative mt-[35px] mb-[-35px]">
           <Image
-            src={image.url}
+            src={image.url!}
             alt="Beyond Health Logo"
             width="602"
             height="408"

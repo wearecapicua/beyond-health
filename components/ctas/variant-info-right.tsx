@@ -29,7 +29,7 @@ const InfoRightCta = ({ slice }: CtaSectionProps): JSX.Element => {
       <div className="lg:flex justify-between">
         <div className="h-full overflow-hidden rounded-3xl h-[655px] max-w-[622px]">
           <img
-            src={image.url}
+            src={image.url || undefined}
             alt="Beyond Health Logo"
             className="object-cover"
           />

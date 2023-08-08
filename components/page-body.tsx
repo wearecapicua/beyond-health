@@ -1,10 +1,10 @@
 import { SliceZone } from "@prismicio/react";
 
 import { components } from "../slices";
-import { LandingPageDocument } from "prismicio-types";
+import { LandingPageDocumentDataSlicesSlice } from "prismicio-types";
 
 type PageBodyProps = {
-  slices: LandingPageDocument["data"]["slices"];
+  slices: LandingPageDocumentDataSlicesSlice[];
 };
 
 export default function PageBody({ slices }: PageBodyProps) {

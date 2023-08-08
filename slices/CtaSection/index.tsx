@@ -14,24 +14,24 @@ export type CtaSectionProps = SliceComponentProps<Content.CtaSectionSlice>;
 /**
  * Component for "CtaSection" Slices.
  */
-const CtaSection = ({ slice }: CtaSectionProps): JSX.Element => {
-  const { type } = slice.primary
+const CtaSection = ( props : CtaSectionProps): JSX.Element => {
+  const { type } = props.slice.primary
 
   return (
     <section
-      data-slice-type={slice.slice_type}
-      data-slice-variation={slice.variation}
+      data-slice-type={props.slice.slice_type}
+      data-slice-variation={props.slice.variation}
     >
       {type === "Small" ?
-      <SmallCta slice={slice} />
+      <SmallCta {...props} />
       : type === "Medium" ? 
-      <MediumCta slice={slice} />
+      <MediumCta {...props} />
       : type === "Large" ? 
-      <LargeCta slice={slice} />
+      <LargeCta {...props} />
       : type === "withInfoRight" ? 
-      <InfoRightCta slice={slice} />
+      <InfoRightCta {...props} />
       : type === "withInfoLeft" ? 
-      <InfoLeftCta slice={slice} />
+      <InfoLeftCta {...props} />
        : null
     }
     </section>

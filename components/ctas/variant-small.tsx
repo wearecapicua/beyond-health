@@ -38,7 +38,7 @@ const SmallCta = ({ slice }: CtaSectionProps): JSX.Element => {
         </div>
         <div className="relative mt-[-50px] mb-[-56px]">
           <Image
-            src={image.url}
+            src={image.url!}
             alt="Beyond Health Logo"
             width="602"
             height="408"

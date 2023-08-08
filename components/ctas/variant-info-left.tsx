@@ -79,7 +79,7 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
         </div>
         <div className="h-full overflow-hidden rounded-3xl mt-[35px] mb-[-35px] h-[794px] max-w-[610px]">
           <img
-            src={image.url}
+            src={image.url || undefined}
             alt="Beyond Health Logo"
             className="object-cover"
           />
