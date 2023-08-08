@@ -1,10 +1,10 @@
 import { SliceZone } from "@prismicio/react";
 
 import { components } from "../slices";
-import { PostDocument } from "prismic-types";
+import { LandingPageDocument } from "prismicio-types";
 
 type PageBodyProps = {
-  slices: PostDocument["data"]["slices"];
+  slices: LandingPageDocument["data"]["slices"];
 };
 
 export default function PageBody({ slices }: PageBodyProps) {

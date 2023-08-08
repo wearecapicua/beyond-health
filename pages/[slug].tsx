@@ -1,21 +1,20 @@
-import { GetStaticPropsContext, GetStaticPropsResult } from "next";
+import { GetStaticPropsContext, GetStaticPropsResult, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { predicate } from "@prismicio/client";
 
-import { PostDocumentWithAuthor } from "../lib/types";
+
 import { createClient } from "../lib/prismic";
 
 import Container from "../components/container";
 import Layout from "../components/layout";
 import PageBody from "../components/page-body";
 import PostTitle from "../components/post-title";
+import { LandingPageDocument } from "prismicio-types";
 
-type PostProps = {
-  preview: boolean;
-  page: PostDocumentWithAuthor;
-  morePosts: PostDocumentWithAuthor[];
-};
+
+
+type PostProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export default function Post({ page, preview }: PostProps) {
   const router = useRouter();
@@ -55,9 +54,7 @@ export async function getStaticProps({
   params,
   preview = false,
   previewData,
-}: GetStaticPropsContext<{ slug: string }>): Promise<
-  GetStaticPropsResult<PostProps>
-> {
+}: GetStaticPropsContext<{ slug: string }>) {
   if (!params?.slug) {
     return {
       notFound: true,
@@ -66,7 +63,7 @@ export async function getStaticProps({
   const client = createClient({ previewData });
 
   const [page] = await Promise.all([
-    client.getByUID<PostDocumentWithAuthor>("landing_page", params.slug),
+    client.getByUID<LandingPageDocument>("landing_page", params.slug),
   ]);
 
 

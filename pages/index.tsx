@@ -8,17 +8,15 @@ import Intro from "../components/intro";
 import Layout from "../components/layout";
 import { createClient } from "../lib/prismic";
 import { PostDocumentWithAuthor } from "../lib/types";
-import { GetStaticPropsContext, GetStaticPropsResult } from "next";
+import { GetStaticPropsContext, GetStaticPropsResult, InferGetStaticPropsType } from "next";
 import LoginButton from "components/login";
 import PageBody from "components/page-body";
 
-type IndexProps = {
-  preview: boolean;
-  allPosts: PostDocumentWithAuthor[];
-};
+
+type IndexProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export default function Index({ preview, home }: IndexProps) {
-
+  console.log(home)
   return (
     <>
       <Layout preview={preview} >
@@ -50,11 +48,11 @@ export default function Index({ preview, home }: IndexProps) {
 export async function getStaticProps({
   preview = false,
   previewData,
-}: GetStaticPropsContext): Promise<GetStaticPropsResult<IndexProps>> {
+}: GetStaticPropsContext) {
   const client = createClient({ previewData });
 
   const home = await client.getByUID("landing_page", "home", {
-    fetchLinks: [],
+    fetchLinks: ["treatment.title", "treatment.image"]
   });
 
   return {
