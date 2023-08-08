@@ -2,17 +2,12 @@ import { GetStaticPropsContext, GetStaticPropsResult, InferGetStaticPropsType } 
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { predicate } from "@prismicio/client";
-
-
 import { createClient } from "../lib/prismic";
 
 import Container from "../components/container";
 import Layout from "../components/layout";
 import PageBody from "../components/page-body";
 import PostTitle from "../components/post-title";
-// import { LandingPageDocument } from "prismicio-types";
-
-
 
 type PostProps = InferGetStaticPropsType<typeof getStaticProps>
 

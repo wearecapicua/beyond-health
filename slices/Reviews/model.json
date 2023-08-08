@@ -10,7 +10,18 @@
       "docURL": "...",
       "version": "initial",
       "description": "Default",
-      "imageUrl": ""
+      "imageUrl": "",
+      "primary": {},
+      "items": {
+        "review": {
+          "type": "Link",
+          "config": {
+            "label": "Review",
+            "select": "document",
+            "customtypes": ["review"]
+          }
+        }
+      }
     }
   ]
 }

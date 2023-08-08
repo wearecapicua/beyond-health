@@ -1,0 +1,28 @@
+{
+  "id": "review",
+  "label": "Review",
+  "format": "custom",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": { "config": { "label": "UID" }, "type": "UID" },
+      "name": {
+        "type": "Text",
+        "config": { "label": "Name", "placeholder": "" }
+      },
+      "text": {
+        "type": "Text",
+        "config": { "label": "Text", "placeholder": "" }
+      },
+      "rating": {
+        "type": "Select",
+        "config": {
+          "label": "Rating",
+          "placeholder": "",
+          "options": ["1", "2", "3", "4", "5"]
+        }
+      }
+    }
+  }
+}

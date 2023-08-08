@@ -53,7 +53,14 @@ export async function getStaticProps({
   const client = createClient({ previewData });
   /* @ts-ignore */
   const home = await client.getByUID("landing_page", "home", {
-    fetchLinks: ["treatment.title", "treatment.image", "treatment.available"]
+    fetchLinks: [
+      "treatment.title",
+      "treatment.image",
+      "treatment.available",
+      "review.name",
+      "review.text",
+      "review.rating",
+    ]
   });
 
   return {

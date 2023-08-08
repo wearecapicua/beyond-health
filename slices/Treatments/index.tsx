@@ -21,7 +21,7 @@ const Treatments = ({ slice }: TreatmentsProps): JSX.Element => {
     >
       <div className="max-w-[1180px] mx-auto py-10">
         <div className="flex gap-5">
-          {items.map((item, index) => (
+          {items.map((item: any, index) => (
             <a key={index} href={item.treatment.data.available ? `/${item.treatment.uid}` : undefined} className="relative flex-1 h-426">
               <img src={item.treatment.data.image.url} alt="Image 1" className=" rounded-3xl w-full h-full object-cover" />
               {!item.treatment.data.available &&

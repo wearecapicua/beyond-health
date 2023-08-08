@@ -231,6 +231,56 @@ export type PostDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PostDocumentData>, "post", Lang>;
 
 /**
+ * Content for Review documents
+ */
+interface ReviewDocumentData {
+  /**
+   * Name field in *Review*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: review.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Text field in *Review*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: review.text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  text: prismic.KeyTextField;
+
+  /**
+   * Rating field in *Review*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: review.rating
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  rating: prismic.SelectField<"1" | "2" | "3" | "4" | "5">;
+}
+
+/**
+ * Review document from Prismic
+ *
+ * - **API ID**: `review`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ReviewDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<Simplify<ReviewDocumentData>, "review", Lang>;
+
+/**
  * Content for Treatment documents
  */
 interface TreatmentDocumentData {
@@ -289,6 +339,7 @@ export type AllDocumentTypes =
   | AuthorDocument
   | LandingPageDocument
   | PostDocument
+  | ReviewDocument
   | TreatmentDocument;
 
 /**
@@ -910,6 +961,21 @@ export type PricingSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *Reviews → Items*
+ */
+export interface ReviewsSliceDefaultItem {
+  /**
+   * Review field in *Reviews → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: reviews.items[].review
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  review: prismic.ContentRelationshipField<"review">;
+}
+
+/**
  * Default variation for Reviews Slice
  *
  * - **API ID**: `default`
@@ -919,7 +985,7 @@ export type PricingSlice = prismic.SharedSlice<
 export type ReviewsSliceDefault = prismic.SharedSliceVariation<
   "default",
   Record<string, never>,
-  never
+  Simplify<ReviewsSliceDefaultItem>
 >;
 
 /**
@@ -1140,6 +1206,8 @@ declare module "@prismicio/client" {
       LandingPageDocumentData,
       PostDocument,
       PostDocumentData,
+      ReviewDocument,
+      ReviewDocumentData,
       TreatmentDocument,
       TreatmentDocumentData,
       AllDocumentTypes,
