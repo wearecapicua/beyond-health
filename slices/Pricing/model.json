@@ -1,0 +1,48 @@
+{
+  "id": "pricing",
+  "type": "SharedSlice",
+  "name": "Pricing",
+  "description": "Pricing",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": { "label": "Title", "placeholder": "" }
+        },
+        "subtitle": {
+          "type": "Text",
+          "config": { "label": "Subtitle", "placeholder": "" }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "strong"
+          }
+        },
+        "bullet_one": {
+          "type": "Text",
+          "config": { "label": "Bullet One", "placeholder": "" }
+        },
+        "bullet_two": {
+          "type": "Text",
+          "config": { "label": "Bullet Two", "placeholder": "" }
+        },
+        "bullet_three": {
+          "type": "Text",
+          "config": { "label": "Bullet Three", "placeholder": "" }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

@@ -34,7 +34,7 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
               {step_one_text}
             </p>
           </div>
-          <div className="h-full bg-main-blue overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
+          <div className="bg-main-blue overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
             <img
               src={"/images/phone.svg"}
               alt="phone"
@@ -43,7 +43,7 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
           </div>
         </div>
         <div className="lg:flex justify-between gap-20 pt-2 pb-28">
-          <div className="h-full bg-accent-green-800 overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
+          <div className="bg-accent-green-800 overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
             <img
               src={"/images/phone2.svg"}
               alt="phone"
@@ -70,7 +70,7 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
               {step_three_text}
             </p>
           </div>
-          <div className="h-full bg-main-blue overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
+          <div className="bg-main-blue overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
             <img
               src={"/images/mail.svg"}
               alt="phone"

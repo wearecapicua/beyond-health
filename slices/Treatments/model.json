@@ -1,0 +1,27 @@
+{
+  "id": "treatments",
+  "type": "SharedSlice",
+  "name": "Treatments",
+  "description": "Treatments",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {},
+      "items": {
+        "treatment": {
+          "type": "Link",
+          "config": {
+            "label": "Treatment",
+            "select": "document",
+            "customtypes": ["treatment"]
+          }
+        }
+      }
+    }
+  ]
+}

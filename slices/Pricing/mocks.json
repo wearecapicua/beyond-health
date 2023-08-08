@@ -1,0 +1,45 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"title": {
+				"__TYPE__": "FieldContent",
+				"value": "glass",
+				"type": "Text"
+			},
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "rising",
+				"type": "Text"
+			},
+			"description": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Velit Lorem aliquip proident irure dolor. Lorem ipsum in sint enim cupidatat magna magna fugiat enim excepteur adipisicing ullamco commodo. Ex et adipisicing ut consequat proident nisi dolore."
+						}
+					}
+				]
+			},
+			"bullet_one": {
+				"__TYPE__": "FieldContent",
+				"value": "classroom",
+				"type": "Text"
+			},
+			"bullet_two": {
+				"__TYPE__": "FieldContent",
+				"value": "class",
+				"type": "Text"
+			},
+			"bullet_three": {
+				"__TYPE__": "FieldContent",
+				"value": "forget",
+				"type": "Text"
+			}
+		},
+		"items": []
+	}
+]

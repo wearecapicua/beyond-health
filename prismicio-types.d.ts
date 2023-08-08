@@ -54,7 +54,10 @@ type LandingPageDocumentDataSlicesSlice =
   | SpacerSlice
   | CtaSectionSlice
   | InfoSectionSlice
-  | HowItWorksSlice;
+  | HowItWorksSlice
+  | TreatmentsSlice
+  | ReviewsSlice
+  | PricingSlice;
 
 /**
  * Content for Landing Page documents
@@ -227,10 +230,66 @@ interface PostDocumentData {
 export type PostDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PostDocumentData>, "post", Lang>;
 
+/**
+ * Content for Treatment documents
+ */
+interface TreatmentDocumentData {
+  /**
+   * Title field in *Treatment*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: treatment.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Available field in *Treatment*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: treatment.available
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  available: prismic.BooleanField;
+
+  /**
+   * Image field in *Treatment*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: treatment.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Treatment document from Prismic
+ *
+ * - **API ID**: `treatment`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TreatmentDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<TreatmentDocumentData>,
+    "treatment",
+    Lang
+  >;
+
 export type AllDocumentTypes =
   | AuthorDocument
   | LandingPageDocument
-  | PostDocument;
+  | PostDocument
+  | TreatmentDocument;
 
 /**
  * Primary content in *CtaSection → Primary*
@@ -756,6 +815,131 @@ export type InfoSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *Pricing → Primary*
+ */
+export interface PricingSliceDefaultPrimary {
+  /**
+   * Title field in *Pricing → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Subtitle field in *Pricing → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * Description field in *Pricing → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Bullet One field in *Pricing → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.primary.bullet_one
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  bullet_one: prismic.KeyTextField;
+
+  /**
+   * Bullet Two field in *Pricing → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.primary.bullet_two
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  bullet_two: prismic.KeyTextField;
+
+  /**
+   * Bullet Three field in *Pricing → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.primary.bullet_three
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  bullet_three: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Pricing Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<PricingSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Pricing*
+ */
+type PricingSliceVariation = PricingSliceDefault;
+
+/**
+ * Pricing Shared Slice
+ *
+ * - **API ID**: `pricing`
+ * - **Description**: Pricing
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingSlice = prismic.SharedSlice<
+  "pricing",
+  PricingSliceVariation
+>;
+
+/**
+ * Default variation for Reviews Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ReviewsSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Slice variation for *Reviews*
+ */
+type ReviewsSliceVariation = ReviewsSliceDefault;
+
+/**
+ * Reviews Shared Slice
+ *
+ * - **API ID**: `reviews`
+ * - **Description**: Reviews
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ReviewsSlice = prismic.SharedSlice<
+  "reviews",
+  ReviewsSliceVariation
+>;
+
+/**
  * Primary content in *Spacer → Primary*
  */
 export interface SpacerSliceDefaultPrimary {
@@ -895,6 +1079,51 @@ type TextSliceVariation = TextSliceDefault;
  */
 export type TextSlice = prismic.SharedSlice<"text", TextSliceVariation>;
 
+/**
+ * Primary content in *Treatments → Items*
+ */
+export interface TreatmentsSliceDefaultItem {
+  /**
+   * Treatment field in *Treatments → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: treatments.items[].treatment
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  treatment: prismic.ContentRelationshipField<"treatment">;
+}
+
+/**
+ * Default variation for Treatments Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TreatmentsSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  Simplify<TreatmentsSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *Treatments*
+ */
+type TreatmentsSliceVariation = TreatmentsSliceDefault;
+
+/**
+ * Treatments Shared Slice
+ *
+ * - **API ID**: `treatments`
+ * - **Description**: Treatments
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TreatmentsSlice = prismic.SharedSlice<
+  "treatments",
+  TreatmentsSliceVariation
+>;
+
 declare module "@prismicio/client" {
   interface CreateClient {
     (
@@ -911,6 +1140,8 @@ declare module "@prismicio/client" {
       LandingPageDocumentData,
       PostDocument,
       PostDocumentData,
+      TreatmentDocument,
+      TreatmentDocumentData,
       AllDocumentTypes,
       CtaSectionSlice,
       CtaSectionSliceVariation,
@@ -930,6 +1161,12 @@ declare module "@prismicio/client" {
       InfoSectionSlice,
       InfoSectionSliceVariation,
       InfoSectionSliceDefault,
+      PricingSlice,
+      PricingSliceVariation,
+      PricingSliceDefault,
+      ReviewsSlice,
+      ReviewsSliceVariation,
+      ReviewsSliceDefault,
       SpacerSlice,
       SpacerSliceVariation,
       SpacerSliceDefault,
@@ -939,6 +1176,9 @@ declare module "@prismicio/client" {
       TextSlice,
       TextSliceVariation,
       TextSliceDefault,
+      TreatmentsSlice,
+      TreatmentsSliceVariation,
+      TreatmentsSliceDefault,
     };
   }
 }

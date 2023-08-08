@@ -9,7 +9,10 @@ export const components = {
   how_it_works: dynamic(() => import("./HowItWorks")),
   image: dynamic(() => import("./Image")),
   info_section: dynamic(() => import("./InfoSection")),
+  pricing: dynamic(() => import("./Pricing")),
+  reviews: dynamic(() => import("./Reviews")),
   spacer: dynamic(() => import("./Spacer")),
   subheader: dynamic(() => import("./Subheader")),
   text: dynamic(() => import("./Text")),
+  treatments: dynamic(() => import("./Treatments")),
 };

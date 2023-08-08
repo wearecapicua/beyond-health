@@ -22,7 +22,10 @@
             "spacer": { "type": "SharedSlice" },
             "cta_section": { "type": "SharedSlice" },
             "info_section": { "type": "SharedSlice" },
-            "how_it_works": { "type": "SharedSlice" }
+            "how_it_works": { "type": "SharedSlice" },
+            "treatments": { "type": "SharedSlice" },
+            "reviews": { "type": "SharedSlice" },
+            "pricing": { "type": "SharedSlice" }
           }
         }
       }

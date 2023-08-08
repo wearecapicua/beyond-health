@@ -67,8 +67,8 @@ export async function getStaticProps({
 
   const [page] = await Promise.all([
     client.getByUID<PostDocumentWithAuthor>("landing_page", params.slug),
-    
   ]);
+
 
   if (!page) {
     return {

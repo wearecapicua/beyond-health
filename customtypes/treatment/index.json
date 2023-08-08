@@ -1,0 +1,29 @@
+{
+  "id": "treatment",
+  "label": "Treatment",
+  "format": "custom",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "title": {
+        "type": "Text",
+        "config": { "label": "Title", "placeholder": "" }
+      },
+      "uid": { "config": { "label": "UID" }, "type": "UID" },
+      "available": {
+        "type": "Boolean",
+        "config": {
+          "label": "Available",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "image": {
+        "type": "Image",
+        "config": { "label": "Image", "constraint": {}, "thumbnails": [] }
+      }
+    }
+  }
+}
