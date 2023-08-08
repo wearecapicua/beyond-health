@@ -16,7 +16,7 @@ import PageBody from "components/page-body";
 type IndexProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export default function Index({ preview, home }: IndexProps) {
-  console.log(home)
+  
   return (
     <>
       <Layout preview={preview} >

@@ -26,7 +26,7 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="mx-auto pt-10 pb-20 px-2.5">
+      <div className="mx-auto py-10 px-2.5">
         <div className="cta-light-blue-fade px-11 py-[75px] sm:rounded-3xl">
           <div className="mx-auto text-center lg:mx-0">
             <h2 className="text-accent-green leading-tight">

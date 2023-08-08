@@ -12,7 +12,7 @@ export type SpacerProps = SliceComponentProps<Content.SpacerSlice>;
 const Spacer = ({ slice }: SpacerProps): JSX.Element => {
   const large = slice.primary.spacer
   return (
-    large ? <div className="py-11" /> : <div className="py-4" />
+    large ? <div className="py-9" /> : <div className="py-4" />
   );
 };
 
