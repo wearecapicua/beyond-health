@@ -14,11 +14,7 @@ const Faq = ({ slice }: FaqProps): JSX.Element => {
   const { question, answer } = slice.primary
 
   return (
-    <div 
-      data-slice-type={slice.slice_type}
-      data-slice-variation={slice.variation}
-      className="mx-auto max-w-[1180px] py-5 border-t-[1px] border-main-black/40"
-    >
+    <div className="mx-auto max-w-[1180px] py-5 border-t-[1px] border-main-black/40">
       <Disclosure as="div">
         {({ open }) => (
           <>

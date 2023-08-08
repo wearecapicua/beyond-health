@@ -1,0 +1,26 @@
+{
+  "id": "faq",
+  "label": "FAQ",
+  "format": "custom",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "config": {
+          "label": "UID",
+          "placeholder": "Short name for the question"
+        },
+        "type": "UID"
+      },
+      "question": {
+        "type": "Text",
+        "config": { "label": "Question", "placeholder": "" }
+      },
+      "answer": {
+        "type": "Text",
+        "config": { "label": "Answer", "placeholder": "" }
+      }
+    }
+  }
+}

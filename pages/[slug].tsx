@@ -60,7 +60,18 @@ export async function getStaticProps({
 
   const [page] = await Promise.all([
     /* @ts-ignore */
-    client.getByUID("landing_page", params.slug),
+    client.getByUID("landing_page", params.slug, {
+      fetchLinks: [
+        "treatment.title",
+        "treatment.image",
+        "treatment.available",
+        "review.name",
+        "review.text",
+        "review.rating",
+        "faq.question",
+        "faq.answer"
+      ]
+    }),
   ]);
 
 

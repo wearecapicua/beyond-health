@@ -23,7 +23,7 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-       <div className="mx-auto max-w-[1190px] pt-14">
+       <div className="mx-auto max-w-[1190px] pt-10">
         <div className="lg:flex justify-between gap-20 pb-28">
           <div className="mx-auto w-[50%] flex flex-col justify-center lg:mx-0 lg:text-left">
             <span className="font-bold text-main-blue text-lg">STEP ONE</span>

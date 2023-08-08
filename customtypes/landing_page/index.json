@@ -25,7 +25,8 @@
             "how_it_works": { "type": "SharedSlice" },
             "treatments": { "type": "SharedSlice" },
             "reviews": { "type": "SharedSlice" },
-            "pricing": { "type": "SharedSlice" }
+            "pricing": { "type": "SharedSlice" },
+            "faqs": { "type": "SharedSlice" }
           }
         }
       }

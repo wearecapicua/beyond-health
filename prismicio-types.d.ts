@@ -47,6 +47,45 @@ export type AuthorDocument<Lang extends string = string> =
     Lang
   >;
 
+/**
+ * Content for FAQ documents
+ */
+interface FaqDocumentData {
+  /**
+   * Question field in *FAQ*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faq.question
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  question: prismic.KeyTextField;
+
+  /**
+   * Answer field in *FAQ*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faq.answer
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  answer: prismic.KeyTextField;
+}
+
+/**
+ * FAQ document from Prismic
+ *
+ * - **API ID**: `faq`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FaqDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<Simplify<FaqDocumentData>, "faq", Lang>;
+
 type LandingPageDocumentDataSlicesSlice =
   | HeaderSlice
   | FaqSlice
@@ -57,7 +96,8 @@ type LandingPageDocumentDataSlicesSlice =
   | HowItWorksSlice
   | TreatmentsSlice
   | ReviewsSlice
-  | PricingSlice;
+  | PricingSlice
+  | FaqsSlice;
 
 /**
  * Content for Landing Page documents
@@ -337,6 +377,7 @@ export type TreatmentDocument<Lang extends string = string> =
 
 export type AllDocumentTypes =
   | AuthorDocument
+  | FaqDocument
   | LandingPageDocument
   | PostDocument
   | ReviewDocument
@@ -550,6 +591,48 @@ type FaqSliceVariation = FaqSliceDefault;
  * - **Documentation**: https://prismic.io/docs/slice
  */
 export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
+
+/**
+ * Primary content in *Faqs → Items*
+ */
+export interface FaqsSliceDefaultItem {
+  /**
+   * Faq field in *Faqs → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faqs.items[].faq
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  faq: prismic.ContentRelationshipField<"faq">;
+}
+
+/**
+ * Default variation for Faqs Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FaqsSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  Simplify<FaqsSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *Faqs*
+ */
+type FaqsSliceVariation = FaqsSliceDefault;
+
+/**
+ * Faqs Shared Slice
+ *
+ * - **API ID**: `faqs`
+ * - **Description**: Faqs
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FaqsSlice = prismic.SharedSlice<"faqs", FaqsSliceVariation>;
 
 /**
  * Primary content in *Header → Primary*
@@ -1202,6 +1285,8 @@ declare module "@prismicio/client" {
     export type {
       AuthorDocument,
       AuthorDocumentData,
+      FaqDocument,
+      FaqDocumentData,
       LandingPageDocument,
       LandingPageDocumentData,
       PostDocument,
@@ -1217,6 +1302,9 @@ declare module "@prismicio/client" {
       FaqSlice,
       FaqSliceVariation,
       FaqSliceDefault,
+      FaqsSlice,
+      FaqsSliceVariation,
+      FaqsSliceDefault,
       HeaderSlice,
       HeaderSliceVariation,
       HeaderSliceDefault,

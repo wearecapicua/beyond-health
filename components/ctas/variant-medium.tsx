@@ -18,7 +18,7 @@ const MediumCta = ({ slice }: CtaSectionProps): JSX.Element => {
   } = slice.primary
 
   return (
-    <div className="mx-auto py-20">
+    <div className="mx-auto pt-12 pb-16">
       <div className="relative isolate radial-gradient-blue-green-reverse px-11 justify-between shadow-2xl sm:rounded-3xl lg:flex lg:gap-x-20">
         <div className="mx-auto max-w-lg text-center py-10 flex flex-col justify-center lg:mx-0 lg:flex-auto lg:text-left">
           <h2 className="font-sans text-white leading-tight">

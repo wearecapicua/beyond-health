@@ -60,6 +60,8 @@ export async function getStaticProps({
       "review.name",
       "review.text",
       "review.rating",
+      "faq.question",
+      "faq.answer"
     ]
   });
 
