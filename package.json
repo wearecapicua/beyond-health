@@ -31,7 +31,8 @@
     "react-dom": "^18.2.0",
     "stripe": "^12.14.0",
     "swr": "^2.2.0",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@slicemachine/adapter-next": "^0.3.6",
