@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 
 export const components = {
   cta_section: dynamic(() => import("./CtaSection")),
-  faq: dynamic(() => import("./Faq")),
   faqs: dynamic(() => import("./Faqs")),
   header: dynamic(() => import("./Header")),
   how_it_works: dynamic(() => import("./HowItWorks")),

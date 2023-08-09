@@ -1,10 +1,11 @@
 import { Disclosure } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { PlusIcon } from '@heroicons/react/20/solid'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from 'next/image'
 
 export default function Navbar() {
+  const session = useSession();
   return (
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
@@ -37,12 +38,18 @@ export default function Navbar() {
                   >
                     FAQs
                   </Link>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
-                  >
-                    Login
-                  </Link>
+                  {session.status === "authenticated" && session.data?.user ?
+                    <Link href="">
+                      {`Welcome, ${session.data.user.name}`}
+                    </Link>
+                    :
+                    <Link
+                      href="/login"
+                      className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
+                    >
+                      Login
+                    </Link>
+                  }
                 </div>
                 <div className="flex-shrink-0">
                   <button
@@ -70,7 +77,6 @@ export default function Navbar() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pb-3 pt-2">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               <Disclosure.Button
                 as="link"
                 href="#"

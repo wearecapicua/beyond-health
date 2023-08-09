@@ -4,11 +4,16 @@ import Meta from '../components/meta'
 import Navbar from '../components/navbar'
 
 type LayoutProps = {
-  preview: boolean
+  preview?: boolean
+  fullPage?: boolean
   children: React.ReactNode
 }
 
-export default function Layout({ preview, children }: LayoutProps) {
+export default function Layout({
+  preview,
+  fullPage,
+  children
+}: LayoutProps) {
   return (
     <>
       <Meta />
@@ -17,7 +22,7 @@ export default function Layout({ preview, children }: LayoutProps) {
         <Navbar />
         <main className="min-h-screen">{children}</main>
       </div>
-      <Footer />
+      {!fullPage && <Footer />}
     </>
   )
 }

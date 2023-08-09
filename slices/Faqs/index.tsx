@@ -26,7 +26,7 @@ const Faqs = ({ slice }: FaqsProps): JSX.Element => {
               {({ open }) => (
                 <>
                   <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
-                    <span className="text-xl font-semibold leading-7">{item.faq.data.question}</span>
+                    <span className="text-xl font-semibold leading-7">{item.faq.data?.question}</span>
                     <span className="ml-6 flex h-7 items-center">
                       {open ? (
                         <MinusSmallIcon className="h-6 w-6 text-main-light-blue" aria-hidden="true" />
@@ -36,7 +36,7 @@ const Faqs = ({ slice }: FaqsProps): JSX.Element => {
                     </span>
                   </Disclosure.Button>
                   <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                    <p className="text-lg leading-7 text-gray-800">{item.faq.data.answer}</p>
+                    <p className="text-lg leading-7 text-gray-800">{item.faq.data?.answer}</p>
                   </Disclosure.Panel>
                 </>
               )}
