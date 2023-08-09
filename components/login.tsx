@@ -2,7 +2,6 @@ import Button from "components/Button";
 import Avatar from "components/avatar";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
-import FormButton from "./forms/form-button";
 
 type Props = {};
 
@@ -31,7 +30,6 @@ const LoginButton = (props: Props) => {
             />
           )}
         </div>
-        <FormButton type="submit" text="Login" onClick={() => signIn("google")}/>
         <Button onClick={() => signOut()}>Logout</Button>
       </div>
     );
