@@ -1,8 +1,11 @@
 import { getSession } from 'next-auth/react';
 import fs from 'fs';
 import path from 'path';
+import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 
-const FormStep = ({ formData, user }) => {
+type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
+
+const FormStep = ({ formData, user }: StepProps) => {
   return (
     <div>
       <h1>Form Step: {formData.step}</h1>
@@ -12,7 +15,7 @@ const FormStep = ({ formData, user }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
   if (!session?.user) {
@@ -23,7 +26,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
+  // @ts-ignore
   const { step } = context.params;
   const formFilePath = path.join(process.cwd(), 'components/forms', `${step}.tsx`);
   const formContent = fs.readFileSync(formFilePath, 'utf8');
@@ -40,7 +43,3 @@ export async function getServerSideProps(context) {
 }
 
 export default FormStep;
-
-
-
-
