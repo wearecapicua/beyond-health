@@ -5,6 +5,8 @@ import FormHeader from "components/forms/form-header";
 import FormButton from "components/forms/form-button";
 import { signIn } from "next-auth/react";
 import useLoginStore from "store/login"
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/router';
 
 type LoginProps = {
   preview: boolean;
@@ -13,6 +15,10 @@ type LoginProps = {
 }
 
 export default function LoginPage({ preview }: LoginProps) {
+  const session = useSession();
+  const router = useRouter();
+  const userLoggedIn = session.status === "authenticated" && session.data?.user
+
   const { loginState, setLoginState } = useLoginStore()
   const titleText = loginState ? "Log In" : "Sign Up"
   const subtitleText = loginState ? "Sign in to start your visit." : "Create an account to start your visit."
@@ -20,6 +26,11 @@ export default function LoginPage({ preview }: LoginProps) {
   const loginSpan = loginState ? "Don't have an account? " : "Already have an account? "
   const loginLink = loginState ? "Sign Up" : "Log In"
   const image = loginState ? "/images/login_image.jpg" : "/images/signup_image.jpg"
+
+  if (userLoggedIn) {
+    router.push('/form/step-one');
+    return null;
+  }
 
   return (
     <Layout preview={preview} fullPage >

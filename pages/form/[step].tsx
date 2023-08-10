@@ -2,16 +2,20 @@ import { getSession } from 'next-auth/react';
 import fs from 'fs';
 import path from 'path';
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
+import Layout from 'components/layout';
+import Container from 'components/container';
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const FormStep = ({ formData, user }: StepProps) => {
   return (
-    <div>
+    <Layout fullPage>
+      <Container>
       <h1>Form Step: {formData.step}</h1>
       <p>Content of Step: {formData.content}</p>
       <p>Welcome, {user?.name}!</p>
-    </div>
+      </Container>
+    </Layout>
   );
 };
 

@@ -1,4 +1,4 @@
-import { GetStaticPropsContext, GetStaticPropsResult, InferGetStaticPropsType } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { predicate } from "@prismicio/client";

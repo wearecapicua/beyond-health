@@ -1,4 +1,3 @@
-import Button from "components/Button";
 import Avatar from "components/avatar";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
@@ -7,35 +6,28 @@ type Props = {};
 
 const LoginButton = (props: Props) => {
   const session = useSession();
-  if (session.status === "loading") {
-    return <p>Loading...</p>;
-  }
   if (session.status === "authenticated" && session.data?.user) {
     return (
-      <div>
-        <p className="mb-2">Welcome back!</p>
-        <div className="mb-2">
-          {session.data.user.image && (
-            <Avatar
-              name={session.data.user.name || ""}
-              picture={{
-                url: session.data.user.image,
-                dimensions: {
-                  width: 64,
-                  height: 64,
-                },
-                alt: session.data.user.name || null,
-                copyright: null,
-              }}
-            />
-          )}
-        </div>
-        <Button onClick={() => signOut()}>Logout</Button>
-      </div>
+      <>
+        <button onClick={() => signOut()} className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">Log Out</button>
+        {session.data.user.image && (
+          <Avatar
+            // name={session.data.user.name || ""}
+            picture={{
+              url: session.data.user.image,
+              dimensions: {
+                width: 40,
+                height: 40,
+              },
+              alt: session.data.user.name || null,
+              copyright: null,
+            }}
+          />
+        )}
+      </>
     );
   }
-
-  return <Button onClick={() => signIn("google")}>Login</Button>;
+  return <button onClick={() => signIn("google")} className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">Log In</button>;
 };
 
 export default LoginButton;
