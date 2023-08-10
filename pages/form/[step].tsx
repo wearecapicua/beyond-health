@@ -8,12 +8,12 @@ import Container from 'components/container';
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const FormStep = ({ formData, user }: StepProps) => {
+
+  const FormStepContent = require(`components/forms/${formData.step}`).default;
   return (
     <Layout fullPage>
       <Container>
-      <h1>Form Step: {formData.step}</h1>
-      <p>Content of Step: {formData.content}</p>
-      <p>Welcome, {user?.name}!</p>
+        <FormStepContent />
       </Container>
     </Layout>
   );
@@ -25,7 +25,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!session?.user) {
     return {
       redirect: {
-        destination: '/login', // Redirect to the login page
+        destination: '/login',
         permanent: false,
       },
     };

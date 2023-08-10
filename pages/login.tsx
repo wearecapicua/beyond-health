@@ -32,6 +32,10 @@ export default function LoginPage({ preview }: LoginProps) {
     return null;
   }
 
+  const handleToggle = () => {
+    setLoginState(!loginState);
+  };
+
   return (
     <Layout preview={preview} fullPage >
       <Head>
@@ -46,7 +50,7 @@ export default function LoginPage({ preview }: LoginProps) {
                 <FormButton type="submit" text={buttonText} icon="google" onClick={() => signIn("google")}/>
                 <div className="mt-10 text-center">
                   <span className="bg-white px-6 text-gray-900">{loginSpan}
-                    <button className="underline" onClick={() => setLoginState(!loginState)}>{loginLink}</button>
+                    <button className="underline" onClick={handleToggle}>{loginLink}</button>
                   </span>
                 </div>
               </div>
