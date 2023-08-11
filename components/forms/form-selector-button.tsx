@@ -1,5 +1,3 @@
-import GoogleIcon from "components/goolge-icon";
-
 type FormSelectorButtonProps = {
   selected: string;
   text: string;
@@ -17,7 +15,7 @@ export default function FormButton({
       <button
         type="button"
         onClick={() => setSelected(text)}
-        className={`${selectedStyles} border-[1px] text-main-light-blue border-main-light-blue hover:opacity-8 flex w-full justify-center items-center gap-4 rounded-full px-6 py-3 text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500`}
+        className={`${selectedStyles} border-[1px] text-main-blue border-gray-400 hover:opacity-8 flex w-full justify-center items-center gap-4 rounded-full px-6 py-5 text-xl font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500`}
       >
         {text}
       </button>

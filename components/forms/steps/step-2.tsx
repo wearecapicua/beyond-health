@@ -1,10 +1,10 @@
 import { useState } from "react";
-import FormContainer from "./form-container";
-import FormHeader from "./form-header";
-import FormSelectorButton from "./form-selector-button";
+import FormContainer from "../form-container";
+import FormHeader from "../form-header";
+import FormSelectorButton from "../form-selector-button";
 
 export default function StepOne() {
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState("");
 
 
   return (

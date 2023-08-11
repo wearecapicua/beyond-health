@@ -1,6 +1,6 @@
-import FormContainer from "./form-container";
-import FormHeader from "./form-header";
-import FormInput from "./form-input";
+import FormContainer from "../form-container";
+import FormHeader from "../form-header";
+import FormInput from "../form-input";
 
 type StepOneProps = {
  
@@ -17,12 +17,12 @@ export default function StepOne({
       />
       <FormContainer>
         <FormInput
-          label="First Name"
+          label="First Name*"
           name="firstName"
           type="text"
         />
         <FormInput
-          label="Last Name"
+          label="Last Name*"
           name="lastName"
           type="text"
         />

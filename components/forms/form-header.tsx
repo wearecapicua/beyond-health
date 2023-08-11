@@ -1,6 +1,6 @@
 type FormHeaderProps = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
 };
 
 export default function FormHeader({
