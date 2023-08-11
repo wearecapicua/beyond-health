@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { getSession } from 'next-auth/react';
 import fs from 'fs';
 import path from 'path';
@@ -7,12 +8,27 @@ import Container from 'components/container';
 import FormStepper from 'components/forms/form-stepper';
 import FormButton from 'components/forms/form-button';
 import FormContainer from 'components/forms/form-container';
+import { incrementString, decrementString } from "utils"
+import { useRouter } from "next/router";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const FormStep = ({ formData, user }: StepProps) => {
+  const [activeStep, setActiveStep] = useState(formData.step);
+  const router = useRouter();
+  const FormStepContent = require(`components/forms/${activeStep}`).default;
 
-  const FormStepContent = require(`components/forms/${formData.step}`).default;
+  const nextPage = () => {
+    const next = incrementString(formData.step)
+    setActiveStep(next)
+    router.push(`/form/${next}`);
+  }
+  const prevPage = () => {
+    const next = decrementString(formData.step)
+    setActiveStep(next)
+    router.push(`/form/${next}`);
+  }
+
   return (
     <Layout fullPage>
       <Container>
@@ -20,9 +36,9 @@ const FormStep = ({ formData, user }: StepProps) => {
         <FormStepContent />
         <FormContainer>
           <div className="flex flex-col gap-4 pt-6">
-            <FormButton text="Next" type="submit" style="solid"/>
+            <FormButton text="Next" type="submit" style="solid" onClick={nextPage} />
             <FormButton text="Save for later" type="submit" style="outline"/>
-            <FormButton text="Go Back" type="submit" />
+            <FormButton text="Go Back" type="submit" onClick={prevPage} />
           </div>
         </FormContainer>
       </Container>
@@ -33,14 +49,14 @@ const FormStep = ({ formData, user }: StepProps) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
-  if (!session?.user) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  // if (!session?.user) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
   // @ts-ignore
   const { step } = context.params;
   const formFilePath = path.join(process.cwd(), 'components/forms', `${step}.tsx`);
@@ -52,7 +68,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         step,
         content: formContent,
       },
-      user: session.user,
+      //user: session.user,
     },
   };
 }
