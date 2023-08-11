@@ -1,19 +1,20 @@
+import React from 'react';
 import { CheckIcon } from '@heroicons/react/24/solid';
 
 const steps = [
-  { id: '1', name: 'Job details', href: '#', status: 'complete' },
-  { id: '2', name: 'Application form', href: '#', status: 'current' },
-  { id: '3', name: 'Preview', href: '#', status: 'upcoming' },
-  { id: '4', name: 'Preview', href: '#', status: 'upcoming' },
+  { id: '1', name: 'Profile Questions', href: '#', status: 'complete' },
+  { id: '2', name: 'Medical History', href: '#', status: 'current' },
+  { id: '3', name: 'Treatment', href: '#', status: 'upcoming' },
+  { id: '4', name: 'Checkout', href: '#', status: 'upcoming' },
 ];
 
 export default function FormStepper() {
   return (
     <div aria-label="Progress" className="pt-9 pb-7">
-      <div className="divide-y divide-gray-300 px-6 py-3 rounded-full bg-gray-200 bg-opacity-20 border border-gray-300 md:flex md:divide-y-0">
+      <div className="divide-y divide-gray-300 px-6 py-3 rounded-full bg-gray-200 bg-opacity-20 border border-gray-300 items-center md:flex md:divide-y-0">
         {steps.map((step, stepIdx) => (
-          <>
-          <div key={step.name} className="relative md:flex md:flex-1">
+          <React.Fragment key={step.name}>
+          <div className="md:flex">
             {step.status === 'complete' ? (
               <a href={step.href} className="group flex items-center">
                 <span className="flex items-center px-6 text-sm font-medium">
@@ -42,9 +43,9 @@ export default function FormStepper() {
             )}
           </div>
             {stepIdx !== steps.length - 1 ? (
-              <hr className="border-b-2 flex-1 h-1/2 border-gray-100" />
+              <hr className=" flex-1 h-0.5 bg-gray-100" />
             ) : null}
-         </>
+         </React.Fragment>
         ))}
         
       </div>
