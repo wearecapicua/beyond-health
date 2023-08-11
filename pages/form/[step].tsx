@@ -4,6 +4,7 @@ import path from 'path';
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 import Layout from 'components/layout';
 import Container from 'components/container';
+import FormStepper from 'components/forms/form-stepper';
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -13,6 +14,7 @@ const FormStep = ({ formData, user }: StepProps) => {
   return (
     <Layout fullPage>
       <Container>
+        <FormStepper />
         <FormStepContent />
       </Container>
     </Layout>
