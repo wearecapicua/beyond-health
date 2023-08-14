@@ -12,7 +12,7 @@ export default function Avatar({ name, picture }: AvatarProps) {
       <PrismicNextImage
         field={picture}
         className="rounded-full"
-        alt={picture.alt as ""}
+        alt={""}
         fallbackAlt=""
       />
       {name && <div className="text-xl font-bold">{name}</div>}

@@ -11,12 +11,9 @@ import FormContainer from 'components/forms/form-container';
 import { incrementString, decrementString } from "utils"
 import { useRouter } from "next/router";
 import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form";
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { schema, IFormProps } from "utils/forms/form-schema";
 
-const schema = z.object({
-  firstName: z.string().min(1, "First name is required").max(100),
-});
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -25,8 +22,8 @@ const FormStep = ({ formData }: StepProps) => {
   const router = useRouter();
   const FormStepContent = require(`components/forms/steps/${activeStep}`).default;
 
-  const methods = useForm({
-    resolver: zodResolver(schema),
+  const methods = useForm<IFormProps>({
+    resolver: zodResolver(schema)as unknown as Resolver<IFormProps>,
     mode: "onBlur",
     //defaultValues: useMemo(() => state, [state]),
   });
@@ -39,15 +36,13 @@ const FormStep = ({ formData }: StepProps) => {
   }
   const onSubmit = async (data: any) => {
     const isStepValid = await trigger();
-   
     console.log("data", data)
-    console.log("valid", isStepValid)
+
     if (isStepValid) {
       const next = incrementString(formData.step)
       setActiveStep(next)
       router.push(`/form/${next}`);
     }
-    console.log(isStepValid);
   }
 
   return (

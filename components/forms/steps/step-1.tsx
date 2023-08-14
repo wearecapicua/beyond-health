@@ -17,8 +17,8 @@ export default function StepOne() {
       <FormContainer>
         <FormInput
           label="First Name*"
-          type="text"
           id="firstName"
+          type="text"
         />
         <FormInput
           label="Last Name*"
