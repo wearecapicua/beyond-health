@@ -10,6 +10,13 @@ import FormButton from 'components/forms/form-button';
 import FormContainer from 'components/forms/form-container';
 import { incrementString, decrementString } from "utils"
 import { useRouter } from "next/router";
+import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form";
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schema = z.object({
+  firstName: z.string().min(1, "First name is required").max(100),
+});
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -18,15 +25,29 @@ const FormStep = ({ formData }: StepProps) => {
   const router = useRouter();
   const FormStepContent = require(`components/forms/steps/${activeStep}`).default;
 
-  const nextPage = () => {
-    const next = incrementString(formData.step)
-    setActiveStep(next)
-    router.push(`/form/${next}`);
-  }
+  const methods = useForm({
+    resolver: zodResolver(schema),
+    mode: "onBlur",
+    //defaultValues: useMemo(() => state, [state]),
+  });
+  const { handleSubmit, trigger } = methods;
+  
   const prevPage = () => {
     const next = decrementString(formData.step)
     setActiveStep(next)
     router.push(`/form/${next}`);
+  }
+  const onSubmit = async (data: any) => {
+    const isStepValid = await trigger();
+   
+    console.log("data", data)
+    console.log("valid", isStepValid)
+    if (isStepValid) {
+      const next = incrementString(formData.step)
+      setActiveStep(next)
+      router.push(`/form/${next}`);
+    }
+    console.log(isStepValid);
   }
 
   return (
@@ -34,17 +55,20 @@ const FormStep = ({ formData }: StepProps) => {
       <Container>
         <FormStepper />
       </Container>
-      <div className="max-w-screen-md mx-auto">
-        <FormStepContent />
-      </div>
-      <FormContainer>
-        <div className="flex flex-col gap-4 pt-6">
-          <FormButton text="Next" type="submit" style="solid" onClick={nextPage} />
-          <FormButton text="Save for later" type="submit" style="outline"/>
-          <FormButton text="Go Back" type="submit" onClick={prevPage} />
-        </div>
-      </FormContainer>
-      
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="max-w-screen-md mx-auto">
+            <FormStepContent />
+          </div>
+          <FormContainer>
+            <div className="flex flex-col gap-4 py-6">
+              <FormButton text="Next" type="submit" style="solid"  />
+              <FormButton text="Save for later" type="button" style="outline"/>
+              <FormButton text="Go Back" type="button" onClick={prevPage} />
+            </div>
+          </FormContainer>
+        </form>
+      </FormProvider>
     </Layout>
   );
 };

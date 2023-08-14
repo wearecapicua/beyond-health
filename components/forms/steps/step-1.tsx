@@ -3,12 +3,11 @@ import FormHeader from "../form-header";
 import FormInput from "../form-input";
 
 type StepOneProps = {
- 
+
 };
 
-export default function StepOne({ 
-}: StepOneProps) {
-
+export default function StepOne() {
+  
   return (
     <>
       <FormHeader
@@ -18,12 +17,12 @@ export default function StepOne({
       <FormContainer>
         <FormInput
           label="First Name*"
-          name="firstName"
           type="text"
+          id="firstName"
         />
         <FormInput
           label="Last Name*"
-          name="lastName"
+          id="lastName"
           type="text"
         />
       </FormContainer>

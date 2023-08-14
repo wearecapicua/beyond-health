@@ -3,5 +3,5 @@ type FormContainerProps = {
 }
 
 export default function FormContainer({ children }: FormContainerProps) {
-  return <div className="max-w-[520px] mx-auto mt-2 px-3">{children}</div>
+  return <div className="max-w-[520px] mx-auto my-2 px-3">{children}</div>
 }

@@ -3,7 +3,7 @@ import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormSelectorButton from "../form-selector-button";
 
-export default function StepOne() {
+export default function StepFour() {
   const [selected, setSelected] = useState("");
 
   return (

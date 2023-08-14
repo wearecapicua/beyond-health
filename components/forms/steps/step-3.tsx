@@ -3,7 +3,7 @@ import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 
 
-export default function StepOne() {
+export default function StepThree() {
 
   return (
     <>
