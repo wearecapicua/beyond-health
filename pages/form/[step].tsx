@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { getSession } from 'next-auth/react';
 import fs from 'fs';
 import path from 'path';
@@ -13,14 +13,15 @@ import { useRouter } from "next/router";
 import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { schema, IFormProps } from "utils/forms/form-schema";
+import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
 
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const FormStep = ({ formData }: StepProps) => {
-  const [activeStep, setActiveStep] = useState(formData.step);
   const router = useRouter();
-  const FormStepContent = require(`components/forms/steps/${activeStep}`).default;
+  const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
+  const StepComponent = formSteps[activeStep]
 
   const methods = useForm<IFormProps>({
     resolver: zodResolver(schema)as unknown as Resolver<IFormProps>,
@@ -34,7 +35,7 @@ const FormStep = ({ formData }: StepProps) => {
     setActiveStep(next)
     router.push(`/form/${next}`);
   }
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const isStepValid = await trigger();
     console.log("data", data)
 
@@ -53,7 +54,7 @@ const FormStep = ({ formData }: StepProps) => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="max-w-screen-md mx-auto">
-            <FormStepContent />
+          <StepComponent/>
           </div>
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
@@ -71,16 +72,19 @@ const FormStep = ({ formData }: StepProps) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
-  // if (!session?.user) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  // @ts-ignore
-  const { step } = context.params;
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+  
+  const step = context.params?.step?.toString() ?? ""
+ 
+  if (!stepExists(step)) { return { notFound: true } }
+
   const formFilePath = path.join(process.cwd(), 'components/forms/steps', `${step}.tsx`);
   const formContent = fs.readFileSync(formFilePath, 'utf8');
 
@@ -90,7 +94,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         step,
         content: formContent,
       },
-      //user: session.user,
+      user: session.user,
     },
   };
 }

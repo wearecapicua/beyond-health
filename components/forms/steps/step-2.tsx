@@ -21,6 +21,7 @@ export default function StepTwo() {
         {radioButtonOptions.map((option) => {
           return (
             <FormSelectorButton
+              key={option.label}
               label={option.label}
               value={option.value}
               id="gender"

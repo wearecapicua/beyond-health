@@ -1,3 +1,5 @@
+import { FormStep }from "components/forms/steps/form-steps";
+
 export const incrementString = (inputString: string) => {
   const parts = inputString.split('-')
   const prefix = parts[0]
@@ -10,7 +12,7 @@ export const incrementString = (inputString: string) => {
   const nextNumber = currentNumber + 1
   const nextString = `${prefix}-${nextNumber}`
 
-  return nextString
+  return nextString as FormStep
 }
 
 export const decrementString = (inputString: string) => {
@@ -25,5 +27,5 @@ export const decrementString = (inputString: string) => {
   const nextNumber = currentNumber - 1
   const nextString = `${prefix}-${nextNumber}`
 
-  return nextString
+  return nextString as FormStep
 }
