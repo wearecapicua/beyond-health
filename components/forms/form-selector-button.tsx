@@ -1,4 +1,4 @@
-import { useFormContext, Controller } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 type FormSelectorButtonProps = {
   selected: string;
@@ -16,10 +16,7 @@ export default function FormButton({
   groupId
 }: FormSelectorButtonProps) {
 
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register } = useFormContext();
 
   return (
     

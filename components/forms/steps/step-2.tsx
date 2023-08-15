@@ -2,9 +2,11 @@ import { useState } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormSelectorButton from "../form-selector-button";
+import { useFormContext } from "react-hook-form";
 
 export default function StepTwo() {
   const [selected, setSelected] = useState("");
+  const { formState: { errors } } = useFormContext();
 
   const radioButtonOptions = [
     { value: "male", label: "Male" },
@@ -31,6 +33,7 @@ export default function StepTwo() {
             />
           )
         })}
+        {!!errors.gender && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </FormContainer>
     </>
   );

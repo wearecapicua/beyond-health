@@ -11,7 +11,9 @@ export const schema = {
     lastName: z.string().min(1, "Last name is required").max(100),
   }),
  'step-2': z.object({
-    gender: z.string(),
+    gender: z.string().refine(value => !!value, {
+      message: 'Please select an option',
+    })
   }),
   'step-3': z.object({
   
