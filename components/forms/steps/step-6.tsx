@@ -18,6 +18,7 @@ export default function StepSix() {
       <FormHeader
         title={"Have you noticed thinning, recession, or other types of hair loss on your head?"}
       />
+      <div className="max-w-[730px] mx-auto">
         {texts.map((text, index) => (
           <FormSelector
             key={`text-${index}`}
@@ -26,6 +27,7 @@ export default function StepSix() {
             setSelected={setSelected}
           />
         ))}
+      </div>
     </>
   );
 }

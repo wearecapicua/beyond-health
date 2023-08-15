@@ -27,7 +27,7 @@ export default function StepSix() {
         title={"What stage of hair loss are you currently at?"}
         subtitle="Norwood scale"
       />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 max-w-screen-lg mx-auto">
         {content.map((item, index) => (
           <FormSelectorImage
             key={`text-${index}`}

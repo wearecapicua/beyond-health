@@ -54,9 +54,7 @@ const FormStep = ({ formData }: StepProps) => {
       </Container>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="max-w-screen-md mx-auto">
-            <StepComponent/>
-          </div>
+          <StepComponent/>
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
               <FormButton text="Next" type="submit" style="solid"  />

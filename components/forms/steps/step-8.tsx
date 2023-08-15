@@ -13,10 +13,11 @@ export default function StepEight() {
         title={"Do you have any medical conditions?"}
         subtitle="Please enter any and all medical conditions below"
       />
-      <FormContainer>
+      <div className="max-w-[602px] mx-auto">
         <FormInput
           id="medications"
           type="text"
+          large
           setSelected={setSelected}
           placeholder="Enter your answer here"
         />
@@ -27,7 +28,7 @@ export default function StepEight() {
           selected={selected}
           setSelected={setSelected}
         />
-      </FormContainer>
+      </div>
     </>
   );
 }
