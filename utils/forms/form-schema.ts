@@ -32,10 +32,10 @@ export const schema = {
   
   }),
   'step-9': z.object({
-  
+
   }),
   'step-10': z.object({
-  
+    stage: z.string().refine(value => !!value)
   }),
   'step-11': z.object({
   
