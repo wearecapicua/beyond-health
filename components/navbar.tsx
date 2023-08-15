@@ -43,7 +43,7 @@ export default function Navbar() {
                   <LoginButton />
                 </div>
                 <div className="flex-shrink-0">
-                  <a href={userLoggedIn ? "/form/step-one" : "/login"}>
+                  <a href={userLoggedIn ? "/form/step-1" : "/login"}>
                     <button
                       type="button"
                       className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

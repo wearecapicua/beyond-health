@@ -28,7 +28,7 @@ export default function LoginPage({ preview }: LoginProps) {
   const image = loginState ? "/images/login_image.jpg" : "/images/signup_image.jpg"
 
   if (userLoggedIn) {
-    router.push('/form/step-one');
+    router.push('/form/step-1');
     return null;
   }
 

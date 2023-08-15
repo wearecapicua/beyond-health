@@ -55,7 +55,7 @@ const FormStep = ({ formData }: StepProps) => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="max-w-screen-md mx-auto">
-          <StepComponent/>
+            <StepComponent/>
           </div>
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
@@ -86,14 +86,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
  
   if (!stepExists(step)) { return { notFound: true } }
 
-  const formFilePath = path.join(process.cwd(), 'components/forms/steps', `${step}.tsx`);
-  const formContent = fs.readFileSync(formFilePath, 'utf8');
-
   return {
     props: {
       formData: {
-        step,
-        content: formContent,
+        step
       },
       user: session.user,
     },

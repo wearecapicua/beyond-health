@@ -1,3 +1,5 @@
+import { useFormContext } from "react-hook-form";
+
 type FormSelectorImageProps = {
   selected: string;
   text: string;
@@ -11,6 +13,11 @@ export default function FormSelectorImage({
   text,
   image
 }: FormSelectorImageProps) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  
   const selectedStyles = selected === text ? "bg-main-light-blue" : "bg-transparent"
   return (
     <div className="py-3">
@@ -18,7 +25,7 @@ export default function FormSelectorImage({
         onClick={() => setSelected(text)}
         className="flex justify-between border-[1px] text-main-blue border-gray-400 hover:opacity-8 flex w-full justify-center items-center gap-4 rounded-full px-6 py-5 text-xl font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
       >
-        {image}
+        <img src={image} className="w-24"/>
         {text}
         <div className={`${selectedStyles} rounded-full border-[1px] p-3 border-gray-400`} />
       </button>
