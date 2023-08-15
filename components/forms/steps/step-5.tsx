@@ -13,7 +13,7 @@ export default function StepFive() {
       <FormContainer>
         <FormInput
           label="Phone Number*"
-          name="phoneNumber"
+          id="phoneNumber"
           type="text"
         />
       </FormContainer>

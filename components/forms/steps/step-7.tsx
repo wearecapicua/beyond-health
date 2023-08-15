@@ -15,13 +15,15 @@ export default function StepSeven() {
       />
       <FormContainer>
         <FormInput
-          name="medications"
+          id="medications"
           type="text"
           setSelected={setSelected}
           placeholder="Enter your answer here"
         />
         <FormSelectorButton
-          text="I don't take any medication, vitamins, or supplements"
+          label="I don't take any medication, vitamins, or supplements"
+          value={"none"}
+          groupId="medications"
           selected={selected}
           setSelected={setSelected}
         />

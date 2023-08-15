@@ -15,13 +15,15 @@ export default function StepEight() {
       />
       <FormContainer>
         <FormInput
-          name="medications"
+          id="medications"
           type="text"
           setSelected={setSelected}
           placeholder="Enter your answer here"
         />
         <FormSelectorButton
-          text="I don't have any medical conditions"
+          label="I don't have any medical conditions"
+          value="none"
+          groupId="conditions"
           selected={selected}
           setSelected={setSelected}
         />
