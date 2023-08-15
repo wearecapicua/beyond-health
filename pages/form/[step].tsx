@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { getSession } from 'next-auth/react';
 import fs from 'fs';
 import path from 'path';
@@ -23,8 +23,9 @@ const FormStep = ({ formData }: StepProps) => {
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
 
+  const currentSchema = schema[activeStep];
   const methods = useForm<IFormProps>({
-    resolver: zodResolver(schema)as unknown as Resolver<IFormProps>,
+    resolver: zodResolver(currentSchema)as unknown as Resolver<IFormProps>,
     mode: "onBlur",
     //defaultValues: useMemo(() => state, [state]),
   });
