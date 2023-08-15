@@ -6,9 +6,9 @@ import FormSelectorButton from "../form-selector-button";
 export default function StepTwo() {
   const [selected, setSelected] = useState("");
   const radioButtonOptions = [
-    { value: "male", label: "Male" },
-    { value: "female", label: "Female" },
-    { value: "trasgender3", label: "Trasgender / Non-binary" },
+    { value: "male", label: "Male", field: "field-male" },
+    { value: "female", label: "Female", field: "field-female" },
+    { value: "trasgender", label: "Transgender / Non-binary", field: "field-trans" },
   ];
 
   return (
@@ -24,7 +24,8 @@ export default function StepTwo() {
               key={option.label}
               label={option.label}
               value={option.value}
-              id="gender"
+              groupId="gender"
+              id={option.value}
               selected={selected}
               setSelected={setSelected}
             />
