@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FormHeader from "../form-header";
 import FormSelectorImage from "../form-selector-image";
+import { useFormContext } from "react-hook-form";
 
 type ContentType = {
   text: string;
@@ -9,6 +10,7 @@ type ContentType = {
 
 export default function StepSix() {
   const [selected, setSelected] = useState("");
+  const { formState: { errors } } = useFormContext();
 
   const content: ContentType[] = [
     {text: "Stage 1", image: "/images/hair_loss_stage1.jpg"},
@@ -31,13 +33,16 @@ export default function StepSix() {
         {content.map((item, index) => (
           <FormSelectorImage
             key={`text-${index}`}
-            text={item.text}
+            label={item.text}
+            value={item.text}
+            groupId="stage"
             image={item.image}
             selected={selected}
             setSelected={setSelected}
           />
         ))}
       </div>
+      {!!errors.stage && <p className="text-red-500 text-sm text-center pt-3">Please select one</p>}
     </>
   );
 }

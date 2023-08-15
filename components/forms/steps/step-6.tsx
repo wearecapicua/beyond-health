@@ -1,9 +1,11 @@
 import { useState } from "react";
 import FormHeader from "../form-header";
 import FormSelector from "../form-selector";
+import { useFormContext } from "react-hook-form";
 
 export default function StepSix() {
   const [selected, setSelected] = useState("");
+  const { formState: { errors } } = useFormContext();
 
   const texts = [
     "No, but i would like to prevent it",
@@ -21,12 +23,15 @@ export default function StepSix() {
       <div className="max-w-[730px] mx-auto">
         {texts.map((text, index) => (
           <FormSelector
-            key={`text-${index}`}
-            text={text}
+            key={`option-${index}`}
+            label={text}
+            value={text}
+            groupId="noticeHairLoss"
             selected={selected}
             setSelected={setSelected}
           />
         ))}
+        {!!errors.noticeHairLoss && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </div>
     </>
   );

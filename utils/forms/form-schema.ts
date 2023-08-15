@@ -11,19 +11,19 @@ export const schema = {
     lastName: z.string().min(1, "Last name is required").max(100),
   }),
  'step-2': z.object({
-    gender: z.string(),
+    gender: z.string().refine(value => !!value)
   }),
   'step-3': z.object({
-  
+    
   }),
   'step-4': z.object({
-  
+    residence: z.string().refine(value => !!value)
   }),
   'step-5': z.object({
-  
+    phoneNumber: z.string().min(1, "Phone number is required").max(30),
   }),
   'step-6': z.object({
-  
+    noticeHairLoss: z.string().refine(value => !!value)
   }),
   'step-7': z.object({
   
@@ -32,10 +32,10 @@ export const schema = {
   
   }),
   'step-9': z.object({
-  
+
   }),
   'step-10': z.object({
-  
+    stage: z.string().refine(value => !!value)
   }),
   'step-11': z.object({
   
