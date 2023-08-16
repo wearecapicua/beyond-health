@@ -7,6 +7,7 @@ type FormInputProps = {
   placeholder?: string;
   large?: boolean;
   setSelected?: (name: any) => void;
+  customValidate?: any;
 };
 
 export default function FormInput({
@@ -15,7 +16,8 @@ export default function FormInput({
   id,
   placeholder,
   large,
-  setSelected
+  setSelected,
+  customValidate
 }: FormInputProps) {
   const {
     register,
@@ -36,6 +38,7 @@ export default function FormInput({
           placeholder={placeholder || ""}
           {...register(id, {
             onChange: () => setSelected && setSelected(""),
+            validate: (v) => customValidate(v)
           })}
         />
       </div>

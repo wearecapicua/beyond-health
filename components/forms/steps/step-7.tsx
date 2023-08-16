@@ -1,11 +1,19 @@
 import { useState } from "react";
-import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import FormSelectorButton from "../form-selector-button";
+import { useFormContext } from "react-hook-form";
 
 export default function StepSeven() {
   const [selected, setSelected] = useState("");
+  const { formState: { errors } } = useFormContext();
+
+  const validateRadioOrTextInput = (value: string) => {
+    if (!value) {
+      return 'This field is required';
+    }
+    return true;
+  };
 
   return (
     <>
@@ -20,14 +28,17 @@ export default function StepSeven() {
           large
           setSelected={setSelected}
           placeholder="Enter your answer here"
+          customValidate={validateRadioOrTextInput}
         />
         <FormSelectorButton
           label="I don't take any medication, vitamins, or supplements"
-          value={"none"}
+          value="none"
           groupId="medications"
           selected={selected}
           setSelected={setSelected}
+          customValidate={validateRadioOrTextInput}
         />
+        {!!errors.medications && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </div>
     </>
   );

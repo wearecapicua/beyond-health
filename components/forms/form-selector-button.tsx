@@ -6,6 +6,7 @@ type FormSelectorButtonProps = {
   value: string;
   groupId: string;
   setSelected: (text: string) => void;
+  customValidate?: any;
 };
 
 export default function FormButton({
@@ -13,7 +14,8 @@ export default function FormButton({
   setSelected,
   label,
   value,
-  groupId
+  groupId,
+  customValidate
 }: FormSelectorButtonProps) {
 
   const { register } = useFormContext();
@@ -25,7 +27,8 @@ export default function FormButton({
         id={value}
         value={value}
         {...register(groupId, {
-          onChange: (e) => setSelected(e.target.value)
+          onChange: (e) => setSelected(e.target.value),
+          validate: (v) => customValidate(v)
         })}
         className="w-full h-full opacity-0 absolute top-0"
       />
