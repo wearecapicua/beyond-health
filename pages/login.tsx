@@ -5,6 +5,7 @@ import FormHeader from "components/forms/form-header";
 import FormButton from "components/forms/form-button";
 import { signIn } from "next-auth/react";
 import useLoginStore from "store/login"
+import useStore from 'store/useStore'
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 
@@ -19,7 +20,9 @@ export default function LoginPage({ preview }: LoginProps) {
   const router = useRouter();
   const userLoggedIn = session.status === "authenticated" && session.data?.user
 
-  const { loginState, setLoginState } = useLoginStore()
+  const loginState = useStore(useLoginStore, (state) => state.loginState)
+  const setLoginState = useStore(useLoginStore, (state) => state.setLoginState)
+ // const { loginState, setLoginState } = useLoginStore()
   const titleText = loginState ? "Log In" : "Sign Up"
   const subtitleText = loginState ? "Sign in to start your visit." : "Create an account to start your visit."
   const buttonText = loginState ? "Log in with Google" : "Sign up with Google"

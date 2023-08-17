@@ -13,6 +13,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { schema, IFormProps } from "utils/forms/form-schema";
 import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
 
+import { useFormStore } from 'store/useFormStore';
+
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -20,6 +22,10 @@ const FormStep = ({ formData }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
+
+  const { formStore, updateFormStore } = useFormStore();
+  
+  console.log("state", formStore)
 
   const currentSchema = schema[activeStep];
   const methods = useForm<IFormProps>({
@@ -39,11 +45,14 @@ const FormStep = ({ formData }: StepProps) => {
     console.log("data", data)
 
     if (isStepValid) {
+      updateFormStore(data);
+
       const next = incrementString(formData.step)
       setActiveStep(next)
       router.push(`/form/${next}`);
     }
   }
+  
 
   return (
     <Layout fullPage>
