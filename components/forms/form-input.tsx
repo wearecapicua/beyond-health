@@ -8,6 +8,7 @@ type FormInputProps = {
   large?: boolean;
   setSelected?: (name: any) => void;
   customValidate?: any;
+  defaultValue: string;
 };
 
 export default function FormInput({
@@ -15,6 +16,7 @@ export default function FormInput({
   type,
   id,
   placeholder,
+  defaultValue,
   large,
   setSelected,
   customValidate
@@ -36,6 +38,7 @@ export default function FormInput({
           id={id}
           className={`${large ? "py-5" : "py-3"} block w-full rounded-full border-0 px-6 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-main-light-blue sm:leading-6`}
           placeholder={placeholder || ""}
+          defaultValue={defaultValue || ""}
           {...register(id, {
             onChange: () => setSelected && setSelected(""),
             validate: (v) => customValidate(v)

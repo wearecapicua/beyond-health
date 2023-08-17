@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormSelectorButton from "../form-selector-button";
 import { useFormContext } from "react-hook-form";
+import { useFormStore } from 'store/useFormStore';
 
 export default function StepTwo() {
   const [selected, setSelected] = useState("");
   const { formState: { errors } } = useFormContext();
+  const { formStore } = useFormStore();
 
   const radioButtonOptions = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
     { value: "transgender", label: "Transgender / Non-binary" },
   ];
+
+  useEffect(() => {
+    if (!selected && formStore.gender) {
+      setSelected(formStore.gender);
+    }
+  }, [formStore.gender]);
 
   return (
     <>
