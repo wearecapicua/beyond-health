@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormHeader from "../form-header";
 import FormSelector from "../form-selector";
 import { useFormContext } from "react-hook-form";
+import { useFormStore } from 'store/useFormStore';
 
 export default function StepSix() {
   const [selected, setSelected] = useState("");
-  const { formState: { errors } } = useFormContext();
+  const { setValue, formState: { errors } } = useFormContext();
+  const { formStore } = useFormStore();
 
   const texts = [
     "No, but i would like to prevent it",
@@ -14,6 +16,13 @@ export default function StepSix() {
     "Yes, in the last 6 months to a year",
     "Yes, for longer than a year"
   ]
+
+  useEffect(() => {
+    if (!selected && formStore.noticeHairLoss) {
+      setSelected(formStore.noticeHairLoss);
+      setValue("noticeHairLoss", formStore.noticeHairLoss)
+    }
+  }, [formStore.gender]);
 
   return (
     <>

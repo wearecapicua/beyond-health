@@ -7,7 +7,7 @@ import { useFormStore } from 'store/useFormStore';
 
 export default function StepTwo() {
   const [selected, setSelected] = useState("");
-  const { formState: { errors } } = useFormContext();
+  const { setValue, formState: { errors } } = useFormContext();
   const { formStore } = useFormStore();
 
   const radioButtonOptions = [
@@ -19,6 +19,7 @@ export default function StepTwo() {
   useEffect(() => {
     if (!selected && formStore.gender) {
       setSelected(formStore.gender);
+      setValue("gender", formStore.gender)
     }
   }, [formStore.gender]);
 

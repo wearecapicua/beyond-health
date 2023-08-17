@@ -19,7 +19,7 @@ export default function FormButton({
 }: FormSelectorButtonProps) {
 
   const { register } = useFormContext();
-
+console.log("selecte", selected)
   return (
     <div className="relative my-4 bg-white border-[1px] text-main-blue border-gray-400 rounded-full px-6 py-8 text-xl font-semibold leading-6">
       <input
