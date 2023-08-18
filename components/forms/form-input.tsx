@@ -8,7 +8,7 @@ type FormInputProps = {
   large?: boolean;
   setSelected?: (name: any) => void;
   defaultValue: string;
-  customValidate: any;
+  customValidate?: any;
 };
 
 export default function FormInput({
