@@ -26,10 +26,10 @@ export const schema = {
     noticeHairLoss: z.string().refine(value => !!value)
   }),
   'step-7': z.object({
-  
+    medications: z.string().refine(value => !!value)
   }),
   'step-8': z.object({
-  
+    conditions: z.string().refine(value => !!value)
   }),
   'step-9': z.object({
 

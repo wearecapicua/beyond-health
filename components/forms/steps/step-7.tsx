@@ -1,11 +1,25 @@
-import { useState } from "react";
-import FormContainer from "../form-container";
+import { useEffect, useState } from "react";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import FormSelectorButton from "../form-selector-button";
+import { useFormContext } from "react-hook-form";
+import { useFormStore } from 'store/useFormStore';
 
 export default function StepSeven() {
   const [selected, setSelected] = useState("");
+  const { setValue, formState: { errors } } = useFormContext();
+  const { formStore } = useFormStore();
+
+  useEffect(() => {
+    if (!selected && formStore.medications) {
+      setSelected(formStore.medications);
+    }
+  }, [formStore.medications]);
+
+  const customValidate = () => {
+    setSelected(formStore.medications)
+    setValue("medications", "none")
+  }
 
   return (
     <>
@@ -20,14 +34,18 @@ export default function StepSeven() {
           large
           setSelected={setSelected}
           placeholder="Enter your answer here"
+          defaultValue={formStore.medications} 
+          customValidate={customValidate}
         />
         <FormSelectorButton
           label="I don't take any medication, vitamins, or supplements"
-          value={"none"}
+          value="none"
           groupId="medications"
           selected={selected}
           setSelected={setSelected}
+          customValidate={customValidate}
         />
+        {!selected && !!errors.medications && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </div>
     </>
   );

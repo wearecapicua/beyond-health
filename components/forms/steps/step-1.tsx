@@ -1,13 +1,11 @@
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
+import { useFormStore } from 'store/useFormStore';
 
-type StepOneProps = {
-
-};
 
 export default function StepOne() {
-  
+  const { formStore } = useFormStore();
   return (
     <>
       <FormHeader
@@ -19,11 +17,13 @@ export default function StepOne() {
           label="First Name*"
           id="firstName"
           type="text"
+          defaultValue={formStore.firstName} 
         />
         <FormInput
           label="Last Name*"
           id="lastName"
           type="text"
+          defaultValue={formStore.lastName} 
         />
       </FormContainer>
     </>

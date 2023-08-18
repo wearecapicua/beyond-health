@@ -1,8 +1,10 @@
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
+import { useFormStore } from 'store/useFormStore';
 
 export default function StepFive() {
+  const { formStore } = useFormStore();
 
   return (
     <>
@@ -15,6 +17,7 @@ export default function StepFive() {
           label="Phone Number*"
           id="phoneNumber"
           type="text"
+          defaultValue={formStore.phoneNumber}
         />
       </FormContainer>
     </>
