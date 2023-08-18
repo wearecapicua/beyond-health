@@ -6,18 +6,18 @@ import { useFormContext } from "react-hook-form";
 import { useFormStore } from 'store/useFormStore';
 
 export default function StepEight() {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<string | undefined>(undefined);
   const { setValue, formState: { errors } } = useFormContext();
   const { formStore } = useFormStore();
 
   useEffect(() => {
     if (!selected && formStore.conditions) {
-      setSelected(formStore.conditions);
+      setSelected(formStore?.conditions);
     }
   }, [formStore.conditions]);
 
   const customValidate = () => {
-    setSelected(formStore.conditions)
+    setSelected(formStore?.conditions)
     setValue("conditions", "none")
   }
 

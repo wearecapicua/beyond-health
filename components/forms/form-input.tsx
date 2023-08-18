@@ -40,7 +40,7 @@ export default function FormInput({
           placeholder={placeholder || ""}
           defaultValue={defaultValue || ""}
           {...register(id, {
-            onChange: () => setSelected && setSelected("")
+            onChange: () => setSelected && setSelected(undefined)
           })}
         />
       </div>
