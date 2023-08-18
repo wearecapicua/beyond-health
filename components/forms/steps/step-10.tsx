@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormHeader from "../form-header";
 import FormSelectorImage from "../form-selector-image";
 import { useFormContext } from "react-hook-form";
+import { useFormStore } from 'store/useFormStore';
 
 type ContentType = {
   text: string;
@@ -10,7 +11,15 @@ type ContentType = {
 
 export default function StepSix() {
   const [selected, setSelected] = useState("");
-  const { formState: { errors } } = useFormContext();
+  const { setValue, formState: { errors } } = useFormContext();
+  const { formStore } = useFormStore();
+
+  useEffect(() => {
+    if (!selected && formStore.stage) {
+      setSelected(formStore.stage);
+      setValue("stage", formStore.stage)
+    }
+  }, [formStore.stage]);
 
   const content: ContentType[] = [
     {text: "Stage 1", image: "/images/hair_loss_stage1.jpg"},

@@ -33,6 +33,7 @@ const FormStep = ({ formData }: StepProps) => {
     mode: "onBlur",
     //defaultValues: useMemo(() => state, [state]),
   });
+  
   const { handleSubmit, trigger } = methods;
   
   const prevPage = () => {

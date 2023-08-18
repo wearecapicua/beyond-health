@@ -22,7 +22,7 @@ export default function StepSix() {
       setSelected(formStore.noticeHairLoss);
       setValue("noticeHairLoss", formStore.noticeHairLoss)
     }
-  }, [formStore.gender]);
+  }, [formStore.noticeHairLoss]);
 
   return (
     <>

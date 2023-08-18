@@ -7,8 +7,8 @@ type FormInputProps = {
   placeholder?: string;
   large?: boolean;
   setSelected?: (name: any) => void;
-  customValidate?: any;
   defaultValue: string;
+  customValidate: any;
 };
 
 export default function FormInput({
@@ -40,13 +40,12 @@ export default function FormInput({
           placeholder={placeholder || ""}
           defaultValue={defaultValue || ""}
           {...register(id, {
-            onChange: () => setSelected && setSelected(""),
-            validate: (v) => customValidate(v)
+            onChange: () => setSelected && setSelected("")
           })}
         />
       </div>
       {/* @ts-ignore */}
-      {!!errors[id] && <p className="text-red-500 text-sm pt-2">{errorMsg}</p>}
+      {!customValidate && !!errors[id] && <p className="text-red-500 text-sm pt-2">{errorMsg}</p>}
     </div>
   );
 }

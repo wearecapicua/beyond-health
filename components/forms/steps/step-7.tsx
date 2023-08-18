@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import FormSelectorButton from "../form-selector-button";
 import { useFormContext } from "react-hook-form";
+import { useFormStore } from 'store/useFormStore';
 
 export default function StepSeven() {
   const [selected, setSelected] = useState("");
-  const { formState: { errors } } = useFormContext();
+  const { setValue, formState: { errors } } = useFormContext();
+  const { formStore } = useFormStore();
 
-  const validateRadioOrTextInput = (value: string) => {
-    if (!value) {
-      return 'This field is required';
+  useEffect(() => {
+    if (!selected && formStore.medications) {
+      setSelected(formStore.medications);
     }
-    return true;
-  };
+  }, [formStore.medications]);
+
+  const customValidate = () => {
+    setSelected(formStore.medications)
+    setValue("medications", "none")
+  }
 
   return (
     <>
@@ -28,7 +34,8 @@ export default function StepSeven() {
           large
           setSelected={setSelected}
           placeholder="Enter your answer here"
-          customValidate={validateRadioOrTextInput}
+          defaultValue={formStore.medications} 
+          customValidate={customValidate}
         />
         <FormSelectorButton
           label="I don't take any medication, vitamins, or supplements"
@@ -36,9 +43,9 @@ export default function StepSeven() {
           groupId="medications"
           selected={selected}
           setSelected={setSelected}
-          customValidate={validateRadioOrTextInput}
+          customValidate={customValidate}
         />
-        {!!errors.medications && <p className="text-red-500 text-sm text-center">Please select one</p>}
+        {!selected && !!errors.medications && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </div>
     </>
   );
