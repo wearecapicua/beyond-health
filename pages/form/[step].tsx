@@ -12,6 +12,7 @@ import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { schema, IFormProps } from "utils/forms/form-schema";
 import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
+import axios from 'axios';
 
 import { useFormStore } from 'store/useFormStore';
 
@@ -53,7 +54,14 @@ const FormStep = ({ formData }: StepProps) => {
       router.push(`/form/${next}`);
     }
   }
-  
+  const handleSave = async () => {
+    try {
+      const response = await axios.post('/api/jotform', formStore);
+      console.log('Form submitted successfully:', response.data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
 
   return (
     <Layout fullPage>
@@ -66,7 +74,7 @@ const FormStep = ({ formData }: StepProps) => {
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
               <FormButton text="Next" type="submit" style="solid"  />
-              <FormButton text="Save for later" type="button" style="outline"/>
+              <FormButton text="Save for later" type="button" style="outline" onClick={handleSave}/>
               <FormButton text="Go Back" type="button" onClick={prevPage} />
             </div>
           </FormContainer>
