@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form";
 
 type FormSelectorButtonProps = {
-  selected: string;
+  selected: string | undefined;
   label: string;
   value: string;
   groupId: string;
-  setSelected: (text: string) => void;
+  setSelected: (text: any) => void;
   customValidate?: any;
 };
 
