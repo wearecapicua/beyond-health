@@ -1,4 +1,7 @@
-import { FormStep }from "components/forms/steps/form-steps";
+// @ts-nocheck
+
+import { FormStep } from "components/forms/steps/form-steps";
+import { fieldMap } from "./field-map"
 
 export const incrementString = (inputString: string) => {
   const parts = inputString.split('-')
@@ -29,3 +32,16 @@ export const decrementString = (inputString: string) => {
 
   return nextString as FormStep
 }
+
+export const keyedData = (data: any) => {
+  let keyedDataObj = {};
+  Object.keys(data).forEach((fieldName) => {
+    if (fieldMap[fieldName] && data[fieldName] !== "none") {
+      const fieldNumber = fieldMap[fieldName];
+      keyedDataObj[fieldNumber] = data[fieldName];
+    }
+  });
+  return keyedDataObj
+}
+
+  

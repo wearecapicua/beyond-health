@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { keyedData } from 'utils'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -7,19 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const JOTFORM_FORM_ID = process.env.JOTFORM_FORM_ID
 
     const formData = req.body;
-
-
-    const submissionData = Object.entries(formData).map(([key, value]) => {
-      console.log('Form Field Key:', key); // Log the form field key
-      return {
-        [key]: value,
-      };
-    });
-
-    // const submissionData =[
-    //   {"3": "skdfksfitst"},
-    //   {"4": "last"}
-    // ]
+    const submissionData = keyedData(formData)
 
     console.log({submissionData})
 
