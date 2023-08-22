@@ -23,29 +23,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       );
 
-      res.status(200).json(response.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Axios error:', error.toJSON());
-        res.status(500).json({ error: 'Internal server error' });
-      } else {
-        console.error('Non-Axios error:', error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
-    }
-  } else if (req.method === 'GET') {
-    const JOTFORM_API_KEY = 'YOUR_JOTFORM_API_KEY';
-    const JOTFORM_FORM_ID = 'YOUR_JOTFORM_FORM_ID';
-
-    try {
-      const response = await axios.get(
-        `https://api.jotform.com/form/${JOTFORM_FORM_ID}/questions`,
-        {
-          headers: {
-            'APIKEY': JOTFORM_API_KEY,
-          },
-        }
-      );
+      const submissionID = response.data.content.submissionID;
+      console.log('Submission ID:', submissionID);
 
       res.status(200).json(response.data);
     } catch (error) {

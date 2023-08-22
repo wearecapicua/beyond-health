@@ -10,13 +10,17 @@ const endpoints = ({ axios }: RepositoryContext) => ({
  
     
 }),
+  submissions: {
+    createSubmission: (body: any, configuration: RequestConfiguration = {}) => {
+      return axios.post('/api/jotform/create-submission', body, configuration)
+        .then(({ data }: any) => data);
+    },
 
-submissions: (body: any, configuration: RequestConfiguration = {}) =>{
-  console.log('Received body:', body);
-  console.log({configuration})
-  return axios.post('/api/jotform', body, configuration)
-    .then(({ data }: any) => data)
-}
+    updateSubmission: (submissionId: string, body: any, configuration: RequestConfiguration = {}) => {
+      return axios.post(`/api/jotform/update-submission/${submissionId}`, body, configuration)
+        .then(({ data }: any) => data);
+    }
+  }
 })
 
 export default endpoints

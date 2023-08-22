@@ -13,9 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { schema, IFormProps } from "utils/forms/form-schema";
 import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
 import useRepository from "lib/hooks/useRepository";
-
 import { useFormStore } from 'store/useFormStore';
-
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -68,7 +66,8 @@ const FormStep = ({ formData }: StepProps) => {
       
       const updatedData = { ...formStore, ...data};
    
-      endpoints.submissions(updatedData)
+      endpoints.submissions.updateSubmission('5685559061518721844', updatedData)
+      //endpoints.submissions.createSubmission(updatedData)
       .then(
         (data: any) => {
           console.log('Form submitted successfully:', data);
