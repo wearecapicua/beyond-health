@@ -12,12 +12,16 @@ import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { schema, IFormProps } from "utils/forms/form-schema";
 import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
-import axios from 'axios';
+import useRepository from "lib/hooks/useRepository";
 
 import { useFormStore } from 'store/useFormStore';
 
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
+
+const endpoints = useRepository(({ jotform }) => ({
+  submissions: jotform.submissions,
+}));
 
 const FormStep = ({ formData }: StepProps) => {
   const router = useRouter();
@@ -29,10 +33,11 @@ const FormStep = ({ formData }: StepProps) => {
   console.log("state", formStore)
 
   const currentSchema = schema[activeStep];
+
+ 
   const methods = useForm<IFormProps>({
     resolver: zodResolver(currentSchema)as unknown as Resolver<IFormProps>,
     mode: "onBlur",
-    //defaultValues: useMemo(() => state, [state]),
   });
   
   const { handleSubmit, trigger } = methods;
@@ -54,14 +59,27 @@ const FormStep = ({ formData }: StepProps) => {
       router.push(`/form/${next}`);
     }
   }
-  const handleSave = async () => {
-    try {
-      const response = await axios.post('/api/jotform', formStore);
-      console.log('Form submitted successfully:', response.data);
-    } catch (error) {
-      console.error('Error submitting form:', error);
+
+  const handleSave = async (data: any) => {
+    const isStepValid = await trigger();
+
+    if (isStepValid) {
+      updateFormStore(data);
+      
+      const updatedData = { ...formStore, ...data};
+   
+      endpoints.submissions(updatedData)
+      .then(
+        (data: any) => {
+          console.log('Form submitted successfully:', data);
+      })
+      .catch(
+        (error: any) => {
+          console.error('Error submitting form:', error);
+        }
+      );
     }
-  };
+  }
 
   return (
     <Layout fullPage>
@@ -74,7 +92,7 @@ const FormStep = ({ formData }: StepProps) => {
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
               <FormButton text="Next" type="submit" style="solid"  />
-              <FormButton text="Save for later" type="button" style="outline" onClick={handleSave}/>
+              <FormButton text="Save for later" type="button" style="outline" onClick={handleSubmit(handleSave)}/>
               <FormButton text="Go Back" type="button" onClick={prevPage} />
             </div>
           </FormContainer>

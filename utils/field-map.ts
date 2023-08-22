@@ -8,5 +8,6 @@ export const fieldMap = {
   medications: 11,
   conditions: 12,
   stage: 14,
-  questions: 15
+  questions: 15,
+  gender: 16,
 };
