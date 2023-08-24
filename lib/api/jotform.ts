@@ -20,6 +20,12 @@ const endpoints = ({ axios }: RepositoryContext) => ({
       return axios.post(`/api/jotform/update-submission/${submissionId}`, body, configuration)
         .then(({ data }: any) => data);
     }
+  },
+  updateJotformId: (userId: string, jotformId: string) => {
+    return axios.post('/api/jotform/update-jotform-id', {
+      userId: userId,
+      jotformId: jotformId,
+    });
   }
 })
 

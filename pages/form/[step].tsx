@@ -19,6 +19,7 @@ type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const endpoints = useRepository(({ jotform }) => ({
   submissions: jotform.submissions,
+  updateJotformId: jotform.updateJotformId
 }));
 
 const FormStep = ({ formData }: StepProps) => {
@@ -66,8 +67,9 @@ const FormStep = ({ formData }: StepProps) => {
       
       const updatedData = { ...formStore, ...data};
    
-      endpoints.submissions.updateSubmission('5685559061518721844', updatedData)
+     // endpoints.submissions.updateSubmission('5685559061518721844', updatedData)
       //endpoints.submissions.createSubmission(updatedData)
+      endpoints.updateJotformId('0617eaea-86f6-4494-acbd-086ffb5bd774', '5685559061518721844')
       .then(
         (data: any) => {
           console.log('Form submitted successfully:', data);
@@ -104,14 +106,14 @@ const FormStep = ({ formData }: StepProps) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
-  // if (!session?.user) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
   
   const step = context.params?.step?.toString() ?? ""
  
@@ -122,7 +124,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       formData: {
         step
       },
-      //user: session.user,
+      user: session.user,
     },
   };
 }
