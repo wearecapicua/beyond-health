@@ -29,6 +29,7 @@
     "next-auth": "^4.22.1",
     "prismic-ts-codegen": "0.1.5",
     "react": "^18.2.0",
+    "react-date-dropdown": "^0.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "stripe": "^12.14.0",
