@@ -15,10 +15,10 @@ type Props = {
   price: number;
 };
 
-const CheckoutForm = (props: Props) => {
+const CheckoutForm = ({ productId, price }: Props) => {
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
-
+ 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -32,7 +32,7 @@ const CheckoutForm = (props: Props) => {
       CheckoutSessionBody,
       Stripe.Checkout.Session
     >("/api/checkout_sessions", {
-      productId: props.productId,
+      productId: productId,
     });
 
     // Redirect to Checkout.
@@ -54,7 +54,7 @@ const CheckoutForm = (props: Props) => {
     <form onSubmit={handleSubmit}>
       <StripeTestCards />
       <Button type="submit" disabled={loading}>
-        Buy for {formatAmountForDisplay(props.price, config.CURRENCY)}
+        Buy for {formatAmountForDisplay(price, config.CURRENCY)}
       </Button>
     </form>
   );
