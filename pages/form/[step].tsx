@@ -12,11 +12,15 @@ import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { schema, IFormProps } from "utils/forms/form-schema";
 import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
-
+import useRepository from "lib/hooks/useRepository";
 import { useFormStore } from 'store/useFormStore';
 
-
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
+
+const endpoints = useRepository(({ jotform }) => ({
+  submissions: jotform.submissions,
+  updateJotformId: jotform.updateJotformId
+}));
 
 const FormStep = ({ formData }: StepProps) => {
   const router = useRouter();
@@ -28,10 +32,11 @@ const FormStep = ({ formData }: StepProps) => {
   console.log("state", formStore)
 
   const currentSchema = schema[activeStep];
+
+ 
   const methods = useForm<IFormProps>({
     resolver: zodResolver(currentSchema)as unknown as Resolver<IFormProps>,
     mode: "onBlur",
-    //defaultValues: useMemo(() => state, [state]),
   });
   
   const { handleSubmit, trigger } = methods;
@@ -53,7 +58,29 @@ const FormStep = ({ formData }: StepProps) => {
       router.push(`/form/${next}`);
     }
   }
-  
+
+  const handleSave = async (data: any) => {
+    const isStepValid = await trigger();
+
+    if (isStepValid) {
+      updateFormStore(data);
+      
+      const updatedData = { ...formStore, ...data};
+   
+     // endpoints.submissions.updateSubmission('5685559061518721844', updatedData)
+      //endpoints.submissions.createSubmission(updatedData)
+      endpoints.updateJotformId('0617eaea-86f6-4494-acbd-086ffb5bd774', '5685559061518721844')
+      .then(
+        (data: any) => {
+          console.log('Form submitted successfully:', data);
+      })
+      .catch(
+        (error: any) => {
+          console.error('Error submitting form:', error);
+        }
+      );
+    }
+  }
 
   return (
     <Layout fullPage>
@@ -66,7 +93,7 @@ const FormStep = ({ formData }: StepProps) => {
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
               <FormButton text="Next" type="submit" style="solid"  />
-              <FormButton text="Save for later" type="button" style="outline"/>
+              <FormButton text="Save for later" type="button" style="outline" onClick={handleSubmit(handleSave)}/>
               <FormButton text="Go Back" type="button" onClick={prevPage} />
             </div>
           </FormContainer>

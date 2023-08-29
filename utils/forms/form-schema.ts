@@ -32,7 +32,7 @@ export const schema = {
     conditions: z.string().refine(value => !!value)
   }),
   'step-9': z.object({
-
+    questions: z.string().optional()
   }),
   'step-10': z.object({
     stage: z.string().refine(value => !!value)
