@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const submissionID = req.query.submissionId as string;
 
     const updatedSubmissionData = req.body;
-    console.log({updatedSubmissionData})
+    // console.log({updatedSubmissionData})
 
     try {
       const response = await axios.put(
