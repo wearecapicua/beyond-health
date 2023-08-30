@@ -5,6 +5,7 @@ type FormSelectorButtonProps = {
   label: string;
   value: string;
   groupId: string;
+  large?: boolean;
   setSelected: (text: any) => void;
   customValidate?: any;
 };

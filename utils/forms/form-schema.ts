@@ -40,4 +40,7 @@ export const schema = {
   'step-11': z.object({
     product: z.string().refine(value => !!value)
   }),
+  'step-12': z.object({
+    product: z.string().refine(value => !!value)
+  }),
 };
