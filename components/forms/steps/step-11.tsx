@@ -13,15 +13,16 @@ export default function StepEleven() {
   const { productStore } = useProductStore()
   const [productOptions, setproductOptions] = useState();
 
+  const filteredProducts = productStore.filter(product => {
+    const stages = product.metadata.Stage.split(', ');
+    return stages.includes(formStore.stage);
+  });
+
   useEffect(() => {
     if (!selected && formStore.product) {
       setSelected(formStore.product);
       setValue("product", formStore.product)
     }
-    const filteredProducts = productStore.filter(product => {
-      const stages = product.metadata.Stage.split(', ');
-      return stages.includes(formStore.stage);
-    });
     setproductOptions(filteredProducts)
   }, [formStore.product]);
 
