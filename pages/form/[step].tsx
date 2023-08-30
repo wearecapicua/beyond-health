@@ -28,7 +28,10 @@ const FormStep = ({ formData, products }: StepProps) => {
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
 
-  const { formStore, updateFormStore } = useFormStore();
+  const numericSplit = activeStep.replace("step-", "")
+  const numericStep = parseInt(numericSplit, 10)
+
+  const { formStore, updateFormStore } = useFormStore()
   const { updateProductStore } = useProductStore()
   
   console.log("state", formStore)
@@ -91,7 +94,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   return (
     <Layout fullPage>
       <Container>
-        <FormStepper />
+        <FormStepper activeStep={numericStep} />
       </Container>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
