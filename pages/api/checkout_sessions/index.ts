@@ -1,13 +1,8 @@
-import { CURRENCY, MAX_AMOUNT, MIN_AMOUNT } from "stripe.config";
 import { NextApiRequest, NextApiResponse } from "next";
-
 import Stripe from "stripe";
-import { formatAmountForStripe } from "lib/stripeUtils";
 import env from "lib/env";
-import { createClient } from "lib/prismic";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
-import { PostDocument } from "prismic-types";
 
 const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 
@@ -21,8 +16,8 @@ export default async function handler(
 ) {
   const requestBody = req.body as CheckoutSessionBody;
   if (req.method === "POST") {
-    const prismic = createClient();
-    const product = await prismic.getByID<PostDocument>(requestBody.productId);
+    const priceId = req.body.productId
+  
     const session = await getServerSession(req, res, authOptions);
 
     try {
@@ -31,25 +26,12 @@ export default async function handler(
         submit_type: "pay",
         payment_method_types: ["card"],
         mode: "payment",
-        customer_email: session?.user?.email ?? "",
-        metadata: {
-          product_id: requestBody.productId,
-        },
+       // customer_email: session?.user?.email ?? "",
         line_items: [
           {
+            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+            price: priceId,
             quantity: 1,
-            price_data: {
-              unit_amount: formatAmountForStripe(
-                product.data.price ?? 0,
-                CURRENCY
-              ),
-              currency: CURRENCY,
-              product_data: {
-                name: product.data.name[0]?.text ?? "",
-                description: product.data.description ?? "",
-                images: [product.data.image.url ?? ""],
-              },
-            },
           },
         ],
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
@@ -57,7 +39,7 @@ export default async function handler(
       };
       const checkoutSession: Stripe.Checkout.Session =
         await stripe.checkout.sessions.create(params);
-
+     
       res.status(200).json(checkoutSession);
     } catch (err) {
       const errorMessage =
@@ -69,3 +51,39 @@ export default async function handler(
     res.status(405).end("Method Not Allowed");
   }
 }
+
+
+// const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
+
+// export default async function handler(
+//   req: NextApiRequest,
+//   res: NextApiResponse
+// ) {
+//   if (req.method === 'POST') {
+//     const priceId = req.body.productId
+//     console.log({priceId})
+//     try {
+//       // Create Checkout Sessions from body params.
+//       const session = await stripe.checkout.sessions.create({
+//         // submit_type: "pay",
+//         // payment_method_types: ["card"],
+//         mode: "payment",
+//         line_items: [
+//           {
+//             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+//             price: priceId,
+//             quantity: 1,
+//           },
+//         ],
+//         success_url: `${req.headers.origin}/?success=true`,
+//         cancel_url: `${req.headers.origin}/?canceled=true`,
+//       });
+//       res.redirect(303, session.url);
+//     } catch (err) {
+//       res.status(err.statusCode || 500).json(err.message);
+//     }
+//   } else {
+//     res.setHeader('Allow', 'POST');
+//     res.status(405).end('Method Not Allowed');
+//   }
+// }

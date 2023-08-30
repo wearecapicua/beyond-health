@@ -86,6 +86,68 @@ interface FaqDocumentData {
 export type FaqDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<FaqDocumentData>, "faq", Lang>;
 
+type FormDocumentDataSlicesSlice = never;
+
+/**
+ * Content for Form documents
+ */
+interface FormDocumentData {
+  /**
+   * Slice Zone field in *Form*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: form.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<FormDocumentDataSlicesSlice>
+  /**
+   * Meta Description field in *Form*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: form.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Form*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: form.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+
+  /**
+   * Meta Title field in *Form*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: form.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_title: prismic.KeyTextField;
+}
+
+/**
+ * Form document from Prismic
+ *
+ * - **API ID**: `form`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FormDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<Simplify<FormDocumentData>, "form", Lang>;
+
 type LandingPageDocumentDataSlicesSlice =
   | HeaderSlice
   | FaqSlice
@@ -378,6 +440,7 @@ export type TreatmentDocument<Lang extends string = string> =
 export type AllDocumentTypes =
   | AuthorDocument
   | FaqDocument
+  | FormDocument
   | LandingPageDocument
   | PostDocument
   | ReviewDocument
@@ -539,58 +602,6 @@ export type CtaSectionSlice = prismic.SharedSlice<
   "cta_section",
   CtaSectionSliceVariation
 >;
-
-/**
- * Primary content in *Faq → Primary*
- */
-export interface FaqSliceDefaultPrimary {
-  /**
-   * Question field in *Faq → Primary*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: faq.primary.question
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  question: prismic.KeyTextField;
-
-  /**
-   * Answer field in *Faq → Primary*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: faq.primary.answer
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  answer: prismic.KeyTextField;
-}
-
-/**
- * Default variation for Faq Slice
- *
- * - **API ID**: `default`
- * - **Description**: Default
- * - **Documentation**: https://prismic.io/docs/slice
- */
-export type FaqSliceDefault = prismic.SharedSliceVariation<
-  "default",
-  Simplify<FaqSliceDefaultPrimary>,
-  never
->;
-
-/**
- * Slice variation for *Faq*
- */
-type FaqSliceVariation = FaqSliceDefault;
-
-/**
- * Faq Shared Slice
- *
- * - **API ID**: `faq`
- * - **Description**: Faq
- * - **Documentation**: https://prismic.io/docs/slice
- */
-export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
 
 /**
  * Primary content in *Faqs → Items*
@@ -1287,6 +1298,8 @@ declare module "@prismicio/client" {
       AuthorDocumentData,
       FaqDocument,
       FaqDocumentData,
+      FormDocument,
+      FormDocumentData,
       LandingPageDocument,
       LandingPageDocumentData,
       PostDocument,
@@ -1299,9 +1312,6 @@ declare module "@prismicio/client" {
       CtaSectionSlice,
       CtaSectionSliceVariation,
       CtaSectionSliceDefault,
-      FaqSlice,
-      FaqSliceVariation,
-      FaqSliceDefault,
       FaqsSlice,
       FaqsSliceVariation,
       FaqsSliceDefault,

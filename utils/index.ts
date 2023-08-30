@@ -43,5 +43,3 @@ export const keyedData = (data: any) => {
   });
   return keyedDataObj
 }
-
-  
