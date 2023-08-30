@@ -19,6 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Select only the desired properties from the product
       const selectedProductProps = {
         default_price: product.default_price,
+        description: product.description,
         metadata: product.metadata,
         name: product.name,
         price: prices.data[0].unit_amount,

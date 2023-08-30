@@ -21,3 +21,13 @@ export type AuthorContentRelationshipField = RelationField<
   },
   FieldState
 >;
+
+export type StripeProduct = {
+  default_price: string;
+  metadata: {
+    Stage: string;
+  };
+  name: string;
+  price: number;
+  description: string;
+};

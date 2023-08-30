@@ -1,5 +1,5 @@
 type FormHeaderProps = {
-  title: string;
+  title?: string;
   subtitle?: string;
 };
 

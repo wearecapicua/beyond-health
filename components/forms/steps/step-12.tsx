@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
-import FormSelectorButton from "../form-selector-button";
+import FormSelector from "../form-selector";
 import { useFormContext } from "react-hook-form";
 import { useFormStore } from 'store/useFormStore';
 import { useProductStore } from 'store/useProductStore';
 import { StripeProduct } from "lib/types";
 
-export default function StepEleven() {
+export default function StepTwelve() {
   const [selected, setSelected] = useState("");
   const { setValue, formState: { errors } } = useFormContext();
   const { formStore } = useFormStore();
@@ -19,7 +19,6 @@ export default function StepEleven() {
     return stages.includes(formStore.stage);
   });
 
-  console.log(productStore)
 
   useEffect(() => {
     if (!selected && formStore.product) {
@@ -28,29 +27,27 @@ export default function StepEleven() {
     }
     setproductOptions(filteredProducts)
   }, [formStore.product]);
-
+  
   return (
     <>
       <FormHeader
-        title={"Select your scalp treatment below"}
-        subtitle="Based on your input, this is the recommended hair growth solution final approval from your doctor"
+        title="You will receive a 3 month supply of hair growth solution in your shipment"
+        subtitle="Unless the healthcare practitioner has a medical reason to prescribe you less, you will always get a year's worth of medication with prescriptions written through Beyond Health & Medical."
       />
       <FormContainer>
-        {productOptions?.map((option: StripeProduct) => {
-          return (
-            <FormSelectorButton
-              key={option.name}
-              label={option.name}
-              value={option.default_price}
-              groupId="product"
-              large
-              selected={selected}
-              setSelected={setSelected}
-            />
-          )
-        })}
+        {productOptions?.map((option: StripeProduct) => (
+          <FormSelector
+            key={option.name}
+            label={option.name}
+            value={option.default_price}
+            groupId="product"
+            selected={selected}
+            setSelected={setSelected}
+          />
+        ))}
         {!!errors.product && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </FormContainer>
+      <FormHeader subtitle="Pricing displayed here includes pharmacy fill fee but does not include benefits or insurance coverage" />
     </>
   );
 }

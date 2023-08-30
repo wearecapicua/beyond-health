@@ -15,13 +15,14 @@ export default function FormButton({
   label,
   value,
   groupId,
+  large,
   customValidate
 }: FormSelectorButtonProps) {
 
   const { register } = useFormContext();
 
   return (
-    <div className="relative my-4 bg-white border-[1px] text-main-blue border-gray-400 rounded-full px-6 py-8 text-xl font-semibold leading-6">
+    <div className={`${large ? "py-10" : "py-8"} relative my-4 bg-white border-[1px] text-main-blue border-gray-400 rounded-full px-6 text-xl font-semibold leading-6`}>
       {customValidate ?
         <input
           type="radio"
