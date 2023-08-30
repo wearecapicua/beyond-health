@@ -15,10 +15,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         product: product.id,
         limit: 10, // Adjust the limit as needed
       });
-      return {
-        ...product,
-        prices: prices.data,
+
+      // Select only the desired properties from the product
+      const selectedProductProps = {
+        default_price: product.default_price,
+        metadata: product.metadata,
+        name: product.name,
+        price: prices.data[0].unit_amount,
       };
+
+      return selectedProductProps;
     }));
 
     res.status(200).json({ productsWithPrices });
@@ -26,3 +32,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).json({ message: err.message });
   }
 }
+
+
+
+
+
+

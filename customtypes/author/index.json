@@ -16,12 +16,9 @@
       },
       "picture": {
         "type": "Image",
-        "config": {
-          "label": "Picture",
-          "constraint": {},
-          "thumbnails": []
-        }
+        "config": { "label": "Picture", "constraint": {}, "thumbnails": [] }
       }
     }
-  }
+  },
+  "format": "custom"
 }

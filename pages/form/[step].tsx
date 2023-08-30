@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getSession } from 'next-auth/react';
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 import Layout from 'components/layout';
@@ -14,18 +14,24 @@ import { schema, IFormProps } from "utils/forms/form-schema";
 import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
 
 import { useFormStore } from 'store/useFormStore';
+import { useProductStore } from 'store/useProductStore';
 
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const FormStep = ({ formData }: StepProps) => {
+const FormStep = ({ formData, products }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
 
   const { formStore, updateFormStore } = useFormStore();
+  const { updateProductStore } = useProductStore()
   
   console.log("state", formStore)
+
+  useEffect(() => {
+    updateProductStore(products.productsWithPrices)
+  }, []);
 
   const currentSchema = schema[activeStep];
   const methods = useForm<IFormProps>({
@@ -62,7 +68,7 @@ const FormStep = ({ formData }: StepProps) => {
       </Container>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <StepComponent/>
+          <StepComponent />
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
               <FormButton text="Next" type="submit" style="solid"  />
@@ -79,25 +85,29 @@ const FormStep = ({ formData }: StepProps) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
-  // if (!session?.user) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
   
   const step = context.params?.step?.toString() ?? ""
  
   if (!stepExists(step)) { return { notFound: true } }
 
+  const res = await fetch(`${process.env.HOST}/api/all-products`);
+  const products = await res.json();
+
   return {
     props: {
+      products,
       formData: {
         step
       },
-      // user: session.user,
+      user: session.user,
     },
   };
 }
