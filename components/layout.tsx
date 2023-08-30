@@ -19,7 +19,7 @@ export default function Layout({
       <Meta />
       <div className="min-h-screen">
         {preview && <Alert preview={preview} /> }
-        <Navbar />
+        <Navbar fullPage />
         <main>{children}</main>
       </div>
       {!fullPage && <Footer />}

@@ -5,7 +5,11 @@ import Link from "next/link";
 import Image from 'next/image'
 import LoginButton from './login';
 
-export default function Navbar() {
+type NavbarProps = {
+  fullPage: boolean;
+};
+
+export default function Navbar({ fullPage }: NavbarProps) {
   const session = useSession();
   const userLoggedIn = session.status === "authenticated" && session.data?.user
   return (
@@ -28,12 +32,14 @@ export default function Navbar() {
               </div>
               <div className="hidden sm:gap-8 sm:ml-6 sm:flex sm:items-center">
                 <div className="hidden sm:flex sm:space-x-8">
-                  <Link
-                    href="/how-it-works"
-                    className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
-                  >
-                    How it Works
-                  </Link>
+                  {!fullPage && 
+                    <Link
+                      href="/how-it-works"
+                      className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
+                    >
+                      How it Works
+                    </Link>
+                  }
                   <Link
                     href="/faqs"
                     className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
@@ -42,16 +48,18 @@ export default function Navbar() {
                   </Link>
                   <LoginButton />
                 </div>
-                <div className="flex-shrink-0">
-                  <a href={userLoggedIn ? "/form/step-1" : "/login"}>
-                    <button
-                      type="button"
-                      className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Start Now
-                    </button>
-                  </a>
-                </div>
+                {!fullPage && 
+                  <div className="flex-shrink-0">
+                    <a href={userLoggedIn ? "/form/step-1" : "/login"}>
+                      <button
+                        type="button"
+                        className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Start Now
+                      </button>
+                    </a>
+                  </div>
+                }
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
