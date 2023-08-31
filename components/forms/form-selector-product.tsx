@@ -33,7 +33,7 @@ export default function FormSelectorProduct({
         {...register(groupId, {
           onChange: (e) => setSelected(e.target.value)
         })}
-        className="w-full h-full opacity-0 absolute top-0"
+        className="w-full h-full opacity-0 absolute top-0 cursor-pointer"
        />
       <div className="w-full flex justify-between cursor-pointer items-center">
         <label htmlFor={value}>

@@ -35,11 +35,24 @@ export const decrementString = (inputString: string) => {
 
 export const keyedData = (data: any) => {
   let keyedDataObj = {};
+
   Object.keys(data).forEach((fieldName) => {
     if (fieldMap[fieldName] && data[fieldName] !== "none") {
       const fieldNumber = fieldMap[fieldName];
-      keyedDataObj[fieldNumber] = data[fieldName];
+
+      if (typeof fieldNumber === "number") {
+        keyedDataObj[fieldNumber] = data[fieldName];
+      } else if (typeof fieldNumber === "object") {
+        const subFieldMap = fieldNumber;
+        let subObj = {}
+        subFieldMap.subFields.forEach((subFieldName) => {
+          subObj[subFieldName] = data[subFieldName];
+        });
+        if (!keyedDataObj[subFieldMap.fieldNumber]) {
+          keyedDataObj[subFieldMap.fieldNumber] = subObj;
+        }
+      }
     }
   });
-  return keyedDataObj
-}
+  return keyedDataObj;
+};

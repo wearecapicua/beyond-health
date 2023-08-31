@@ -77,8 +77,8 @@ const FormStep = ({ formData, products }: StepProps) => {
       const updatedData = { ...formStore, ...data};
    
      // endpoints.submissions.updateSubmission('5685559061518721844', updatedData)
-      //endpoints.submissions.createSubmission(updatedData)
-      endpoints.updateJotformId('0617eaea-86f6-4494-acbd-086ffb5bd774', '5685559061518721844')
+      endpoints.submissions.createSubmission(updatedData)
+      //endpoints.updateJotformId('0617eaea-86f6-4494-acbd-086ffb5bd774', '5685559061518721844')
       .then(
         (data: any) => {
           console.log('Form submitted successfully:', data);

@@ -3,6 +3,7 @@ import FormHeader from "../form-header";
 import FormSelector from "../form-selector";
 import { useFormContext } from "react-hook-form";
 import { useFormStore } from 'store/useFormStore';
+import FormContainer from "../form-container";
 
 export default function StepSix() {
   const [selected, setSelected] = useState("");
@@ -29,7 +30,7 @@ export default function StepSix() {
       <FormHeader
         title={"Have you noticed thinning, recession, or other types of hair loss on your head?"}
       />
-      <div className="max-w-[730px] mx-auto">
+      <FormContainer wide>
         {texts.map((text, index) => (
           <FormSelector
             key={`option-${index}`}
@@ -41,7 +42,7 @@ export default function StepSix() {
           />
         ))}
         {!!errors.noticeHairLoss && <p className="text-red-500 text-sm text-center">Please select one</p>}
-      </div>
+      </FormContainer>
     </>
   );
 }

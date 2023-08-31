@@ -7,7 +7,12 @@ export const fieldMap = {
   noticeHairLoss: 10,
   medications: 11,
   conditions: 12,
-  stage: 14,
+  stage: 17,
   questions: 15,
   gender: 16,
+  product: 18,
+  addr_line1: {
+    fieldNumber: 19,
+    subFields: ['addr_line1', 'addr_line2', 'city', 'state', 'postal'],
+  },
 };

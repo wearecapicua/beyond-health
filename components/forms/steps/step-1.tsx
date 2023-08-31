@@ -3,7 +3,6 @@ import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import { useFormStore } from 'store/useFormStore';
 
-
 export default function StepOne() {
   const { formStore } = useFormStore();
   return (
