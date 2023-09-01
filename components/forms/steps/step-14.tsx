@@ -4,24 +4,24 @@ import FormHeader from "../form-header";
 import { useFormStore } from 'store/useFormStore';
 import { useFormContext, Controller } from "react-hook-form";
 
-
 const imageMimeType = /image\/(png|jpg|jpeg)/i;
 
 export default function StepFourteen() {
   const { formStore } = useFormStore();
   const { control, setValue, formState: { errors }  } = useFormContext();
-  const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileDataURL, setFileDataURL] = useState<string | null>(null);
 
   useEffect(() => {
-    let fileReader, isCancel = false;
+    let fileReader: FileReader | null;
+    let isCancel = false;
     if (file) {
       fileReader = new FileReader();
       fileReader.onload = (e) => {
-        const { result } = e.target;
+        const { result } = e.target as FileReader;
         
         if (result && !isCancel) {
-          setFileDataURL(result)
+          setFileDataURL(result as string)
         }
       }
       fileReader.readAsDataURL(file)
@@ -58,8 +58,10 @@ export default function StepFourteen() {
                   {...field}
                   value={value?.fileName}
                   onChange={(event) => {
+                    {/* @ts-ignore */}
                     onChange(event.target.files[0]);
                     console.log("ee", event.target.files)
+                    {/* @ts-ignore */}
                     const file = event.target.files[0];
                     if (!file.type.match(imageMimeType)) {
                       alert("Image mime type is not valid");
