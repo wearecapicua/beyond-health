@@ -7,11 +7,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const JOTFORM_API_KEY = process.env.JOTFORM_API_KEY
     const JOTFORM_FORM_ID = process.env.JOTFORM_FORM_ID
 
-    const formData = req.body;
+    const formData = req.body
+
     const submissionData = keyedData(formData)
-
-    console.log({submissionData})
-
+   
     try {
       const response = await axios.post(
         `https://api.jotform.com/form/${JOTFORM_FORM_ID}/submissions`,

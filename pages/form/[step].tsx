@@ -73,7 +73,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 
     if (isStepValid) {
       updateFormStore(data);
-      
+
       const updatedData = { ...formStore, ...data};
    
      // endpoints.submissions.updateSubmission('5685559061518721844', updatedData)

@@ -51,4 +51,10 @@ export const schema = {
     postal: z.string().min(1, "Zipcode is required").max(100),
     country: z.string().optional()
   }),
+  'step-14': z.object({
+    picture: z.unknown()
+  }),
+  'step-15': z.object({
+   
+  }),
 };

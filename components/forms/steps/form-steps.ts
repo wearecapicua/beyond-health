@@ -11,8 +11,8 @@ import Step10 from './step-10';
 import Step11 from './step-11';
 import Step12 from './step-12';
 import Step13 from './step-13';
-// import Step14 from './step-14';
-// import Step15 from './step-15';
+import Step14 from './step-14';
+import Step15 from './step-15';
 // import Step16 from './step-16';
 // import Step17 from './step-17';
 // import Step18 from './step-18';
@@ -38,8 +38,8 @@ export const formSteps = {
   'step-11': Step11,
   'step-12': Step12,
   'step-13': Step13,
-  // 'step-14': Step14,
-  // 'step-15': Step15,
+  'step-14': Step14,
+  'step-15': Step15,
   // 'step-16': Step16,
   // 'step-17': Step17,
   // 'step-18': Step18,

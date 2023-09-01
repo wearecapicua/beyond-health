@@ -15,4 +15,5 @@ export const fieldMap = {
     fieldNumber: 19,
     subFields: ['addr_line1', 'addr_line2', 'city', 'state', 'postal'],
   },
+  
 };
