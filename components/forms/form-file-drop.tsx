@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import Dropzone from 'react-dropzone'
 import Webcam from 'react-webcam'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-
+import { CameraIcon } from '@heroicons/react/24/outline'
 
 const videoConstraints = {
   width: 320,
@@ -16,13 +16,14 @@ type FormFileDrop = {
   setFile: (file: any) => void;
   currentFile: string | null;
 }
+
 export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
   const { setValue, control } = useFormContext();
   const [openCam, setOpenCam] = useState(false)
   const webcamRef = React.useRef(null)
- 
 
   const capture = useCallback(() => {
+    /* @ts-ignore */
     const pictureSrc = webcamRef.current.getScreenshot();
     setFile(pictureSrc)
     setOpenCam(false)
@@ -35,15 +36,14 @@ export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
       setFile(file.result);
       setValue("picture", file.result)
     }
-  
     file.readAsDataURL(acceptedFiles[0])
   }, [])
 
   const undoPhoto = () => {
     setFile(null)
   }
-  const baseButtonStyles = "px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center"
-  const innerButtonStyles = "rounded-full border-[1px] border-solid border-main-light-blue text-main-light-blue text-center font-semibold px-12 py-3 bg-white"
+  const baseButtonStyles = "cursor-pointer transition px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center hover:bg-blue-500 hover:bg-opacity-5"
+  const innerButtonStyles = "rounded-full border-[1px] border-solid border-main-light-blue text-main-light-blue text-center font-semibold px-12 bg-white"
 
   return (
     <>
@@ -74,11 +74,11 @@ export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
             e.preventDefault()
             capture()
             }}
-            className={`${innerButtonStyles} w-1/2`}
+            className={`${innerButtonStyles} w-1/2 py-3 hover:bg-blue-500 hover:bg-opacity-5`}
           >
             Capture
           </button>
-          <button onClick={()=> setOpenCam(false)} className={`${innerButtonStyles} w-1/2`}>Cancel</button>
+          <button onClick={()=> setOpenCam(false)} className={`${innerButtonStyles} w-1/2 py-3 hover:bg-blue-500 hover:bg-opacity-5`}>Cancel</button>
         </div>
       :
       <>
@@ -106,7 +106,7 @@ export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
                         <p>Drop the files here ...</p> :
                         <p>Drop files here or </p>
                     }
-                    <div className={`${innerButtonStyles} w-1/3`}>Upload</div>
+                    <div className={`${innerButtonStyles} w-1/3 py-3`}>Upload</div>
                   </div>
                 </div>
               )}
@@ -115,10 +115,12 @@ export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
         />
           <div 
             onClick={() =>setOpenCam(true)}
-            className={`${openCam ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} ${baseButtonStyles}`}
+            className={`border-main-black ${baseButtonStyles}`}
           >
               Use your webcam
-              <div className={`${innerButtonStyles} w-1/2`}>Upload</div>
+              <div className={`${innerButtonStyles} w-1/2 flex justify-center`}>
+                <CameraIcon className="w-8 py-2" />
+              </div>
           </div>
         </>
       }
