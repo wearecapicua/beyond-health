@@ -3,37 +3,19 @@ import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import { useFormStore } from 'store/useFormStore';
 import { useFormContext, Controller } from "react-hook-form";
-
-const imageMimeType = /image\/(png|jpg|jpeg)/i;
+import FormFileDrop from "../form-file-drop";
 
 export default function StepFourteen() {
   const { formStore } = useFormStore();
-  const { control, setValue, formState: { errors }  } = useFormContext();
-  const [file, setFile] = useState<File | null>(null);
+  const { formState: { errors }  } = useFormContext();
   const [fileDataURL, setFileDataURL] = useState<string | null>(null);
 
   useEffect(() => {
-    let fileReader: FileReader | null;
-    let isCancel = false;
-    if (file) {
-      fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const { result } = e.target as FileReader;
-        
-        if (result && !isCancel) {
-          setFileDataURL(result as string)
-        }
-      }
-      fileReader.readAsDataURL(file)
-      
+    if (!fileDataURL) {
+      setFileDataURL(formStore.picture)
     }
-    return () => {
-      isCancel = true;
-      if (fileReader && fileReader.readyState === 1) {
-        fileReader.abort();
-      }
-    }
-  }, [file]);
+  }, [formStore.picture]);
+
 
   return (
     <>
@@ -42,39 +24,14 @@ export default function StepFourteen() {
         subtitle="Enter your name exactly as it appears on your ID. You will upload ID later."
       />
       <FormContainer>
-      {fileDataURL ?
-        <p className="img-preview-wrapper">
-          {
-            <img src={fileDataURL} alt="preview" />
-          }
-        </p> : null}
-      <Controller
-            control={control}
-            name={"picture"}
-            rules={{ required: "Recipe picture is required" }}
-            render={({ field: { value, onChange, ...field } }) => {
-              return (
-                <input
-                  {...field}
-                  value={value?.fileName}
-                  onChange={(event) => {
-                    {/* @ts-ignore */}
-                    onChange(event.target.files[0]);
-                    console.log("ee", event.target.files)
-                    {/* @ts-ignore */}
-                    const file = event.target.files[0];
-                    if (!file.type.match(imageMimeType)) {
-                      alert("Image mime type is not valid");
-                      return;
-                    }
-                    setFile(file);
-                  }}
-                  type="file"
-                  id="picture"
-                />
-              );
-            }}
-          />
+        {fileDataURL ?
+          <p className="img-preview-wrapper">
+            {
+              <img src={fileDataURL} alt="preview" />
+            }
+          </p> : null}
+        <FormFileDrop setFile={setFileDataURL} />
+        {!!errors.picture && <p className="text-red-500 text-sm text-center">Please select an image</p>}
       </FormContainer>
     </>
   );

@@ -52,7 +52,7 @@ export const schema = {
     country: z.string().optional()
   }),
   'step-14': z.object({
-    picture: z.unknown()
+    picture: z.string().refine(value => !!value)
   }),
   'step-15': z.object({
    
