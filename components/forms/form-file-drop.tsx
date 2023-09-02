@@ -1,14 +1,32 @@
+import React, { useState } from 'react'
 import { useFormContext, Controller } from "react-hook-form";
 import { useCallback } from 'react';
 import Dropzone from 'react-dropzone'
+import Webcam from 'react-webcam'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+
+
+const videoConstraints = {
+  width: 320,
+  height: 320,
+  facingMode: 'user',
+}
 
 type FormFileDrop = {
   setFile: (file: any) => void;
-  currentFile: File;
+  currentFile: string | null;
 }
 export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
   const { setValue, control } = useFormContext();
-  console.log({currentFile})
+  const [openCam, setOpenCam] = useState(false)
+  const webcamRef = React.useRef(null)
+ 
+
+  const capture = useCallback(() => {
+    const pictureSrc = webcamRef.current.getScreenshot();
+    setFile(pictureSrc)
+    setOpenCam(false)
+  }, [webcamRef]);
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
     const file = new FileReader;
@@ -21,37 +39,89 @@ export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
     file.readAsDataURL(acceptedFiles[0])
   }, [])
 
+  const undoPhoto = () => {
+    setFile(null)
+  }
+  const baseButtonStyles = "px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center"
+  const innerButtonStyles = "rounded-full border-[1px] border-solid border-main-light-blue text-main-light-blue text-center font-semibold px-12 py-3 bg-white"
+
   return (
-    <Controller
-      control={control}
-      name="picture"
-      rules={{
-        required: 'This field is required',
-      }}
-      render={() => (
-        <Dropzone onDrop={onDrop} accept={{"image/jpeg":[], "image/png":[]}}>
-          {({
-            getRootProps,
-            getInputProps,
-            isDragActive,
-          }) => (
-            <div {...getRootProps()} >
-              <input
-                id="picture"
-                {...getInputProps()}
-              />
-              <div className={`${isDragActive || currentFile ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center`}>
-                {
-                  isDragActive ?
-                    <p>Drop the files here ...</p> :
-                    <p>Drop files here or </p>
-                }
-                <div className="rounded-full border-[1px] border-solid border-main-light-blue text-main-light-blue text-center font-semibold px-12 py-3 w-1/3 bg-white">Upload</div>
-              </div>
+    <>
+      {openCam ? (
+        <div className="relative max-w-[320px] mx-auto rounded-xl overflow-hidden mb-10">
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            videoConstraints={videoConstraints}
+          />
+        </div>
+      ) : (
+        currentFile ?
+          <div className="relative max-w-[320px] mx-auto">
+            <button className="absolute top-[-12px] right-[-12px] w-10 bg-main-black text-white rounded-full p-1" onClick={undoPhoto}>
+              <XMarkIcon />
+            </button>
+            <div className="rounded-xl overflow-hidden mb-10">
+              <img src={currentFile} alt="preview" />
             </div>
-          )}
-        </Dropzone>
+          </div> : null
       )}
-    />
+      {openCam ?
+        <div className="flex gap-4">
+          <button 
+            onClick={(e) => {
+            e.preventDefault()
+            capture()
+            }}
+            className={`${innerButtonStyles} w-1/2`}
+          >
+            Capture
+          </button>
+          <button onClick={()=> setOpenCam(false)} className={`${innerButtonStyles} w-1/2`}>Cancel</button>
+        </div>
+      :
+      <>
+        <Controller
+          control={control}
+          name="picture"
+          rules={{
+            required: 'This field is required',
+          }}
+          render={() => (
+            <Dropzone onDrop={onDrop} accept={{"image/jpeg":[], "image/png":[]}}>
+              {({
+                getRootProps,
+                getInputProps,
+                isDragActive,
+              }) => (
+                <div {...getRootProps()} >
+                  <input
+                    id="picture"
+                    {...getInputProps()}
+                  />
+                  <div className={`${isDragActive || currentFile ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} ${baseButtonStyles} mb-4`}>
+                    {
+                      isDragActive ?
+                        <p>Drop the files here ...</p> :
+                        <p>Drop files here or </p>
+                    }
+                    <div className={`${innerButtonStyles} w-1/3`}>Upload</div>
+                  </div>
+                </div>
+              )}
+            </Dropzone>
+          )}
+        />
+          <div 
+            onClick={() =>setOpenCam(true)}
+            className={`${openCam ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} ${baseButtonStyles}`}
+          >
+              Use your webcam
+              <div className={`${innerButtonStyles} w-1/2`}>Upload</div>
+          </div>
+        </>
+      }
+    </>
   )
 }
