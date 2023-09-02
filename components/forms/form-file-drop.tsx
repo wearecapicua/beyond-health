@@ -4,9 +4,11 @@ import Dropzone from 'react-dropzone'
 
 type FormFileDrop = {
   setFile: (file: any) => void;
+  currentFile: File;
 }
-export default function StepFourteen({ setFile }: FormFileDrop) {
+export default function StepFourteen({ setFile, currentFile }: FormFileDrop) {
   const { setValue, control } = useFormContext();
+  console.log({currentFile})
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
     const file = new FileReader;
@@ -38,7 +40,7 @@ export default function StepFourteen({ setFile }: FormFileDrop) {
                 id="picture"
                 {...getInputProps()}
               />
-              <div className={`${isDragActive ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center`}>
+              <div className={`${isDragActive || currentFile ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center`}>
                 {
                   isDragActive ?
                     <p>Drop the files here ...</p> :

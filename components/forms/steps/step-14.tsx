@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import { useFormStore } from 'store/useFormStore';
-import { useFormContext, Controller } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
 export default function StepFourteen() {
   const { formStore } = useFormStore();
@@ -16,6 +17,9 @@ export default function StepFourteen() {
     }
   }, [formStore.picture]);
 
+  const undoPhoto = () => {
+    setFileDataURL(null)
+  }
 
   return (
     <>
@@ -25,10 +29,15 @@ export default function StepFourteen() {
       />
       <FormContainer>
         {fileDataURL ?
-          <div className="rounded-xl max-w-[320px] mx-auto overflow-hidden mb-10">
-            <img src={fileDataURL} alt="preview" />
+          <div className="relative max-w-[320px] mx-auto">
+            <button className="absolute top-[-12px] right-[-12px] w-10 bg-main-black text-white rounded-full p-1" onClick={undoPhoto}>
+              <XMarkIcon />
+            </button>
+            <div className="rounded-xl overflow-hidden mb-10">
+              <img src={fileDataURL} alt="preview" />
+            </div>
           </div> : null}
-        <FormFileDrop setFile={setFileDataURL} />
+        <FormFileDrop setFile={setFileDataURL} currentFile={fileDataURL} />
         {!!errors.picture && <p className="text-red-500 text-sm text-center">Please select an image</p>}
       </FormContainer>
     </>
