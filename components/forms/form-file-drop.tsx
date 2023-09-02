@@ -33,16 +33,19 @@ export default function StepFourteen({ setFile }: FormFileDrop) {
             getInputProps,
             isDragActive,
           }) => (
-            <div {...getRootProps()}>
+            <div {...getRootProps()} >
               <input
                 id="picture"
                 {...getInputProps()}
               />
-              {
-                isDragActive ?
-                  <p>Drop the files here ...</p> :
-                  <p>Drag 'n' drop some files here, or click to select files</p>
-              }
+              <div className={`${isDragActive ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center`}>
+                {
+                  isDragActive ?
+                    <p>Drop the files here ...</p> :
+                    <p>Drop files here or </p>
+                }
+                <div className="rounded-full border-[1px] border-solid border-main-light-blue text-main-light-blue text-center font-semibold px-12 py-3 w-1/3 bg-white">Upload</div>
+              </div>
             </div>
           )}
         </Dropzone>

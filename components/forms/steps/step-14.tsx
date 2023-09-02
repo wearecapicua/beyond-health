@@ -25,11 +25,9 @@ export default function StepFourteen() {
       />
       <FormContainer>
         {fileDataURL ?
-          <p className="img-preview-wrapper">
-            {
-              <img src={fileDataURL} alt="preview" />
-            }
-          </p> : null}
+          <div className="rounded-xl max-w-[320px] mx-auto overflow-hidden mb-10">
+            <img src={fileDataURL} alt="preview" />
+          </div> : null}
         <FormFileDrop setFile={setFileDataURL} />
         {!!errors.picture && <p className="text-red-500 text-sm text-center">Please select an image</p>}
       </FormContainer>
