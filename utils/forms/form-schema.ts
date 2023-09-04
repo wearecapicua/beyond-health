@@ -55,6 +55,6 @@ export const schema = {
     picture: z.string().refine(value => !!value)
   }),
   'step-15': z.object({
-   
+    photoId: z.string().refine(value => !!value)
   }),
 };

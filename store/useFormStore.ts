@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type FormState = {
-  [key: string]: string; // Use appropriate types for your fields
+  [key: string]: string | any;
 };
 
 type FormStore = {

@@ -5,30 +5,35 @@ import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 
+interface FileData {
+  fileUrl: string | null;
+  fileName: string | null;
+}
 
 export default function StepFourteen() {
   const { formStore } = useFormStore();
   const { formState: { errors }  } = useFormContext();
-  const [fileDataURL, setFileDataURL] = useState<string | null>(null);
+  const [fileData, setFileData] = useState<FileData>({ fileUrl: null, fileName: null });
 
   useEffect(() => {
-    if (!fileDataURL) {
-      setFileDataURL(formStore.picture)
+    if (!fileData.fileUrl) {
+      // Assuming formStore.picture is an object with fileUrl and fileName properties
+      setFileData({
+        fileUrl: formStore.picture?.fileUrl || null,
+        fileName: formStore.picture?.fileName || null,
+      });
     }
   }, [formStore.picture]);
-
-  
 
   return (
     <>
       <FormHeader
-        title={"Hello, what’s your name"}
-        subtitle="Enter your name exactly as it appears on your ID. You will upload ID later."
+        title={"Upload a picture of yourself."}
+        subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
       />
       <FormContainer>
-        
-        <FormFileDrop setFile={setFileDataURL} currentFile={fileDataURL} />
-        {!!errors.picture && <p className="text-red-500 text-sm text-center">Please select an image</p>}
+        <FormFileDrop setFileData={setFileData} fileData={fileData} />
+        {!!errors.picture && !fileData ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
       </FormContainer>
     </>
   );
