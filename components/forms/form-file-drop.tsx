@@ -20,9 +20,10 @@ interface FileData {
 type FormFileDrop = {
   setFileData: (data: any) => void;
   fileData: FileData;
+  fieldName: string;
 };
 
-export default function StepFourteen({ setFileData, fileData }: FormFileDrop) {
+export default function StepFourteen({ setFileData, fileData, fieldName }: FormFileDrop) {
   const { setValue, control } = useFormContext();
   const [openCam, setOpenCam] = useState(false)
  
@@ -33,7 +34,7 @@ export default function StepFourteen({ setFileData, fileData }: FormFileDrop) {
     const pictureSrc = webcamRef.current.getScreenshot();
     console.log({pictureSrc})
     setFileData({ fileName: "Screenshot", fileUrl: pictureSrc });
-    setValue("picture", { fileName: "Screenshot", fileUrl: pictureSrc })
+    setValue(fieldName, { fileName: "Screenshot", fileUrl: pictureSrc })
     setOpenCam(false)
   }, [webcamRef]);
 
@@ -46,14 +47,14 @@ export default function StepFourteen({ setFileData, fileData }: FormFileDrop) {
         fileUrl: file.result,
         fileName: acceptedFiles[0]?.name,
       });
-      setValue("picture", { fileName: acceptedFiles[0]?.name, fileUrl: file.result })
+      setValue(fieldName, { fileName: acceptedFiles[0]?.name, fileUrl: file.result })
     }
     file.readAsDataURL(acceptedFiles[0])
   }, [])
 
   const undoPhoto = () => {
     setFileData(null);
-    setValue("picture", null)
+    setValue(fieldName, null)
   }
   const fileUrl = fileData && fileData.fileUrl
   const fileName = fileData && fileData.fileName
@@ -99,7 +100,7 @@ export default function StepFourteen({ setFileData, fileData }: FormFileDrop) {
       <>
         <Controller
           control={control}
-          name="picture"
+          name={fieldName}
           rules={{
             required: 'This field is required',
           }}
@@ -112,7 +113,7 @@ export default function StepFourteen({ setFileData, fileData }: FormFileDrop) {
               }) => (
                 <div {...getRootProps()} >
                   <input
-                    id="picture"
+                    id={fieldName}
                     {...getInputProps()}
                   />
                   <div className={`${isDragActive || fileName ? "border-main-light-blue bg-blue-500 bg-opacity-5" : "border-main-black"} ${baseButtonStyles} mb-4`}>

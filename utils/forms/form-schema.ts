@@ -58,6 +58,21 @@ export const schema = {
     })
   }),
   'step-15': z.object({
-    photoId: z.string().refine(value => !!value)
+    photoId: z.object({
+      fileUrl: z.string(),
+      fileName: z.string(),
+    })
+  }),
+  'step-16': z.object({
+    healthCard: z.object({
+      fileUrl: z.string(),
+      fileName: z.string(),
+    })
+  }),
+  'step-17': z.object({
+    insurance: z.object({
+      fileUrl: z.string(),
+      fileName: z.string(),
+    })
   }),
 };

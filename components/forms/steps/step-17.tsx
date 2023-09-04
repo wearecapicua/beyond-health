@@ -18,25 +18,25 @@ export default function StepFourteen() {
   useEffect(() => {
     if (!fileData.fileUrl) {
       setFileData({
-        fileUrl: formStore.picture?.fileUrl || null,
-        fileName: formStore.picture?.fileName || null,
+        fileUrl: formStore.insurance?.fileUrl || null,
+        fileName: formStore.insurance?.fileName || null,
       });
-      setValue("picture", {
-        fileUrl: formStore.picture?.fileUrl || null,
-        fileName: formStore.picture?.fileName || null,
+      setValue("insurance", {
+        fileUrl: formStore.insurance?.fileUrl || null,
+        fileName: formStore.insurance?.fileName || null,
       });
     }
-  }, [formStore.picture]);
+  }, [formStore.insurance]);
 
   return (
     <>
       <FormHeader
-        title={"Upload a picture of yourself."}
-        subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
+        title={"Do you want to upload insurance?"}
+        subtitle="We'll send your insurance info to the pharmacy and if you are covered, they will deduct the coverage amount from your medication cost. We recommend you check with your insurance to confirm your coverage."
       />
       <FormContainer>
-        <FormFileDrop fieldName="picture" setFileData={setFileData} fileData={fileData} />
-        {!!errors.picture && !fileData ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
+        <FormFileDrop fieldName="insurance" setFileData={setFileData} fileData={fileData} />
+        {!!errors.insurance && !fileData ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
       </FormContainer>
     </>
   );
