@@ -33,7 +33,7 @@ export default function StepFourteen({ setFileData, fileData }: FormFileDrop) {
     const pictureSrc = webcamRef.current.getScreenshot();
     console.log({pictureSrc})
     setFileData({ fileName: "Screenshot", fileUrl: pictureSrc });
-    setValue("picture", pictureSrc)
+    setValue("picture", { fileName: "Screenshot", fileUrl: pictureSrc })
     setOpenCam(false)
   }, [webcamRef]);
 
@@ -46,7 +46,7 @@ export default function StepFourteen({ setFileData, fileData }: FormFileDrop) {
         fileUrl: file.result,
         fileName: acceptedFiles[0]?.name,
       });
-      setValue("picture", file.result)
+      setValue("picture", { fileName: acceptedFiles[0]?.name, fileUrl: file.result })
     }
     file.readAsDataURL(acceptedFiles[0])
   }, [])

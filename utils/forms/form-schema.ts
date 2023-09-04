@@ -52,7 +52,10 @@ export const schema = {
     country: z.string().optional()
   }),
   'step-14': z.object({
-    picture: z.string().refine(value => !!value)
+    picture: z.object({
+      fileUrl: z.string(),
+      fileName: z.string(),
+    })
   }),
   'step-15': z.object({
     photoId: z.string().refine(value => !!value)
