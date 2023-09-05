@@ -31,7 +31,7 @@ export default function StepFourteen() {
   return (
     <>
       <FormHeader
-        title={"Upload a picture of yourself."}
+        title={"Now upload your photo ID"}
         subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
       />
       <FormContainer>

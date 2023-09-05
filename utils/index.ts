@@ -45,8 +45,9 @@ export const keyedData = (data: any) => {
       } else if (typeof fieldNumber === "object") {
         const subFieldMap = fieldNumber;
         let subObj = {}
-        subFieldMap.subFields.forEach((subFieldName) => {
-          subObj[subFieldName] = data[subFieldName];
+      
+        Object.keys(data[fieldName]).forEach((subFieldName) => {
+          subObj[subFieldName] = data[fieldName][subFieldName];
         });
         if (!keyedDataObj[subFieldMap.fieldNumber]) {
           keyedDataObj[subFieldMap.fieldNumber] = subObj;
