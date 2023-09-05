@@ -6,7 +6,7 @@ import Image from 'next/image'
 import LoginButton from './login';
 
 type NavbarProps = {
-  fullPage: boolean;
+  fullPage: boolean | undefined;
 };
 
 export default function Navbar({ fullPage }: NavbarProps) {
