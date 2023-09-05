@@ -66,6 +66,7 @@ export const schema = {
     })
   }),
   'step-16': z.object({
+    //hasHealthCard: z.string(),
     healthCard: z.object({
       fileUrl: z.string(),
       fileName: z.string(),
