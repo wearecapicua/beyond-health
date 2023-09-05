@@ -66,11 +66,13 @@ export const schema = {
     })
   }),
   'step-16': z.object({
-    //hasHealthCard: z.string(),
-    healthCard: z.object({
-      fileUrl: z.string(),
-      fileName: z.string(),
-    })
+    hasHealthCard: z.string(),
+    healthCard: z.nullable(
+      z.object({
+        fileUrl: z.union([z.string(), z.null()]).optional(),
+        fileName: z.union([z.string(), z.null()]).optional(),
+      })
+    ),
   }),
   'step-17': z.object({
     insurance: z.object({

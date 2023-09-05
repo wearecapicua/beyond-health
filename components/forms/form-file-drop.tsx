@@ -21,10 +21,9 @@ type FormFileDrop = {
   setFileData: (data: any) => void;
   fileData: FileData;
   fieldName: string;
-  setSelected?: (data: any) => void
 };
 
-export default function StepFourteen({ setFileData, fileData, fieldName, setSelected }: FormFileDrop) {
+export default function StepFourteen({ setFileData, fileData, fieldName }: FormFileDrop) {
   const { setValue, control } = useFormContext();
   const [openCam, setOpenCam] = useState(false)
  
@@ -56,8 +55,8 @@ export default function StepFourteen({ setFileData, fileData, fieldName, setSele
   const undoPhoto = () => {
     setFileData(null);
     setValue(fieldName, null)
-    setSelected && setSelected("no")
   }
+  
   const fileUrl = fileData && fileData.fileUrl
   const fileName = fileData && fileData.fileName
   const baseButtonStyles = "cursor-pointer transition px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center hover:bg-blue-500 hover:bg-opacity-5"

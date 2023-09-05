@@ -7,7 +7,7 @@ import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { DynamoDBAdapter } from "@auth/dynamodb-adapter";
-import { DefaultAdapter } from "next-auth/adapters";
+
 import env from "lib/env";
 
 const config: DynamoDBClientConfig = {
@@ -37,7 +37,7 @@ export const authOptions = {
   ],
   adapter: DynamoDBAdapter(client, {
     tableName,
-  }) as DefaultAdapter,
+  }) as any,
 };
 
 export default NextAuth(authOptions);

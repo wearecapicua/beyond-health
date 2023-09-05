@@ -11,11 +11,6 @@ interface FileData {
   fileName: string | null;
 }
 
-const radioButtonOptions = [
-  { value: "yes", label: "Yes, I do have a Provincial Health Card" },
-  { value: "none", label: "No, I don't have a Provincial Health Card" },
-];
-
 export default function StepFourteen() {
   const { formStore } = useFormStore();
   const {setValue, formState: { errors }  } = useFormContext();
@@ -35,6 +30,10 @@ export default function StepFourteen() {
     }
     if (formStore.healthCard?.fileName) {
       setValue("hasHealthCard", "yes")
+      setSelected("yes")
+    } else {
+      setValue("hasHealthCard", formStore.hasHealthCard)
+      setSelected(formStore.hasHealthCard)
     }
   }, [formStore.healthCard]);
 
@@ -45,10 +44,7 @@ export default function StepFourteen() {
 
   const customValidateNo = () => {
     setSelected("no")
-    setValue("healthCard", {
-      fileUrl: "",
-      fileName: "",
-    });
+    setValue("healthCard", null);
     setValue("hasHealthCard", "no")
   }
 
@@ -59,34 +55,32 @@ export default function StepFourteen() {
         subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
       />
       <FormContainer>
-        {selected === "yes" && fileData?.fileName !== "" ? 
+        {selected === "yes" ?
           <>
-            <FormFileDrop fieldName="healthCard" setFileData={setFileData} fileData={fileData} setSelected={setSelected} />
+            <FormFileDrop fieldName="healthCard" setFileData={setFileData} fileData={fileData} />
             {!!errors.healthCard && !fileData?.fileName && <p className="text-red-500 text-sm text-center pt-4">Please select an image</p>}
           </>
           : null
         }
-        {!fileData || fileData?.fileName !== "" && 
-          <>
-            <FormSelectorButton
-              label="Yes, I do have a Provincial Health Card"
-              value="yes"
-              groupId="hasHealthCard"
-              selected={selected}
-              setSelected={setSelected}
-              customValidate={customValidateYes}
-            />
-            <FormSelectorButton
-              label="No, I don't have a Provincial Health Card"
-              value="no"
-              groupId="healthCard"
-              selected={selected}
-              setSelected={setSelected}
-              customValidate={customValidateNo}
-            />
-            {!!errors.healthCard && !fileData && <p className="text-red-500 text-sm text-center pt-4">Please select one</p>}
-          </>
-        }
+        <>
+          <FormSelectorButton
+            label="Yes, I do have a Provincial Health Card"
+            value="yes"
+            groupId="hasHealthCard"
+            selected={selected}
+            setSelected={setSelected}
+            customValidate={customValidateYes}
+          />
+          <FormSelectorButton
+            label="No, I don't have a Provincial Health Card"
+            value="no"
+            groupId="healthCard"
+            selected={selected}
+            setSelected={setSelected}
+            customValidate={customValidateNo}
+          />
+          {!!errors.healthCard && !fileData && <p className="text-red-500 text-sm text-center pt-4">Please select one</p>}
+        </> 
       </FormContainer>
     </>
   );

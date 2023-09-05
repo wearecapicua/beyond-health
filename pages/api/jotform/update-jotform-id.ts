@@ -35,12 +35,28 @@
 // };
 
 
-import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDB, DynamoDBClient, DynamoDBClientConfig, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import env from "lib/env";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
-const dynamoClient = new DynamoDBClient({ region: env.awsRegion });
+const config: DynamoDBClientConfig = {
+  credentials: {
+    accessKeyId: env.awsAccessKeyId,
+    secretAccessKey: env.awsSecretAccessKey,
+  },
+  region: env.awsRegion,
+};
+
+const client = DynamoDBDocument.from(new DynamoDB(config), {
+  marshallOptions: {
+    convertEmptyValues: true,
+    removeUndefinedValues: true,
+    convertClassInstanceToMap: true,
+  },
+});
 const tableName = `${env.vercelEnv}-beyond-health-users`;
+
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -60,7 +76,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       console.log("Sending DynamoDB update command:", command);
-      const response = await dynamoClient.send(command);
+      const response = await client.send(command);
       console.log("DynamoDB response:", response);
       res.status(200).json(response);
     } catch (error) {
