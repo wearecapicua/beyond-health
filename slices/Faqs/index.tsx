@@ -6,6 +6,7 @@ import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 /**
  * Props for `Faqs`.
  */
+/* @ts-ignore */
 export type FaqsProps = SliceComponentProps<Content.FaqSlice>;
 
 /**
@@ -20,7 +21,7 @@ const Faqs = ({ slice }: FaqsProps): JSX.Element => {
       className="py-10"
     >
       <div className="mx-auto max-w-[1180px] border-b-[1px] border-main-black/40">
-        {items.map((item: any, index) => (
+        {items.map((item: any, index: number) => (
           <div key={`faq-${index}`} className="py-5 border-t-[1px] border-main-black/40">
             <Disclosure as="div">
               {({ open }) => (
