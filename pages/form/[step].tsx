@@ -18,10 +18,10 @@ import { useProductStore } from 'store/useProductStore';
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const endpoints = useRepository(({ jotform }) => ({
-  submissions: jotform.submissions,
-  updateJotformId: jotform.updateJotformId
-}));
+// const endpoints = useRepository(({ jotform }) => ({
+//   submissions: jotform.submissions,
+//   updateJotformId: jotform.updateJotformId
+// }));
 
 const FormStep = ({ formData, products }: StepProps) => {
   const router = useRouter();
@@ -77,17 +77,17 @@ const FormStep = ({ formData, products }: StepProps) => {
       const updatedData = { ...formStore, ...data};
    
       //endpoints.submissions.updateSubmission('5697342136227258271', updatedData)
-       endpoints.submissions.createSubmission(updatedData)
-      //endpoints.updateJotformId('0617eaea-86f6-4494-acbd-086ffb5bd774', '5685559061518721844')
-      .then(
-        (data: any) => {
-          console.log('Form submitted successfully:', data);
-      })
-      .catch(
-        (error: any) => {
-          console.error('Error submitting form:', error);
-        }
-      );
+       //endpoints.submissions.createSubmission(updatedData)
+      //endpoints.updateJotformId('0617eaea-86f6-4494-acbd-086ffb5bd774', '5697342136227258271')
+      // .then(
+      //   (data: any) => {
+      //     console.log('Form submitted successfully:', data);
+      // })
+      // .catch(
+      //   (error: any) => {
+      //     console.error('Error submitting form:', error);
+      //   }
+      // );
     }
   }
 
