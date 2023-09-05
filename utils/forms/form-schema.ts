@@ -75,10 +75,13 @@ export const schema = {
     ),
   }),
   'step-17': z.object({
-    insurance: z.object({
-      fileUrl: z.string(),
-      fileName: z.string(),
-    })
+    hasInsurance: z.string(),
+    insurance: z.nullable(
+      z.object({
+        fileUrl: z.union([z.string(), z.null()]).optional(),
+        fileName: z.union([z.string(), z.null()]).optional(),
+      })
+    ),
   }),
   'step-18': z.object({
     billingAddress: z.object({

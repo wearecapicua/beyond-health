@@ -11,7 +11,7 @@ interface FileData {
   fileName: string | null;
 }
 
-export default function StepFourteen() {
+export default function StepSixteen() {
   const { formStore } = useFormStore();
   const {setValue, formState: { errors }  } = useFormContext();
   const [fileData, setFileData] = useState<FileData>({ fileUrl: null, fileName: null });
