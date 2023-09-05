@@ -59,14 +59,14 @@ export default function StepFourteen() {
         subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
       />
       <FormContainer>
-        {selected === "yes" || fileData ? 
+        {selected === "yes" && fileData?.fileName !== "" ? 
           <>
             <FormFileDrop fieldName="healthCard" setFileData={setFileData} fileData={fileData} setSelected={setSelected} />
             {!!errors.healthCard && !fileData?.fileName && <p className="text-red-500 text-sm text-center pt-4">Please select an image</p>}
           </>
           : null
         }
-        {!fileData && 
+        {!fileData || fileData?.fileName !== "" && 
           <>
             <FormSelectorButton
               label="Yes, I do have a Provincial Health Card"
