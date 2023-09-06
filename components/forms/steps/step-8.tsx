@@ -17,7 +17,11 @@ export default function StepEight() {
   }, [formStore.conditions]);
 
   const customValidate = () => {
-    setSelected(formStore?.conditions)
+    setValue("conditions", "none")
+  }
+
+  const customValidateNone = () => {
+    setSelected("none")
     setValue("conditions", "none")
   }
 
@@ -43,7 +47,7 @@ export default function StepEight() {
           groupId="conditions"
           selected={selected}
           setSelected={setSelected}
-          customValidate={customValidate}
+          customValidate={customValidateNone}
         />
         {!selected && !!errors.conditions && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </div>

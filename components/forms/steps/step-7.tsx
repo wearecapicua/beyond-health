@@ -17,7 +17,11 @@ export default function StepSeven() {
   }, [formStore.medications]);
 
   const customValidate = () => {
-    setSelected(formStore.medications)
+    setValue("medications", "none")
+  }
+
+  const customValidateNone = () => {
+    setSelected("none")
     setValue("medications", "none")
   }
 
@@ -43,7 +47,7 @@ export default function StepSeven() {
           groupId="medications"
           selected={selected}
           setSelected={setSelected}
-          customValidate={customValidate}
+          customValidate={customValidateNone}
         />
         {!selected && !!errors.medications && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </div>

@@ -36,7 +36,7 @@ export default function StepFourteen() {
       />
       <FormContainer>
         <FormFileDrop fieldName="photoId" setFileData={setFileData} fileData={fileData} />
-        {!!errors.photoId && !fileData ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
+        {!!errors.photoId && !fileData?.fileUrl ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
       </FormContainer>
     </>
   );
