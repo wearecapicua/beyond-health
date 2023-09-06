@@ -33,7 +33,7 @@ const processEnv: Record<
   stripePublicKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   vercelEnv: process.env.VERCEL_ENV,
-  host: process.env.VERCEL_URL
+  host: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined
 };
 type MergedInput = z.input<typeof mergedEnv>;
 type MergedOutput = z.infer<typeof mergedEnv>;
