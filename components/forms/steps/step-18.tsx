@@ -3,6 +3,7 @@ import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
+import ProductDetails from "components/product-details";
 
 export default function StepEighteen() {
   const { register } = useFormContext();
@@ -13,48 +14,43 @@ export default function StepEighteen() {
         title={"Review and submit your online visit"}
         subtitle="Confirm the formula and auto-refill schedule and submit your online visit."
       />
-      <FormContainer wide>
-        <FormInput
-          label="Street Address*"
-          id="billingAddress.addr_line1"
-          type="text"
-          defaultValue={formStore.streetAddress}
-        />
-        <FormInput
-          label="Address Line 2*"
-          id="billingAddress.addr_line2"
-          type="text"
-          defaultValue={formStore.addressLine2}
-        />
-        <div className="grid grid-cols-2 gap-4">
+      <div className="flex">
+        <FormContainer>
           <FormInput
-            label="City*"
-            id="billingAddress.city"
+            label="Street Address*"
+            id="billingAddress.addr_line1"
             type="text"
-            defaultValue={formStore.city} 
+            defaultValue={formStore.streetAddress}
           />
           <FormInput
-            label="State / Province*"
-            id="billingAddress.state"
+            label="Address Line 2*"
+            id="billingAddress.addr_line2"
             type="text"
-            defaultValue={formStore.stateProvince}
+            defaultValue={formStore.addressLine2}
           />
-        </div>
-        <FormInput
-          label="ZIP / Postal Code*"
-          id="billingAddress.postal"
-          type="text"
-          defaultValue={formStore.zipcode} 
-        />
-        <p className="pt-2.5">{"Delivery Instructions (optional)"}</p>
-        <textarea
-          id="deliveryInstructions"
-          rows={6}
-          defaultValue={formStore.deliveryInstructions}
-          className="block w-full rounded-3xl border-0 mt-2 py-3 px-6 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          {...register("deliveryInstructions")}
-        />
-      </FormContainer>
+          <div className="grid grid-cols-2 gap-4">
+            <FormInput
+              label="City*"
+              id="billingAddress.city"
+              type="text"
+              defaultValue={formStore.city} 
+            />
+            <FormInput
+              label="State / Province*"
+              id="billingAddress.state"
+              type="text"
+              defaultValue={formStore.stateProvince}
+            />
+          </div>
+          <FormInput
+            label="ZIP / Postal Code*"
+            id="billingAddress.postal"
+            type="text"
+            defaultValue={formStore.zipcode} 
+          />
+        </FormContainer>
+        <ProductDetails />
+      </div>
     </>
   );
 }

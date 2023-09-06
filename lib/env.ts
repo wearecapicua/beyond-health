@@ -12,6 +12,7 @@ const serverEnv = z.object({
   googleClientSecret: z.string().nonempty(),
   stripeSecretKey: z.string().nonempty(),
   vercelEnv: z.string().default("localhost"),
+  host: z.string().default("http://localhost:3000"),
 });
 
 const mergedEnv = serverEnv.merge(clientEnv);
@@ -32,6 +33,7 @@ const processEnv: Record<
   stripePublicKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   vercelEnv: process.env.VERCEL_ENV,
+  host: process.env.VERCEL_URL
 };
 type MergedInput = z.input<typeof mergedEnv>;
 type MergedOutput = z.infer<typeof mergedEnv>;

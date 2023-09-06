@@ -15,6 +15,7 @@ import { formSteps, FormStep, stepExists } from "components/forms/steps/form-ste
 import useRepository from "lib/hooks/useRepository";
 import { useFormStore } from 'store/useFormStore';
 import { useProductStore } from 'store/useProductStore';
+import env from "lib/env";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -128,7 +129,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
  
   if (!stepExists(step)) { return { notFound: true } }
 
-  const res = await fetch(`${process.env.HOST}/api/all-products`);
+  const res = await fetch(`${env.host}/api/all-products`);
   const products = await res.json();
 
   return {
