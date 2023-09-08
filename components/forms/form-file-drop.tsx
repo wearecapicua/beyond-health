@@ -32,7 +32,6 @@ export default function StepFourteen({ setFileData, fileData, fieldName }: FormF
   const capture = useCallback(() => {
     /* @ts-ignore */
     const pictureSrc = webcamRef.current.getScreenshot();
-    console.log({pictureSrc})
     setFileData({ fileName: "Screenshot", fileUrl: pictureSrc });
     setValue(fieldName, { fileName: "Screenshot", fileUrl: pictureSrc })
     setOpenCam(false)

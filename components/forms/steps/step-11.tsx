@@ -19,8 +19,6 @@ export default function StepEleven() {
     return stages.includes(formStore.stage);
   });
 
-  console.log(productStore)
-
   useEffect(() => {
     if (!selected && formStore.product) {
       setSelected(formStore.product);
