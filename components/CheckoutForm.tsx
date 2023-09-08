@@ -12,10 +12,9 @@ import type Stripe from "stripe";
 
 type Props = {
   productId: string;
-  price: number;
 };
 
-const CheckoutForm = ({ productId, price }: Props) => {
+const CheckoutForm = ({ productId }: Props) => {
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
  
@@ -54,7 +53,7 @@ const CheckoutForm = ({ productId, price }: Props) => {
     <form onSubmit={handleSubmit}>
       <StripeTestCards />
       <Button type="submit" disabled={loading}>
-        Buy for {formatAmountForDisplay(price, config.CURRENCY)}
+        Buy
       </Button>
     </form>
   );
