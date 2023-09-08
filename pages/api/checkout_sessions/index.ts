@@ -17,7 +17,6 @@ export default async function handler(
   const requestBody = req.body as CheckoutSessionBody;
   if (req.method === "POST") {
     const priceId = requestBody.productId
-    console.log("price", priceId)
   
     const session = await getServerSession(req, res, authOptions);
 

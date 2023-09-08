@@ -7,14 +7,15 @@ import { useFormContext } from "react-hook-form";
 import ProductDetails from "components/product-details";
 import { useProductStore } from 'store/useProductStore';
 import { StripeProduct } from "lib/types";
+import Container from "components/container";
 
 
 export default function StepEighteen() {
   const { register } = useFormContext();
   const { formStore } = useFormStore();
-  const [productOptions, setproductOptions] = useState<[StripeProduct]>();
+  const [productOptions, setproductOptions] = useState<string>();
   const { productStore } = useProductStore()
-
+console.log({productOptions})
   useEffect(() => {
     setproductOptions(formStore.product)
   }, [formStore.product]);
@@ -22,8 +23,7 @@ export default function StepEighteen() {
   const filteredProducts = productStore?.filter(
     (product: StripeProduct) => product.default_price === productOptions
   );
-
-   console.log("prouct", filteredProducts[0])
+  const currProduct = filteredProducts[0]
 
   return (
     <>
@@ -31,44 +31,49 @@ export default function StepEighteen() {
         title={"Review and submit your online visit"}
         subtitle="Confirm the formula and auto-refill schedule and submit your online visit."
       />
-      <div className="flex">
-        <FormContainer>
-          <p className="font-semibold text-xl text-main-blue pb-2">Billing Address</p>
-          <FormInput
-            label="Street Address*"
-            id="billingAddress.addr_line1"
-            type="text"
-            defaultValue={formStore.streetAddress}
-          />
-          <FormInput
-            label="Address Line 2*"
-            id="billingAddress.addr_line2"
-            type="text"
-            defaultValue={formStore.addressLine2}
-          />
-          <div className="grid grid-cols-2 gap-4">
-            <FormInput
-              label="City*"
-              id="billingAddress.city"
-              type="text"
-              defaultValue={formStore.city} 
-            />
-            <FormInput
-              label="State / Province*"
-              id="billingAddress.state"
-              type="text"
-              defaultValue={formStore.stateProvince}
-            />
+      <Container>
+        <div className="flex justify-center gap-10 pb-10">
+          <div className="flex-1 max-w-[580px]">
+            <FormContainer wide>
+              <p className="font-semibold text-xl text-main-blue pb-2">Billing Address</p>
+              <FormInput
+                label="Street Address*"
+                id="billingAddress.addr_line1"
+                type="text"
+                defaultValue={formStore.streetAddress}
+              />
+              <FormInput
+                label="Address Line 2*"
+                id="billingAddress.addr_line2"
+                type="text"
+                defaultValue={formStore.addressLine2}
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormInput
+                  label="City*"
+                  id="billingAddress.city"
+                  type="text"
+                  defaultValue={formStore.city} 
+                />
+                <FormInput
+                  label="State / Province*"
+                  id="billingAddress.state"
+                  type="text"
+                  defaultValue={formStore.stateProvince}
+                />
+              </div>
+              <FormInput
+                label="ZIP / Postal Code*"
+                id="billingAddress.postal"
+                type="text"
+                defaultValue={formStore.zipcode} 
+              />
+              <p className="pt-2">Depending on your benefits, your medication may be free. Prices shown here do not reflect any coverage you may have.</p>
+            </FormContainer>
           </div>
-          <FormInput
-            label="ZIP / Postal Code*"
-            id="billingAddress.postal"
-            type="text"
-            defaultValue={formStore.zipcode} 
-          />
-        </FormContainer>
-        {filteredProducts[0] && <ProductDetails product={filteredProducts[0]}/>}
-      </div>
+          {currProduct && <ProductDetails product={currProduct}/>}
+        </div>
+      </Container>
     </>
   );
 }

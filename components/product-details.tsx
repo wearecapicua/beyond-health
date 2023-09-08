@@ -21,10 +21,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   const formattedPrice = formatAmountForDisplay(price, config.CURRENCY)
 
   return (
-    <div className="w-[400px]">
+    <div className="max-w-[430px] px-4 flex-1 flex flex-col justify-between">
       <div>
         <p className="font-semibold text-xl text-main-blue pb-2">Medication</p>
-        <ul>
+        <ul className="list-disc list-inside">
           {ingredientList.map((item) => (
             <li>{item}</li>
           ))}
@@ -32,14 +32,18 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       </div>
       <div>
         <p className="font-semibold text-xl text-main-blue pb-2">What you pay per shipment</p>
-        <ul>
+        <ul className="list-disc list-inside">
           <li>{name}</li>
           <li>{metadata.Term}</li>
           <li>{formattedPrice}</li>
+          <li>Shipping: FREE</li>
         </ul>
         <CheckoutForm productId={default_price}/>
       </div>
-      
+      <div className="border-t-[1px] border-solid border-main-black pt-4 pb-3 flex items-center justify-between">
+        <p className="font-semibold text-xl text-main-blue pb-2">What you pay today</p>
+        <span className="text-2xl text-main-black font-semibold">$0.00</span>
+      </div>
     </div>
   )
 }

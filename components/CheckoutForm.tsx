@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-
 import StripeTestCards from "./StripeTestCards";
-
-import * as config from "stripe.config";
 import useStripe from "lib/useStripe";
-import { formatAmountForDisplay } from "lib/stripeUtils";
 import { fetchPostJSON } from "lib/http";
-import Button from "components/Button";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions";
 import type Stripe from "stripe";
 
@@ -52,7 +47,7 @@ const CheckoutForm = ({ productId }: Props) => {
 
   return (
     <div >
-      <StripeTestCards />
+      {/* {<StripeTestCards />} */}
       <button onClick={handleCheckout} disabled={loading}>
         Buy
       </button>
