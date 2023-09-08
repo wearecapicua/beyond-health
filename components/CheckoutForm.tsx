@@ -15,10 +15,11 @@ type Props = {
 };
 
 const CheckoutForm = ({ productId }: Props) => {
+  
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
  
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleCheckout = async (e) => {
     e.preventDefault();
     setLoading(true);
     if (!stripe) {
@@ -50,12 +51,12 @@ const CheckoutForm = ({ productId }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div >
       <StripeTestCards />
-      <Button type="submit" disabled={loading}>
+      <button onClick={handleCheckout} disabled={loading}>
         Buy
-      </Button>
-    </form>
+      </button>
+    </div>
   );
 };
 

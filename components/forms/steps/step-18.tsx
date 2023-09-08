@@ -23,7 +23,7 @@ export default function StepEighteen() {
     (product: StripeProduct) => product.default_price === productOptions
   );
 
-   console.log({filteredProducts})
+   console.log("prouct", filteredProducts[0])
 
   return (
     <>
@@ -33,6 +33,7 @@ export default function StepEighteen() {
       />
       <div className="flex">
         <FormContainer>
+          <p className="font-semibold text-xl text-main-blue pb-2">Billing Address</p>
           <FormInput
             label="Street Address*"
             id="billingAddress.addr_line1"

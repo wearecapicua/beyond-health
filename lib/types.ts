@@ -23,7 +23,7 @@ export type AuthorContentRelationshipField = RelationField<
 >;
 
 export type StripeProduct = {
-  defaultPrice: string;
+  default_price: string;
   metadata: {
     Stage: string;
     Term: string;
