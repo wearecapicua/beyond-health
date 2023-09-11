@@ -23,13 +23,13 @@ export default function StepSix() {
 
   const content: ContentType[] = [
     {text: "Stage 1", image: "/images/hair_loss_stage1.jpg"},
-    {text: "Stage 2", image: "/images/hair_loss_stage1.jpg"},
-    {text: "Stage 3", image: "/images/hair_loss_stage1.jpg"},
-    {text: "Stage 3 Vertex", image: "/images/hair_loss_stage1.jpg"},
-    {text: "Stage 4", image: "/images/hair_loss_stage1.jpg"},
-    {text: "Stage 5", image: "/images/hair_loss_stage1.jpg"},
-    {text: "Stage 6", image: "/images/hair_loss_stage1.jpg"},
-    {text: "Stage 7", image: "/images/hair_loss_stage1.jpg"},
+    {text: "Stage 2", image: "/images/hair_loss_stage2.png"},
+    {text: "Stage 3", image: "/images/hair_loss_stage3.png"},
+    {text: "Stage 3 Vertex", image: "/images/hair_loss_stage3_vertex.png"},
+    {text: "Stage 4", image: "/images/hair_loss_stage4.png"},
+    {text: "Stage 5", image: "/images/hair_loss_stage5.png"},
+    {text: "Stage 6", image: "/images/hair_loss_stage6.png"},
+    {text: "Stage 7", image: "/images/hair_loss_stage7.png"},
   ]
 
   return (
