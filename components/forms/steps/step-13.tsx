@@ -18,33 +18,33 @@ export default function StepOne() {
           label="Street Address*"
           id="shippingAddress.addr_line1"
           type="text"
-          defaultValue={formStore.streetAddress}
+          defaultValue={formStore.shippingAddress?.addr_line1}
         />
         <FormInput
           label="Address Line 2*"
           id="shippingAddress.addr_line2"
           type="text"
-          defaultValue={formStore.addressLine2}
+          defaultValue={formStore.shippingAddress?.addr_line2}
         />
         <div className="grid grid-cols-2 gap-4">
           <FormInput
             label="City*"
             id="shippingAddress.city"
             type="text"
-            defaultValue={formStore.city} 
+            defaultValue={formStore.shippingAddress?.city} 
           />
           <FormInput
             label="State / Province*"
             id="shippingAddress.state"
             type="text"
-            defaultValue={formStore.stateProvince} 
+            defaultValue={formStore.shippingAddress?.state} 
           />
         </div>
         <FormInput
           label="ZIP / Postal Code*"
           id="shippingAddress.postal"
           type="text"
-          defaultValue={formStore.zipcode} 
+          defaultValue={formStore.shippingAddress?.postal} 
         />
         <p className="pt-2.5">{"Delivery Instructions (optional)"}</p>
         <textarea

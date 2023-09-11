@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import StripeTestCards from "./StripeTestCards";
 import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
@@ -14,8 +14,7 @@ const CheckoutForm = ({ productId }: Props) => {
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
  
-  const handleCheckout = async (e) => {
-    e.preventDefault();
+  const handleCheckout = async () => {
     setLoading(true);
     if (!stripe) {
       console.error("Failed to load Stripe.js");

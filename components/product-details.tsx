@@ -26,7 +26,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         <p className="font-semibold text-xl text-main-blue pb-2">Medication</p>
         <ul className="list-disc list-inside pl-3">
           {ingredientList.map((item) => (
-            <li>{item}</li>
+            <li key={item}>{item}</li>
           ))}
         </ul>
       </div>
