@@ -81,7 +81,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       await stripe.checkout.sessions.retrieve(id, {
         expand: ["setup_intent"],
       });
-      console.log({checkout_session})
     if (!checkout_session.metadata?.productId) {
       throw new Error("Missing product ID.");
     }

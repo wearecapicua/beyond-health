@@ -16,6 +16,10 @@ import useRepository from "lib/hooks/useRepository";
 import { useFormStore } from 'store/useFormStore';
 import { useProductStore } from 'store/useProductStore';
 import env from "lib/env";
+import useStripe from "lib/useStripe";
+import { fetchPostJSON } from "lib/http";
+import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
+import type Stripe from "stripe";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -28,14 +32,13 @@ const FormStep = ({ formData, products }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
+  const stripe = useStripe();
 
   const numericSplit = activeStep.replace("step-", "")
   const numericStep = parseInt(numericSplit, 10)
 
   const { formStore, updateFormStore } = useFormStore()
   const { updateProductStore } = useProductStore()
-  
-  console.log("state", formStore)
 
   useEffect(() => {
     updateProductStore(products.productsWithPrices)
@@ -50,6 +53,38 @@ const FormStep = ({ formData, products }: StepProps) => {
   });
   
   const { handleSubmit, trigger } = methods;
+
+  const handleCheckout = async () => {
+    
+    if (!stripe) {
+      console.error("Failed to load Stripe.js");
+      return;
+    }
+
+    // Create a Checkout Session.
+    const response = await fetchPostJSON<
+      CheckoutSessionBody,
+      Stripe.Checkout.Session
+    >("/api/checkout_sessions/capture-payment", {
+      productId: formStore.product,
+      amount: 16513
+    })
+    
+
+    // Redirect to Checkout.
+    const { error } = await stripe.redirectToCheckout({
+      // Make the id field from the Checkout Session creation API response
+      // available to this file, so you can provide it as parameter here
+      // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+      sessionId: response.id,
+    });
+    console.error({ error });
+    // If `redirectToCheckout` fails due to a browser or network
+    // error, display the localized error message to your customer
+    // using `error.message`.
+    console.warn(error.message);
+  
+  };
   
   const prevPage = () => {
     const next = decrementString(formData.step)
@@ -60,12 +95,15 @@ const FormStep = ({ formData, products }: StepProps) => {
     const isStepValid = await trigger();
     console.log("data", data)
 
-    if (isStepValid) {
+    if (isStepValid && activeStep !== "step-18") {
       updateFormStore(data);
-
+      
       const next = incrementString(formData.step)
       setActiveStep(next)
       router.push(`/form/${next}`);
+    } if (isStepValid) {
+      updateFormStore(data);
+      handleCheckout()
     }
   }
 
@@ -102,9 +140,13 @@ const FormStep = ({ formData, products }: StepProps) => {
           <StepComponent />
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
-              <FormButton text="Next" type="submit" style="solid"  />
+              {activeStep === "step-18" ?
+                <FormButton text="Go to Checkout" type="submit" style="solid"  />
+              :
+                <FormButton text="Next" type="submit" style="solid"  />
+              }
               <FormButton text="Save for later" type="button" style="outline" onClick={handleSubmit(handleSave)}/>
-              <FormButton text="Go Back" type="button" onClick={prevPage} />
+              {activeStep !== "step-1" && <FormButton text="Go Back" type="button" onClick={prevPage} />}
             </div>
           </FormContainer>
         </form>

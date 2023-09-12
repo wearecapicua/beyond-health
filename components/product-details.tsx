@@ -1,6 +1,5 @@
 import { formatAmountForDisplay } from "lib/stripeUtils";
 import * as config from "stripe.config";
-import CheckoutForm from "./checkout-form";
 import { StripeProduct } from "lib/types";
 
 type ProductDetailsProps = {
@@ -38,7 +37,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           <li>{formattedPrice}</li>
           <li>Shipping: FREE</li>
         </ul>
-        <CheckoutForm amount={price} productId={default_price}/>
       </div>
       <div className="border-t-[1px] border-solid border-main-black pt-4 pb-3 flex items-center justify-between">
         <p className="font-semibold text-xl text-main-blue pb-2">What you pay today</p>

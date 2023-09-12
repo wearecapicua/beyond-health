@@ -24,7 +24,6 @@ export default async function handler(
       /* @ts-ignore */
       const setupIntent = await stripe.setupIntents.retrieve(setupId);
       // Create Checkout Sessions from body params.
-      console.log(setupIntent)
       const customerId = setupIntent.customer
       const paymentMethodId = setupIntent.payment_method
 
