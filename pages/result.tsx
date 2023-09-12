@@ -12,20 +12,24 @@ import env from "lib/env";
 import { createClient } from "lib/prismic";
 
 import { asImageSrc, asText } from "@prismicio/helpers";
+import PaymentButton from "components/payment-button";
+
+type ResultProps = {
+  amount: number
+  setupId: string;
+}
 
 const stripe = new Stripe(env.stripeSecretKey, {
   apiVersion: "2022-11-15",
 });
 
-const ResultPage = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
+const ResultPage = ({ amount, setupId }: ResultProps) => {
   const router = useRouter();
+
+  const price = amount.toString();
 
   // const storeCheckoutSession = async (sessionId: string) => {
   //   try {
-      
-    
   //     // const response = await fetch("/api/store-checkout", {
   //     //   method: "POST",
   //     //   headers: {
@@ -46,16 +50,18 @@ const ResultPage = (
 
   // storeCheckoutSession(props.checkout_session.id)
 
-//console.log("props", props)
+
   return (
     <Layout preview={false}>
       <Container>
-     
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
-          <>
-         
+          <> 
+            <PaymentButton
+              setupId={setupId}
+              price={price}
+            />
             <SectionSeparator />
           </>
         )}
@@ -66,25 +72,29 @@ const ResultPage = (
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const id = ctx.query.session_id as string;
- // console.log({id})
+ 
   try {
     if (!id.startsWith("cs_")) {
       throw Error("Incorrect CheckoutSession ID.");
     }
     const checkout_session: Stripe.Checkout.Session =
       await stripe.checkout.sessions.retrieve(id, {
-        expand: ["payment_intent"],
+        expand: ["setup_intent"],
       });
       console.log({checkout_session})
     if (!checkout_session.metadata?.productId) {
       throw new Error("Missing product ID.");
     }
-    const product = checkout_session.metadata?.productId
+    /* @ts-ignore */
+    const customer = checkout_session.setup_intent?.customer
+    const amount = checkout_session.metadata?.amount
+    /* @ts-ignore */
+    const setupId = checkout_session.setup_intent?.id
 
     return {
       props: {
-        checkout_session,
-        product,
+        amount,
+        setupId
       },
     };
   } catch (err) {

@@ -7,8 +7,8 @@ import { getServerSession } from "next-auth";
 const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 
 export type CheckoutSessionBody = {
-  id: string;
   productId: string;
+  amount: number;
 };
 
 export default async function handler(
@@ -18,6 +18,7 @@ export default async function handler(
   const requestBody = req.body as CheckoutSessionBody;
   if (req.method === "POST") {
     const priceId = requestBody.productId
+    const amount = requestBody.amount
   
     const session = await getServerSession(req, res, authOptions);
 
@@ -40,6 +41,7 @@ export default async function handler(
         ],
         metadata: {
           productId: priceId, // Add productId to metadata
+          amount: amount
         },
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/donate-with-checkout`,

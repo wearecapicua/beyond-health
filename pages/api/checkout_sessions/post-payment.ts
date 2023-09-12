@@ -6,28 +6,23 @@ import { getServerSession } from "next-auth";
 
 const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 
-export type CheckoutSessionBody = {
-  id: string;
-  productId: string;
+export type PaymentIntentBody = {
+  setupId: string;
 };
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const requestBody = req.body as CheckoutSessionBody;
+  const requestBody = req.body as PaymentIntentBody;
   if (req.method === "POST") {
-    const sessionId = requestBody.id
-    const priceId = requestBody.productId
+    const { setupId } = requestBody
   
     const session = await getServerSession(req, res, authOptions);
 
-   // const setupId = "seti_1NpM34KtJLVHmqXvBv9cBn9D"
-
     try {
-      const fetchedSession = await stripe.checkout.sessions.retrieve(sessionId)
       /* @ts-ignore */
-   const setupIntent = await stripe.setupIntents.retrieve(fetchedSession.setup_intent);
+      const setupIntent = await stripe.setupIntents.retrieve(setupId);
       // Create Checkout Sessions from body params.
       console.log(setupIntent)
       const customerId = setupIntent.customer
@@ -38,10 +33,10 @@ export default async function handler(
        payment_method: paymentMethodId,
        amount: 2000,
        currency: 'usd',
-      // automatic_payment_methods: {enabled: true},
       };
 
       const paymentIntent: Stripe.PaymentIntent =
+        /* @ts-ignore */
         await stripe.paymentIntents.create(params);
      
       res.status(200).json(paymentIntent);

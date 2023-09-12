@@ -7,11 +7,10 @@ import type Stripe from "stripe";
 
 type Props = {
   productId: string;
-  savePayment?: boolean;
+  amount: number;
 };
 
-const CheckoutForm = ({ productId, savePayment }: Props) => {
-  console.log({productId})
+const CheckoutForm = ({ productId, amount }: Props) => {
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
  
@@ -23,14 +22,12 @@ const CheckoutForm = ({ productId, savePayment }: Props) => {
     }
 
     // Create a Checkout Session.
-    const route = savePayment ? "capture-payment" : "post-payment"
-    const id = savePayment ? "" : 'cs_test_c1aZDxfkUdE150HewyVTPer9GN5W5KxPtI2s4rTxQ3hZR6iS0363WGrsVc'
     const response = await fetchPostJSON<
       CheckoutSessionBody,
       Stripe.Checkout.Session
-    >(`/api/checkout_sessions/${route}`, {
-      id: id,
-      productId: productId
+    >("/api/checkout_sessions/capture-payment", {
+      productId,
+      amount
     })
     
 
