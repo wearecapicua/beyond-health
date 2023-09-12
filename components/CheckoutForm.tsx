@@ -1,16 +1,17 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, { useState } from "react";
 import StripeTestCards from "./StripeTestCards";
 import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
-import { type CheckoutSessionBody } from "pages/api/checkout_sessions";
+import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
 
 type Props = {
   productId: string;
+  savePayment?: boolean;
 };
 
-const CheckoutForm = ({ productId }: Props) => {
-  
+const CheckoutForm = ({ productId, savePayment }: Props) => {
+  console.log({productId})
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
  
@@ -22,12 +23,16 @@ const CheckoutForm = ({ productId }: Props) => {
     }
 
     // Create a Checkout Session.
+    const route = savePayment ? "capture-payment" : "post-payment"
+    const id = savePayment ? "" : 'cs_test_c1aZDxfkUdE150HewyVTPer9GN5W5KxPtI2s4rTxQ3hZR6iS0363WGrsVc'
     const response = await fetchPostJSON<
       CheckoutSessionBody,
       Stripe.Checkout.Session
-    >("/api/checkout_sessions", {
-      productId: productId,
-    });
+    >(`/api/checkout_sessions/${route}`, {
+      id: id,
+      productId: productId
+    })
+    
 
     // Redirect to Checkout.
     const { error } = await stripe.redirectToCheckout({

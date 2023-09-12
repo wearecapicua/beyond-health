@@ -38,6 +38,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           <li>{formattedPrice}</li>
           <li>Shipping: FREE</li>
         </ul>
+        <CheckoutForm savePayment productId={default_price}/>
         <CheckoutForm productId={default_price}/>
       </div>
       <div className="border-t-[1px] border-solid border-main-black pt-4 pb-3 flex items-center justify-between">

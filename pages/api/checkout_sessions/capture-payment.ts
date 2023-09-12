@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 
 export type CheckoutSessionBody = {
+  id: string;
   productId: string;
 };
 
@@ -21,19 +22,25 @@ export default async function handler(
     const session = await getServerSession(req, res, authOptions);
 
     try {
+
+      const customer = await stripe.customers.create();
+      
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {
        // submit_type: "pay",
         payment_method_types: ["card"],
-        mode: 'subscription',
-        customer_email: session?.user?.email ?? "",
+        mode: 'setup',
+        customer: customer?.id,
         line_items: [
           {
             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: priceId,
-            quantity: 1,
+            //price: priceId,
+           // quantity: 1,
           },
         ],
+        metadata: {
+          productId: priceId, // Add productId to metadata
+        },
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/donate-with-checkout`,
       };
