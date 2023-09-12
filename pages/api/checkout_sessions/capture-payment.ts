@@ -9,6 +9,7 @@ const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 export type CheckoutSessionBody = {
   productId: string;
   amount: number;
+  billingAddress: any;
 };
 
 export default async function handler(
@@ -18,13 +19,15 @@ export default async function handler(
   const requestBody = req.body as CheckoutSessionBody;
   if (req.method === "POST") {
     const priceId = requestBody.productId
-    const amount = requestBody.amount
+    const { amount, billingAddress } = requestBody
   
     const session = await getServerSession(req, res, authOptions);
 
     try {
 
-      const customer = await stripe.customers.create();
+      const customer = await stripe.customers.create({
+        address: billingAddress
+      });
       
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {

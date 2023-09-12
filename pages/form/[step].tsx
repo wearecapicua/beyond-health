@@ -64,8 +64,9 @@ const FormStep = ({ formData, products }: StepProps) => {
       CheckoutSessionBody,
       Stripe.Checkout.Session
     >("/api/checkout_sessions/capture-payment", {
-      productId: formStore.product,
-      amount: 16513
+      productId: formStore.product.default_price,
+      amount: formStore.product.price,
+      billingAddress: formStore.billingAddress
     })
     const { error } = await stripe.redirectToCheckout({
       sessionId: response.id,

@@ -12,9 +12,10 @@ import Container from "components/container";
 export default function StepEighteen() {
   const { setValue } = useFormContext();
   const { formStore } = useFormStore();
-  const [productOptions, setproductOptions] = useState<string>();
+  const [productOptions, setproductOptions] = useState<StripeProduct>();
   const { productStore } = useProductStore()
   const [useShipping, setUseShipping] = useState<boolean>(false);
+  console.log({productOptions})
 
   useEffect(() => {
     setproductOptions(formStore.product)
@@ -33,7 +34,7 @@ export default function StepEighteen() {
   }, [useShipping]);
 
   const filteredProducts = productStore?.filter(
-    (product: StripeProduct) => product.default_price === productOptions
+    (product: StripeProduct) => product.default_price === productOptions?.default_price
   );
 
   const currProduct = filteredProducts[0]
@@ -58,15 +59,15 @@ export default function StepEighteen() {
               </div>
               <FormInput
                 label="Street Address*"
-                id="billingAddress.addr_line1"
+                id="billingAddress.line1"
                 type="text"
-                defaultValue={formStore.billingAddress?.addr_line1}
+                defaultValue={formStore.billingAddress?.line1}
               />
               <FormInput
                 label="Address Line 2*"
-                id="billingAddress.addr_line2"
+                id="billingAddress.line2"
                 type="text"
-                defaultValue={formStore.billingAddress?.addr_line2}
+                defaultValue={formStore.billingAddress?.line2}
               />
               <div className="grid grid-cols-2 gap-4">
                 <FormInput
@@ -84,9 +85,9 @@ export default function StepEighteen() {
               </div>
               <FormInput
                 label="ZIP / Postal Code*"
-                id="billingAddress.postal"
+                id="billingAddress.postal_code"
                 type="text"
-                defaultValue={formStore.shippingAddress?.postal} 
+                defaultValue={formStore.shippingAddress?.postal_code} 
               />
               <p className="pt-2">Depending on your benefits, your medication may be free. Prices shown here do not reflect any coverage you may have.</p>
             </FormContainer>

@@ -16,15 +16,15 @@ export default function StepOne() {
       <FormContainer wide>
         <FormInput
           label="Street Address*"
-          id="shippingAddress.addr_line1"
+          id="shippingAddress.line1"
           type="text"
-          defaultValue={formStore.shippingAddress?.addr_line1}
+          defaultValue={formStore.shippingAddress?.line1}
         />
         <FormInput
           label="Address Line 2*"
-          id="shippingAddress.addr_line2"
+          id="shippingAddress.line2"
           type="text"
-          defaultValue={formStore.shippingAddress?.addr_line2}
+          defaultValue={formStore.shippingAddress?.line2}
         />
         <div className="grid grid-cols-2 gap-4">
           <FormInput
@@ -42,7 +42,7 @@ export default function StepOne() {
         </div>
         <FormInput
           label="ZIP / Postal Code*"
-          id="shippingAddress.postal"
+          id="shippingAddress.postal_code"
           type="text"
           defaultValue={formStore.shippingAddress?.postal} 
         />
