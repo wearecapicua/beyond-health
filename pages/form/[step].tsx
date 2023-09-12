@@ -40,13 +40,14 @@ const FormStep = ({ formData, products }: StepProps) => {
   const { formStore, updateFormStore } = useFormStore()
   const { updateProductStore } = useProductStore()
 
+  console.log("state", formStore)
+
   useEffect(() => {
     updateProductStore(products.productsWithPrices)
   }, []);
 
   const currentSchema = schema[activeStep];
 
- 
   const methods = useForm<IFormProps>({
     resolver: zodResolver(currentSchema)as unknown as Resolver<IFormProps>,
     mode: "onBlur",
@@ -55,13 +56,10 @@ const FormStep = ({ formData, products }: StepProps) => {
   const { handleSubmit, trigger } = methods;
 
   const handleCheckout = async () => {
-    
     if (!stripe) {
       console.error("Failed to load Stripe.js");
       return;
     }
-
-    // Create a Checkout Session.
     const response = await fetchPostJSON<
       CheckoutSessionBody,
       Stripe.Checkout.Session
@@ -69,21 +67,11 @@ const FormStep = ({ formData, products }: StepProps) => {
       productId: formStore.product,
       amount: 16513
     })
-    
-
-    // Redirect to Checkout.
     const { error } = await stripe.redirectToCheckout({
-      // Make the id field from the Checkout Session creation API response
-      // available to this file, so you can provide it as parameter here
-      // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
       sessionId: response.id,
     });
     console.error({ error });
-    // If `redirectToCheckout` fails due to a browser or network
-    // error, display the localized error message to your customer
-    // using `error.message`.
     console.warn(error.message);
-  
   };
   
   const prevPage = () => {
@@ -101,7 +89,7 @@ const FormStep = ({ formData, products }: StepProps) => {
       const next = incrementString(formData.step)
       setActiveStep(next)
       router.push(`/form/${next}`);
-    } if (isStepValid) {
+    } if (isStepValid && activeStep === "step-18") {
       updateFormStore(data);
       handleCheckout()
     }
