@@ -33,6 +33,7 @@ export default async function handler(
        payment_method: paymentMethodId,
        amount: 2000,
        currency: 'usd',
+       confirm: true
       };
 
       const paymentIntent: Stripe.PaymentIntent =

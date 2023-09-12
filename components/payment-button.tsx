@@ -17,6 +17,7 @@ const PaymentButton = ({
   
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<string>();
  
   const handlePayment = async () => {
     setLoading(true);
@@ -26,22 +27,31 @@ const PaymentButton = ({
     }
 
     // Create a Checkout Session.
-    
-    const response = await fetchPostJSON<
-      PaymentIntentBody,
-      Stripe.Checkout.Session
-    >(`/api/checkout_sessions/post-payment`, {
-      setupId
-    })
-    console.log("response", response)
-    setLoading(false);
-  };
+    try {
+      const response = await fetchPostJSON<
+        PaymentIntentBody,
+        Stripe.Checkout.Session
+      >(`/api/checkout_sessions/post-payment`, {
+        setupId
+      })
+      /* @ts-ignore */
+      setResults(response?.status)
+      setLoading(false);
+      
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }
 
   return (
-    <div >
-      <button onClick={handlePayment} disabled={loading}>
-        {`Submit payment for ${price}`}
-      </button>
+    <div>
+      {!results ?
+        <button onClick={handlePayment} disabled={loading}>
+          {`Submit payment for ${price}`}
+        </button>
+      :
+        <p>Payment status: {results}</p>
+      }
     </div>
   );
 };
