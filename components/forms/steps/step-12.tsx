@@ -17,11 +17,11 @@ export default function StepTwelve() {
   const [productOptions, setproductOptions] = useState<[StripeProduct]>();
 
   const filteredProducts = productStore.filter(
-    (product: StripeProduct) => product.default_price === formStore.product
+    (product: StripeProduct) => product.default_price === formStore.product?.default_price 
   );
 
   useEffect(() => {
-    setSelected(formStore.product);
+    setSelected(formStore.product?.default_price)
     setValue("product", formStore.product)
     setproductOptions(filteredProducts)
   }, [formStore.product]);

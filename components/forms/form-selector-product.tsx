@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+// import { useFormContext } from "react-hook-form";
 
 type FormSelectorButtonProps = {
   selected: string;
@@ -22,7 +22,7 @@ export default function FormSelectorProduct({
 
   const selectedOuterBtn = selected === value ? "border-main-light-blue" : "border-gray-400"
   const selectedInnerBtn = selected === value ? "bg-main-light-blue" : "bg-transparent"
-  const { register } = useFormContext();
+  // const { register } = useFormContext();
 
   return (
     <div className={`${selected === value ? 'bg-blue-500 bg-opacity-5 border-main-light-blue' : 'border-gray-400'} relative my-3 border-[1px] hover:opacity-8 flex w-full rounded-[40px] px-12 py-5 leading-6`}>
@@ -30,9 +30,9 @@ export default function FormSelectorProduct({
         type="radio"
         id={value}
         value={value}
-        {...register(groupId, {
-          onChange: (e) => setSelected(e.target.value)
-        })}
+        // {...register(groupId, {
+        //   onChange: (e) => setSelected(e.target.value)
+        // })}
         className="w-full h-full opacity-0 absolute top-0 cursor-pointer"
        />
       <div className="w-full flex justify-between cursor-pointer items-center">

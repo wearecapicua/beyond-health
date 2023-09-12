@@ -38,10 +38,14 @@ export const schema = {
     stage: z.string().refine(value => !!value)
   }),
   'step-11': z.object({
-    product: z.string().refine(value => !!value)
+    product: z.object({
+      default_price: z.string().refine(value => !!value),
+      price: z.number().refine(value => !!value),
+      name: z.string().refine(value => !!value),
+    })
   }),
   'step-12': z.object({
-    product: z.string().refine(value => !!value)
+   // product: z.string().refine(value => !!value)
   }),
   'step-13': z.object({
     shippingAddress: z.object({

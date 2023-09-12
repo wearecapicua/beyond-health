@@ -18,11 +18,20 @@ export default function StepEleven() {
     const stages = product.metadata.Stage.split(', ');
     return stages.includes(formStore.stage);
   });
-  console.log("pp", filteredProducts)
+  console.log("pp", errors)
+
+  const customValidate = () => {
+    setValue("product", {
+      default_price: filteredProducts[0].default_price,
+      price: filteredProducts[0].price,
+      name: filteredProducts[0].name,
+    })
+    setSelected(filteredProducts[0].default_price)
+  }
 
   useEffect(() => {
     if (!selected && formStore.product) {
-      setSelected(formStore.product);
+      setSelected(formStore.product?.default_price)
       setValue("product", formStore.product)
     }
     setproductOptions(filteredProducts)
@@ -45,6 +54,7 @@ export default function StepEleven() {
               large
               selected={selected}
               setSelected={setSelected}
+              customValidate={customValidate}
             />
           )
         })}
