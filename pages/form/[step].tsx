@@ -55,7 +55,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   
   const { handleSubmit, trigger } = methods;
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (billingAddress: any) => {
     if (!stripe) {
       console.error("Failed to load Stripe.js");
       return;
@@ -66,7 +66,9 @@ const FormStep = ({ formData, products }: StepProps) => {
     >("/api/checkout_sessions/capture-payment", {
       productId: formStore.product.default_price,
       amount: formStore.product.price,
-      billingAddress: formStore.billingAddress
+      billingAddress: billingAddress || formStore.billingAddress,
+      shippingAddress: formStore.shippingAddress,
+      name: `${formStore.firstName} ${formStore.lastName}`
     })
     const { error } = await stripe.redirectToCheckout({
       sessionId: response.id,
@@ -82,6 +84,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   }
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const isStepValid = await trigger();
+    const billingAddress = data.billingAddress
     console.log("data", data)
 
     if (isStepValid && activeStep !== "step-18") {
@@ -92,7 +95,7 @@ const FormStep = ({ formData, products }: StepProps) => {
       router.push(`/form/${next}`);
     } if (isStepValid && activeStep === "step-18") {
       updateFormStore(data);
-      handleCheckout()
+      handleCheckout(billingAddress)
     }
   }
 

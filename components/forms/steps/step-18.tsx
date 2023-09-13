@@ -10,7 +10,7 @@ import { StripeProduct } from "lib/types";
 import Container from "components/container";
 
 export default function StepEighteen() {
-  const { setValue } = useFormContext();
+  const { setValue, formState: { errors }} = useFormContext();
   const { formStore } = useFormStore();
   const [productOptions, setproductOptions] = useState<StripeProduct>();
   const { productStore } = useProductStore()

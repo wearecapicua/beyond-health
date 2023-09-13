@@ -1,4 +1,5 @@
 import { useFormContext } from "react-hook-form";
+import FormErrors from "./form-errors";
 
 type FormInputProps = {
   label?: string;
@@ -25,8 +26,10 @@ export default function FormInput({
     register,
     formState: { errors },
   } = useFormContext();
+
+  console.log("r",!!errors)
  
-  const errorMsg = errors[id]?.message || ""
+  const errorMsg = "This field is required"
   return (
     <div className="py-3">
       <label htmlFor={id} className="block leading-6">
@@ -44,8 +47,7 @@ export default function FormInput({
           })}
         />
       </div>
-      {/* @ts-ignore */}
-      {!customValidate && !!errors[id] && <p className="text-red-500 text-sm pt-2">{errorMsg}</p>}
+      {!customValidate && <FormErrors errors={errors} id={id} text={errorMsg} />}
     </div>
   );
 }

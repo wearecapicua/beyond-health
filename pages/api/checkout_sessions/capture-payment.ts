@@ -10,6 +10,8 @@ export type CheckoutSessionBody = {
   productId: string;
   amount: number;
   billingAddress: any;
+  shippingAddress: any;
+  name: string;
 };
 
 export default async function handler(
@@ -18,32 +20,34 @@ export default async function handler(
 ) {
   const requestBody = req.body as CheckoutSessionBody;
   if (req.method === "POST") {
-    const priceId = requestBody.productId
-    const { amount, billingAddress } = requestBody
+    
+    const {
+      amount,
+      billingAddress,
+      shippingAddress,
+      name,
+      productId
+    } = requestBody
   
     const session = await getServerSession(req, res, authOptions);
 
     try {
-
       const customer = await stripe.customers.create({
-        address: billingAddress
+        address: billingAddress,
+        shipping: {
+          address: shippingAddress,
+          name: name
+        },
+        name: name
       });
       
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {
-       // submit_type: "pay",
         payment_method_types: ["card"],
         mode: 'setup',
         customer: customer?.id,
-        line_items: [
-          {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            //price: priceId,
-           // quantity: 1,
-          },
-        ],
         metadata: {
-          productId: priceId, // Add productId to metadata
+          productId: productId,
           amount: amount
         },
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
