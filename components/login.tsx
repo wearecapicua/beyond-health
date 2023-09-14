@@ -1,28 +1,44 @@
-import Avatar from "components/avatar";
-import { signIn, signOut, useSession } from "next-auth/react";
-import React from "react";
+import { useState } from 'react'
+import Avatar from "components/avatar"
+import { signIn, signOut, useSession } from "next-auth/react"
+import React from "react"
+import { createCustomerPortalSession } from "lib/stripeUtils"
 
 type Props = {};
 
 const LoginButton = (props: Props) => {
   const session = useSession();
+  const [loading, setLoading] = useState(false);
+
   if (session.status === "authenticated" && session.data?.user) {
+
+    const handlePortalClick = async () => {
+      setLoading(true);
+      const portalUrl = await createCustomerPortalSession();
+  
+      if (portalUrl) {
+        window.location.href = portalUrl; // Redirect to the Customer Portal
+      }
+      setLoading(false);
+    };
+
     return (
       <>
         <button onClick={() => signOut()} className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">Log Out</button>
         {session.data.user.image && (
-          <Avatar
-            // name={session.data.user.name || ""}
-            picture={{
-              url: session.data.user.image,
-              dimensions: {
-                width: 40,
-                height: 40,
-              },
-              alt: session.data.user.name || null,
-              copyright: null,
-            }}
-          />
+          <button onClick={handlePortalClick} disabled={loading}>
+            <Avatar
+              picture={{
+                url: session.data.user.image,
+                dimensions: {
+                  width: 40,
+                  height: 40,
+                },
+                alt: session.data.user.name || null,
+                copyright: null,
+              }}
+            />
+          </button>
         )}
       </>
     );

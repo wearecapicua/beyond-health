@@ -48,3 +48,23 @@ export function formatAmountFromStripe(
   }
   return zeroDecimalCurrency ? amount : Math.round(amount / 100);
 }
+
+export async function createCustomerPortalSession() {
+  try {
+    const response = await fetch('/api/stripe/customer-portal', {
+      method: 'POST',
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.url; // Return the Customer Portal URL
+    } else {
+      console.error('Error:', response.statusText);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
