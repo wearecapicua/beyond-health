@@ -12,6 +12,9 @@ const serverEnv = z.object({
   googleClientSecret: z.string().nonempty(),
   stripeSecretKey: z.string().nonempty(),
   stripeWebhookSecret: z.string().nonempty(),
+  nextPublicSupabaseUrl: z.string().nonempty(),
+  nextPublicSupabaseAnonKey: z.string().nonempty(),
+  supabaseServiceRoleKey: z.string().nonempty(),
   vercelEnv: z.string().default("localhost"),
   host: z.string().default("http://localhost:3000"),
 });
@@ -34,6 +37,9 @@ const processEnv: Record<
   stripePublicKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+  nextPublicSupabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  nextPublicSupabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
   vercelEnv: process.env.VERCEL_ENV,
   host: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined
 };
