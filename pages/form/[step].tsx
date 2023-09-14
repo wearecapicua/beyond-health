@@ -150,14 +150,14 @@ const FormStep = ({ formData, products }: StepProps) => {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
-  if (!session?.user) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
+  // if (!session?.user) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
   
   const step = context.params?.step?.toString() ?? ""
  
@@ -172,7 +172,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       formData: {
         step
       },
-      user: session.user,
+      // user: session.user,
     },
   };
 }

@@ -18,7 +18,6 @@ export default function StepEleven() {
     const stages = product.metadata.Stage.split(', ');
     return stages.includes(formStore.stage);
   });
-  console.log("pp", errors)
 
   const customValidate = () => {
     setValue("product", {

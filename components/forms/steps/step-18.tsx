@@ -15,7 +15,6 @@ export default function StepEighteen() {
   const [productOptions, setproductOptions] = useState<StripeProduct>();
   const { productStore } = useProductStore()
   const [useShipping, setUseShipping] = useState<boolean>(false);
-  console.log({productOptions})
 
   useEffect(() => {
     setproductOptions(formStore.product)

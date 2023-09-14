@@ -26,8 +26,6 @@ export default function FormInput({
     register,
     formState: { errors },
   } = useFormContext();
-
-  console.log("r",!!errors)
  
   const errorMsg = "This field is required"
   return (
