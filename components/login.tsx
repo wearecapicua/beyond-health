@@ -12,6 +12,8 @@ const LoginButton = (props: Props) => {
 
   if (session.status === "authenticated" && session.data?.user) {
 
+    console.log("sess", session)
+
     const handlePortalClick = async () => {
       setLoading(true);
       const portalUrl = await createCustomerPortalSession();

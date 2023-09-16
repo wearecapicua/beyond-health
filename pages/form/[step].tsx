@@ -12,7 +12,6 @@ import { FormProvider, Resolver, SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { schema, IFormProps } from "utils/forms/form-schema";
 import { formSteps, FormStep, stepExists } from "components/forms/steps/form-steps";
-import useRepository from "lib/hooks/useRepository";
 import { useFormStore } from 'store/useFormStore';
 import { useProductStore } from 'store/useProductStore';
 import env from "lib/env";
@@ -20,15 +19,13 @@ import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
+import { supabaseClient } from "lib/supabaseClient"; 
+import { useSession } from "next-auth/react";
+
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-// const endpoints = useRepository(({ jotform }) => ({
-//   submissions: jotform.submissions,
-//   updateJotformId: jotform.updateJotformId
-// }));
-
-const FormStep = ({ formData, products }: StepProps) => {
+const FormStep = ({ formData, products, supabaseAccessToken, userId }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
@@ -41,6 +38,21 @@ const FormStep = ({ formData, products }: StepProps) => {
   const { updateProductStore } = useProductStore()
 
   console.log("state", formStore)
+
+console.log("sbb", userId)
+ 
+  useEffect(() => {
+    async function getProfile() {
+      const supabase = supabaseClient(supabaseAccessToken); // Call the function to get the Supabase client instance
+      const { data } = await supabase
+        .from('profile')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+      console.log("nmnm", data);
+    }
+    getProfile();
+}, [supabaseClient]);
 
   useEffect(() => {
     updateProductStore(products.productsWithPrices)
@@ -100,26 +112,15 @@ const FormStep = ({ formData, products }: StepProps) => {
   }
 
   const handleSave = async (data: any) => {
-    const isStepValid = await trigger();
+    
+    // const isStepValid = await trigger();
 
-    if (isStepValid) {
-      updateFormStore(data);
+    // if (isStepValid) {
+    //   updateFormStore(data);
 
-      const updatedData = { ...formStore, ...data};
+    //   const updatedData = { ...formStore, ...data};
    
-      //endpoints.submissions.updateSubmission('5697342136227258271', updatedData)
-       //endpoints.submissions.createSubmission(updatedData)
-      //endpoints.updateJotformId('0617eaea-86f6-4494-acbd-086ffb5bd774', '5697342136227258271')
-      // .then(
-      //   (data: any) => {
-      //     console.log('Form submitted successfully:', data);
-      // })
-      // .catch(
-      //   (error: any) => {
-      //     console.error('Error submitting form:', error);
-      //   }
-      // );
-    }
+    // }
   }
 
   return (
@@ -149,15 +150,17 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
+  console.log("sss", session)
+  const { supabaseAccessToken } = session;
 
-  // if (!session?.user) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
   
   const step = context.params?.step?.toString() ?? ""
  
@@ -172,7 +175,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       formData: {
         step
       },
-      // user: session.user,
+      user: session.user,
+      userId: session.user.id,
+      supabaseAccessToken: supabaseAccessToken
     },
   };
 }
