@@ -20,7 +20,7 @@ import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
 import { supabaseClient } from "lib/supabaseClient"; 
-import { useSession } from "next-auth/react";
+import { getProfileData } from "lib/supabaseUtils";
 
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
@@ -38,21 +38,14 @@ const FormStep = ({ formData, products, supabaseAccessToken, userId }: StepProps
   const { updateProductStore } = useProductStore()
 
   console.log("state", formStore)
-
-console.log("sbb", userId)
  
   useEffect(() => {
-    async function getProfile() {
-      const supabase = supabaseClient(supabaseAccessToken); // Call the function to get the Supabase client instance
-      const { data } = await supabase
-        .from('profile')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-      console.log("nmnm", data);
+    async function fetchData() {
+      const profileData = await getProfileData();
+      console.log("profile", profileData);
     }
-    getProfile();
-}, [supabaseClient]);
+    fetchData();
+}, []);
 
   useEffect(() => {
     updateProductStore(products.productsWithPrices)
