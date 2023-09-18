@@ -14,13 +14,13 @@ export default function StepOne() {
       <FormContainer>
         <FormInput
           label="First Name*"
-          id="firstName"
+          id="first_name"
           type="text"
           defaultValue={formStore.firstName} 
         />
         <FormInput
           label="Last Name*"
-          id="lastName"
+          id="last_name"
           type="text"
           defaultValue={formStore.lastName} 
         />

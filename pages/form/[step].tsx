@@ -19,13 +19,13 @@ import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
-import { supabaseClient } from "lib/supabaseClient"; 
 import { getProfileData } from "lib/supabaseUtils";
+import { sendUpdatedData } from "lib/supabaseUtils";
 
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const FormStep = ({ formData, products, supabaseAccessToken, userId }: StepProps) => {
+const FormStep = ({ formData, products }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
@@ -106,14 +106,15 @@ const FormStep = ({ formData, products, supabaseAccessToken, userId }: StepProps
 
   const handleSave = async (data: any) => {
     
-    // const isStepValid = await trigger();
+    const isStepValid = await trigger();
 
-    // if (isStepValid) {
-    //   updateFormStore(data);
+    if (isStepValid) {
+      updateFormStore(data);
 
-    //   const updatedData = { ...formStore, ...data};
+      const updatedData = { ...formStore, ...data};
+      await sendUpdatedData(updatedData);
    
-    // }
+    }
   }
 
   return (
@@ -143,7 +144,7 @@ const FormStep = ({ formData, products, supabaseAccessToken, userId }: StepProps
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
-  console.log("sss", session)
+  
   const { supabaseAccessToken } = session;
 
   if (!session?.user) {

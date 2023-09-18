@@ -7,8 +7,8 @@ export interface IFormProps {
 
 export const schema = {
   'step-1': z.object({
-    firstName: z.string().min(1, "First name is required").max(100),
-    lastName: z.string().min(1, "Last name is required").max(100),
+    first_name: z.string().min(1, "First name is required").max(100),
+    last_name: z.string().min(1, "Last name is required").max(100),
   }),
  'step-2': z.object({
     gender: z.string().refine(value => !!value)

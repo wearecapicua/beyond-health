@@ -1,19 +1,16 @@
-export async function getProfileData() {
-  try {
-    const response = await fetch('/api/get-profile', {
-      method: 'POST',
-    });
+import { fetchPostJSON } from "lib/http";
 
-    if (response.ok) {
-      const profileData = await response.json();
-      console.log("dds", profileData)
-      return profileData;
-    } else {
-      console.error('Error:', response.statusText);
-      return null;
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    return null;
-  }
+export async function getProfileData() {
+  const response = await fetchPostJSON('/api/get-profile', {
+    method: 'POST',
+  });
+  return response;
+}
+
+export async function sendUpdatedData(updatedData: any) {
+    const response = await fetchPostJSON('/api/update-profile', {
+      method: 'PUT',
+      updatedData
+    });
+  return response
 }
