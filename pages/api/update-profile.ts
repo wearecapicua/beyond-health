@@ -11,17 +11,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!session?.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
+ 
   const { supabaseAccessToken } = session;
   const userId = session.user.id
   const supabase = supabaseClient(supabaseAccessToken);
 
-
   if (req.method === 'PUT') {
-    console.log("iss running")
+    console.log("gg", userId)
     try {
       const { data, error } = await supabase
       .from('profile')
-      .update(updatedData)
+      .update(
+        updatedData
+      )
       .eq('user_id', userId);
 
       if (error) {

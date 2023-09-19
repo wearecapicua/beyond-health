@@ -15,9 +15,9 @@ export default function StepFive() {
       <FormContainer>
         <FormInput
           label="Phone Number*"
-          id="phoneNumber"
+          id="phone_number"
           type="text"
-          defaultValue={formStore.phoneNumber}
+          defaultValue={formStore.phone_number}
         />
       </FormContainer>
     </>

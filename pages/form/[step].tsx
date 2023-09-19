@@ -21,6 +21,7 @@ import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-pa
 import type Stripe from "stripe";
 import { getProfileData } from "lib/supabaseUtils";
 import { sendUpdatedData } from "lib/supabaseUtils";
+import { filterFormData } from "utils/forms/prop-filter";
 
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
@@ -60,7 +61,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   
   const { handleSubmit, trigger } = methods;
 
-  const handleCheckout = async (billingAddress: any) => {
+  const handleCheckout = async (billing_address: any) => {
     if (!stripe) {
       console.error("Failed to load Stripe.js");
       return;
@@ -71,8 +72,8 @@ const FormStep = ({ formData, products }: StepProps) => {
     >("/api/checkout_sessions/capture-payment", {
       productId: formStore.product.default_price,
       amount: formStore.product.price,
-      billingAddress: billingAddress || formStore.billingAddress,
-      shippingAddress: formStore.shippingAddress,
+      billingAddress: billing_address || formStore.billing_address,
+      shippingAddress: formStore.shipping_address,
       name: `${formStore.firstName} ${formStore.lastName}`
     })
     const { error } = await stripe.redirectToCheckout({
@@ -89,7 +90,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   }
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const isStepValid = await trigger();
-    const billingAddress = data.billingAddress
+    const billing_address = data.billing_address
     console.log("data", data)
 
     if (isStepValid && activeStep !== "step-18") {
@@ -100,7 +101,7 @@ const FormStep = ({ formData, products }: StepProps) => {
       router.push(`/form/${next}`);
     } if (isStepValid && activeStep === "step-18") {
       updateFormStore(data);
-      handleCheckout(billingAddress)
+      handleCheckout(billing_address)
     }
   }
 
@@ -110,10 +111,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 
     if (isStepValid) {
       updateFormStore(data);
-
       const updatedData = { ...formStore, ...data};
-      await sendUpdatedData(updatedData);
-   
+      const filteredData = filterFormData(updatedData )
+      await sendUpdatedData(filteredData);
     }
   }
 

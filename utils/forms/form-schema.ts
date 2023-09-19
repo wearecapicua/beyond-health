@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export interface IFormProps {
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 export const schema = {
@@ -17,13 +17,13 @@ export const schema = {
     birthdate: z.string().refine(value => !!value)
   }),
   'step-4': z.object({
-    residence: z.string().refine(value => !!value)
+    country: z.string().refine(value => !!value)
   }),
   'step-5': z.object({
-    phoneNumber: z.string().min(1, "Phone number is required").max(30),
+    phone_number: z.string().min(1, "Phone number is required").max(30),
   }),
   'step-6': z.object({
-    noticeHairLoss: z.string().refine(value => !!value)
+    notice_hair_loss: z.string().refine(value => !!value)
   }),
   'step-7': z.object({
     medications: z.string().refine(value => !!value)
@@ -48,7 +48,7 @@ export const schema = {
    // product: z.string().refine(value => !!value)
   }),
   'step-13': z.object({
-    shippingAddress: z.object({
+    shipping_address: z.object({
       line1: z.string().min(1, "Street address is required").max(100),
       line2: z.string().min(1, "Address is required").max(100),
       city: z.string().min(1, "City is required").max(100),
@@ -70,7 +70,7 @@ export const schema = {
     })
   }),
   'step-16': z.object({
-    hasHealthCard: z.string(),
+    has_health_card: z.string(),
     healthCard: z.nullable(
       z.object({
         fileUrl: z.union([z.string(), z.null()]).optional(),
@@ -79,7 +79,7 @@ export const schema = {
     ),
   }),
   'step-17': z.object({
-    hasInsurance: z.string(),
+    has_insurance: z.string(),
     insurance: z.nullable(
       z.object({
         fileUrl: z.union([z.string(), z.null()]).optional(),
@@ -88,7 +88,7 @@ export const schema = {
     ),
   }),
   'step-18': z.object({
-    billingAddress: z.object({
+    billing_address: z.object({
       line1: z.string().min(1, "Street address is required").max(100),
       line2: z.string().min(1, "Address is required").max(100),
       city: z.string().min(1, "City is required").max(100),

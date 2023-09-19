@@ -29,23 +29,23 @@ export default function StepSeventeen() {
       });
     }
     if (formStore.insurance?.fileName) {
-      setValue("hasInsurance", "yes")
+      setValue("has_insurance", "yes")
       setSelected("yes")
     } else {
-      setValue("hasInsurance", formStore.hasInsurance)
-      setSelected(formStore.hasInsurance)
+      setValue("has_insurance", formStore.has_insurance)
+      setSelected(formStore.has_insurance)
     }
   }, [formStore.insurance]);
 
   const customValidateYes = () => {
     setSelected("yes")
-    setValue("hasInsurance", "yes")
+    setValue("has_insurance", "yes")
   }
 
   const customValidateNo = () => {
     setSelected("no")
     setValue("insurance", null);
-    setValue("hasInsurance", "no")
+    setValue("has_insurance", "no")
   }
 
   return (
@@ -66,7 +66,7 @@ export default function StepSeventeen() {
           <FormSelectorButton
             label="Yes, I do have insurance"
             value="yes"
-            groupId="hasInsurance"
+            groupId="has_insurance"
             selected={selected}
             setSelected={setSelected}
             customValidate={customValidateYes}

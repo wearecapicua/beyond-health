@@ -16,9 +16,9 @@ export default function StepFour() {
   ];
 
   useEffect(() => {
-    if (!selected && formStore.residence) {
-      setSelected(formStore.residence);
-      setValue("residence", formStore.residence)
+    if (!selected && formStore.country) {
+      setSelected(formStore.country);
+      setValue("country", formStore.country)
     }
   }, [formStore.gender]);
 
@@ -34,7 +34,7 @@ export default function StepFour() {
               key={option.label}
               label={option.label}
               value={option.value}
-              groupId="residence"
+              groupId="country"
               selected={selected}
               setSelected={setSelected}
             />

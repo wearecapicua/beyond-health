@@ -29,23 +29,23 @@ export default function StepSixteen() {
       });
     }
     if (formStore.healthCard?.fileName) {
-      setValue("hasHealthCard", "yes")
+      setValue("has_health_card", "yes")
       setSelected("yes")
     } else {
-      setValue("hasHealthCard", formStore.hasHealthCard)
-      setSelected(formStore.hasHealthCard)
+      setValue("has_health_card", formStore.has_health_card)
+      setSelected(formStore.has_health_card)
     }
   }, [formStore.healthCard]);
 
   const customValidateYes = () => {
     setSelected("yes")
-    setValue("hasHealthCard", "yes")
+    setValue("has_health_card", "yes")
   }
 
   const customValidateNo = () => {
     setSelected("no")
     setValue("healthCard", null);
-    setValue("hasHealthCard", "no")
+    setValue("has_health_card", "no")
   }
 
   return (
@@ -66,7 +66,7 @@ export default function StepSixteen() {
           <FormSelectorButton
             label="Yes, I do have a Provincial Health Card"
             value="yes"
-            groupId="hasHealthCard"
+            groupId="has_health_card"
             selected={selected}
             setSelected={setSelected}
             customValidate={customValidateYes}

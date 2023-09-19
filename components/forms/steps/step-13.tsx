@@ -16,43 +16,43 @@ export default function StepOne() {
       <FormContainer wide>
         <FormInput
           label="Street Address*"
-          id="shippingAddress.line1"
+          id="shipping_address.line1"
           type="text"
-          defaultValue={formStore.shippingAddress?.line1}
+          defaultValue={formStore.shipping_address?.line1}
         />
         <FormInput
           label="Address Line 2*"
-          id="shippingAddress.line2"
+          id="shipping_address.line2"
           type="text"
-          defaultValue={formStore.shippingAddress?.line2}
+          defaultValue={formStore.shipping_address?.line2}
         />
         <div className="grid grid-cols-2 gap-4">
           <FormInput
             label="City*"
-            id="shippingAddress.city"
+            id="shipping_address.city"
             type="text"
-            defaultValue={formStore.shippingAddress?.city} 
+            defaultValue={formStore.shipping_address?.city} 
           />
           <FormInput
             label="State / Province*"
-            id="shippingAddress.state"
+            id="shipping_address.state"
             type="text"
-            defaultValue={formStore.shippingAddress?.state} 
+            defaultValue={formStore.shipping_address?.state} 
           />
         </div>
         <FormInput
           label="ZIP / Postal Code*"
-          id="shippingAddress.postal_code"
+          id="shipping_address.postal_code"
           type="text"
-          defaultValue={formStore.shippingAddress?.postal} 
+          defaultValue={formStore.shipping_address?.postal} 
         />
         <p className="pt-2.5">{"Delivery Instructions (optional)"}</p>
         <textarea
-          id="deliveryInstructions"
+          id="shipping_address.delivery_instructions"
           rows={6}
-          defaultValue={formStore.deliveryInstructions}
+          defaultValue={formStore.shipping_address?.delivery_instructions}
           className="block w-full rounded-3xl border-0 mt-2 py-3 px-6 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          {...register("deliveryInstructions")}
+          {...register("shipping_address.delivery_instructions")}
         />
       </FormContainer>
     </>

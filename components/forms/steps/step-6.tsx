@@ -19,11 +19,11 @@ export default function StepSix() {
   ]
 
   useEffect(() => {
-    if (!selected && formStore.noticeHairLoss) {
-      setSelected(formStore.noticeHairLoss);
-      setValue("noticeHairLoss", formStore.noticeHairLoss)
+    if (!selected && formStore.notice_hair_loss) {
+      setSelected(formStore.notice_hair_loss);
+      setValue("notice_hair_loss", formStore.notice_hair_loss)
     }
-  }, [formStore.noticeHairLoss]);
+  }, [formStore.notice_hair_loss]);
 
   return (
     <>
@@ -36,12 +36,12 @@ export default function StepSix() {
             key={`option-${index}`}
             label={text}
             value={text}
-            groupId="noticeHairLoss"
+            groupId="notice_hair_loss"
             selected={selected}
             setSelected={setSelected}
           />
         ))}
-        {!!errors.noticeHairLoss && <p className="text-red-500 text-sm text-center">Please select one</p>}
+        {!!errors.notice_hair_loss && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </FormContainer>
     </>
   );
