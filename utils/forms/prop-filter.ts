@@ -20,8 +20,10 @@ const expectedProperties: string[] = [
 export const filterFormData = <T>(obj: T): Partial<T> => {
   const filteredObject: Partial<T> = {};
   for (const prop of expectedProperties) {
-    if (obj.hasOwnProperty(prop)) {
-      filteredObject[prop] = obj[prop];
+    // Use a type assertion to inform TypeScript that obj is of type Record<string, unknown>
+    if ((obj as Record<string, unknown>).hasOwnProperty(prop)) {
+      /* @ts-ignore */
+      filteredObject[prop as keyof T] = obj[prop];
     }
   }
   return filteredObject;

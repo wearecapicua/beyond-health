@@ -19,10 +19,9 @@ import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
-import { getProfileData } from "lib/supabaseUtils";
+import { getProfileData, uploadImages, getImages } from "lib/supabaseUtils";
 import { sendUpdatedData } from "lib/supabaseUtils";
 import { filterFormData } from "utils/forms/prop-filter";
-
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -88,10 +87,16 @@ const FormStep = ({ formData, products }: StepProps) => {
     setActiveStep(next)
     router.push(`/form/${next}`);
   }
+
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const isStepValid = await trigger();
     const billing_address = data.billing_address
     console.log("data", data)
+
+    if (isStepValid && activeStep === 'step-14') {
+      uploadImages(data.picture)
+      //getImages()
+    }
 
     if (isStepValid && activeStep !== "step-18") {
       updateFormStore(data);
@@ -106,7 +111,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   }
 
   const handleSave = async (data: any) => {
-    
+
     const isStepValid = await trigger();
 
     if (isStepValid) {
@@ -134,6 +139,7 @@ const FormStep = ({ formData, products }: StepProps) => {
               }
               <FormButton text="Save for later" type="button" style="outline" onClick={handleSubmit(handleSave)}/>
               {activeStep !== "step-1" && <FormButton text="Go Back" type="button" onClick={prevPage} />}
+              <img src="https://xwnseddwrupggpwzwqin.supabase.co/storage/v1/object/sign/profile-images/pictures/30fa0955-9073-4b4f-a2fb-725fd561bc05/cat.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm9maWxlLWltYWdlcy9waWN0dXJlcy8zMGZhMDk1NS05MDczLTRiNGYtYTJmYi03MjVmZDU2MWJjMDUvY2F0LmpwZyIsImlhdCI6MTY5NTIzNDA4MCwiZXhwIjoxNjk1MjM0MTQwfQ.jfMBDU-AJR_6FXwUMYORvH2OW-pW9p0yzhFxIzto7Oc"/>
             </div>
           </FormContainer>
         </form>
@@ -144,8 +150,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
-  
-  const { supabaseAccessToken } = session;
 
   if (!session?.user) {
     return {
@@ -170,8 +174,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         step
       },
       user: session.user,
-      userId: session.user.id,
-      supabaseAccessToken: supabaseAccessToken
+      userId: session.user.id
     },
   };
 }

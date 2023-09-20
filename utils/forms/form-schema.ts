@@ -59,6 +59,7 @@ export const schema = {
   }),
   'step-14': z.object({
     picture: z.object({
+      fileObject: z.record(z.unknown()).optional(),
       fileUrl: z.string(),
       fileName: z.string(),
     })

@@ -14,7 +14,9 @@ export async function fetchPostJSON<ReqBody extends {}, Response = unknown>(
   url: string,
   data?: ReqBody
 ) {
-  const { method } = data as any
+
+  const method = data?.method || 'GET'
+
   try {
     // Default options are marked with *
     const response = await fetch(url, {

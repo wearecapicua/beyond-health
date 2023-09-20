@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-export const supabaseClient = (supabaseAccessToken) => {
+export const supabaseClient = (supabaseAccessToken: string) => {
 
   return createClient(
     /* @ts-ignore */

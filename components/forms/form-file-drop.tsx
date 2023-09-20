@@ -42,14 +42,33 @@ export default function StepFourteen({ setFileData, fileData, fieldName }: FormF
   
     file.onload = function() {
       setFileData({
-        /* @ts-ignore */
         fileUrl: file.result,
         fileName: acceptedFiles[0]?.name,
+        fileObject: acceptedFiles[0]
       });
-      setValue(fieldName, { fileName: acceptedFiles[0]?.name, fileUrl: file.result })
+      const convertedBlob = new Blob([acceptedFiles[0]], { type: acceptedFiles[0].type });
+      setValue(fieldName, { fileName: acceptedFiles[0]?.name, fileUrl: file.result, fileObject: convertedBlob })
     }
     file.readAsDataURL(acceptedFiles[0])
   }, [])
+
+    // file.onload = function() {
+    //   // Convert the File to an ArrayBuffer
+    //   acceptedFiles[0].arrayBuffer().then((arrayBuffer) => {
+    //     setFileData({
+    //       fileUrl: file.result,
+    //       fileName: acceptedFiles[0]?.name,
+    //       fileObject: acceptedFiles[0]
+    //     });
+
+    //     // Use the ArrayBuffer
+    //     setValue(fieldName, {
+    //       fileName: acceptedFiles[0]?.name,
+    //       fileUrl: file.result,
+    //       fileObject: arrayBuffer  // Store the image as an ArrayBuffer
+    //     });
+    //   });
+    // };
 
   const undoPhoto = () => {
     setFileData(null);
