@@ -88,37 +88,39 @@ const FormStep = ({ formData, products }: StepProps) => {
     router.push(`/form/${next}`);
   }
 
+  const submitFormData = async (data: any) => {
+    updateFormStore(data);
+      const updatedData = { ...formStore, ...data, form_step: activeStep};
+      console.log("ss", updatedData)
+      const filteredData = filterFormData(updatedData )
+      await sendUpdatedData(filteredData);
+  }
+
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const isStepValid = await trigger();
     const billing_address = data.billing_address
     console.log("data", data)
 
-    if (isStepValid && activeStep === 'step-14') {
-      uploadImages(data.picture)
-      //getImages()
-    }
+    // if (isStepValid && activeStep === 'step-14') {
+    //   uploadImages(data.picture)
+    //   //getImages()
+    // }
 
     if (isStepValid && activeStep !== "step-18") {
       updateFormStore(data);
-      
       const next = incrementString(formData.step)
       setActiveStep(next)
       router.push(`/form/${next}`);
     } if (isStepValid && activeStep === "step-18") {
-      updateFormStore(data);
+      submitFormData(data)
       handleCheckout(billing_address)
     }
   }
 
   const handleSave = async (data: any) => {
-
     const isStepValid = await trigger();
-
     if (isStepValid) {
-      updateFormStore(data);
-      const updatedData = { ...formStore, ...data};
-      const filteredData = filterFormData(updatedData )
-      await sendUpdatedData(filteredData);
+      submitFormData(data)
     }
   }
 
