@@ -19,10 +19,12 @@ import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
-import { getProfileData, createUserProfile, uploadImages, getImages } from "lib/supabaseUtils";
+import { createUserProfile, uploadImages, getImages } from "lib/supabaseUtils";
 import { sendUpdatedData } from "lib/supabaseUtils";
 import { filterFormData } from "utils/forms/prop-filter";
 import { useFormStatusStore } from 'store/useFormStatusStore';
+import Snackbar from 'components/snackbar';
+
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -31,6 +33,9 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
   const stripe = useStripe();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const numericSplit = activeStep.replace("step-", "")
   const numericStep = parseInt(numericSplit, 10)
@@ -86,10 +91,15 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
     updateFormStore(data);
     const updatedData = { ...formStore, ...data, form_step: activeStep }
     const filteredData = filterFormData(updatedData)
-    if (formStep) {
-      await sendUpdatedData(filteredData)
-    } else {
-      await createUserProfile(filteredData)
+    try {
+      if (formStep) {
+        await sendUpdatedData(filteredData)
+      } else {
+        await createUserProfile(filteredData)
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      return false;
     }
   }
 
@@ -109,8 +119,10 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
       setActiveStep(next)
       router.push(`/form/${next}`);
     } if (isStepValid && activeStep === "step-18") {
-      submitFormData(data)
-      handleCheckout(billing_address)
+      const isSubmitSuccess = await submitFormData(data);
+      if (isSubmitSuccess) {
+        handleCheckout(billing_address)
+      }
     }
   }
 
@@ -118,6 +130,16 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
     const isStepValid = await trigger();
     if (isStepValid) {
       submitFormData(data)
+      const isSubmitSuccess = await submitFormData(data);
+      if (isSubmitSuccess) {
+        console.log("sdhakshdj")
+        setSnackbarMessage('Form saved successfully');
+        setSnackbarOpen(true);
+        setTimeout(() => {
+          setSnackbarOpen(false);
+          router.push('/')
+        }, 3000);
+      }
     }
   }
 
@@ -143,6 +165,15 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
           </FormContainer>
         </form>
       </FormProvider>
+      {snackbarOpen && (
+        <Snackbar
+          message={snackbarMessage}
+          onClose={() => {
+            setSnackbarOpen(false);
+            router.push('/')
+          }}
+        />
+      )}
     </Layout>
   );
 };

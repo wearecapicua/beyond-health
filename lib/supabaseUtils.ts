@@ -23,6 +23,7 @@ export async function sendUpdatedData(updatedData: any) {
     method: 'PUT',
     updatedData
   });
+  console.log(response)
   return response
 }
 
@@ -31,6 +32,7 @@ export async function createUserProfile(updatedData: any) {
     method: 'POST',
     updatedData
   });
+  console.log(response)
   return response
 }
 
