@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from 'next/image'
 import LoginButton from './login';
+import { useFormStatusStore } from 'store/useFormStatusStore';
 
 type NavbarProps = {
   fullPage: boolean | undefined;
@@ -12,6 +13,8 @@ type NavbarProps = {
 export default function Navbar({ fullPage }: NavbarProps) {
   const session = useSession();
   const userLoggedIn = session.status === "authenticated" && session.data?.user
+  const { formStep } = useFormStatusStore()
+  
   return (
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
@@ -48,7 +51,18 @@ export default function Navbar({ fullPage }: NavbarProps) {
                   </Link>
                   <LoginButton />
                 </div>
-                {!fullPage && 
+                {!fullPage && userLoggedIn && formStep?.form_step ?
+                  <div className="flex-shrink-0">
+                    <a href={`/form/${formStep.form_step}`}>
+                      <button
+                        type="button"
+                        className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        Resume
+                      </button>
+                    </a>
+                  </div> 
+                  : !fullPage ?
                   <div className="flex-shrink-0">
                     <a href={userLoggedIn ? "/form/step-1" : "/login"}>
                       <button
@@ -58,7 +72,8 @@ export default function Navbar({ fullPage }: NavbarProps) {
                         Start Now
                       </button>
                     </a>
-                  </div>
+                  </div> 
+                  : null
                 }
               </div>
               <div className="-mr-2 flex items-center sm:hidden">

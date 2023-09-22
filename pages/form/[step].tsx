@@ -42,8 +42,8 @@ const FormStep = ({ formData, products }: StepProps) => {
   useEffect(() => {
     async function fetchData() {
       const profileData = await getProfileData();
-      const formStatus = await getFormStatus();
-      console.log("profile", formStatus);
+      //const formStatus = await getFormStatus();
+      console.log("profile", profileData);
     }
     fetchData();
   }, []);
