@@ -26,7 +26,7 @@ import { useFormStatusStore } from 'store/useFormStatusStore';
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const FormStep = ({ formData, products }: StepProps) => {
+const FormStep = ({ formData, products, userId }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
@@ -40,15 +40,6 @@ const FormStep = ({ formData, products }: StepProps) => {
   const { updateProductStore } = useProductStore()
 
   console.log("state", formStore)
- 
-  useEffect(() => {
-    async function fetchData() {
-      const profileData = await getProfileData();
-      //const formStatus = await getFormStatus();
-      console.log("profile", profileData);
-    }
-    fetchData();
-  }, []);
 
   useEffect(() => {
     updateProductStore(products.productsWithPrices)

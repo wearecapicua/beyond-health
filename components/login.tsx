@@ -10,11 +10,9 @@ const LoginButton = (props: Props) => {
   const session = useSession();
   const [loading, setLoading] = useState(false);
   const signOut = async () => {
-    // Clear the local storage
     localStorage.removeItem('form-status-store');
     localStorage.removeItem('form-store');
-
-    await nextAuthSignOut({ redirect: false })
+    await nextAuthSignOut({ callbackUrl: '/' })
   };
 
   if (session.status === "authenticated" && session.data?.user) {
