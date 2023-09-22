@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Avatar from "components/avatar"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, signOut as nextAuthSignOut, useSession } from "next-auth/react"
 import React from "react"
 import { createCustomerPortalSession } from "lib/stripeUtils"
 
@@ -9,6 +9,13 @@ type Props = {};
 const LoginButton = (props: Props) => {
   const session = useSession();
   const [loading, setLoading] = useState(false);
+  const signOut = async () => {
+    // Clear the local storage
+    localStorage.removeItem('form-status-store');
+    localStorage.removeItem('form-store');
+
+    await nextAuthSignOut({ redirect: false })
+  };
 
   if (session.status === "authenticated" && session.data?.user) {
 

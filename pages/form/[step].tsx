@@ -19,9 +19,10 @@ import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
-import { getProfileData, getFormStatus, uploadImages, getImages } from "lib/supabaseUtils";
+import { getProfileData, createUserProfile, uploadImages, getImages } from "lib/supabaseUtils";
 import { sendUpdatedData } from "lib/supabaseUtils";
 import { filterFormData } from "utils/forms/prop-filter";
+import { useFormStatusStore } from 'store/useFormStatusStore';
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -33,7 +34,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 
   const numericSplit = activeStep.replace("step-", "")
   const numericStep = parseInt(numericSplit, 10)
-
+  
+  const { formStep } = useFormStatusStore()
   const { formStore, updateFormStore } = useFormStore()
   const { updateProductStore } = useProductStore()
 
@@ -91,9 +93,13 @@ const FormStep = ({ formData, products }: StepProps) => {
 
   const submitFormData = async (data: any) => {
     updateFormStore(data);
-      const updatedData = { ...formStore, ...data, form_step: activeStep }
-      const filteredData = filterFormData(updatedData)
+    const updatedData = { ...formStore, ...data, form_step: activeStep }
+    const filteredData = filterFormData(updatedData)
+    if (formStep) {
       await sendUpdatedData(filteredData)
+    } else {
+      await createUserProfile(filteredData)
+    }
   }
 
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
