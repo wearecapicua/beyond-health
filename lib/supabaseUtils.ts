@@ -1,10 +1,21 @@
-import { fetchPostJSON } from "lib/http";
+import { fetchPostJSON, fetchGetJSON } from "lib/http";
 
 export async function getProfileData() {
-  const response = await fetchPostJSON('/api/get-profile', {
-    method: 'POST',
-  });
+  const response = await fetchGetJSON('/api/get-profile');
+  console.log(response)
   return response;
+}
+
+export async function getFormStatus() {
+  const response = await fetchGetJSON('/api/get-form-status');
+  console.log(response)
+  return response;
+}
+
+export async function getImages() {
+  const response = await fetchGetJSON('/api/upload-images');
+  console.log(response)
+return response
 }
 
 export async function sendUpdatedData(updatedData: any) {
@@ -15,10 +26,12 @@ export async function sendUpdatedData(updatedData: any) {
   return response
 }
 
-export async function getImages() {
-  const response = await fetchPostJSON('/api/upload-images');
-  console.log(response)
-return response
+export async function createUserProfile(updatedData: any) {
+  const response = await fetchPostJSON('/api/update-profile', {
+    method: 'POST',
+    updatedData
+  });
+  return response
 }
 
 export async function uploadImages(file: any) {

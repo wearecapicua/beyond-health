@@ -12,15 +12,15 @@ export async function fetchGetJSON<Response extends unknown>(url: string) {
 
 export async function fetchPostJSON<ReqBody extends {}, Response = unknown>(
   url: string,
-  data?: ReqBody
+  data?: any
 ) {
 
-  const method = data?.method || 'GET'
+  const { method } = data
 
   try {
     // Default options are marked with *
     const response = await fetch(url, {
-      method: method, // *GET, POST, PUT, DELETE, etc.
+      method: method, // POST, PUT, DELETE
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, *same-origin, omit

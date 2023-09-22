@@ -19,7 +19,7 @@ import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
 import type Stripe from "stripe";
-import { getProfileData, uploadImages, getImages } from "lib/supabaseUtils";
+import { getProfileData, getFormStatus, uploadImages, getImages } from "lib/supabaseUtils";
 import { sendUpdatedData } from "lib/supabaseUtils";
 import { filterFormData } from "utils/forms/prop-filter";
 
@@ -42,10 +42,11 @@ const FormStep = ({ formData, products }: StepProps) => {
   useEffect(() => {
     async function fetchData() {
       const profileData = await getProfileData();
-      console.log("profile", profileData);
+      const formStatus = await getFormStatus();
+      console.log("profile", formStatus);
     }
     fetchData();
-}, []);
+  }, []);
 
   useEffect(() => {
     updateProductStore(products.productsWithPrices)
@@ -90,10 +91,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 
   const submitFormData = async (data: any) => {
     updateFormStore(data);
-      const updatedData = { ...formStore, ...data, form_step: activeStep};
-      console.log("ss", updatedData)
-      const filteredData = filterFormData(updatedData )
-      await sendUpdatedData(filteredData);
+      const updatedData = { ...formStore, ...data, form_step: activeStep }
+      const filteredData = filterFormData(updatedData)
+      await sendUpdatedData(filteredData)
   }
 
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {

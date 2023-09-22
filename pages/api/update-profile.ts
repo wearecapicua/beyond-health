@@ -12,16 +12,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   const { supabaseAccessToken } = session;
   const userId = session.user.id
-  const supabase = supabaseClient(supabaseAccessToken);
+  const supabase = supabaseClient(supabaseAccessToken)
 
   if (req.method === 'PUT') {
     try {
       const { data, error } = await supabase
-      .from('profile')
-      .update(
-        updatedData
-      )
-      .eq('user_id', userId);
+        .from('profile')
+        .update(updatedData)
+        .eq('user_id', userId);
 
       if (error) {
         throw error;
@@ -30,6 +28,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json(data);
     } catch (error) {
       console.error('Error updating profile:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  } else if (req.method === 'POST') {
+    try {
+      // Create a new profile using the session user's ID
+      const { data, error } = await supabase
+        .from('profile')
+        .upsert([
+          {
+            user_id: userId,
+            ...updatedData
+          },
+        ]);
+
+      if (error) {
+        throw error;
+      }
+
+      return res.status(200).json(data);
+    } catch (error) {
+      console.error('Error creating profile:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
