@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw error;
       }
 
-      return res.status(200).json(data);
+      return res.status(200).json(true)
     } catch (error) {
       console.error('Error updating profile:', error);
       return res.status(500).json({ error: 'Internal server error' });
@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw error;
       }
 
-      return res.status(200).json(data);
+      return res.status(200).json(true);
     } catch (error) {
       console.error('Error creating profile:', error);
       return res.status(500).json({ error: 'Internal server error' });

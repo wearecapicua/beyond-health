@@ -1,27 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
-type SnackbarProps = {
-  message: string;
-  onClose: () => void;
-}
-
-const Snackbar = ({ message, onClose }: SnackbarProps) => {
-  const [open, setOpen] = useState(true);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setOpen(false);
-  //     onClose();
-  //   }, 3000);
-
-  //   return () => clearTimeout(timer);
-  // }, [onClose]);
-
-  return open ? (
-    <div className="snackbar">
-      <p>{message}</p>
-    </div>
-  ) : null;
+const Snackbar = () => {
+  return (
+    <ToastContainer
+      position="bottom-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      theme="light"
+    />
+  );
 };
 
-export default Snackbar;
+export default Snackbar

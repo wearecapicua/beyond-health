@@ -23,8 +23,8 @@ import { createUserProfile, uploadImages, getImages } from "lib/supabaseUtils";
 import { sendUpdatedData } from "lib/supabaseUtils";
 import { filterFormData } from "utils/forms/prop-filter";
 import { useFormStatusStore } from 'store/useFormStatusStore';
-import Snackbar from 'components/snackbar';
-
+import { toast } from 'react-toastify';
+import Snackbar from "components/snackbar";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -33,9 +33,6 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
   const stripe = useStripe();
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const numericSplit = activeStep.replace("step-", "")
   const numericStep = parseInt(numericSplit, 10)
@@ -93,9 +90,9 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
     const filteredData = filterFormData(updatedData)
     try {
       if (formStep) {
-        await sendUpdatedData(filteredData)
+        return await sendUpdatedData(filteredData)
       } else {
-        await createUserProfile(filteredData)
+        return await createUserProfile(filteredData)
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -121,7 +118,11 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
     } if (isStepValid && activeStep === "step-18") {
       const isSubmitSuccess = await submitFormData(data);
       if (isSubmitSuccess) {
-        handleCheckout(billing_address)
+        toast("Form saved successfully", {
+          onClose: () => handleCheckout(billing_address)
+        })
+      } else {
+        toast.error("Form not saved successfully")
       }
     }
   }
@@ -132,13 +133,11 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
       submitFormData(data)
       const isSubmitSuccess = await submitFormData(data);
       if (isSubmitSuccess) {
-        console.log("sdhakshdj")
-        setSnackbarMessage('Form saved successfully');
-        setSnackbarOpen(true);
-        setTimeout(() => {
-          setSnackbarOpen(false);
-          router.push('/')
-        }, 3000);
+        toast.success("Form saved successfully", {
+          onClose: () => router.push('/')
+        })
+      } else {
+        toast.error("Form not saved successfully")
       }
     }
   }
@@ -160,20 +159,12 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
               }
               <FormButton text="Save for later" type="button" style="outline" onClick={handleSubmit(handleSave)}/>
               {activeStep !== "step-1" && <FormButton text="Go Back" type="button" onClick={prevPage} />}
-              <img src="https://xwnseddwrupggpwzwqin.supabase.co/storage/v1/object/sign/profile-images/pictures/30fa0955-9073-4b4f-a2fb-725fd561bc05/cat.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm9maWxlLWltYWdlcy9waWN0dXJlcy8zMGZhMDk1NS05MDczLTRiNGYtYTJmYi03MjVmZDU2MWJjMDUvY2F0LmpwZyIsImlhdCI6MTY5NTIzNDA4MCwiZXhwIjoxNjk1MjM0MTQwfQ.jfMBDU-AJR_6FXwUMYORvH2OW-pW9p0yzhFxIzto7Oc"/>
+              
             </div>
           </FormContainer>
         </form>
       </FormProvider>
-      {snackbarOpen && (
-        <Snackbar
-          message={snackbarMessage}
-          onClose={() => {
-            setSnackbarOpen(false);
-            router.push('/')
-          }}
-        />
-      )}
+      <Snackbar />
     </Layout>
   );
 };
