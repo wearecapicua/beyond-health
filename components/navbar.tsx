@@ -6,7 +6,7 @@ import Image from 'next/image'
 import LoginButton from './login';
 import { useFormStatusStore } from 'store/useFormStatusStore';
 import { useRouter } from 'next/router';
-import { getProfileData } from "lib/supabaseUtils";
+import { getProfileData } from "lib/api/supabase";
 import { useFormStore } from 'store/useFormStore';
 
 type NavbarProps = {

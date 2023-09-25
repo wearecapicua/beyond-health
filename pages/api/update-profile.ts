@@ -32,7 +32,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === 'POST') {
     try {
-      // Create a new profile using the session user's ID
       const { data, error } = await supabase
         .from('profile')
         .upsert([

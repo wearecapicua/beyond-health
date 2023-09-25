@@ -4,17 +4,24 @@ import { repositoryName } from "../lib/prismic";
 import "../styles/index.css";
 import App, { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import { getFormStatus } from "lib/supabaseUtils";
+import { getFormStatus } from "lib/api/supabase";
 import { useFormStatusStore } from 'store/useFormStatusStore';
+import { useFormStore } from 'store/useFormStore';
 import '../styles/globals.css';
+
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const { setFormStep } = useFormStatusStore()
+  const { formStore, updateFormStore } = useFormStore()
 
   useEffect(() => {
     async function fetchFormStatus() {
       const formStatus = await getFormStatus();
       setFormStep(formStatus)
+      if (formStatus.error && formStore) {
+        localStorage.removeItem('form-store');
+        updateFormStore({})
+      } else {console.log("nope")}
     }
     fetchFormStatus();
   }, []);
