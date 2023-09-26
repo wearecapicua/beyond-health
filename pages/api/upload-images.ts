@@ -7,7 +7,6 @@ import env from "lib/env";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { file } = req.body;
   const session = await getServerSession(req, res, authOptions)
-  console.log("req body", req.body)
   
   if (!session?.user) {
     return res.status(401).json({ error: 'Unauthorized' });
