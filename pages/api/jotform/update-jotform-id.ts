@@ -61,7 +61,7 @@ const tableName = `${env.vercelEnv}-beyond-health-users`;
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { userId, jotformId } = req.body;
-console.log("RR", req.body)
+
     const command = new UpdateItemCommand({
       TableName: tableName,
       Key: {

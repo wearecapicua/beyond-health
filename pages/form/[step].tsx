@@ -37,7 +37,7 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
   const numericSplit = activeStep.replace("step-", "")
   const numericStep = parseInt(numericSplit, 10)
   
-  const { formStep } = useFormStatusStore()
+  const { formStep, setFormStep } = useFormStatusStore()
   const { formStore, updateFormStore } = useFormStore()
   const { updateProductStore } = useProductStore()
 
@@ -83,11 +83,13 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
     setActiveStep(next)
     router.push(`/form/${next}`);
   }
+  console.log("form-step", formStep)
 
   const submitFormData = async (data: any) => {
     updateFormStore(data);
     const updatedData = { ...formStore, ...data, form_step: activeStep }
     const filteredData = filterFormData(updatedData)
+
     try {
       if (formStep) {
         return await sendUpdatedData(filteredData)
@@ -130,9 +132,9 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
   const handleSave = async (data: any) => {
     const isStepValid = await trigger();
     if (isStepValid) {
-      submitFormData(data)
       const isSubmitSuccess = await submitFormData(data);
       if (isSubmitSuccess) {
+        setFormStep(activeStep)
         toast.success("Form saved successfully", {
           onClose: () => router.push('/')
         })

@@ -17,11 +17,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     async function fetchFormStatus() {
       const formStatus = await getFormStatus();
-      setFormStep(formStatus)
-      if (formStatus.error && formStore) {
+      setFormStep(formStatus?.form_step)
+      if (!formStatus && formStore) {
         localStorage.removeItem('form-store');
         updateFormStore({})
-      } else {console.log("nope")}
+      } else {console.log("no")}
     }
     fetchFormStatus();
   }, []);

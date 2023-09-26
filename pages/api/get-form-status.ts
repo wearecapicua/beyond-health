@@ -21,16 +21,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (error) {
       console.error('Error querying user profile:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json(false);
     }
 
     if (!data) {
-      return res.status(404).json({ message: 'User profile not found' });
+      return res.status(404).json(false);
     }
 
     return res.status(200).json(data);
   } catch (error) {
     console.error('Error querying user profile:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json(false);
   }
 }

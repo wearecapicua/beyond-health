@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useSession } from "next-auth/react";
@@ -8,6 +9,7 @@ import { useFormStatusStore } from 'store/useFormStatusStore';
 import { useRouter } from 'next/router';
 import { getProfileData } from "lib/api/supabase";
 import { useFormStore } from 'store/useFormStore';
+import { FormStep } from "./forms/steps/form-steps";
 
 type NavbarProps = {
   fullPage: boolean | undefined;
@@ -19,12 +21,16 @@ export default function Navbar({ fullPage }: NavbarProps) {
   const userLoggedIn = session.status === "authenticated" && session.data?.user
   const { formStep } = useFormStatusStore()
   const { updateFormStore } = useFormStore()
+  const [currentStep, setCurrentStep] = useState<FormStep>(formStep)
 
   async function handleResume() {
     const profileData = await getProfileData();
     updateFormStore(profileData)
-    router.push(`/form/${formStep.form_step}`)
+    router.push(`/form/${formStep}`)
   }
+  // useEffect(() => {
+  //   setCurrentStep(formStep)
+  // }, [formStep]);
 
   return (
     <Disclosure as="nav" className="bg-white">
@@ -62,7 +68,7 @@ export default function Navbar({ fullPage }: NavbarProps) {
                   </Link>
                   <LoginButton />
                 </div>
-                {!fullPage && userLoggedIn && formStep?.form_step ?
+                {!fullPage && userLoggedIn && formStep ?
                   <div className="flex-shrink-0">
                     <button
                       onClick={handleResume}
