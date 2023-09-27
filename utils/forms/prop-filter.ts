@@ -15,7 +15,8 @@ const expectedProperties: string[] = [
   'billing_address',
   'has_health_card',
   'has_insurance',
-  'form_step'
+  'form_step',
+  'stripe_customer_id'
 ];
 
 export const filterFormData = <T>(obj: T): Partial<T> => {

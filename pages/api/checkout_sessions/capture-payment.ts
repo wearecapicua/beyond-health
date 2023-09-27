@@ -1,17 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import env from "lib/env";
-import { authOptions } from "pages/api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { supabaseClient } from 'lib/supabaseClient';
 
 const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 
 export type CheckoutSessionBody = {
-  productId: string;
-  amount: number;
-  billingAddress: any;
-  shippingAddress: any;
-  name: string;
+  filteredData: any
 };
 
 export default async function handler(
@@ -19,36 +16,47 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const requestBody = req.body as CheckoutSessionBody;
+  const session = await getServerSession(req, res, authOptions);
+  if (!session?.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  const { supabaseAccessToken } = session;
+  const userId = session.user.id
+  const supabase = supabaseClient(supabaseAccessToken)
+console.log("user", userId)
   if (req.method === "POST") {
-    
-    const {
-      amount,
-      billingAddress,
-      shippingAddress,
-      name,
-      productId
-    } = requestBody
-  
-    const session = await getServerSession(req, res, authOptions);
+    const data = requestBody.filteredData;
+    const name = `${data.first_name} ${data.last_name}`;
 
     try {
       const customer = await stripe.customers.create({
-        address: billingAddress,
+        address: data.billing_address,
         shipping: {
-          address: shippingAddress,
+          address: data.shipping_address,
           name: name
         },
         name: name
       });
-      
-      // Create Checkout Sessions from body params.
+
+      const updatedData = { ...data, stripe_customer_id: customer.id };
+      console.log(updatedData)
+
+      const { data: profileData, error: profileError } = await supabase
+        .from('profile')
+        .update(updatedData)
+        .eq('user_id', userId);
+
+      if (profileError) {
+        throw profileError;
+      }
+
       const params: Stripe.Checkout.SessionCreateParams = {
         payment_method_types: ["card"],
         mode: 'setup',
         customer: customer?.id,
         metadata: {
-          productId: productId,
-          amount: amount
+          productId: data.product.default_price,
+          amount: data.product.price
         },
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/donate-with-checkout`,
@@ -56,8 +64,9 @@ export default async function handler(
 
       const checkoutSession: Stripe.Checkout.Session =
         await stripe.checkout.sessions.create(params);
-     
+
       res.status(200).json(checkoutSession);
+
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Internal server error";

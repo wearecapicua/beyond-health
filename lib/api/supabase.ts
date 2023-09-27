@@ -23,7 +23,7 @@ export async function sendUpdatedData(updatedData: any) {
     method: 'PUT',
     updatedData
   });
-  console.log(response)
+  console.log("res", response)
   return response
 }
 

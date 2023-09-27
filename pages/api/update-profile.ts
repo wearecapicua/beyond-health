@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth/next"
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { updatedData } = req.body;
   const session = await getServerSession(req, res, authOptions)
-  console.log("session token", session)
+
   if (!session?.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }

@@ -56,20 +56,19 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
   
   const { handleSubmit, trigger } = methods;
 
-  const handleCheckout = async (billing_address: any) => {
+  const handleCheckout = async (data: any) => {
     if (!stripe) {
       console.error("Failed to load Stripe.js");
       return;
     }
+    const updatedData = { ...formStore, ...data, form_step: activeStep }
+    const filteredData = filterFormData(updatedData)
     const response = await fetchPostJSON<
       CheckoutSessionBody,
       Stripe.Checkout.Session
     >("/api/checkout_sessions/capture-payment", {
-      productId: formStore.product.default_price,
-      amount: formStore.product.price,
-      billingAddress: billing_address || formStore.billing_address,
-      shippingAddress: formStore.shipping_address,
-      name: `${formStore.firstName} ${formStore.lastName}`
+      method: 'POST',
+      filteredData
     })
     const { error } = await stripe.redirectToCheckout({
       sessionId: response.id,
@@ -104,7 +103,6 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
 
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const isStepValid = await trigger();
-    const billing_address = data.billing_address
     console.log("data", data)
 
     // if (isStepValid && activeStep === 'step-14') {
@@ -118,14 +116,15 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
       setActiveStep(next)
       router.push(`/form/${next}`);
     } if (isStepValid && activeStep === "step-18") {
-      const isSubmitSuccess = await submitFormData(data);
-      if (isSubmitSuccess) {
-        toast("Form saved successfully", {
-          onClose: () => handleCheckout(billing_address)
-        })
-      } else {
-        toast.error("Form not saved successfully")
-      }
+      // const isSubmitSuccess = await submitFormData(data);
+      // if (isSubmitSuccess) {
+      //   toast("Form saved successfully", {
+      //     onClose: () => handleCheckout(data)
+      //   })
+      // } else {
+      //   toast.error("Form not saved successfully")
+      // }
+      handleCheckout(data)
     }
   }
 
