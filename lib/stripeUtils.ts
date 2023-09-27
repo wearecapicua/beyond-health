@@ -68,3 +68,20 @@ export async function createCustomerPortalSession() {
   }
 }
 
+export function formatCustomerData(originalObject: any) {
+  const nameParts = originalObject.name.split(' ');
+  const first_name = nameParts[0];
+  const last_name = nameParts.slice(1).join(' ');
+  const formattedObject = {
+    billing_address: {
+      ...originalObject.address,
+    },
+    shipping_address: {
+      ...originalObject.shipping.address,
+    },
+    first_name,
+    last_name
+  };
+
+  return formattedObject;
+}
