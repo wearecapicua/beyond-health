@@ -124,7 +124,8 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
       // } else {
       //   toast.error("Form not saved successfully")
       // }
-      handleCheckout(data)
+      const checkout = await handleCheckout(data)
+      console.log("checkout", checkout)
     }
   }
 

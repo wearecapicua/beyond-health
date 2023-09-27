@@ -23,7 +23,7 @@ export default async function handler(
   const { supabaseAccessToken } = session;
   const userId = session.user.id
   const supabase = supabaseClient(supabaseAccessToken)
-console.log("user", userId)
+
   if (req.method === "POST") {
     const data = requestBody.filteredData;
     const name = `${data.first_name} ${data.last_name}`;
@@ -39,7 +39,6 @@ console.log("user", userId)
       });
 
       const updatedData = { ...data, stripe_customer_id: customer.id };
-      console.log(updatedData)
 
       const { data: profileData, error: profileError } = await supabase
         .from('profile')

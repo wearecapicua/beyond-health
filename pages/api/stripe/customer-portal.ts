@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Stripe } from 'stripe';
-import { getSession } from 'next-auth/react';
+import { authOptions } from 'pages/api/auth/[...nextauth]'
+import { supabaseClient } from 'lib/supabaseClient';
+import { getServerSession } from "next-auth/next"
 import env from 'lib/env';
 
 const stripe = new Stripe(env.stripeSecretKey, {
@@ -12,17 +14,30 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
+
+    const session = await getServerSession(req, res, authOptions)
+    if (!session?.user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { supabaseAccessToken } = session;
+    const userId = session.user.id
+    const supabase = supabaseClient(supabaseAccessToken)
+
     try {
-      const session = await getSession({ req });
+  
+      const { data: userData, error: userError } = await supabase
+        .from('profile')
+        .select('stripe_customer_id')
+        .eq('user_id', userId)
+        .single();
 
-      if (!session) {
-        return res.status(401).json({ error: 'Not authenticated' });
+      if (userError) {
+        console.error(userError);
+        return res.status(500).json({ error: 'Error fetching user data' });
       }
-      const email = session.user?.email
 
-      // Make db call to get customer id
-      const customerId = "cus_OcwPlGYwHq6eyF"
-      const returnUrl = "http://localhost:3000/"
+      const customerId = userData?.stripe_customer_id;
+      const returnUrl = "http://localhost:3000/";
 
       const portalLink = await stripe.billingPortal.sessions.create({
         customer: customerId, // Replace with the actual customer ID or identifier
@@ -39,3 +54,4 @@ export default async function handler(
     res.status(405).end('Method Not Allowed');
   }
 }
+
