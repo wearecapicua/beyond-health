@@ -19,14 +19,32 @@ const expectedProperties: string[] = [
   'stripe_customer_id'
 ];
 
-export const filterFormData = <T>(obj: T): Partial<T> => {
-  const filteredObject: Partial<T> = {};
+const expectedBillingProperties: string[] = [
+  'first_name',
+  'last_name',
+  'country',
+  'phone_number',
+  'product',
+  'shipping_address',
+  'billing_address',
+  'stripe_customer_id'
+];
+
+export const filterFormData = <T>(obj: T): { filteredData: Partial<T>, filteredBillingData: Partial<T> } => {
+  const filteredData: Partial<T> = {};
+  const filteredBillingData: Partial<T> = {};
+
   for (const prop of expectedProperties) {
-    // Use a type assertion to inform TypeScript that obj is of type Record<string, unknown>
     if ((obj as Record<string, unknown>).hasOwnProperty(prop)) {
-      /* @ts-ignore */
-      filteredObject[prop as keyof T] = obj[prop];
+      filteredData[prop as keyof T] = (obj as Record<string, unknown>)[prop] as T[keyof T];
     }
   }
-  return filteredObject;
+
+  for (const prop of expectedBillingProperties) {
+    if ((obj as Record<string, unknown>).hasOwnProperty(prop)) {
+      filteredBillingData[prop as keyof T] = (obj as Record<string, unknown>)[prop] as T[keyof T];
+    }
+  }
+
+  return { filteredData, filteredBillingData };
 };

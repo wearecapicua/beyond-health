@@ -27,7 +27,7 @@ export default async function handler(
   if (req.method === "POST") {
     const data = requestBody.filteredData;
     const name = `${data.first_name} ${data.last_name}`;
-
+console.log("ddee", data)
     try {
       const customer = await stripe.customers.create({
         address: data.billing_address,

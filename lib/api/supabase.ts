@@ -36,6 +36,15 @@ export async function createUserProfile(updatedData: any) {
   return response
 }
 
+export async function captureUserPayment(filteredData: any) {
+  const response = await fetchPostJSON('/api/checkout_sessions/capture-payment', {
+    method: 'POST',
+    filteredData
+  });
+  console.log("res", response)
+  return response
+}
+
 export async function uploadImages(file: any) {
   const response = await fetchPostJSON('/api/upload-images', {
     method: 'POST',

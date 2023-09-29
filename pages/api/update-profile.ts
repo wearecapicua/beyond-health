@@ -2,6 +2,30 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 import { supabaseClient } from 'lib/supabaseClient';
 import { getServerSession } from "next-auth/next"
+import { SupabaseClient } from '@supabase/supabase-js';
+
+// async function assignUserRole(
+//   supabase: SupabaseClient,
+//   userId: string,
+//   roleName: string
+// ): Promise<any> {
+//   try {
+//     // Update the user's role in the database
+//     const { data, error } = await supabase
+//       .from('users')
+//       .update({ role: roleName })
+//       .eq('id', userId);
+
+//     if (error) {
+//       throw error;
+//     }
+
+//     return data;
+//   } catch (error) {
+//     console.error('Error assigning role:', error);
+//     throw error;
+//   }
+// }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { updatedData } = req.body;
@@ -44,6 +68,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (error) {
         throw error;
       }
+
+      // Assign the user's role after successfully updating the profile
+      // await assignUserRole(supabase, userId, 'CUSTOMER');
 
       return res.status(200).json(true);
     } catch (error) {

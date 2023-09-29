@@ -16,10 +16,12 @@ import { useFormStore } from 'store/useFormStore';
 import { useProductStore } from 'store/useProductStore';
 import env from "lib/env";
 import useStripe from "lib/useStripe";
-import { fetchPostJSON } from "lib/http";
-import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
-import type Stripe from "stripe";
-import { createUserProfile, uploadImages, getImages } from "lib/api/supabase";
+import {
+  createUserProfile,
+  captureUserPayment,
+  uploadImages,
+  getImages
+} from "lib/api/supabase";
 import { sendUpdatedData } from "lib/api/supabase";
 import { filterFormData } from "utils/forms/prop-filter";
 import { useFormStatusStore } from 'store/useFormStatusStore';
@@ -28,7 +30,8 @@ import Snackbar from "components/snackbar";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const FormStep = ({ formData, products, userId }: StepProps) => {
+const FormStep = ({ formData, products, userId, user }: StepProps) => {
+  // console.log("users", user)
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
@@ -62,14 +65,8 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
       return;
     }
     const updatedData = { ...formStore, ...data, form_step: activeStep }
-    const filteredData = filterFormData(updatedData)
-    const response = await fetchPostJSON<
-      CheckoutSessionBody,
-      Stripe.Checkout.Session
-    >("/api/checkout_sessions/capture-payment", {
-      method: 'POST',
-      filteredData
-    })
+    const { filteredBillingData } = filterFormData(updatedData)
+    const response = await captureUserPayment(filteredBillingData) as any
     const { error } = await stripe.redirectToCheckout({
       sessionId: response.id,
     });
@@ -87,7 +84,7 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
   const submitFormData = async (data: any) => {
     updateFormStore(data);
     const updatedData = { ...formStore, ...data, form_step: activeStep }
-    const filteredData = filterFormData(updatedData)
+    const { filteredData } = filterFormData(updatedData)
 
     try {
       if (formStep) {
@@ -116,16 +113,15 @@ const FormStep = ({ formData, products, userId }: StepProps) => {
       setActiveStep(next)
       router.push(`/form/${next}`);
     } if (isStepValid && activeStep === "step-18") {
-      // const isSubmitSuccess = await submitFormData(data);
-      // if (isSubmitSuccess) {
-      //   toast("Form saved successfully", {
-      //     onClose: () => handleCheckout(data)
-      //   })
-      // } else {
-      //   toast.error("Form not saved successfully")
-      // }
-      const checkout = await handleCheckout(data)
-      console.log("checkout", checkout)
+      const isSubmitSuccess = await submitFormData(data);
+      if (isSubmitSuccess) {
+        localStorage.removeItem('form-status-store');
+        toast("Saving form data", {
+          onClose: () => handleCheckout(data)
+        })
+      } else {
+        toast.error("Form not saved successfully")
+      }
     }
   }
 
