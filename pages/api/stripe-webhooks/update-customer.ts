@@ -36,7 +36,7 @@ export default async function handler(
         sig,
         stripeWebhookSecret
       );
-      console.log("event", event)
+
       switch (event.type) {
         case 'customer.updated':
           const stripeObject = event.data.object as StripeEventDataObject 

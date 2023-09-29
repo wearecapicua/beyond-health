@@ -116,6 +116,7 @@ const FormStep = ({ formData, products, userId, user }: StepProps) => {
       const isSubmitSuccess = await submitFormData(data);
       if (isSubmitSuccess) {
         localStorage.removeItem('form-status-store');
+        localStorage.removeItem('form-store');
         toast("Saving form data", {
           onClose: () => handleCheckout(data)
         })

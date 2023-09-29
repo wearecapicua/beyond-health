@@ -27,7 +27,7 @@ export default async function handler(
   if (req.method === "POST") {
     const data = requestBody.filteredData;
     const name = `${data.first_name} ${data.last_name}`;
-console.log("ddee", data)
+
     try {
       const customer = await stripe.customers.create({
         address: data.billing_address,
@@ -38,7 +38,7 @@ console.log("ddee", data)
         name: name
       });
 
-      const updatedData = { ...data, stripe_customer_id: customer.id };
+      const updatedData = { stripe_customer_id: customer.id };
 
       const { data: profileData, error: profileError } = await supabase
         .from('profile')
