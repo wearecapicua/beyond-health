@@ -33,8 +33,9 @@ type DatePickerProps = {
 
 export default function DatePicker({ setValue, defaultDate, setFullDate }: DatePickerProps) {
   const changeDate = (date: string) => {
-    setFullDate(date)
-    setValue("birthdate", date)
+    const birthdate = date.replace(/-/g, '/')
+    setFullDate(birthdate)
+    setValue("birthdate", birthdate)
   }
   const selectStyles = "rounded-full flex-1 px-6 py-3"
   
