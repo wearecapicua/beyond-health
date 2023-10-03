@@ -1,12 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { supabaseClient } from 'lib/supabaseClient';
+import { supabaseAuthClient } from 'lib/supabaseAuthClient';
 import env from 'lib/env';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id, email, updatedData } = req.body;
+  const { id, updatedEmail, updatedData } = req.body;
 
   const supabaseAccessToken = env.supabaseServiceRoleKey;
   const supabase = supabaseClient(supabaseAccessToken);
+  const supabaseAuth = supabaseAuthClient(supabaseAccessToken);
   const customerId = id;
 
   if (req.method === 'PUT') {
@@ -39,10 +41,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const userId = profileQuery.user_id;
 
       // 2. Update the "email" field in the "next_auth.user" table using user_id
-      const { data, error } = await supabase
-        .from('next_auth.user')
-        .update({ email: updatedData.email }) // Update the "email" field
-        .eq('user_id', userId);
+      const { data, error } = await supabaseAuth
+        .from('users')
+        .update({ email: updatedEmail }) // Update the "email" field
+        .eq('id', userId);
 
       if (error) {
         throw error;

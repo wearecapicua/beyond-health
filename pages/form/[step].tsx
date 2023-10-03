@@ -27,11 +27,12 @@ import { filterFormData } from "utils/forms/prop-filter";
 import { useFormStatusStore } from 'store/useFormStatusStore';
 import { toast } from 'react-toastify';
 import Snackbar from "components/snackbar";
+import { checkUserRole } from 'lib/middleware';
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const FormStep = ({ formData, products, userId, user }: StepProps) => {
-  // console.log("users", user)
+ console.log("users", user)
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
@@ -170,6 +171,9 @@ const FormStep = ({ formData, products, userId, user }: StepProps) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
+  const userRole = await checkUserRole(context.req);
+
+  
 
   if (!session?.user) {
     return {
@@ -193,7 +197,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       formData: {
         step
       },
-      user: session.user,
+      user: userRole,
       userId: session.user.id
     },
   };

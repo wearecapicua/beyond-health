@@ -42,9 +42,9 @@ export default async function handler(
           const stripeObject = event.data.object as StripeEventDataObject 
           const filteredData = formatCustomerData(stripeObject)
           const id = stripeObject.id
-          const email = stripeObject.email
+          const updatedEmail = stripeObject.email
         
-          await sendUpdatedDataToProfile(id, email, filteredData)
+          await sendUpdatedDataToProfile(id, updatedEmail, filteredData)
           break;
         case 'payment_method.updated':
           console.log("payment_method.updated", event.data.object)
@@ -60,14 +60,14 @@ export default async function handler(
 }
 
 
-async function sendUpdatedDataToProfile(id: string, email: string, updatedData: any) {
+async function sendUpdatedDataToProfile(id: string, updatedEmail: string, updatedData: any) {
   try {
     const response = await fetch(process.env.HOST + '/api/update-profile-stripe', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id, email, updatedData }),
+      body: JSON.stringify({ id, updatedEmail, updatedData }),
     });
 
     if (response.status === 200) {

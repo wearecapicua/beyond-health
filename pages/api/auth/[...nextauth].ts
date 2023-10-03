@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, user }: any) {
       if (session?.user) {
         session.user.id = user.id;
-        // session.user.role = user.role;
+        //session.user.role = user.role;
       }
       const signingSecret = env.supabaseJwtSecret
       if (signingSecret) {
