@@ -4,6 +4,7 @@ import Container from "components/container";
 import Layout from "components/layout";
 import env from "lib/env";
 import PriceColumn from "components/price-column";
+import { useSession } from "next-auth/react"
 
 type User = {
   user_id: string;
@@ -18,7 +19,17 @@ type AdminPageProps = {
 };
 
 export default function AdminPage({ preview, users }: AdminPageProps) {
-  console.log("users", users)
+  const { data: session } = useSession();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    /* @ts-ignore */
+    if (session?.user?.role === 'ADMIN') {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, [session]);
 
   return (
     <Layout preview={preview} fullPage >
@@ -26,9 +37,9 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
         <title>Beyond Health</title>
       </Head>
       <Container>
-       {users.length && 
+        {users.length !== 0 && isAdmin ?
           <div>
-            <h2 className="my-7">User List</h2>
+            <h3 className="mt-12 mb-7">Pending Payments</h3>
             <table className="text-left">
               <tr>
                 <th className="p-4">Name</th>
@@ -37,8 +48,8 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                 <th className="p-4">Price</th>
                 <th className="p-4"></th>
               </tr>
-              {users?.map((user) => (
-                <tr>
+              {users?.map((user, index) => (
+                <tr key={`user-${index}`}>
                   <td className="p-4">{user.name}</td>
                   <td className="p-4">{user.email}</td>
                   <td className="p-4">{user.product.name}</td>
@@ -47,6 +58,11 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
               ))}
             </table>
           </div>
+          : users.length === 0 && isAdmin ?
+            <p>There are no current pending payments to show</p>
+          : !isAdmin ? 
+            <p>Not authorized</p>
+          : null
         }
       </Container>
     </Layout>
@@ -56,8 +72,8 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
 export const getServerSideProps = async () => {
   try {
     // Fetch user data from your API route
-    const response = await fetch(`${env.host}/api/get-stripe-customer`);
-    const data = await response.json();
+    const response = await fetch(`${env.host}/api/get-stripe-customer`)
+    const data = await response.json()
 
     return {
       props: {
@@ -65,11 +81,11 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    console.error('Error fetching user data:', error)
     return {
       props: {
         users: [], // Return an empty array if there's an error
       },
-    };
+    }
   }
-};
+}

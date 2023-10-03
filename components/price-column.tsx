@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PencilIcon, CheckIcon } from '@heroicons/react/24/outline'
+import { PencilIcon, CheckIcon, TrashIcon } from '@heroicons/react/24/outline'
 
 interface PriceColumnProps {
   initialPrice: number;
@@ -27,28 +27,30 @@ function PriceColumn({ initialPrice }: PriceColumnProps) {
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(parseFloat(event.target.value));
   };
+  console.log(typeof initialPrice)
 
   return (
-    <td>
+    <td className="p-4">
       {isEditing ? (
-        <div>
+        <div className="flex align-items gap-3">
           <input
+            className="rounded-md border-gray-300 w-32"
             type="number"
             value={price}
             onChange={handlePriceChange}
           />
           <button onClick={handleSaveClick}>
-            <CheckIcon className="w-5 h-5 text-green-500" />
+            <CheckIcon className="w-4 h-4 text-green-500" />
           </button>
           <button onClick={handleCancelClick}>
-            <PencilIcon className="w-5 h-5 text-red-500" />
+            <TrashIcon className="w-4 h-4 text-red-500" />
           </button>
         </div>
       ) : (
-        <div>
+        <div className="flex align-items gap-2">
           {price}
           <button onClick={handleEditClick}>
-            <PencilIcon className="w-5 h-5 text-blue-500" />
+            <PencilIcon className="w-5 h-5 p-[3px] text-blue-500" />
           </button>
         </div>
       )}
