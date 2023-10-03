@@ -30,7 +30,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
       setIsAdmin(false);
     }
   }, [session]);
-
+console.log(users)
   return (
     <Layout preview={preview} fullPage >
       <Head>
@@ -41,21 +41,24 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
           <div>
             <h3 className="mt-12 mb-7">Pending Payments</h3>
             <table className="text-left">
-              <tr>
-                <th className="p-4">Name</th>
-                <th className="p-4">Email</th>
-                <th className="p-4">Product</th>
-                <th className="p-4">Price</th>
-                <th className="p-4"></th>
-              </tr>
-              {users?.map((user, index) => (
-                <tr key={`user-${index}`}>
-                  <td className="p-4">{user.name}</td>
-                  <td className="p-4">{user.email}</td>
-                  <td className="p-4">{user.product.name}</td>
-                  <PriceColumn initialPrice={user.product.price}/>
+              <tbody>
+                <tr>
+                  <th className="p-4">Name</th>
+                  <th className="p-4">Email</th>
+                  <th className="p-4">Product</th>
+                  <th className="p-4">Price</th>
+                  <th className="p-4"></th>
                 </tr>
-              ))}
+                
+                {users?.map((user, index) => (
+                  <tr key={`user-${index}`}>
+                    <td className="p-4">{user.name}</td>
+                    <td className="p-4">{user.email}</td>
+                    <td className="p-4">{user.product.name}</td>
+                    <PriceColumn product={user.product} userId={user.user_id}/>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
           : users.length === 0 && isAdmin ?

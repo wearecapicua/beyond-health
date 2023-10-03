@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 import { supabaseClient } from 'lib/supabaseClient';
 import { getServerSession } from "next-auth/next"
-import { SupabaseClient } from '@supabase/supabase-js';
 
 // async function assignUserRole(
 //   supabase: SupabaseClient,
@@ -29,6 +28,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { updatedData } = req.body;
+
   const session = await getServerSession(req, res, authOptions)
 
   if (!session?.user) {
