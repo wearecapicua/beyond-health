@@ -27,12 +27,11 @@ import { filterFormData } from "utils/forms/prop-filter";
 import { useFormStatusStore } from 'store/useFormStatusStore';
 import { toast } from 'react-toastify';
 import Snackbar from "components/snackbar";
-import { checkUserRole } from 'lib/middleware';
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const FormStep = ({ formData, products, userId, user }: StepProps) => {
- console.log("users", user)
+const FormStep = ({ formData, products, userId, user, stripes }: StepProps) => {
+ console.log("users", stripes)
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
@@ -171,9 +170,7 @@ const FormStep = ({ formData, products, userId, user }: StepProps) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
-  const userRole = await checkUserRole(context.req);
-
-  
+  //const userRole = await checkUserRole(context.req);
 
   if (!session?.user) {
     return {
@@ -191,14 +188,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const res = await fetch(`${env.host}/api/all-products`);
   const products = await res.json();
 
+  const restwo = await fetch(`${env.host}/api/get-stripe-customer`);
+  const stripes = await restwo.json();
+
   return {
     props: {
       products,
       formData: {
         step
       },
-      user: userRole,
-      userId: session.user.id
+      user: session.user,
+      userId: session.user.id,
+      stripes: stripes
     },
   };
 }

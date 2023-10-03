@@ -57,22 +57,35 @@ export const authOptions: NextAuthOptions = {
     secret: env.supabaseServiceRoleKey,
   }),
     callbacks: {
-    async session({ session, user }: any) {
-      if (session?.user) {
-        session.user.id = user.id;
-        //session.user.role = user.role;
-      }
-      const signingSecret = env.supabaseJwtSecret
-      if (signingSecret) {
-        const payload = {
-          aud: "authenticated",
-          exp: Math.floor(new Date(session.expires).getTime() / 1000),
-          sub: user.id,
-          email: user.email,
-          role: "authenticated",
+      async jwt({ token, user }) {
+        /* Step 1: update the token based on the user object */
+        if (user) {
+          token.role = user.role;
+        } else {
+          // New user signing in for the first time
+          token.role = "CUSTOMER";
         }
-        session.supabaseAccessToken = jwt.sign(payload, signingSecret)
-      }
+        return token;
+      },
+      async session({ session, user, token }: any) {
+        if (session?.user) {
+          session.user.id = user.id;
+          //session.user.role = user.role;
+        }
+        if (token && session.user) {
+          session.user.role = token.role;
+        }
+        const signingSecret = env.supabaseJwtSecret
+        if (signingSecret) {
+          const payload = {
+            aud: "authenticated",
+            exp: Math.floor(new Date(session.expires).getTime() / 1000),
+            sub: user.id,
+            email: user.email,
+            role: session.user.role,
+          }
+          session.supabaseAccessToken = jwt.sign(payload, signingSecret)
+        }
       return session
     },
   },
