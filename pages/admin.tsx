@@ -35,7 +35,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                 <th className="p-4">Email</th>
                 <th className="p-4">Product</th>
                 <th className="p-4">Price</th>
-                <th className="p-4">Charge</th>
+                <th className="p-4"></th>
               </tr>
               {users?.map((user) => (
                 <tr>
