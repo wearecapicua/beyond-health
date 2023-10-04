@@ -7,7 +7,6 @@ import SectionSeparator from "components/section-separator";
 import Layout from "components/layout";
 import Stripe from "stripe";
 import env from "lib/env";
-import PaymentButton from "components/payment-button";
 import { sendUpdatedData } from "lib/api/supabase";
 
 type ResultProps = {
@@ -35,13 +34,11 @@ const ResultPage = ({ amount, setupId }: ResultProps) => {
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
-          <> 
-            <PaymentButton
-              setupId={setupId}
-              price={price}
-            />
+          <div className="text-center">
+            <PostTitle>Payment saved!</PostTitle>
+            <p>You will be charged once our team has reviewed your application and insurance information.</p>
             <SectionSeparator />
-          </>
+          </div>
         )}
       </Container>
     </Layout>

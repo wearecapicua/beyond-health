@@ -5,9 +5,10 @@ import { adminUpdateData } from "lib/api/supabase";
 interface PriceColumnProps {
   product: any;
   userId: string;
+  onPriceUpdate: (userId: string, newPrice: number) => void;
 }
 
-function PriceColumn({ product, userId }: PriceColumnProps) {
+function PriceColumn({ product, userId, onPriceUpdate }: PriceColumnProps) {
   const initialPrice = product.price
   const { default_price, name } = product
   const [isEditing, setIsEditing] = useState(false);
@@ -36,6 +37,7 @@ function PriceColumn({ product, userId }: PriceColumnProps) {
         }
       }
       adminUpdateData(updatedProduct, userId)
+      onPriceUpdate(userId, newPriceNum);
     }
     setIsEditing(false);
   };

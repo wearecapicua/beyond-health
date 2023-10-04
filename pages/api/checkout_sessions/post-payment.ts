@@ -8,6 +8,7 @@ const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 
 export type PaymentIntentBody = {
   setupId: string;
+  price: number;
 };
 
 export default async function handler(
@@ -16,7 +17,7 @@ export default async function handler(
 ) {
   const requestBody = req.body as PaymentIntentBody;
   if (req.method === "POST") {
-    const { setupId } = requestBody
+    const { setupId, price } = requestBody
   
     const session = await getServerSession(req, res, authOptions);
 
@@ -30,7 +31,7 @@ export default async function handler(
       const params = {
        customer: customerId,
        payment_method: paymentMethodId,
-       amount: 2000,
+       amount: price,
        currency: 'usd',
        confirm: true
       };

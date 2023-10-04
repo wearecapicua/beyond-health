@@ -23,6 +23,20 @@ type AdminPageProps = {
 export default function AdminPage({ preview, users }: AdminPageProps) {
   const { data: session } = useSession();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [productPrices, setProductPrices] = useState<{ [key: string]: number }>(
+    users.reduce((acc, user) => {
+      acc[user.user_id] = user.product.price;
+      return acc;
+    }, {} as { [key: string]: number })
+  );
+
+  const handlePriceUpdate = (userId: string, newPrice: number) => {
+    setProductPrices((prevPrices) => ({
+      ...prevPrices,
+      [userId]: newPrice,
+    }));
+  };
+
 
   useEffect(() => {
     /* @ts-ignore */
@@ -32,6 +46,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
       setIsAdmin(false);
     }
   }, [session]);
+ 
 
   return (
     <Layout preview={preview} fullPage >
@@ -52,20 +67,26 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                   <th className="p-4"></th>
                 </tr>
                 
-                {users?.map((user, index) => (
+                {users?.map((user, index) => {
+console.log(user.product.price)
+                return(
                   <tr key={`user-${index}`}>
                     <td className="p-4">{user.name}</td>
                     <td className="p-4">{user.email}</td>
                     <td className="p-4">{user.product.name}</td>
-                    <PriceColumn product={user.product} userId={user.user_id}/>
+                    <PriceColumn
+                      product={user.product}
+                      userId={user.user_id}
+                      onPriceUpdate={handlePriceUpdate}
+                    />
                     <td>
                     <PaymentButton
                       setupId={user.stripe_setup_id}
-                      price={user.product.price}
+                      price={productPrices[user.user_id]}
                     />
                     </td>
                   </tr>
-                ))}
+                )})}
               </tbody>
             </table>
           </div>

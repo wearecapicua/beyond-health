@@ -7,7 +7,7 @@ import type Stripe from "stripe";
 
 type Props = {
   setupId: string;
-  price: string;
+  price: number;
 };
 
 const PaymentButton = ({
@@ -18,6 +18,7 @@ const PaymentButton = ({
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<string>();
+  const priceString = price.toString();
  
   const handlePayment = async () => {
     setLoading(true);
@@ -33,9 +34,11 @@ const PaymentButton = ({
         Stripe.Checkout.Session
       >(`/api/checkout_sessions/post-payment`, {
         method: 'POST',
-        setupId
+        setupId,
+        price
       })
       /* @ts-ignore */
+      console.log(response.status)
       setResults(response?.status)
       setLoading(false);
       
@@ -48,7 +51,7 @@ const PaymentButton = ({
     <div>
       {!results ?
         <button onClick={handlePayment} disabled={loading}>
-          {`Submit payment for ${price}`}
+          {`Submit payment for ${priceString}`}
         </button>
       :
         <p>Payment status: {results}</p>
