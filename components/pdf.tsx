@@ -90,6 +90,7 @@ const Pdf = ({ user }: { user: User }) => {
       </button>
       {showPdfViewer && (
         <div className="fixed inset-0 bg-white z-50 flex justify-center items-center">
+          {/* @ts-ignore */}
           <PDFViewer width="100%" height="100%" ref={pdfRef}>
             <PDFDocument user={user} />
           </PDFViewer>
