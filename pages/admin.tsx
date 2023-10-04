@@ -6,6 +6,7 @@ import env from "lib/env";
 import PriceColumn from "components/price-column";
 import { useSession } from "next-auth/react"
 import PaymentButton from "components/payment-button";
+import { format } from 'date-fns';
 
 type User = {
   user_id: string;
@@ -13,12 +14,15 @@ type User = {
   email: string;
   product: any;
   stripe_setup_id: string;
-};
+  payments_history: any;
+}
 
 type AdminPageProps = {
   users: User[];
   preview: any;
 };
+
+type DateStamp = string;
 
 export default function AdminPage({ preview, users }: AdminPageProps) {
   const { data: session } = useSession();
@@ -37,7 +41,6 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
     }));
   };
 
-
   useEffect(() => {
     /* @ts-ignore */
     if (session?.user?.role === 'ADMIN') {
@@ -46,8 +49,16 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
       setIsAdmin(false);
     }
   }, [session]);
- 
 
+  function formatDates(dateStamps: DateStamp[]): string[] {
+    return dateStamps?.map((dateStamp) => {
+        // Format each date stamp into a readable format
+        return format(new Date(dateStamp), 'yyyy-MM-dd HH:mm:ss');
+      })
+      .reverse(); // Reverse the resulting array
+  }
+ 
+console.log(users)
   return (
     <Layout preview={preview} fullPage >
       <Head>
@@ -64,29 +75,39 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                   <th className="p-4">Email</th>
                   <th className="p-4">Product</th>
                   <th className="p-4">Price</th>
-                  <th className="p-4"></th>
+                  <th className="p-4">Submit</th>
+                  <th className="p-4">Payments History</th>
                 </tr>
                 
                 {users?.map((user, index) => {
-console.log(user.product.price)
-                return(
-                  <tr key={`user-${index}`}>
-                    <td className="p-4">{user.name}</td>
-                    <td className="p-4">{user.email}</td>
-                    <td className="p-4">{user.product.name}</td>
-                    <PriceColumn
-                      product={user.product}
-                      userId={user.user_id}
-                      onPriceUpdate={handlePriceUpdate}
-                    />
-                    <td>
-                    <PaymentButton
-                      setupId={user.stripe_setup_id}
-                      price={productPrices[user.user_id]}
-                    />
-                    </td>
-                  </tr>
-                )})}
+                  const dates = formatDates(user?.payments_history)
+                  return (
+                    <tr key={`user-${index}`}>
+                      <td className="p-4">{user.name}</td>
+                      <td className="p-4">{user.email}</td>
+                      <td className="p-4 max-w-sm">{user.product.name}</td>
+                      <PriceColumn
+                        product={user.product}
+                        userId={user.user_id}
+                        onPriceUpdate={handlePriceUpdate}
+                      />
+                      <td className="p-4">
+                        <PaymentButton
+                          setupId={user.stripe_setup_id}
+                          price={productPrices[user.user_id]}
+                          userId={user.user_id}
+                        />
+                      </td>
+                      <td className="p-4">
+                        {dates && dates.map((payment, i) => {
+                          return (
+                            <p className="text-xs" key={`payment-${i}`}>{payment}</p>
+                          )
+                        })}
+                      </td>
+                    </tr>
+                  )}
+                )}
               </tbody>
             </table>
           </div>

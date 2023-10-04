@@ -1,24 +1,26 @@
 import React, { useState } from "react";
-import StripeTestCards from "./StripeTestCards";
 import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type PaymentIntentBody } from "pages/api/checkout_sessions/post-payment";
 import type Stripe from "stripe";
+import { adminUpdatePayments } from "lib/api/supabase";
 
 type Props = {
   setupId: string;
   price: number;
+  userId: string
 };
 
 const PaymentButton = ({
   setupId,
-  price
+  price,
+  userId
 }: Props) => {
   
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<string>();
-  const priceString = price.toString();
+  const [results, setResults] = useState<string | null>();
+  const priceString = (price / 100).toFixed(2).toString();
  
   const handlePayment = async () => {
     setLoading(true);
@@ -37,9 +39,13 @@ const PaymentButton = ({
         setupId,
         price
       })
-      /* @ts-ignore */
-      console.log(response.status)
+
       setResults(response?.status)
+      /* @ts-ignore */
+      if (response?.status === "succeeded") {
+        adminUpdatePayments(userId)
+      }
+      
       setLoading(false);
       
     } catch (error) {
@@ -48,13 +54,17 @@ const PaymentButton = ({
   }
 
   return (
-    <div>
+    <div className="text-sm text-main-blue">
       {!results ?
         <button onClick={handlePayment} disabled={loading}>
-          {`Submit payment for ${priceString}`}
+          <p>Submit payment for </p>
+          <span>{`$${priceString}`}</span>
         </button>
       :
-        <p>Payment status: {results}</p>
+        <div className="text-center">
+          <p>Payment status:</p>
+          <span>{results}</span>
+        </div>
       }
     </div>
   );

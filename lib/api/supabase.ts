@@ -37,6 +37,15 @@ export async function adminUpdateData(updatedData: any, userId: string) {
   return response
 }
 
+export async function adminUpdatePayments(userId: string) {
+  const response = await fetchPostJSON('/api/admin/update-payment-history', {
+    method: 'POST',
+    userId
+  });
+  console.log("res", response)
+  return response
+}
+
 export async function createUserProfile(updatedData: any) {
   const response = await fetchPostJSON('/api/update-profile', {
     method: 'POST',

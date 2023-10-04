@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { data: profileData, error: profileError } = await supabase
         .from('profile')
-        .select('user_id, stripe_customer_id, product, first_name, last_name, stripe_setup_id')
+        .select('user_id, stripe_customer_id, product, first_name, last_name, stripe_setup_id, payments_history')
         .not('stripe_customer_id', 'is', null); // Filter users with stripe_customer_id
 
       if (profileError) {
@@ -33,6 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             product: user.product,
             name: `${user.first_name} ${user.last_name}`,
             email,
+            payments_history: user.payments_history
           };
         })
       );
