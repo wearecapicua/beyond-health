@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
-import type { NextAuthOptions } from 'next-auth'
+import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { SupabaseAdapter } from "@auth/supabase-adapter"
-import jwt from "jsonwebtoken"
+import { SupabaseAdapter } from "@auth/supabase-adapter";
+import jwt from "jsonwebtoken";
 import env from "lib/env";
 
 export const authOptions: NextAuthOptions = {
@@ -17,24 +17,23 @@ export const authOptions: NextAuthOptions = {
     url: env.nextPublicSupabaseUrl,
     secret: env.supabaseServiceRoleKey,
   }),
-    callbacks: {
-      async session({ session, user }: any) {
-        if (session?.user) {
-          session.user.id = user.id;
-          session.user.role = user.role;
-        }
-        const signingSecret = env.supabaseJwtSecret
-        if (signingSecret) {
-          const payload = {
-            aud: "authenticated",
-            exp: Math.floor(new Date(session.expires).getTime() / 1000),
-            sub: user.id,
-            email: user.email,
-            role: session.user.role,
-          }
-          session.supabaseAccessToken = jwt.sign(payload, signingSecret)
-        }
-      return session
+  callbacks: {
+    async session({ session, user }: any) {
+      if (session?.user) {
+        session.user.id = user.id;
+        session.user.role = user.role;
+      }
+      const signingSecret = env.supabaseJwtSecret;
+      if (signingSecret) {
+        const payload = {
+          aud: "authenticated",
+          exp: Math.floor(new Date(session.expires).getTime() / 1000),
+          sub: user.id,
+          email: user.email,
+        };
+        session.supabaseAccessToken = jwt.sign(payload, signingSecret);
+      }
+      return session;
     },
   },
 };

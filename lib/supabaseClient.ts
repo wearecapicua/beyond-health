@@ -1,7 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-export const supabaseClient = (supabaseAccessToken: string | undefined) => {
-
+export const supabaseClient = (supabaseAccessToken?: string) => {
   return createClient(
     /* @ts-ignore */
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -12,6 +11,7 @@ export const supabaseClient = (supabaseAccessToken: string | undefined) => {
           Authorization: `Bearer ${supabaseAccessToken}`,
         },
       },
+      auth: { persistSession: false },
     }
-  )
-}
+  );
+};
