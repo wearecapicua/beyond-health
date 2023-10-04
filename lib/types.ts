@@ -33,3 +33,42 @@ export type StripeProduct = {
   price: number;
   description: string;
 };
+
+export type User = {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  gender: string;
+  birthdate: string;
+  notice_hair_loss: string;
+  medications: string;
+  conditions: string;
+  questions?: string;
+  stage: string;
+  has_insurance: boolean;
+  has_health_card: boolean;
+  product: {
+    name: string;
+    price: number;
+  };
+  phone_number: string;
+  country: string;
+  shipping_address: {
+    line1: string;
+    line2: string;
+    city: string;
+    state: string;
+    postal_code: string;
+  };
+  billing_address: {
+    line1: string;
+    line2: string;
+    city: string;
+    state: string;
+    postal_code: string;
+  };
+  payments_history: string[];
+  stripe_setup_id: string;
+};
+

@@ -7,15 +7,8 @@ import PriceColumn from "components/price-column";
 import { useSession } from "next-auth/react"
 import PaymentButton from "components/payment-button";
 import { format } from 'date-fns';
-
-type User = {
-  user_id: string;
-  name: string;
-  email: string;
-  product: any;
-  stripe_setup_id: string;
-  payments_history: any;
-}
+import Pdf from "components/pdf";
+import { User } from "lib/types"
 
 type AdminPageProps = {
   users: User[];
@@ -52,7 +45,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
 
   function formatDates(dateStamps: DateStamp[]): string[] {
     return dateStamps?.map((dateStamp) => {
-        return format(new Date(dateStamp), 'yyyy-MM-dd HH:mm');
+        return format(new Date(dateStamp), 'MM-dd-yyyy HH:mm');
       })
       .reverse();
   }
@@ -69,6 +62,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
             <table className="text-left">
               <tbody>
                 <tr>
+                  <th className="p-4">Download</th>
                   <th className="p-4">Name</th>
                   <th className="p-4">Email</th>
                   <th className="p-4">Product</th>
@@ -81,7 +75,10 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                   const dates = formatDates(user?.payments_history)
                   return (
                     <tr key={`user-${index}`}>
-                      <td className="p-4">{user.name}</td>
+                      <td className="p-4">
+                        <Pdf user={user}/>
+                      </td>
+                      <td className="p-4">{`${user.first_name} ${user.last_name}`}</td>
                       <td className="p-4">{user.email}</td>
                       <td className="p-4 max-w-sm">{user.product.name}</td>
                       <PriceColumn
