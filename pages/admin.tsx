@@ -52,13 +52,11 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
 
   function formatDates(dateStamps: DateStamp[]): string[] {
     return dateStamps?.map((dateStamp) => {
-        // Format each date stamp into a readable format
-        return format(new Date(dateStamp), 'yyyy-MM-dd HH:mm:ss');
+        return format(new Date(dateStamp), 'yyyy-MM-dd HH:mm');
       })
-      .reverse(); // Reverse the resulting array
+      .reverse();
   }
- 
-console.log(users)
+
   return (
     <Layout preview={preview} fullPage >
       <Head>

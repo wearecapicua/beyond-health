@@ -41,7 +41,7 @@ export default async function handler(
         await stripe.paymentIntents.create(params);
      
       res.status(200).json(paymentIntent);
-      console.log({paymentIntent})
+
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Internal server error";
