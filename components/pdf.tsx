@@ -71,6 +71,7 @@ const Pdf = ({ user }: { user: User }) => {
 
   const handleDownloadPDF = () => {
     if (pdfRef?.current) {
+      {/* @ts-ignore */}
       const pdfBlob = pdfRef.current.toBlob();
       if (pdfBlob) {
         const url = URL.createObjectURL(pdfBlob);
