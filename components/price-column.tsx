@@ -25,7 +25,7 @@ function PriceColumn({ product, userId }: PriceColumnProps) {
   const handleSaveClick = () => {
     // Parse the edited price string and update priceNum
     const newPriceNum = parseFloat(priceStr);
-    console.log(newPriceNum)
+   
     if (!isNaN(newPriceNum)) {
       setPriceNum(newPriceNum);
       const updatedProduct = {

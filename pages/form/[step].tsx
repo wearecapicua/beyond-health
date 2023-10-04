@@ -30,8 +30,8 @@ import Snackbar from "components/snackbar";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const FormStep = ({ formData, products, userId, user, stripes }: StepProps) => {
- console.log("users", user)
+const FormStep = ({ formData, products }: StepProps) => {
+
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step)
   const StepComponent = formSteps[activeStep]
@@ -197,9 +197,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       formData: {
         step
       },
-      user: session.user,
-      userId: session.user.id,
-      stripes: stripes
+      user: session.user
     },
   };
 }

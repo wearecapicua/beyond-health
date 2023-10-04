@@ -32,6 +32,7 @@ const PaymentButton = ({
         PaymentIntentBody,
         Stripe.Checkout.Session
       >(`/api/checkout_sessions/post-payment`, {
+        method: 'POST',
         setupId
       })
       /* @ts-ignore */

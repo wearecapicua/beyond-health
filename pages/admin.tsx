@@ -5,12 +5,14 @@ import Layout from "components/layout";
 import env from "lib/env";
 import PriceColumn from "components/price-column";
 import { useSession } from "next-auth/react"
+import PaymentButton from "components/payment-button";
 
 type User = {
   user_id: string;
   name: string;
   email: string;
   product: any;
+  stripe_setup_id: string;
 };
 
 type AdminPageProps = {
@@ -30,7 +32,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
       setIsAdmin(false);
     }
   }, [session]);
-console.log(users)
+
   return (
     <Layout preview={preview} fullPage >
       <Head>
@@ -56,6 +58,12 @@ console.log(users)
                     <td className="p-4">{user.email}</td>
                     <td className="p-4">{user.product.name}</td>
                     <PriceColumn product={user.product} userId={user.user_id}/>
+                    <td>
+                    <PaymentButton
+                      setupId={user.stripe_setup_id}
+                      price={user.product.price}
+                    />
+                    </td>
                   </tr>
                 ))}
               </tbody>

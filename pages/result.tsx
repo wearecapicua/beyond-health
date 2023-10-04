@@ -1,18 +1,14 @@
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { useEffect } from 'react';
+import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
-
 import Container from "components/container";
-
 import PostTitle from "components/post-title";
 import SectionSeparator from "components/section-separator";
-import Head from "next/head";
 import Layout from "components/layout";
 import Stripe from "stripe";
 import env from "lib/env";
-import { createClient } from "lib/prismic";
-
-import { asImageSrc, asText } from "@prismicio/helpers";
 import PaymentButton from "components/payment-button";
+import { sendUpdatedData } from "lib/api/supabase";
 
 type ResultProps = {
   amount: number
@@ -28,27 +24,9 @@ const ResultPage = ({ amount, setupId }: ResultProps) => {
 
   const price = amount.toString();
 
-  // const storeCheckoutSession = async (sessionId: string) => {
-  //   try {
-  //     // const response = await fetch("/api/store-checkout", {
-  //     //   method: "POST",
-  //     //   headers: {
-  //     //     "Content-Type": "application/json",
-  //     //   },
-  //     //   body: JSON.stringify({ sessionId }),
-  //     // });
-  
-  //     if (session) {
-  //       console.log("Checkout session ID stored in the database.", session);
-  //     } else {
-  //       console.error("Failed to store checkout session ID in the database.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error storing checkout session ID:", error);
-  //   }
-  // };
-
-  // storeCheckoutSession(props.checkout_session.id)
+  useEffect(() => {
+    sendUpdatedData({stripe_setup_id: setupId})
+  }, [setupId]);
 
 
   return (
