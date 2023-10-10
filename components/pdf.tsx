@@ -7,32 +7,32 @@ const PDFDocument = ({ user }: { user: User }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Text style={styles.title}>{`${user.first_name} ${user.last_name}`}</Text>
-        <Text>Email: {user.email}</Text>
-        <Text>Gender: {user.gender}</Text>
-        <Text>Birthdate: {user.birthdate}</Text>
-        <Text>Notice hair loss: {user.notice_hair_loss}</Text>
-        <Text>Medications: {user.medications}</Text>
-        <Text>Conditions: {user.conditions}</Text>
-        <Text>Questions: {user.questions || "none"}</Text>
-        <Text>Stage: {user.stage}</Text>
-        <Text>Has insurance: {user.has_insurance ? "yes" : "no" }</Text>
-        <Text>Has health card: {user.has_health_card ? "yes" : "no" }</Text>
-        <Text>Product: {user.product.name}</Text>
-        <Text>Phone number: {user.phone_number}</Text>
-        <Text>Country: {user.country}</Text>
+        <Text style={styles.title}>{`${user?.first_name} ${user?.last_name}`}</Text>
+        <Text>Email: {user?.email}</Text>
+        <Text>Gender: {user?.gender}</Text>
+        <Text>Birthdate: {user?.birthdate}</Text>
+        <Text>Notice hair loss: {user?.notice_hair_loss}</Text>
+        <Text>Medications: {user?.medications}</Text>
+        <Text>Conditions: {user?.conditions}</Text>
+        <Text>Questions: {user?.questions || "none"}</Text>
+        <Text>Stage: {user?.stage}</Text>
+        <Text>Has insurance: {user?.has_insurance ? "yes" : "no" }</Text>
+        <Text>Has health card: {user?.has_health_card ? "yes" : "no" }</Text>
+        <Text>Product: {user?.product.name}</Text>
+        <Text>Phone number: {user?.phone_number}</Text>
+        <Text>Country: {user?.country}</Text>
         <Text>Shipping address:</Text>
-        <Text>{user.shipping_address.line1}</Text>
-        <Text>{user.shipping_address.line2}</Text>
-        <Text>{user.shipping_address.city}</Text>
-        <Text>{user.shipping_address.state}</Text>
-        <Text>{user.shipping_address.postal_code}</Text>
+        <Text>{user.shipping_address?.line1}</Text>
+        <Text>{user.shipping_address?.line2}</Text>
+        <Text>{user.shipping_address?.city}</Text>
+        <Text>{user.shipping_address?.state}</Text>
+        <Text>{user.shipping_address?.postal_code}</Text>
         <Text>Billing Address:</Text>
-        <Text>{user.billing_address.line1}</Text>
-        <Text>{user.billing_address.line2}</Text>
-        <Text>{user.billing_address.city}</Text>
-        <Text>{user.billing_address.state}</Text>
-        <Text>{user.billing_address.postal_code}</Text>
+        <Text>{user.billing_address?.line1}</Text>
+        <Text>{user.billing_address?.line2}</Text>
+        <Text>{user.billing_address?.city}</Text>
+        <Text>{user.billing_address?.state}</Text>
+        <Text>{user.billing_address?.postal_code}</Text>
       </View>
     </Page>
   </Document>

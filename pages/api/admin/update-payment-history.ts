@@ -6,7 +6,6 @@ import env from 'lib/env';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { userId } = req.body;
-  console.log("uuser", userId)
 
   const session = await getServerSession(req, res, authOptions)
   /* @ts-ignore */
