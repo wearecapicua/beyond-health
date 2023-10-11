@@ -1,31 +1,33 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 import { supabaseClient } from 'lib/supabaseClient';
+import { supabaseAuthClient } from 'lib/supabaseAuthClient';
 import { getServerSession } from "next-auth/next"
 import env from 'lib/env';
+import { SupabaseClient } from '@supabase/supabase-js';
 
-// async function assignUserRole(
-//   supabase: SupabaseClient,
-//   userId: string,
-//   roleName: string
-// ): Promise<any> {
-//   try {
-//     // Update the user's role in the database
-//     const { data, error } = await supabase
-//       .from('users')
-//       .update({ role: roleName })
-//       .eq('id', userId);
+async function assignUserRole(
+  supabase: SupabaseClient,
+  userId: string,
+  roleName: string
+): Promise<any> {
+  try {
+    // Update the user's role in the database
+    const { data, error } = await supabase
+      .from('users')
+      .update({ role: roleName })
+      .eq('id', userId);
 
-//     if (error) {
-//       throw error;
-//     }
+    if (error) {
+      throw error;
+    }
 
-//     return data;
-//   } catch (error) {
-//     console.error('Error assigning role:', error);
-//     throw error;
-//   }
-// }
+    return data;
+  } catch (error) {
+    console.error('Error assigning role:', error);
+    throw error;
+  }
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { updatedData } = req.body;
@@ -38,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const userId = session.user.id
   const supabaseAccessToken = env.supabaseServiceRoleKey;
   const supabase = supabaseClient(supabaseAccessToken)
+  const supabaseAuth = supabaseAuthClient(supabaseAccessToken)
 
   if (req.method === 'PUT') {
     try {
@@ -71,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // Assign the user's role after successfully updating the profile
-      // await assignUserRole(supabase, userId, 'CUSTOMER');
+      await assignUserRole(supabaseAuth, userId, 'CUSTOMER');
 
       return res.status(200).json(true);
     } catch (error) {
