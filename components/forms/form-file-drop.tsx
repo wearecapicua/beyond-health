@@ -44,16 +44,25 @@ export default function StepFourteen({
       fileUrl: pictureSrc,
       fileName: "screenshot.jpg",
     });
+    
     setValue(fieldName, dataURLtoFile(pictureSrc, "screenshot.jpg"));
     setOpenCam(false);
   }, [webcamRef]);
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
+    const fileUrl = URL.createObjectURL(acceptedFiles[0])
     setFileData({
-      fileUrl: URL.createObjectURL(acceptedFiles[0]),
+      file: acceptedFiles[0],
       fileName: acceptedFiles[0].name,
+      fileUrl: fileUrl
     });
-    setValue(fieldName, acceptedFiles[0]);
+    console.log(acceptedFiles[0])
+    setValue(fieldName, {
+      file: acceptedFiles[0],
+      /* @ts-ignore */
+      fileName: acceptedFiles[0].path,
+      fileUrl: fileUrl
+    });
   }, []);
 
   const undoPhoto = () => {

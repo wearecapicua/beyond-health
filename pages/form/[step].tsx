@@ -35,7 +35,6 @@ import { filterFormData } from "utils/forms/prop-filter";
 import { useFormStatusStore } from "store/useFormStatusStore";
 import { toast } from "react-toastify";
 import Snackbar from "components/snackbar";
-import useSupabase from "lib/useSupabase";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -45,7 +44,6 @@ const FormStep = ({ formData, products }: StepProps) => {
   const StepComponent = formSteps[activeStep];
   const session = useSession();
   const stripe = useStripe();
-  const supabase = useSupabase();
 
   const numericSplit = activeStep.replace("step-", "");
   const numericStep = parseInt(numericSplit, 10);
@@ -64,6 +62,8 @@ const FormStep = ({ formData, products }: StepProps) => {
     resolver: zodResolver(currentSchema) as unknown as Resolver<IFormProps>,
     mode: "onBlur",
   });
+
+  console.log({ formStore });
 
   const { handleSubmit, trigger } = methods;
 
@@ -87,7 +87,7 @@ const FormStep = ({ formData, products }: StepProps) => {
     setActiveStep(next);
     router.push(`/form/${next}`);
   };
-
+console.log({formStep})
   const submitFormData = async (data: any) => {
     updateFormStore(data);
     const updatedData = { ...formStore, ...data, form_step: activeStep };
@@ -140,6 +140,7 @@ const FormStep = ({ formData, products }: StepProps) => {
     const isStepValid = await trigger();
     if (isStepValid) {
       const isSubmitSuccess = await submitFormData(data);
+      console.log("issubmit", isSubmitSuccess)
       if (isSubmitSuccess) {
         setFormStep(activeStep);
         toast.success("Form saved successfully", {

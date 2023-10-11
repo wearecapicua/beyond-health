@@ -19,7 +19,7 @@ export default async function handler(
     if (!session?.user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-    const { supabaseAccessToken } = session;
+    const supabaseAccessToken = env.supabaseServiceRoleKey;
     const userId = session.user.id
     const supabase = supabaseClient(supabaseAccessToken)
 

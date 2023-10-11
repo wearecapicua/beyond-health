@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
-import env from "lib/env";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { supabaseClient } from 'lib/supabaseClient';
+import env from 'lib/env';
 
 const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
 
@@ -20,7 +20,7 @@ export default async function handler(
   if (!session?.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  const { supabaseAccessToken } = session;
+  const supabaseAccessToken = env.supabaseServiceRoleKey;
   const userId = session.user.id
   const supabase = supabaseClient(supabaseAccessToken)
 

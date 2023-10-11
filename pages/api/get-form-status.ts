@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { supabaseClient } from "lib/supabaseClient";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
+import env from 'lib/env';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +13,8 @@ export default async function handler(
   if (!userId) {
     return res.status(400).json({ error: "User ID is required" });
   }
-  const supabase = supabaseClient(session.supabaseAccessToken);
+  const supabaseAccessToken = env.supabaseServiceRoleKey;
+  const supabase = supabaseClient(supabaseAccessToken);
 
   try {
     const { data, error } = await supabase

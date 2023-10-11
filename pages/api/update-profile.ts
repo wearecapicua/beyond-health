@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 import { supabaseClient } from 'lib/supabaseClient';
 import { getServerSession } from "next-auth/next"
+import env from 'lib/env';
 
 // async function assignUserRole(
 //   supabase: SupabaseClient,
@@ -34,8 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!session?.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  const { supabaseAccessToken } = session;
   const userId = session.user.id
+  const supabaseAccessToken = env.supabaseServiceRoleKey;
   const supabase = supabaseClient(supabaseAccessToken)
 
   if (req.method === 'PUT') {
