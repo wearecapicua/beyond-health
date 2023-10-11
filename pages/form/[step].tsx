@@ -36,6 +36,7 @@ import { useFormStatusStore } from "store/useFormStatusStore";
 import { toast } from "react-toastify";
 import Snackbar from "components/snackbar";
 import Spinner from "components/forms/spinner";
+import { getNullFieldsAndMap } from "utils"
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -122,11 +123,23 @@ const FormStep = ({ formData, products }: StepProps) => {
 
     if (isStepValid && activeStep !== "step-18") {
       updateFormStore(data);
+      
       const next = incrementString(formData.step);
       setActiveStep(next);
       router.push(`/form/${next}`);
     }
     if (isStepValid && activeStep === "step-18") {
+      const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
+     
+      if (validateResults) {
+        toast.error("Missing data in previous step", {
+          onClose: () => {
+            setActiveStep(validateResults as FormStep);
+            router.push(`/form/${validateResults}`)
+          },
+        });
+        return
+      }
       setIsSaving(true)
       const isSubmitSuccess = await submitFormData(data);
       if (isSubmitSuccess) {

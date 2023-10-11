@@ -33,27 +33,21 @@ export const decrementString = (inputString: string) => {
   return nextString as FormStep
 }
 
-export const keyedData = (data: any) => {
-  let keyedDataObj = {};
 
-  Object.keys(data).forEach((fieldName) => {
-    if (fieldMap[fieldName] && data[fieldName] !== "none") {
-      const fieldNumber = fieldMap[fieldName];
 
-      if (typeof fieldNumber === "number") {
-        keyedDataObj[fieldNumber] = data[fieldName];
-      } else if (typeof fieldNumber === "object") {
-        const subFieldMap = fieldNumber;
-        let subObj = {}
-      
-        Object.keys(data[fieldName]).forEach((subFieldName) => {
-          subObj[subFieldName] = data[fieldName][subFieldName];
-        });
-        if (!keyedDataObj[subFieldMap.fieldNumber]) {
-          keyedDataObj[subFieldMap.fieldNumber] = subObj;
-        }
-      }
+export function getNullFieldsAndMap(objectToFilter) {
+  const filteredFieldMap = {};
+
+  for (const key in objectToFilter) {
+    if (objectToFilter[key] === null) {
+      filteredFieldMap[key] = fieldMap[key];
     }
-  });
-  return keyedDataObj;
-};
+  }
+  const valuesArray = Object.values(filteredFieldMap);
+
+  valuesArray.sort((a, b) => a - b);
+  const filteredArray = valuesArray.filter((value) => value !== undefined);
+  const step = filteredArray.length ? `step-${filteredArray[0]}` : null
+
+  return step
+}
