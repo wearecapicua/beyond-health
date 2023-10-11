@@ -21,12 +21,13 @@ const stripe = new Stripe(env.stripeSecretKey, {
 const ResultPage = ({ amount, setupId }: ResultProps) => {
   const router = useRouter();
 
-  const price = amount.toString();
-
   useEffect(() => {
     sendUpdatedData({stripe_setup_id: setupId})
   }, [setupId]);
 
+  const handleReturnToHome = () => {
+    router.push('/');
+  };
 
   return (
     <Layout preview={false}>
@@ -34,9 +35,10 @@ const ResultPage = ({ amount, setupId }: ResultProps) => {
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
-          <div className="text-center">
+          <div className="text-center flex flex-col align-items justify-center h-full">
             <PostTitle>Payment saved!</PostTitle>
             <p>You will be charged once our team has reviewed your application and insurance information.</p>
+            <button className="text-main-blue mt-12" onClick={handleReturnToHome}>Return home</button>
             <SectionSeparator />
           </div>
         )}
@@ -59,8 +61,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (!checkout_session.metadata?.productId) {
       throw new Error("Missing product ID.");
     }
-    /* @ts-ignore */
-    const customer = checkout_session.setup_intent?.customer
+  
     const amount = checkout_session.metadata?.amount
     /* @ts-ignore */
     const setupId = checkout_session.setup_intent?.id

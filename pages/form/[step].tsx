@@ -41,8 +41,8 @@ type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 const FormStep = ({ formData, products }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
   const StepComponent = formSteps[activeStep];
-  const session = useSession();
   const stripe = useStripe();
 
   const numericSplit = activeStep.replace("step-", "");
@@ -78,6 +78,7 @@ const FormStep = ({ formData, products }: StepProps) => {
     const { error } = await stripe.redirectToCheckout({
       sessionId: response.id,
     });
+    setIsSaving(false)
     console.error({ error });
     console.warn(error.message);
   };
@@ -87,7 +88,9 @@ const FormStep = ({ formData, products }: StepProps) => {
     setActiveStep(next);
     router.push(`/form/${next}`);
   };
-console.log({formStep})
+
+  console.log({formStep})
+
   const submitFormData = async (data: any) => {
     updateFormStore(data);
     const updatedData = { ...formStore, ...data, form_step: activeStep };
@@ -123,6 +126,7 @@ console.log({formStep})
       router.push(`/form/${next}`);
     }
     if (isStepValid && activeStep === "step-18") {
+      setIsSaving(true)
       const isSubmitSuccess = await submitFormData(data);
       if (isSubmitSuccess) {
         localStorage.removeItem("form-status-store");
@@ -137,6 +141,7 @@ console.log({formStep})
   };
 
   const handleSave = async (data: any) => {
+    setIsSaving(true)
     const isStepValid = await trigger();
     if (isStepValid) {
       const isSubmitSuccess = await submitFormData(data);
@@ -144,7 +149,9 @@ console.log({formStep})
       if (isSubmitSuccess) {
         setFormStep(activeStep);
         toast.success("Form saved successfully", {
-          onClose: () => router.push("/"),
+          onClose: () => {
+            router.push("/")
+          },
         });
       } else {
         toast.error("Form not saved successfully");
@@ -163,18 +170,19 @@ console.log({formStep})
           <FormContainer>
             <div className="flex flex-col gap-4 py-6">
               {activeStep === "step-18" ? (
-                <FormButton text="Go to Checkout" type="submit" style="solid" />
+                <FormButton disabled={isSaving} text="Go to Checkout" type="submit" style="solid" />
               ) : (
-                <FormButton text="Next" type="submit" style="solid" />
+                <FormButton disabled={isSaving} text="Next" type="submit" style="solid" />
               )}
               <FormButton
+                disabled={isSaving}
                 text="Save for later"
                 type="button"
                 style="outline"
                 onClick={handleSubmit(handleSave)}
               />
               {activeStep !== "step-1" && (
-                <FormButton text="Go Back" type="button" onClick={prevPage} />
+                <FormButton disabled={isSaving} text="Go Back" type="button" onClick={prevPage} />
               )}
             </div>
           </FormContainer>
