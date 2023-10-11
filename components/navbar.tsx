@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useSession } from "next-auth/react";
@@ -68,7 +68,7 @@ export default function Navbar({ fullPage }: NavbarProps) {
                   </Link>
                   <LoginButton />
                 </div>
-                {!fullPage && userLoggedIn && formStep ?
+                {!fullPage && userLoggedIn && formStep && formStep !== "COMPLETE" ?
                   <div className="flex-shrink-0">
                     <button
                       onClick={handleResume}

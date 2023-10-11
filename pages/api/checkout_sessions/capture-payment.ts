@@ -20,8 +20,9 @@ export default async function handler(
   if (!session?.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  const supabaseAccessToken = env.supabaseServiceRoleKey;
+  const userEmail = session.user.email || undefined
   const userId = session.user.id
+  const supabaseAccessToken = env.supabaseServiceRoleKey;
   const supabase = supabaseClient(supabaseAccessToken)
 
   if (req.method === "POST") {
@@ -35,7 +36,8 @@ export default async function handler(
           address: data.shipping_address,
           name: name
         },
-        name: name
+        name: name,
+        email: userEmail
       });
 
       const updatedData = { stripe_customer_id: customer.id };

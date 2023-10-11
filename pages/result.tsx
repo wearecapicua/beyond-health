@@ -3,7 +3,6 @@ import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import Container from "components/container";
 import PostTitle from "components/post-title";
-import SectionSeparator from "components/section-separator";
 import Layout from "components/layout";
 import Stripe from "stripe";
 import env from "lib/env";
@@ -22,7 +21,9 @@ const ResultPage = ({ amount, setupId }: ResultProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    sendUpdatedData({stripe_setup_id: setupId})
+    sendUpdatedData({stripe_setup_id: setupId, form_step: "COMPLETE"})
+    localStorage.removeItem("form-status-store");
+    localStorage.removeItem("form-store");
   }, [setupId]);
 
   const handleReturnToHome = () => {
@@ -35,11 +36,11 @@ const ResultPage = ({ amount, setupId }: ResultProps) => {
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
-          <div className="text-center flex flex-col align-items justify-center h-full">
+          <div className="text-center flex flex-col align-items justify-center h-[70vh]">
             <PostTitle>Payment saved!</PostTitle>
             <p>You will be charged once our team has reviewed your application and insurance information.</p>
             <button className="text-main-blue mt-12" onClick={handleReturnToHome}>Return home</button>
-            <SectionSeparator />
+           
           </div>
         )}
       </Container>

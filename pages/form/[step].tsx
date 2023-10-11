@@ -35,6 +35,7 @@ import { filterFormData } from "utils/forms/prop-filter";
 import { useFormStatusStore } from "store/useFormStatusStore";
 import { toast } from "react-toastify";
 import Snackbar from "components/snackbar";
+import Spinner from "components/forms/spinner";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -129,11 +130,7 @@ const FormStep = ({ formData, products }: StepProps) => {
       setIsSaving(true)
       const isSubmitSuccess = await submitFormData(data);
       if (isSubmitSuccess) {
-        localStorage.removeItem("form-status-store");
-        localStorage.removeItem("form-store");
-        toast("Saving form data", {
-          onClose: () => handleCheckout(data),
-        });
+        handleCheckout(data)
       } else {
         toast.error("Form not saved successfully");
       }
@@ -164,7 +161,12 @@ const FormStep = ({ formData, products }: StepProps) => {
       <Container>
         <FormStepper activeStep={numericStep} />
       </Container>
-      <FormProvider {...methods}>
+      {activeStep === "step-18" && isSaving?
+        <div className="flex flex-col align-items justify-center h-[70vh] w-full">
+          <Spinner />
+        </div>
+        :
+        <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <StepComponent />
           <FormContainer>
@@ -188,6 +190,7 @@ const FormStep = ({ formData, products }: StepProps) => {
           </FormContainer>
         </form>
       </FormProvider>
+      }
       <Snackbar />
     </Layout>
   );
@@ -195,7 +198,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
-  //const userRole = await checkUserRole(context.req);
 
   if (!session?.user) {
     return {
