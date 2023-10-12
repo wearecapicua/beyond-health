@@ -33,21 +33,20 @@ export const decrementString = (inputString: string) => {
   return nextString as FormStep
 }
 
-
-
 export function getNullFieldsAndMap(objectToFilter) {
-  const filteredFieldMap = {};
+  const missingFieldsMap = {};
 
-  for (const key in objectToFilter) {
-    if (objectToFilter[key] === null) {
-      filteredFieldMap[key] = fieldMap[key];
+  for (const key in fieldMap) {
+    if (objectToFilter[key] === null || objectToFilter[key] === undefined) {
+      missingFieldsMap[key] = fieldMap[key];
     }
   }
-  const valuesArray = Object.values(filteredFieldMap);
+
+  const valuesArray = Object.values(missingFieldsMap);
 
   valuesArray.sort((a, b) => a - b);
   const filteredArray = valuesArray.filter((value) => value !== undefined);
-  const step = filteredArray.length ? `step-${filteredArray[0]}` : null
+  const step = filteredArray.length ? `step-${filteredArray[0]}` : null;
 
-  return step
+  return step;
 }

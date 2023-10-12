@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 import Layout from "components/layout";
 import Container from "components/container";

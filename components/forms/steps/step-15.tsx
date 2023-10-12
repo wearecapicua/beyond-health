@@ -18,15 +18,15 @@ export default function StepFourteen() {
   useEffect(() => {
     if (!fileData.fileUrl) {
       setFileData({
-        fileUrl: formStore.photoId?.fileUrl || null,
-        fileName: formStore.photoId?.fileName || null,
+        fileUrl: formStore.photo_id?.fileUrl || null,
+        fileName: formStore.photo_id?.fileName || null,
       });
-      setValue("photoId", {
-        fileUrl: formStore.photoId?.fileUrl || null,
-        fileName: formStore.photoId?.fileName || null,
+      setValue("photo_id", {
+        fileUrl: formStore.photo_id?.fileUrl || null,
+        fileName: formStore.photo_id?.fileName || null,
       });
     }
-  }, [formStore.photoId]);
+  }, [formStore.photo_id]);
 
   return (
     <>
@@ -35,8 +35,8 @@ export default function StepFourteen() {
         subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
       />
       <FormContainer>
-        <FormFileDrop fieldName="photoId" setFileData={setFileData} fileData={fileData} />
-        {!!errors.photoId && !fileData?.fileUrl ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
+        <FormFileDrop fieldName="photo_id" setFileData={setFileData} fileData={fileData} />
+        {!!errors.photo_id && !fileData?.fileUrl ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
       </FormContainer>
     </>
   );

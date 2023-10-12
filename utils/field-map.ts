@@ -15,8 +15,6 @@ export const fieldMap = {
   picture: 14,
   photo_id: 15,
   has_health_card: 16,
-  health_card: 16,
   has_insurance: 17,
-  insurance: 17,
   billing_address: 18,
 };

@@ -61,7 +61,7 @@ export const schema = {
     picture: z.custom<File>(),
   }),
   "step-15": z.object({
-    photoId: z.object({
+    photo_id: z.object({
       fileUrl: z.string(),
       fileName: z.string(),
     }),
