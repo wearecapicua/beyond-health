@@ -36,8 +36,8 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
               {subtitle}
             </p>
           </div>
-          <div className="flex mt-16 gap-5 justify-between flex-col md:flex-row">
-            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[498px] flex flex-1 flex-col justify-between gap-14">
+          <div className="flex mt-16 gap-12 md:gap-5 justify-between flex-col md:flex-row">
+            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[370px] md:h-[498px] flex md:flex-1 flex-col justify-between gap-10 md:gap-14">
               <div className="flex flex-col">
                 <span className="text-white font-medium text-2xl lg:text-[28px]">{blurb_one_title}</span>
                 <p className="mt-6 text-white text-lg lg:text-[23px]">{blurb_one_subtitle}</p>
@@ -46,7 +46,7 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
                 <img className="w-[270px]" src="/images/phone.svg" alt="phone" />
               </div>
             </div>
-            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[498px] flex flex-1 flex-col justify-between gap-14">
+            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[370px] md:h-[498px] flex md:flex-1 flex-col justify-between gap-10 md:gap-14">
               <div className="flex flex-col">
                 <span className="text-white font-medium text-2xl lg:text-[28px]">{blurb_two_title}</span>
                 <p className="mt-6 text-white text-lg lg:text-[23px]">{blurb_two_subtitle}</p>
@@ -55,7 +55,7 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
                 <img src="/images/phone2.svg" alt="phone-2" />
               </div>
             </div>
-            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[498px] flex flex-1 flex-col justify-between gap-14">
+            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[370px] md:h-[498px] flex md:flex-1 flex-col justify-between gap-10 md:gap-14">
               <div className="flex flex-col">
                 <span className="text-white font-medium text-2xl lg:text-[28px]">{blurb_three_title}</span>
                 <p className="mt-6 text-white text-lg lg:text-[23px]">{blurb_three_subtitle}</p>
