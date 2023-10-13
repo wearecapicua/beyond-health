@@ -19,7 +19,7 @@ const Reviews = ({ slice }: ReviewsProps): JSX.Element => {
       data-slice-variation={slice.variation}
     >
       <div className="max-w-[1180px] mx-auto py-10">
-        <div className="flex gap-5">
+        <div className="flex gap-5 flex-col md:flex-row">
           {items.map((item: any, index) => {
             const starCount = parseInt(item.review?.data.rating);
             return (

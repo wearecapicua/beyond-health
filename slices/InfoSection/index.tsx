@@ -26,21 +26,21 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="mx-auto py-10 px-2.5">
+      <div className="mx-auto py-10 sm:px-2.5">
         <div className="cta-light-blue-fade px-11 py-[75px] sm:rounded-3xl">
           <div className="mx-auto text-center lg:mx-0">
             <h2 className="text-accent-green leading-tight">
               {title}
             </h2>
-            <p className="mt-10 text-white mx-auto max-w-lg text-xl leading-normal">
+            <p className="mt-10 text-white mx-auto max-w-lg text-lg md:text-xl leading-normal">
               {subtitle}
             </p>
           </div>
-          <div className="flex mt-16 gap-5 justify-between">
+          <div className="flex mt-16 gap-5 justify-between flex-col md:flex-row">
             <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[498px] flex flex-1 flex-col justify-between gap-14">
               <div className="flex flex-col">
-                <span className="text-white font-medium text-[28px]">{blurb_one_title}</span>
-                <p className="mt-6 text-white text-[23px]">{blurb_one_subtitle}</p>
+                <span className="text-white font-medium text-2xl lg:text-[28px]">{blurb_one_title}</span>
+                <p className="mt-6 text-white text-lg lg:text-[23px]">{blurb_one_subtitle}</p>
               </div>
               <div className="h-[60%] self-center">
                 <img className="w-[270px]" src="/images/phone.svg" alt="phone" />
@@ -48,8 +48,8 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
             </div>
             <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[498px] flex flex-1 flex-col justify-between gap-14">
               <div className="flex flex-col">
-                <span className="text-white font-medium text-[28px]">{blurb_two_title}</span>
-                <p className="mt-6 text-white text-[23px]">{blurb_two_subtitle}</p>
+                <span className="text-white font-medium text-2xl lg:text-[28px]">{blurb_two_title}</span>
+                <p className="mt-6 text-white text-lg lg:text-[23px]">{blurb_two_subtitle}</p>
               </div>
               <div className="h-[60%] self-center">
                 <img src="/images/phone2.svg" alt="phone-2" />
@@ -57,8 +57,8 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
             </div>
             <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] bg-accent-2 py-10 px-6 overflow-hidden h-[498px] flex flex-1 flex-col justify-between gap-14">
               <div className="flex flex-col">
-                <span className="text-white font-medium text-[28px]">{blurb_three_title}</span>
-                <p className="mt-6 text-white text-[23px]">{blurb_three_subtitle}</p>
+                <span className="text-white font-medium text-2xl lg:text-[28px]">{blurb_three_title}</span>
+                <p className="mt-6 text-white text-lg lg:text-[23px]">{blurb_three_subtitle}</p>
               </div>
               <div className="h-[60%] w-[470px] mt-[-28px]">
                 <img src="/images/mail.svg" alt="mail"/>

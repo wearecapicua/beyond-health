@@ -98,9 +98,9 @@ export default function Navbar({ fullPage }: NavbarProps) {
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="block h-8 w-8 text-main-black" aria-hidden="true" />
                   ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="block h-8 w-8 text-main-black" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>

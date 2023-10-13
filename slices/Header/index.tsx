@@ -17,13 +17,13 @@ const Header = ({ slice }: HeaderProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="px-6 py-8 sm:px-6 sm:py-14 lg:px-8">
+      <div className="px-6 pt-8 pb-14 sm:px-6 sm:py-14 lg:px-8">
         <div className="mx-auto max-w-screen-lg text-center">
           <h1 className="leading-tight">
             {title}
           </h1>
           {subtitle && 
-            <p className="mx-auto mt-10 max-w-screen-sm text-lg leading-8">
+            <p className="mx-auto mt-10 max-w-screen-sm text-lg md:text-xl leading-8">
               {subtitle}
             </p>
           }
@@ -31,7 +31,7 @@ const Header = ({ slice }: HeaderProps): JSX.Element => {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#"
-                className="rounded-full bg-main-light-blue px-16 py-3 font-semibold text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="w-full sm:w-auto rounded-full bg-main-light-blue px-16 py-3 font-semibold text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {cta_button_text}
               </a>

@@ -10,12 +10,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 40px;
   font-family: 'Raleway', sans-serif;
 }
 
 h2 {
-  font-size: 3.125rem;
+  font-size: 35px;
   font-family: 'Raleway', sans-serif;
 }
 
@@ -78,4 +78,28 @@ h4 {
 
 .cta-black-left-fade {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 5%, #091C21 90%);
+}
+
+
+@media screen and (min-width: 640px) {
+
+}
+
+@media screen and (min-width: 768px) {
+  h1 {
+    font-size: 50px;
+  }
+  h2 {
+    font-size: 2.8rem;
+  }
+
+}
+
+@media screen and (min-width: 1024px) {
+  h1 {
+    font-size: 4rem;
+  }
+  h2 {
+    font-size: 3.125rem;
+  }
 }
