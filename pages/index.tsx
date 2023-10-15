@@ -15,7 +15,7 @@ export default function Index({ preview, home }: IndexProps) {
         <Head>
           <title>Beyond Health</title>
         </Head>
-        <div className="bg-gray-000 min-h-screen py-10">
+        <div className="bg-gray-000 min-h-screen sm:py-10">
           <Container>
             {/* @ts-ignore */}
             <PageBody slices={home.data.slices} />

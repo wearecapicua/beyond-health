@@ -19,7 +19,7 @@ const Treatments = ({ slice }: TreatmentsProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="max-w-[1180px] mx-auto py-10 px-4 sm:px-0">
+      <div className="max-w-[1180px] mx-auto py-10 px-5 sm:px-0">
         <div className="flex gap-10 md:gap-5 flex-col md:flex-row">
           {items.map((item: any, index) => (
             <a key={index} href={item.treatment.data.available ? `/${item.treatment.uid}` : undefined} className="relative flex-1 h-426">
