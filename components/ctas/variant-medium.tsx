@@ -19,7 +19,7 @@ const MediumCta = ({ slice }: CtaSectionProps): JSX.Element => {
 
   return (
     <div id="variant-md" className="mx-auto sm:pt-12 sm:pb-16">
-      <div className="relative isolate radial-gradient-blue-green-reverse px-11 pb-14 lg:pb-0 justify-between shadow-2xl sm:rounded-3xl lg:flex lg:gap-x-20">
+      <div className="relative isolate radial-gradient-blue-green-reverse px-11 pb-14 xl:pb-0 justify-between shadow-2xl sm:rounded-3xl lg:flex lg:gap-x-20">
         <div className="mx-auto max-w-lg sm:text-center py-12 lg:py-10 flex flex-col justify-center lg:mx-0 lg:flex-auto lg:text-left">
           <h2 className="font-sans text-white leading-tight">
             {heading}
@@ -36,7 +36,7 @@ const MediumCta = ({ slice }: CtaSectionProps): JSX.Element => {
             </a>
           </div>
         </div>
-        <div className="relative lg:mt-[35px] lg:mb-[-35px]">
+        <div className="relative lg:mt-[35px] xl:mb-[-35px]">
           <Image
             src={image.url!}
             alt="Beyond Health Logo"

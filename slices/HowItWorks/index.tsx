@@ -23,9 +23,9 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-       <div className="mx-auto max-w-[1190px] pt-10">
-        <div className="lg:flex justify-between gap-20 pb-28">
-          <div className="mx-auto w-[50%] flex flex-col justify-center lg:mx-0 lg:text-left">
+       <div className="mx-auto max-w-[1190px] pt-10 px-5 lg:px-0">
+        <div className="lg:flex justify-between gap-20 pb-24 lg:pb-28">
+          <div className="mx-auto lg:w-[50%] flex flex-col justify-center lg:mx-0 lg:text-left">
             <span className="font-bold text-main-blue text-lg">STEP ONE</span>
             <h2 className="font-sans leading-tight mt-4">
               {step_one_title}
@@ -34,23 +34,23 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
               {step_one_text}
             </p>
           </div>
-          <div className="bg-main-blue overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
+          <div className="mt-12 lg:mt-0 bg-main-blue overflow-hidden rounded-3xl lg:w-[57%] h-[260px] sm:h-[350px] lg:h-96 flex justify-center">
             <img
               src={"/images/phone.svg"}
               alt="phone"
-              className="h-[704px] mt-14"
+              className="h-[550px] sm:h-[704px] mt-14"
             />
           </div>
         </div>
-        <div className="lg:flex justify-between gap-20 pt-2 pb-28">
-          <div className="bg-accent-green-800 overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
+        <div className="flex flex-col-reverse lg:flex-row justify-between gap-12 lg:gap-20 pt-2 pb-24 lg:pb-28">
+          <div className="bg-accent-green-800 overflow-hidden rounded-3xl lg:w-[57%] h-[260px] sm:h-[350px] lg:h-96 flex justify-center">
             <img
               src={"/images/phone2.svg"}
               alt="phone"
-              className="h-[704px] mt-14"
+              className="h-[550px] sm:h-[704px] mt-14"
             />
           </div>
-          <div className="mx-auto w-[50%] flex flex-col justify-center lg:mx-0 lg:text-left">
+          <div className="mx-auto lg:w-[50%] flex flex-col justify-center lg:mx-0 lg:text-left">
             <span className="font-bold text-main-blue text-lg">STEP TWO</span>
             <h2 className="font-sans leading-tight mt-4">
               {step_two_title}
@@ -60,8 +60,8 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
             </p>
           </div>
         </div>
-        <div className="lg:flex justify-between gap-20 pt-2 pb-28">
-          <div className="mx-auto w-[50%] flex flex-col justify-center lg:mx-0 lg:text-left">
+        <div className="lg:flex justify-between gap-20 pt-2 pb-24 lg:pb-28">
+          <div className="mx-auto lg:w-[50%] flex flex-col justify-center lg:mx-0 lg:text-left">
             <span className="font-bold text-main-blue text-lg">STEP THREE</span>
             <h2 className="font-sans leading-tight mt-4">
               {step_three_title}
@@ -70,11 +70,11 @@ const HowItWorks = ({ slice }: HowItWorksProps): JSX.Element => {
               {step_three_text}
             </p>
           </div>
-          <div className="bg-main-blue overflow-hidden rounded-3xl w-[57%] h-96 flex justify-center">
+          <div className="mt-12 lg:mt-0 bg-main-blue overflow-hidden rounded-3xl lg:w-[57%] h-[260px] sm:h-[350px] lg:h-96 flex justify-center">
             <img
               src={"/images/mail.svg"}
               alt="phone"
-              className="h-[565px] mt-6 ml-28"
+              className="h-[365px] sm:h-[500px] lg:h-[565px] mt-6 ml-28"
             />
           </div>
         </div>

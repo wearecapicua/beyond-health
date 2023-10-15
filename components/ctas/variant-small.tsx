@@ -18,8 +18,8 @@ const SmallCta = ({ slice }: CtaSectionProps): JSX.Element => {
   } = slice.primary
 
   return (
-    <div className="mx-auto py-24">
-      <div className="relative isolate radial-gradient-blue-green px-11 justify-between shadow-2xl sm:rounded-3xl lg:flex lg:gap-x-20">
+    <div id="variant-sm" className="mx-auto sm:py-24">
+      <div className="relative isolate radial-gradient-blue-green pb-28 pt-8 sm:py-12 xl:py-0 px-11 justify-between shadow-2xl sm:rounded-3xl lg:flex lg:gap-x-20">
         <div className="mx-auto max-w-md text-center py-10 lg:mx-0 lg:flex-auto lg:text-left">
           <h2 className="font-sans text-white leading-tight">
             {heading}
@@ -30,19 +30,19 @@ const SmallCta = ({ slice }: CtaSectionProps): JSX.Element => {
           <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
             <a
               href="#"
-              className="rounded-full bg-accent-green px-16 py-3 text-xl font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="w-full sm:w-auto rounded-full bg-accent-green px-16 py-3 text-xl font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               {cta_button_text}
             </a>
           </div>
         </div>
-        <div className="relative mt-[-50px] mb-[-56px]">
+        <div className="relative xl:mt-[-50px] xl:mb-[-56px]">
           <Image
             src={image.url!}
             alt="Beyond Health Logo"
             width="602"
             height="408"
-            className="rounded-[20px] overflow-hidden"
+            className="rounded-[20px] mx-auto overflow-hidden"
           />
         </div>
       </div>

@@ -41,8 +41,8 @@ const Pricing = ({ slice }: PricingProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="px-6 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-3xl px-10 py-24 text-center bg-white">
+      <div className="sm:px-6 pt-8 sm:px-6 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-7xl sm:rounded-3xl px-8 sm:px-10 py-24 text-center bg-white">
           <h2 className="leading-tight">
             {title}
           </h2>
@@ -51,17 +51,17 @@ const Pricing = ({ slice }: PricingProps): JSX.Element => {
               {subtitle}
             </p>
           }
-          <div className="flex mt-10 justify-center items-center gap-20">
+          <div className="flex flex-col sm:flex-row mt-14 sm:mt-10 justify-center sm:items-center gap-12 sm:gap-20">
             <div>
               <PrismicRichText
                 field={description}
                 components={{
-                  paragraph: ({ children }) => <p className="font-raleway font-bold text-3xl text-left">{children}</p>,
+                  paragraph: ({ children }) => <p className="font-raleway font-bold text-2xl sm:text-3xl text-left">{children}</p>,
                   strong: ({ children }) => <strong className="text-main-light-blue block">{children}</strong>
                 }}
               />
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 text-left sm:text-center">
               {bulletsArray.map((item, index) => (
                 <ListItem key={index} text={item} />
               ))}
