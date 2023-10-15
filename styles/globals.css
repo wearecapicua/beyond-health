@@ -67,7 +67,7 @@ h4 {
 
 .cta-blue-black-fade {
   background-color: #091C21;
-  background-image: radial-gradient(circle at left, rgba(6, 87, 220, .75), transparent 80%);
+  background-image: radial-gradient(circle at right, rgba(6, 87, 220, .75), transparent 80%);
   background-blend-mode: screen;
 }
 
@@ -97,5 +97,8 @@ h4 {
   }
   h2 {
     font-size: 3.125rem;
+  }
+  .cta-blue-black-fade {
+    background-image: radial-gradient(circle at left, rgba(6, 87, 220, .75), transparent 80%);
   }
 }
