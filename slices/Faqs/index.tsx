@@ -20,7 +20,7 @@ const Faqs = ({ slice }: FaqsProps): JSX.Element => {
       data-slice-variation={slice.variation}
       className="py-10"
     >
-      <div className="mx-auto max-w-[1180px] border-b-[1px] border-main-black/40">
+      <div className="px-5 sm:px-auto mx-auto max-w-[1180px] border-b-[1px] border-main-black/40">
         {items.map((item: any, index: number) => (
           <div key={`faq-${index}`} className="py-5 border-t-[1px] border-main-black/40">
             <Disclosure as="div">

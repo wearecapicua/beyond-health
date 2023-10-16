@@ -25,16 +25,16 @@ const InfoRightCta = ({ slice }: CtaSectionProps): JSX.Element => {
   } = slice.primary
 
   return (
-    <div id="variant-info-left" className="mx-auto pt-10 pb-20">
-      <div className="lg:flex justify-between px-5 sm:px-0">
-        <div className="h-full overflow-hidden rounded-3xl h-[655px] w-full lg:max-w-[622px]">
+    <div id="variant-info-right" className="mx-auto pt-10 pb-20">
+      <div className="lg:flex justify-between px-5 sm:px-0 gap-10">
+        <div className="h-full overflow-hidden rounded-3xl h-[655px] w-full lg:max-w-[500px] xl:max-w-[622px]">
           <img
             src={image.url || undefined}
             alt="Beyond Health Logo"
             className="object-cover"
           />
         </div>
-        <div className="mx-auto mt-14 lg:mt-0 lg:w-[40%] flex flex-col lg:mx-0 lg:text-left">
+        <div className="mx-auto mt-14 lg:mt-0 lg:w-1/2 xl:w-[40%] flex flex-col lg:mx-0 lg:text-left">
           <span className="font-bold text-main-blue text-lg">{introtext}</span>
           <h2 className="font-sans leading-tight mt-4">
             {heading}
