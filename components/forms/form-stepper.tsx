@@ -81,13 +81,13 @@ export default function FormStepper({ activeStep }: FormStepperProps) {
 
   return (
     <div aria-label="Progress" className="pt-9 pb-7">
-      <div className="mx-3 md:mx-0 md:px-6 py-3 rounded-full bg-gray-200 bg-opacity-20 border border-gray-300 items-center flex md:divide-y-0">
+      <div className="mx-3 md:mx-0 px-3 md:px-6 py-3 gap-3 rounded-full bg-gray-200 bg-opacity-20 border border-gray-300 items-center flex md:divide-y-0">
         {steps.map((step, stepIdx) => (
           <React.Fragment key={step.name}>
             <>
               {step.status === 'complete' ? (
                 <a href={step.href} className="group flex-1 flex w-full items-center">
-                  <span className="flex gap-3 items-center px-3 md:px-6 text-sm font-medium w-full">
+                  <span className="flex gap-3 items-center  md:px-6 text-sm font-medium w-full">
                     <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent-green-800 group-hover:bg-main-light-blue">
                       <CheckIcon className="h-4 w-4 text-white" aria-hidden="true" />
                     </span>
@@ -97,7 +97,7 @@ export default function FormStepper({ activeStep }: FormStepperProps) {
                   
                 </a>
               ) : step.status === 'current' ? (
-                <a href={step.href} className="flex flex-1 gap-3 items-center md:px-6 text-sm font-medium" aria-current="step">
+                <a href={step.href} className="flex flex-1 last-of-type:flex-initial gap-3 items-center md:px-6 text-sm font-medium" aria-current="step">
                   <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-main-light-blue">
                     <span className="text-white text-sm">{step.id}</span>
                   </span>
@@ -108,7 +108,7 @@ export default function FormStepper({ activeStep }: FormStepperProps) {
               null :
               (
                 <a href={step.href} className="group flex items-center">
-                  <span className="flex items-center px-3 md:px-6 text-sm font-medium">
+                  <span className="flex items-center md:px-6 text-sm font-medium">
                     <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gray-600">
                       <span className="text-white text-sm">{step.id}</span>
                     </span>
