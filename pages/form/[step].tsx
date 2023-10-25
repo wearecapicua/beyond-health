@@ -36,7 +36,11 @@ import { useFormStatusStore } from "store/useFormStatusStore";
 import { toast } from "react-toastify";
 import Snackbar from "components/snackbar";
 import Spinner from "components/forms/spinner";
-import { getNullFieldsAndMap } from "utils"
+import { getNullFieldsAndMap } from "utils";
+import { getProfileImage } from "lib/api/supabase";
+import { getIdImage } from "lib/api/supabase";
+import { getHealthCardImage } from "lib/api/supabase";
+import { getInsuranceImage } from "lib/api/supabase";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -65,8 +69,6 @@ const FormStep = ({ formData, products }: StepProps) => {
     mode: "onBlur",
   });
 
-  console.log({ formStore });
-
   const { handleSubmit, trigger } = methods;
 
   const handleCheckout = async (data: any) => {
@@ -91,8 +93,6 @@ const FormStep = ({ formData, products }: StepProps) => {
     router.push(`/form/${next}`);
   };
 
-  console.log({formStep})
-
   const submitFormData = async (data: any) => {
     updateFormStore(data);
     const updatedData = { ...formStore, ...data, form_step: activeStep };
@@ -112,10 +112,34 @@ const FormStep = ({ formData, products }: StepProps) => {
 
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const isStepValid = await trigger();
-    console.log({ data });
 
-    if (isStepValid && activeStep === "step-14") {
-      await uploadImages(data.picture);
+    if (isStepValid && activeStep === "step-14" && data.picture?.file) {
+      const imageSaveData = await uploadImages(data.picture?.file);
+      await sendUpdatedData({ profile_image_url: imageSaveData.data?.path });
+      const next = incrementString(formData.step);
+      setActiveStep(next);
+      router.push(`/form/${next}`);
+    }
+
+    if (isStepValid && activeStep === "step-15" && data.photo_id?.file) {
+      const imageSaveData = await uploadImages(data.photo_id?.file);
+      await sendUpdatedData({ photo_id_url: imageSaveData.data?.path });
+      const next = incrementString(formData.step);
+      setActiveStep(next);
+      router.push(`/form/${next}`);
+    }
+
+    if (isStepValid && activeStep === "step-16" && data.health_card?.file) {
+      const imageSaveData = await uploadImages(data.health_card?.file);
+      await sendUpdatedData({ health_card_image_url: imageSaveData.data?.path });
+      const next = incrementString(formData.step);
+      setActiveStep(next);
+      router.push(`/form/${next}`);
+    }
+
+    if (isStepValid && activeStep === "step-17" && data.insurance?.file) {
+      const imageSaveData = await uploadImages(data.insurance?.file);
+      await sendUpdatedData({ insurance_image_url: imageSaveData.data?.path });
       const next = incrementString(formData.step);
       setActiveStep(next);
       router.push(`/form/${next}`);
@@ -151,11 +175,34 @@ const FormStep = ({ formData, products }: StepProps) => {
   };
 
   const handleSave = async (data: any) => {
+    const profileImageSaved = await getProfileImage();
+    const photoIdSaved = await getIdImage();
+    const healthCardImageSaved = await getHealthCardImage();
+    const insuranceImageSaved = await getInsuranceImage();
     setIsSaving(true)
     const isStepValid = await trigger();
     if (isStepValid) {
+      if (!profileImageSaved || data.picture?.file) {
+        const imageSaveData = await uploadImages(data.picture?.file);
+        await sendUpdatedData({ profile_image_url: imageSaveData?.data?.path });
+      }
+
+      if (!photoIdSaved || data.photo_id?.file) {
+        const photoIdSaveData = await uploadImages(data.photo_id?.file);
+        await sendUpdatedData({ photo_id_url: photoIdSaveData?.data?.path });
+      }
+
+      if (!healthCardImageSaved || data.health_card?.file) {
+        const healthCardImageSaveData = await uploadImages(data.health_card?.file);
+        await sendUpdatedData({ health_card_image_url: healthCardImageSaveData?.data?.path });
+      }
+
+      if (!insuranceImageSaved || data.insurance?.file) {
+        const insuranceImageSaveData = await uploadImages(data.insurance?.file);
+        await sendUpdatedData({ insurance_image_url: insuranceImageSaveData?.data?.path });
+      }
+
       const isSubmitSuccess = await submitFormData(data);
-      console.log("issubmit", isSubmitSuccess)
       if (isSubmitSuccess) {
         setFormStep(activeStep);
         toast.success("Form saved successfully", {
