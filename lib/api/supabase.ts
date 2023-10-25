@@ -86,6 +86,26 @@ export async function uploadImages(file: File) {
     .uploadToSignedUrl(response.path, response.token, file);
 }
 
+export async function getProfileImage() {
+  const response = await fetchGetJSON("/api/get-profile-image");
+  return response;
+}
+
+export async function getIdImage() {
+  const response = await fetchGetJSON("/api/get-id-image");
+  return response;
+}
+
+export async function getHealthCardImage() {
+  const response = await fetchGetJSON("/api/get-health-card-image");
+  return response;
+}
+
+export async function getInsuranceImage() {
+  const response = await fetchGetJSON("/api/get-insurance-image");
+  return response;
+}
+
 // export async function uploadImages(file: any) {
 //   const body = new FormData();
 //   body.append('file', file.fileObject);
