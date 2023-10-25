@@ -14,6 +14,7 @@ const videoConstraints = {
 };
 
 interface FileData {
+  file: File | null;
   fileUrl: string | null;
   fileName: string | null;
 }
@@ -22,12 +23,20 @@ type FormFileDrop = {
   setFileData: (data: any) => void;
   fileData: FileData;
   fieldName: string;
+  profileImageSaved?: string | undefined;
+  photoIdSaved?: string | undefined;
+  healthCardImageSaved?: string | undefined;
+  insuranceImageSaved?: string | undefined;
 };
 
-export default function StepFourteen({
+export default function FormFileDrop({
   fieldName,
   fileData,
   setFileData,
+  profileImageSaved,
+  photoIdSaved,
+  healthCardImageSaved,
+  insuranceImageSaved,
 }: FormFileDrop) {
   const { setValue, control } = useFormContext();
   const [openCam, setOpenCam] = useState(false);
@@ -42,21 +51,25 @@ export default function StepFourteen({
     }
     setFileData({
       fileUrl: pictureSrc,
-      fileName: "screenshot.jpg",
+      fileName: `${fieldName}-screenshot.jpg`,
+      file: dataURLtoFile(pictureSrc, `${fieldName}.jpg`)
     });
     
-    setValue(fieldName, dataURLtoFile(pictureSrc, "screenshot.jpg"));
+    setValue(fieldName, {
+      file: dataURLtoFile(pictureSrc, `${fieldName}.jpg`), 
+      fileName: `${fieldName}-screenshot.jpg`,
+      fileUrl: pictureSrc
+    });
     setOpenCam(false);
   }, [webcamRef]);
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
-    const fileUrl = URL.createObjectURL(acceptedFiles[0])
+    const fileUrl = URL.createObjectURL(acceptedFiles[0]);
     setFileData({
       file: acceptedFiles[0],
       fileName: acceptedFiles[0].name,
       fileUrl: fileUrl
     });
-    console.log(acceptedFiles[0])
     setValue(fieldName, {
       file: acceptedFiles[0],
       /* @ts-ignore */
@@ -88,7 +101,7 @@ export default function StepFourteen({
             videoConstraints={videoConstraints}
           />
         </div>
-      ) : fileUrl ? (
+      ) : (fileUrl || profileImageSaved || photoIdSaved || healthCardImageSaved || insuranceImageSaved) ? (
         <div className="relative max-w-[320px] mx-auto">
           <button
             className="absolute top-[-12px] right-[-12px] w-10 bg-main-black text-white rounded-full p-1"
@@ -97,7 +110,7 @@ export default function StepFourteen({
             <XMarkIcon />
           </button>
           <div className="rounded-xl overflow-hidden mb-10">
-            <img src={fileUrl} alt="preview" />
+            <img src={fileUrl || profileImageSaved || photoIdSaved || healthCardImageSaved || insuranceImageSaved } alt="preview" />
           </div>
         </div>
       ) : null}

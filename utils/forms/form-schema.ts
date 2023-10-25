@@ -61,28 +61,15 @@ export const schema = {
     picture: z.custom<File>(),
   }),
   "step-15": z.object({
-    photo_id: z.object({
-      fileUrl: z.string(),
-      fileName: z.string(),
-    }),
+    photo_id: z.custom<File>(),
   }),
   "step-16": z.object({
-    has_health_card: z.string(),
-    healthCard: z.nullable(
-      z.object({
-        fileUrl: z.union([z.string(), z.null()]).optional(),
-        fileName: z.union([z.string(), z.null()]).optional(),
-      })
-    ),
+    has_health_card: z.boolean(),
+    health_card: z.custom<File>(),
   }),
   "step-17": z.object({
-    has_insurance: z.string(),
-    insurance: z.nullable(
-      z.object({
-        fileUrl: z.union([z.string(), z.null()]).optional(),
-        fileName: z.union([z.string(), z.null()]).optional(),
-      })
-    ),
+    has_insurance: z.boolean(),
+    insurance: z.custom<File>(),
   }),
   "step-18": z.object({
     billing_address: z.object({
