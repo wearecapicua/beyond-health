@@ -36,8 +36,8 @@ export default function Navbar({ fullPage }: NavbarProps) {
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-wide py-1 px-4 xl:px-6">
-            <div className="flex h-16 justify-between">
+          <div className="mx-auto max-w-wide p-6">
+            <div className="flex justify-between">
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/">

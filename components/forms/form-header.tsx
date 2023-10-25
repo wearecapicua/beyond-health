@@ -9,10 +9,10 @@ export default function FormHeader({
 }: FormHeaderProps) {
   
   return (
-    <div className="px-6 py-8">
+    <div className="px-6 pt-8 pb-7">
       <div className="mx-auto max-w-[750px] text-center">
         {title && 
-          <h2 className="leading-tight text-4xl">
+          <h2 className="leading-tight text-2xl md:text-4xl">
             {title}
           </h2>
         }

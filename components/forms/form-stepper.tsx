@@ -81,7 +81,7 @@ export default function FormStepper({ activeStep }: FormStepperProps) {
 
   return (
     <div aria-label="Progress" className="pt-9 pb-7">
-      <div className="mx-3 md:mx-0 px-3 md:px-6 py-3 gap-3 rounded-full bg-gray-200 bg-opacity-20 border border-gray-300 items-center flex md:divide-y-0">
+      <div className="mx-6 md:mx-0 px-3 md:px-6 py-3 gap-3 rounded-full bg-gray-200 bg-opacity-20 border border-gray-300 items-center flex md:divide-y-0">
         {steps.map((step, stepIdx) => (
           <React.Fragment key={step.name}>
             <>

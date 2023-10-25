@@ -23,7 +23,7 @@ export default function FormButton({
       disabled={disabled}
       type={type}
       onClick={onClick}
-      className={`${buttonStyles} flex w-full justify-center items-center gap-4 rounded-full px-6 py-3 text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500`}
+      className={`${buttonStyles} flex w-full justify-center items-center gap-4 rounded-full px-6 py-3 md:text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500`}
     >
       {icon === "google" ? <GoogleIcon /> : null}
       {text}
