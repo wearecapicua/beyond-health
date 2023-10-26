@@ -17,7 +17,7 @@ const Header = ({ slice }: HeaderProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="px-6 pt-8 pb-14 sm:px-6 sm:py-14 lg:px-8">
+      <div className="px-6 pt-8 pb-14 sm:px-6 sm:py-14 lg:pt-20 lg:px-8">
         <div className="mx-auto max-w-screen-lg text-center">
           <h1 className="leading-tight">
             {title}

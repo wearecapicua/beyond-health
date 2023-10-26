@@ -19,8 +19,8 @@ const SmallCta = ({ slice }: CtaSectionProps): JSX.Element => {
 
   return (
     <div id="variant-sm" className="mx-auto sm:py-24">
-      <div className="relative isolate radial-gradient-blue-green pb-28 pt-8 sm:py-12 xl:py-0 px-11 justify-between shadow-2xl sm:rounded-3xl lg:flex lg:gap-x-20">
-        <div className="mx-auto max-w-md text-center py-10 lg:mx-0 lg:flex-auto lg:text-left">
+      <div className="relative isolate radial-gradient-blue-green pb-24 md:pb-28 pt-8 sm:py-12 xl:py-0 px-6 md:px-11 justify-between shadow-2xl sm:rounded-3xl lg:flex lg:gap-x-20">
+        <div className="mx-auto max-w-md text-center pt-8 pb-12 md:py-10 lg:mx-0 lg:flex-auto lg:text-left">
           <h2 className="font-sans text-white leading-tight">
             {heading}
           </h2>

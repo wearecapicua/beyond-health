@@ -36,7 +36,7 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
             {subheading}
           </p>
           {info_title_one &&
-            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] items-center bg-accent-2 my-1.5 py-6 px-10 flex gap-6">
+            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] items-center bg-accent-2 mb-3 md:my-1.5 py-6 px-10 flex gap-6">
               <div className="w-7 h-7 bg-main-blue rounded-full flex shrink-0 items-center justify-center">
                 <span className="text-white font-bold">1</span>
               </div>
@@ -47,7 +47,7 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
             </div>
           }
           {info_title_two &&
-            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] items-center bg-accent-2 my-2 py-6 px-10 flex gap-6">
+            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] items-center bg-accent-2 my-3 md:my-2 py-6 px-10 flex gap-6">
               <div className="w-7 h-7 bg-main-blue rounded-full flex shrink-0 items-center justify-center">
                 <span className="text-white font-bold">2</span>
               </div>
@@ -58,7 +58,7 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
             </div>
           }
           {info_title_three &&
-            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] items-center bg-accent-2 my-2 py-6 px-10 flex gap-6">
+            <div className="border border-solid border-white border-opacity-50 bg-white bg-opacity-10 rounded-[20px] items-center bg-accent-2 my-3 md:my-2 py-6 px-10 flex gap-6">
               <div className="w-7 h-7 bg-main-blue rounded-full flex shrink-0 items-center justify-center">
                 <span className="text-white font-bold">3</span>
               </div>
@@ -71,13 +71,13 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
           <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
             <a
               href="#"
-              className="w-full sm:w-auto  text-center rounded-full bg-accent-green px-14 py-3 text-lg font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="w-full sm:w-auto text-center rounded-full bg-accent-green px-14 py-3 font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               {cta_button_text}
             </a>
           </div>
         </div>
-        <div className="h-full overflow-hidden rounded-3xl mt-14 mb-6 lg:mt-[35px] lg:mb-[-35px]  xl:h-[794px] lg:max-w-[500px] xl:max-w-[610px]">
+        <div className="h-full overflow-hidden rounded-3xl mt-14 lg:mt-[35px] lg:mb-[-35px]  xl:h-[794px] lg:max-w-[500px] xl:max-w-[610px]">
           <img
             src={image.url || undefined}
             alt="Beyond Health Logo"

@@ -16,7 +16,7 @@ export default function Post({ page, preview }: PostProps) {
 
   return (
     <Layout preview={preview}>
-      <div className="bg-gray-000 min-h-screen py-10">
+      <div className="bg-gray-000 min-h-screen">
         <Container>
           {router.isFallback ? (
             <PostTitle>Loading…</PostTitle>
