@@ -42,7 +42,7 @@ const LargeCta = ({ slice }: CtaSectionProps): JSX.Element => {
             </div>
           <div className="h-full relative">
             <div className="hidden md:block cta-black-gray-fade absolute top-0 left-0 bottom-0 h-[600px] w-[175px]" />
-            <div className="cta-blue-gray-fade-sm absolute top-0 left-0 h-full w-full" />
+            <div className="md:hidden cta-blue-gray-fade-sm absolute top-0 left-0 h-full w-full" />
             <img
               src={image.url || undefined}
               alt="Beyond Health Logo"
