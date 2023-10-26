@@ -68,7 +68,7 @@ export default function StepEighteen() {
                 type="text"
                 defaultValue={formStore.billing_address?.line2}
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="sm:grid sm:grid-cols-2 gap-4">
                 <FormInput
                   label="City*"
                   id="billing_address.city"

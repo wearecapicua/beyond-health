@@ -50,7 +50,7 @@ export default function StepTwelve() {
           })}
         {!!errors.product && <p className="text-red-500 text-sm text-center">Please select one</p>}
       </FormContainer>
-      <p className="mx-auto mt-10 mb-6 max-w-[820px] text-center text-lg leading-8">Pricing displayed here includes pharmacy fill fee but does not include benefits or insurance coverage</p>
+      <p className="mx-auto mt-10 mb-6 max-w-[820px] text-center text-lg leading-8 px-6 md:px-3">Pricing displayed here includes pharmacy fill fee but does not include benefits or insurance coverage</p>
     </>
   );
 }

@@ -31,7 +31,7 @@ export default function StepSeven() {
         title={"Do you take any medication, vitamins, herbals, or supplements?"}
         subtitle="Please enter all medications you currently take, including any and all medications containing Nitroglycerine as well as vitamins, herbals, and supplements. Also, please provide any additional details you may wish about any events, conditions, or symptoms."
       />
-      <div className="max-w-[602px] mx-auto">
+      <div className="max-w-[602px] mx-auto px-6 md:px-3">
         <FormInput
           id="medications"
           type="text"

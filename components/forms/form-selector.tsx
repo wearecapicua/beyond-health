@@ -30,8 +30,8 @@ export default function FormButton({
         })}
         className="w-full h-full opacity-0 absolute top-0"
        />
-       <div className="w-full flex justify-between cursor-pointer">
-        <label htmlFor={value}>
+       <div className="w-full flex justify-between cursor-pointer items-center">
+        <label className="mr-4" htmlFor={value}>
           {label}
         </label>
         <div className={`${selectedStyles} rounded-full border-[1px] p-3 border-gray-400`} />

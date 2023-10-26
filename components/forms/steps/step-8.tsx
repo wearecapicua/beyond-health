@@ -31,7 +31,7 @@ export default function StepEight() {
         title={"Do you have any medical conditions?"}
         subtitle="Please enter any and all medical conditions below"
       />
-      <div className="max-w-[602px] mx-auto">
+      <div className="max-w-[602px] mx-auto px-6 md:px-3">
         <FormInput
           id="conditions"
           type="text"

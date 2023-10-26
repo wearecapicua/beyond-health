@@ -26,7 +26,7 @@ export default function StepOne() {
           type="text"
           defaultValue={formStore.shipping_address?.line2}
         />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="sm:grid sm:grid-cols-2 gap-4">
           <FormInput
             label="City*"
             id="shipping_address.city"

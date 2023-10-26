@@ -45,7 +45,7 @@ export default function FormButton({
       }
       <label
         htmlFor={value}
-        className={`absolute inset-0 flex items-center justify-center cursor-pointer text-center ${
+        className={`absolute inset-0 flex items-center justify-center cursor-pointer text-center px-6 ${
           selected === value
             ? "bg-main-light-blue text-white"
             : "text-main-blue border-[1px] border-gray-400"

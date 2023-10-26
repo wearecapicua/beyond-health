@@ -36,14 +36,14 @@ export default function DatePicker({ setValue, defaultDate, setFullDate }: DateP
     setFullDate(birthdate)
     setValue("birthdate", birthdate)
   }
-  const selectStyles = "rounded-full flex-1 px-6 py-3"
+  const selectStyles = "rounded-full flex-1 px-6 py-3 border-gray-400"
   
   return (
     <DateDropdown
       defaultDate={defaultDate}
       onDateChange={(date) => changeDate(date)}
       selectClass={selectStyles}
-      containerClass="flex justify-between gap-5 pb-2"
+      containerClass="flex flex-col sm:flex-row justify-between gap-5 pb-2"
     />
   )
 }

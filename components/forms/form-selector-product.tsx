@@ -25,7 +25,7 @@ export default function FormSelectorProduct({
   // const { register } = useFormContext();
 
   return (
-    <div className={`${selected === value ? 'bg-blue-500 bg-opacity-5 border-main-light-blue' : 'border-gray-400'} relative my-3 border-[1px] hover:opacity-8 flex w-full rounded-[40px] px-12 py-5 leading-6`}>
+    <div className={`${selected === value ? 'bg-blue-500 bg-opacity-5 border-main-light-blue' : 'border-gray-400'} relative my-3 border-[1px] hover:opacity-8 flex w-full rounded-[40px] px-10 sm:px-12 py-5 leading-6 overflow-hidden`}>
       <input
         type="radio"
         id={value}
@@ -35,10 +35,10 @@ export default function FormSelectorProduct({
         // })}
         className="w-full h-full opacity-0 absolute top-0 cursor-pointer"
        />
-      <div className="w-full flex justify-between cursor-pointer items-center">
+      <div className="w-full flex justify-between cursor-pointer items-center gap-2">
         <label htmlFor={value}>
           <p className="text-xl font-semibold">{label}</p>
-          <p className="text-main-blue font-semibold text-3xl mt-2">{description}</p>
+          <p className="text-main-blue font-semibold text-2xl sm:text-3xl mt-2">{description}</p>
           <p className="font-medium mt-3">{`You will be billed ${price} for every shipment`}</p>
         </label>
         <div className={`${selectedOuterBtn} rounded-full border-[1px]`}>
