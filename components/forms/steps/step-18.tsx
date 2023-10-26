@@ -48,7 +48,7 @@ export default function StepEighteen() {
         subtitle="Confirm the formula and auto-refill schedule and submit your online visit."
       />
       <Container>
-        <div className="flex justify-center gap-10 pb-10">
+        <div className="md:flex justify-center gap-10 pb-10">
           <div className="flex-1 max-w-[580px]">
             <FormContainer wide>
               <p className="font-semibold text-xl text-main-blue pb-2">Billing Address</p>
@@ -68,7 +68,7 @@ export default function StepEighteen() {
                 type="text"
                 defaultValue={formStore.billing_address?.line2}
               />
-              <div className="sm:grid sm:grid-cols-2 gap-4">
+              <div className="lg:grid lg:grid-cols-2 gap-4">
                 <FormInput
                   label="City*"
                   id="billing_address.city"

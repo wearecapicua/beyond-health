@@ -20,7 +20,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   const formattedPrice = formatAmountForDisplay(price, config.CURRENCY)
 
   return (
-    <div className="max-w-[430px] px-4 flex-1 flex flex-col justify-between">
+    <div className="max-w-[430px] mt-10 md:mt-2 px-8 md:px-4 flex-1 flex flex-col gap-10 justify-between">
       <div>
         <p className="font-semibold text-xl text-main-blue pb-2">Medication</p>
         <ul className="list-disc list-inside pl-3">

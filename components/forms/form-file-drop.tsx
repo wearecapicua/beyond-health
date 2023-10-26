@@ -86,9 +86,9 @@ export default function FormFileDrop({
   const fileName = fileData?.fileName;
 
   const baseButtonStyles =
-    "cursor-pointer transition px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between items-center hover:bg-blue-500 hover:bg-opacity-5";
+    "cursor-pointer transition px-4 py-3 border-dashed border-[1px] rounded-full text-gray-800 flex justify-between gap-2 items-center hover:bg-blue-500 hover:bg-opacity-5";
   const innerButtonStyles =
-    "rounded-full border-[1px] border-solid border-main-light-blue text-main-light-blue text-center font-semibold px-12 bg-white";
+    "rounded-full border-[1px] border-solid border-main-light-blue text-main-light-blue text-center font-semibold px-3 sm:px-12 bg-white";
 
   return (
     <>
