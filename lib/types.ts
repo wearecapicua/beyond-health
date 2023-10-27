@@ -69,6 +69,10 @@ export type User = {
     postal_code: string;
   };
   payments_history: string[];
+  photo_id_url: string;
+  profile_image_url: string;
+  insurance_image_url: string;
+  health_card_image_url: string;
   stripe_setup_id: string;
 };
 

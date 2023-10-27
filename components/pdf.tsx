@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { User } from "lib/types"
 
@@ -17,7 +17,20 @@ const PDFDocument = ({ user }: { user: User }) => (
         <Text>Questions: {user?.questions || "none"}</Text>
         <Text>Stage: {user?.stage}</Text>
         <Text>Has insurance: {user?.has_insurance ? "yes" : "no" }</Text>
+        {user?.has_insurance && 
+          <span>
+            <Text>Insurance image:</Text>
+            <Image src={user?.insurance_image_url} />
+          </span>
+        }
         <Text>Has health card: {user?.has_health_card ? "yes" : "no" }</Text>
+        {
+          user?.has_health_card &&
+          <span>
+            <Text>Health card image:</Text>
+            <Image src={user?.health_card_image_url} />
+          </span>
+        }
         <Text>Product: {user?.product.name}</Text>
         <Text>Phone number: {user?.phone_number}</Text>
         <Text>Country: {user?.country}</Text>
@@ -33,6 +46,10 @@ const PDFDocument = ({ user }: { user: User }) => (
         <Text>{user.billing_address?.city}</Text>
         <Text>{user.billing_address?.state}</Text>
         <Text>{user.billing_address?.postal_code}</Text>
+        <Text>Profile image:</Text>
+        <Image src={user?.profile_image_url} />
+        <Text>ID Image:</Text>
+        <Image src={user?.photo_id_url} />
       </View>
     </Page>
   </Document>

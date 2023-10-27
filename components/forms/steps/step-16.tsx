@@ -5,7 +5,6 @@ import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 import FormSelectorButton from "../form-selector-button";
-import { getHealthCardImage } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -16,7 +15,6 @@ interface FileData {
 export default function StepSixteen() {
   const { formStore } = useFormStore();
   const {setValue, formState: { errors }  } = useFormContext();
-  const [healthCardImage, setHealthCardImage] = useState<string>();
   const [fileData, setFileData] = useState<FileData>({
     file: null,
     fileUrl: null, 
@@ -25,14 +23,7 @@ export default function StepSixteen() {
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
-    async function getSavedHealthCardImage() {
-      const healthCardImageSaved = await getHealthCardImage();
-      setHealthCardImage(healthCardImageSaved?.publicUrl);
-    }
-
-    getSavedHealthCardImage();
-
-    if (healthCardImage) {
+    if (formStore.health_card_image_url) {
       setValue("has_health_card", true)
       setSelected("yes")
     } else {
@@ -65,7 +56,7 @@ export default function StepSixteen() {
               fieldName="health_card" 
               setFileData={setFileData} 
               fileData={fileData}
-              healthCardImageSaved={healthCardImage} 
+              healthCardImageSaved={formStore.health_card_url} 
             />
             {!!errors.health_card && !fileData?.fileName && <p className="text-red-500 text-sm text-center pt-4">Please select an image</p>}
           </>

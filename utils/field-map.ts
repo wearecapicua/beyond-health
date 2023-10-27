@@ -12,9 +12,9 @@ export const fieldMap = {
   stage: 10,
   product: 11,
   shipping_address: 13,
-  picture: 14,
-  photo_id: 15,
-  has_health_card: 16,
-  has_insurance: 17,
+  profile_image_url: 14,
+  photo_id_url: 15,
+  health_card_image_url: 16,
+  insurance_image_url: 17,
   billing_address: 18,
 };
