@@ -8,25 +8,52 @@
     "Main": {
       "page_title": {
         "type": "Text",
-        "config": { "label": "Page Title", "placeholder": "" }
+        "config": {
+          "label": "Page Title",
+          "placeholder": ""
+        }
       },
-      "uid": { "config": { "label": "UID" }, "type": "UID" },
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "header": { "type": "SharedSlice" },
-            "faq": { "type": "SharedSlice" },
-            "subheader": { "type": "SharedSlice" },
-            "spacer": { "type": "SharedSlice" },
-            "cta_section": { "type": "SharedSlice" },
-            "info_section": { "type": "SharedSlice" },
-            "how_it_works": { "type": "SharedSlice" },
-            "treatments": { "type": "SharedSlice" },
-            "reviews": { "type": "SharedSlice" },
-            "pricing": { "type": "SharedSlice" },
-            "faqs": { "type": "SharedSlice" }
+            "header": {
+              "type": "SharedSlice"
+            },
+            "subheader": {
+              "type": "SharedSlice"
+            },
+            "spacer": {
+              "type": "SharedSlice"
+            },
+            "cta_section": {
+              "type": "SharedSlice"
+            },
+            "info_section": {
+              "type": "SharedSlice"
+            },
+            "how_it_works": {
+              "type": "SharedSlice"
+            },
+            "treatments": {
+              "type": "SharedSlice"
+            },
+            "reviews": {
+              "type": "SharedSlice"
+            },
+            "pricing": {
+              "type": "SharedSlice"
+            },
+            "faqs": {
+              "type": "SharedSlice"
+            }
           }
         }
       }
@@ -41,7 +68,10 @@
       },
       "meta_image": {
         "config": {
-          "constraint": { "height": 1260, "width": 2400 },
+          "constraint": {
+            "height": 1260,
+            "width": 2400
+          },
           "label": "Meta Image",
           "thumbnails": []
         },

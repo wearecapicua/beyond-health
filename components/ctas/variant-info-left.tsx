@@ -25,7 +25,7 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
   } = slice.primary
 
   return (
-    <div id="variant-info-right" className="mx-auto pt-6 sm:pt-10 pb-20">
+    <div id="variant-info-left" className="mx-auto pt-6 sm:pt-10 pb-16">
       <div className="cta-light-blue-fade px-5 pt-16 pb-20 xl:py-0 lg:pl-11 lg:pr-9 sm:rounded-3xl lg:flex gap-10 justify-between">
         <div className="mx-auto lg:w-1/2 xl:w-[40%] flex flex-col justify-center lg:mx-0 lg:text-left">
           <span className="font-bold text-white text-lg">{introtext}</span>

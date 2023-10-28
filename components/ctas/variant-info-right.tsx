@@ -25,7 +25,7 @@ const InfoRightCta = ({ slice }: CtaSectionProps): JSX.Element => {
   } = slice.primary
 
   return (
-    <div id="variant-info-right" className="mx-auto pt-10 pb-20">
+    <div id="variant-info-right" className="mx-auto pt-10 pb-20 md:pb-28">
       <div className="lg:flex justify-between px-5 sm:px-0 gap-10">
         <div className="h-full overflow-hidden rounded-3xl h-[655px] w-full lg:max-w-[500px] xl:max-w-[622px]">
           <img

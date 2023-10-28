@@ -18,9 +18,9 @@ const Faqs = ({ slice }: FaqsProps): JSX.Element => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="pt-0 pb-14 md:py-10 px-5 md:px-0"
+      className="pt-0 pb-10 md:py-10 px-5 md:px-0"
     >
-      <div className="px-0 md:px-5 mx-auto max-w-[1180px] sm:border-b-[1px] sm:border-main-black/40">
+      <div className="px-0 mx-auto max-w-[1180px] sm:border-b-[1px] sm:border-main-black/40">
         {items.map((item: any, index: number) => (
           <div key={`faq-${index}`} className="py-5 border-t-[1px] border-main-black/40">
             <Disclosure as="div">
