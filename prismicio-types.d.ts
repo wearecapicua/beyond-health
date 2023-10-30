@@ -240,15 +240,15 @@ type PostDocumentDataSlicesSlice = TextSlice | ImageSlice;
  */
 interface PostDocumentData {
   /**
-   * Product name field in *Post*
+   * Title field in *Post*
    *
-   * - **Field Type**: Title
-   * - **Placeholder**: Name of the product
-   * - **API ID Path**: post.name
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: post.title
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  name: prismic.TitleField;
+  title: prismic.KeyTextField;
 
   /**
    * Description field in *Post*
@@ -293,17 +293,6 @@ interface PostDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#image
    */
   image: prismic.ImageField<never>;
-
-  /**
-   * Price field in *Post*
-   *
-   * - **Field Type**: Number
-   * - **Placeholder**: Price in USD
-   * - **API ID Path**: post.price
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#number
-   */
-  price: prismic.NumberField;
 
   /**
    * Slice Zone field in *Post*
