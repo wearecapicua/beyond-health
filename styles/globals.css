@@ -71,12 +71,6 @@ h4 {
   background-blend-mode: screen;
 }
 
-.cta-blue-black-fade-sm {
-  background-color: #091C21;
-  background-image: radial-gradient(circle at right, rgba(6, 87, 220, .75), transparent 80%);
-  background-blend-mode: screen;
-}
-
 .cta-black-gray-fade {
   background-image: linear-gradient(to right, #091C21, transparent);
   background-blend-mode: screen;
@@ -84,23 +78,6 @@ h4 {
 
 .cta-black-left-fade {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1) 5%, #091C21 90%);
-}
-
-.cta-black-left-fade-sm {
-  background-image: radial-gradient(circle at right, rgba(0, 0, 0, .7), #091C21 70%);
-}
-.cta-black-over-fade-sm {
-  background-image: radial-gradient(circle at right, rgba(6, 87, 220, .75), transparent 80%);
-  background-blend-mode: screen;
-}
-
-.cta-blue-circle-sm {
-  background-image: radial-gradient(circle at right, rgba(6, 87, 220, .8), transparent 93%);
-  background-blend-mode: screen;
-}
-.cta-blue-gray-fade-sm {
-  background-image: linear-gradient(to bottom left, rgba(6, 87, 220, .78), transparent 70%);
-  background-blend-mode: screen;
 }
 
 @media screen and (min-width: 768px) {

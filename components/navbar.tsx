@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useSession } from "next-auth/react";
@@ -22,16 +22,34 @@ export default function Navbar({ fullPage }: NavbarProps) {
   const { formStep } = useFormStatusStore()
   const { updateFormStore } = useFormStore()
   const [currentStep, setCurrentStep] = useState<FormStep>(formStep)
-
+  const [currentRoute, setCurrentRoute] = useState(router.asPath);
+  
   async function handleResume() {
     const profileData = await getProfileData();
     updateFormStore(profileData)
     router.push(`/form/${formStep}`)
   }
-  // useEffect(() => {
-  //   setCurrentStep(formStep)
-  // }, [formStep]);
+  useEffect(() => {
+    setCurrentStep(formStep)
+  }, [formStep]);
 
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      setCurrentRoute(url);
+    };
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, []);
+
+  const isCurrentRoute = (route: string) => currentRoute === route;
+
+  console.log("ccurn", currentRoute)
+  const highlightStyles = "border-b-2 border-main-light-blue text-main-blue"
+  const regLinkStyles = "border-transparent"
   return (
     <Disclosure as="nav" className="bg-white">
       {({ open }) => (
@@ -73,7 +91,7 @@ export default function Navbar({ fullPage }: NavbarProps) {
                     <button
                       onClick={handleResume}
                       type="button"
-                      className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
                     >
                       Resume
                     </button>
@@ -83,7 +101,7 @@ export default function Navbar({ fullPage }: NavbarProps) {
                     <a href={userLoggedIn ? "/form/step-1" : "/login"}>
                       <button
                         type="button"
-                        className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
                       >
                         Start Now
                       </button>
@@ -107,26 +125,26 @@ export default function Navbar({ fullPage }: NavbarProps) {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 pb-3 pt-2">
+          <Disclosure.Panel className="md:hidden">
+            <div className="space-y-5 px-6 pb-10 pt-2">
               <Disclosure.Button
-                as="link"
-                href="#"
-                className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700"
+                as="a"
+                href="/how-it-works"
+                className={`${isCurrentRoute("/how-it-works") ? highlightStyles : regLinkStyles} block py-[1px] pr-4 text-base font-medium`}
               >
                 How it Works
               </Disclosure.Button>
               <Disclosure.Button
-                as="link"
-                href="#"
-                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                as="a"
+                href="/faqs"
+                className={`${isCurrentRoute("/faqs") ? highlightStyles : regLinkStyles} block py-[1px] pr-4 text-base font-medium`}
               >
                 FAQs
               </Disclosure.Button>
               <Disclosure.Button
-                as="link"
-                href="#"
-                className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                as="a"
+                href="/login"
+                className={`${isCurrentRoute("/login") ? highlightStyles : regLinkStyles} block py-[1px] pr-4 text-base font-medium`}
               >
                 Log In
               </Disclosure.Button>
