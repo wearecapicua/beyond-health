@@ -14,19 +14,40 @@
       "primary": {
         "heading": {
           "type": "Text",
-          "config": { "label": "Heading", "placeholder": "" }
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
         },
         "subheading": {
           "type": "Text",
-          "config": { "label": "Subheading", "placeholder": "" }
+          "config": {
+            "label": "Subheading",
+            "placeholder": ""
+          }
         },
         "cta_button_text": {
           "type": "Text",
-          "config": { "label": "CTA button text", "placeholder": "" }
+          "config": {
+            "label": "CTA button text",
+            "placeholder": ""
+          }
         },
         "image": {
           "type": "Image",
-          "config": { "label": "Image", "constraint": {}, "thumbnails": [] }
+          "config": {
+            "label": "Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "mobile_image": {
+          "type": "Image",
+          "config": {
+            "label": "Mobile Image",
+            "constraint": {},
+            "thumbnails": []
+          }
         },
         "type": {
           "type": "Select",
@@ -51,27 +72,45 @@
         },
         "info_title_one": {
           "type": "Text",
-          "config": { "label": "Info Title One", "placeholder": "" }
+          "config": {
+            "label": "Info Title One",
+            "placeholder": ""
+          }
         },
         "info_subtitle_one": {
           "type": "Text",
-          "config": { "label": "Info Subtitle One", "placeholder": "" }
+          "config": {
+            "label": "Info Subtitle One",
+            "placeholder": ""
+          }
         },
         "info_title_two": {
           "type": "Text",
-          "config": { "label": "Info Title Two", "placeholder": "" }
+          "config": {
+            "label": "Info Title Two",
+            "placeholder": ""
+          }
         },
         "info_subtitle_two": {
           "type": "Text",
-          "config": { "label": "Info Subtitle Two", "placeholder": "" }
+          "config": {
+            "label": "Info Subtitle Two",
+            "placeholder": ""
+          }
         },
         "info_title_three": {
           "type": "Text",
-          "config": { "label": "Info Title Three", "placeholder": "" }
+          "config": {
+            "label": "Info Title Three",
+            "placeholder": ""
+          }
         },
         "info_subtitle_three": {
           "type": "Text",
-          "config": { "label": "Info Subtitle Three", "placeholder": "" }
+          "config": {
+            "label": "Info Subtitle Three",
+            "placeholder": ""
+          }
         }
       },
       "items": {}

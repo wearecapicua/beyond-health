@@ -101,8 +101,7 @@ interface FormDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#slices
    */
-  slices: prismic.SliceZone<FormDocumentDataSlicesSlice>
-  /**
+  slices: prismic.SliceZone<FormDocumentDataSlicesSlice> /**
    * Meta Description field in *Form*
    *
    * - **Field Type**: Text
@@ -150,7 +149,6 @@ export type FormDocument<Lang extends string = string> =
 
 type LandingPageDocumentDataSlicesSlice =
   | HeaderSlice
-  | FaqSlice
   | SubheaderSlice
   | SpacerSlice
   | CtaSectionSlice
@@ -185,8 +183,7 @@ interface LandingPageDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#slices
    */
-  slices: prismic.SliceZone<LandingPageDocumentDataSlicesSlice>
-  /**
+  slices: prismic.SliceZone<LandingPageDocumentDataSlicesSlice> /**
    * Meta Description field in *Landing Page*
    *
    * - **Field Type**: Text
@@ -489,6 +486,16 @@ export interface CtaSectionSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#image
    */
   image: prismic.ImageField<never>;
+
+  /**
+   * Mobile Image field in *CtaSection → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.primary.mobile_image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  mobile_image: prismic.ImageField<never>;
 
   /**
    * Type field in *CtaSection → Primary*
@@ -1288,7 +1295,7 @@ declare module "@prismicio/client" {
   interface CreateClient {
     (
       repositoryNameOrEndpoint: string,
-      options?: prismic.ClientConfig
+      options?: prismic.ClientConfig,
     ): prismic.Client<AllDocumentTypes>;
   }
 
@@ -1300,49 +1307,64 @@ declare module "@prismicio/client" {
       FaqDocumentData,
       FormDocument,
       FormDocumentData,
+      FormDocumentDataSlicesSlice,
       LandingPageDocument,
       LandingPageDocumentData,
+      LandingPageDocumentDataSlicesSlice,
       PostDocument,
       PostDocumentData,
+      PostDocumentDataSlicesSlice,
       ReviewDocument,
       ReviewDocumentData,
       TreatmentDocument,
       TreatmentDocumentData,
       AllDocumentTypes,
       CtaSectionSlice,
+      CtaSectionSliceDefaultPrimary,
       CtaSectionSliceVariation,
       CtaSectionSliceDefault,
       FaqsSlice,
+      FaqsSliceDefaultItem,
       FaqsSliceVariation,
       FaqsSliceDefault,
       HeaderSlice,
+      HeaderSliceDefaultPrimary,
       HeaderSliceVariation,
       HeaderSliceDefault,
       HowItWorksSlice,
+      HowItWorksSliceDefaultPrimary,
       HowItWorksSliceVariation,
       HowItWorksSliceDefault,
       ImageSlice,
+      ImageSliceDefaultPrimary,
       ImageSliceVariation,
       ImageSliceDefault,
       InfoSectionSlice,
+      InfoSectionSliceDefaultPrimary,
       InfoSectionSliceVariation,
       InfoSectionSliceDefault,
       PricingSlice,
+      PricingSliceDefaultPrimary,
       PricingSliceVariation,
       PricingSliceDefault,
       ReviewsSlice,
+      ReviewsSliceDefaultItem,
       ReviewsSliceVariation,
       ReviewsSliceDefault,
       SpacerSlice,
+      SpacerSliceDefaultPrimary,
       SpacerSliceVariation,
       SpacerSliceDefault,
       SubheaderSlice,
+      SubheaderSliceDefaultPrimary,
       SubheaderSliceVariation,
       SubheaderSliceDefault,
       TextSlice,
+      TextSliceDefaultPrimary,
       TextSliceVariation,
       TextSliceDefault,
       TreatmentsSlice,
+      TreatmentsSliceDefaultItem,
       TreatmentsSliceVariation,
       TreatmentsSliceDefault,
     };
