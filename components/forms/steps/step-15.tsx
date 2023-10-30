@@ -31,7 +31,7 @@ export default function StepFifteen() {
           fieldName="photo_id" 
           setFileData={setFileData} 
           fileData={fileData} 
-          photoIdSaved={formStore.photo_id}
+          photoIdSaved={formStore.photo_id_url}
         />
         {!!errors.photo_id && !fileData?.fileUrl ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
       </FormContainer>

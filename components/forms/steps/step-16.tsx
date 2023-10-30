@@ -56,7 +56,7 @@ export default function StepSixteen() {
               fieldName="health_card" 
               setFileData={setFileData} 
               fileData={fileData}
-              healthCardImageSaved={formStore.health_card_url} 
+              healthCardImageSaved={formStore.health_card_image_url} 
             />
             {!!errors.health_card && !fileData?.fileName && <p className="text-red-500 text-sm text-center pt-4">Please select an image</p>}
           </>
@@ -67,7 +67,7 @@ export default function StepSixteen() {
             label="Yes, I do have a Provincial Health Card"
             value="yes"
             groupId="has_health_card"
-            selected={selected ? "yes" : ""}
+            selected={selected}
             setSelected={setSelected}
             customValidate={customValidateYes}
           />
@@ -75,7 +75,7 @@ export default function StepSixteen() {
             label="No, I don't have a Provincial Health Card"
             value="no"
             groupId="health_card"
-            selected={!selected ? "no" : ""}
+            selected={selected}
             setSelected={setSelected}
             customValidate={customValidateNo}
           />

@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
-import { Document, Page, Text, View, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, PDFViewer, Image, BlobProvider, pdf } from '@react-pdf/renderer';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { User } from "lib/types"
+import { saveAs } from 'file-saver';
 
 const PDFDocument = ({ user }: { user: User }) => (
   <Document>
@@ -86,17 +87,11 @@ const Pdf = ({ user }: { user: User }) => {
     setShowPdfViewer(false);
   };
 
-  const handleDownloadPDF = () => {
-    if (pdfRef?.current) {
-      {/* @ts-ignore */}
-      const pdfBlob = pdfRef.current.toBlob();
-      if (pdfBlob) {
-        const url = URL.createObjectURL(pdfBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'user_information.pdf';
-        a.click();
-      }
+  const handleDownloadPDF = async () => {
+    let blobPDF = await pdf(<PDFDocument user={user} />).toBlob();
+
+    if (blobPDF) {
+      saveAs(blobPDF, `${user.first_name}_${user.last_name}_information.pdf`);
     }
   };
 
@@ -104,16 +99,16 @@ const Pdf = ({ user }: { user: User }) => {
     <div>
       <button className="flex gap-3 items-center" onClick={handleOpenPdfViewer}>
         <ArrowDownTrayIcon className="w-5 h-5 text-main-blue" />
-        <span className="text-xs text-main-blue">PDF</span>
+        <a className="text-xs text-main-blue" target="_blank">PDF</a>
       </button>
       {showPdfViewer && (
         <div className="fixed inset-0 bg-white z-50 flex justify-center items-center">
           {/* @ts-ignore */}
-          <PDFViewer width="100%" height="100%" ref={pdfRef}>
+          <PDFViewer width="100%" height="100%" ref={pdfRef} >
             <PDFDocument user={user} />
           </PDFViewer>
           <button
-            className="absolute top-4 right-4 text-red-500"
+            className="absolute bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg"
             onClick={handleClosePdfViewer}
           >
             Close
