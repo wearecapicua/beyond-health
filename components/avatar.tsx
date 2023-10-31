@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { PrismicNextImage } from "@prismicio/next";
 import { ImageField } from "@prismicio/types";
 
@@ -11,6 +10,7 @@ export default function Avatar({ name, picture }: AvatarProps) {
   return (
     <div className="flex items-center">
       <PrismicNextImage
+        /* @ts-ignore */
         field={picture}
         className="rounded-full"
         alt={""}
