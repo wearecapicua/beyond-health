@@ -120,8 +120,8 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
 export const getServerSideProps = async () => {
   try {
     // Fetch user data from your API route
-    const response = await fetch(`${env.host}/api/get-stripe-customer`)
-    const data = await response.json()
+    const response = await fetch(`${env.host}/api/get-stripe-customer`);
+    const data = await response.json();
 
     return {
       props: {
@@ -129,7 +129,7 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.error('Error fetching user data:', error)
+    console.error('Error fetching user data:', error);
     return {
       props: {
         users: [], // Return an empty array if there's an error
