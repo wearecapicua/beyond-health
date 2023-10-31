@@ -13,24 +13,24 @@ function BlogHome({ posts }: PostsProps) {
 
   return (
     <Layout>
-    <div className="bg-gray-000 min-h-screen">
-      <div className="max-w-[1200px] px-6 py-20 mx-auto">
-        {posts.length > 0 &&
-          <HeroPost
-            /* @ts-ignore */
-            title={posts[0]?.data.title}
-            coverImage={posts[0]?.data.image}
-            date={posts[0]?.data.date}
-            description={posts[0]?.data.description!}
-            href={posts[0]?.url!}
-          />
-        }
-        {posts.length ? <MoreStories posts={posts.slice(1)} />
-          : <p>No posts to show</p>
-        }
+      <div className="bg-gray-000 min-h-screen">
+        <div className="max-w-[1200px] px-6 py-20 mx-auto">
+          {posts.length > 0 &&
+            <HeroPost
+              /* @ts-ignore */
+              title={posts[0]?.data.title}
+              coverImage={posts[0]?.data.image}
+              date={posts[0]?.data.date}
+              description={posts[0]?.data.description!}
+              href={posts[0]?.url!}
+            />
+          }
+          {posts.length ? <MoreStories posts={posts.slice(1)} />
+            : <p>No posts to show</p>
+          }
+        </div>
       </div>
-    </div>
-  </Layout>
+    </Layout>
   );
 }
 
