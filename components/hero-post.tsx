@@ -22,7 +22,7 @@ export default function HeroPost({
 }: HeroPostProps) {
   return (
     <section>
-      <Link href={href} className="mb-20 block">
+      <Link href={href || "/"} className="mb-20 block">
         <div className="mb-8 md:mb-16 flex rounded-2xl overflow-hidden">
           <CoverImage title={title} href={href} image={coverImage} />
           <div className="bg-white w-1/2 p-8 flex flex-col justify-between">

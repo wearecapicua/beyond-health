@@ -1,14 +1,7 @@
 import Link from "next/link";
-import { DateField, ImageField, TitleField } from "@prismicio/types";
-import { PrismicText } from "@prismicio/react";
-import { asText, isFilled } from "@prismicio/helpers";
+import { DateField, ImageField } from "@prismicio/types";
 import Image from 'next/image'
 import { AuthorContentRelationshipField } from "../lib/types";
-
-import Avatar from "../components/avatar";
-import Date from "../components/date";
-
-import CoverImage from "./cover-image";
 
 type PostPreviewProps = {
   title: string;
@@ -22,7 +15,6 @@ type PostPreviewProps = {
 export default function PostPreview({
   title,
   coverImage,
-  date,
   href
 }: PostPreviewProps) {
   return (
