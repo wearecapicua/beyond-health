@@ -9,8 +9,8 @@ type AvatarProps = {
 export default function Avatar({ name, picture }: AvatarProps) {
   return (
     <div className="flex items-center">
-      {/* @ts-ignore */}
       <PrismicNextImage
+        {/* @ts-ignore */}
         field={picture}
         className="rounded-full"
         alt={""}
