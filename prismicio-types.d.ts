@@ -242,13 +242,13 @@ interface PostDocumentData {
   /**
    * Title field in *Post*
    *
-   * - **Field Type**: Text
+   * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
    * - **API ID Path**: post.title
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#key-text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
-  title: prismic.KeyTextField;
+  title: prismic.RichTextField;
 
   /**
    * Description field in *Post*
@@ -271,17 +271,6 @@ interface PostDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#date
    */
   date: prismic.DateField;
-
-  /**
-   * Author field in *Post*
-   *
-   * - **Field Type**: Content Relationship
-   * - **Placeholder**: *None*
-   * - **API ID Path**: post.author
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
-   */
-  author: prismic.ContentRelationshipField<"author">;
 
   /**
    * Cover Image field in *Post*
