@@ -9,7 +9,6 @@ const Image = ({ slice }: ImageProps) => {
   return (
     <section className="my-12">
       <PrismicNextImage 
-        /* @ts-ignore */ 
         field={slice.primary.image} 
         layout="responsive" 
       />

@@ -79,7 +79,8 @@ export default function FormFileDrop({
   }, []);
 
   const undoPhoto = () => {
-    setValue(fieldName, null);
+    setValue(fieldName, null)
+    setFileData(null);
   };
 
   const fileUrl = fileData?.fileUrl;
