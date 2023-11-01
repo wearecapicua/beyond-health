@@ -29,7 +29,7 @@ export default function HeroPost({
               <h3 className="mb-6 text-4xl lg:text-6xl lg:leading-tight font-raleway font-bold">
                 {title}
               </h3>
-              <p className="text-lg mb-6 line-clamp-4 lg:line-clamp-6">{description}</p>
+              <p className="text-lg mb-6 line-clamp-4 lg:line-clamp-5">{description}</p>
             </div>
             <p className="font-semibold text-sm leading-relaxed">{category}</p>
           </div>

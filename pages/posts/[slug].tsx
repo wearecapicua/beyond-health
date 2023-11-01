@@ -39,16 +39,16 @@ export default function Post({ page, preview }: PostProps) {
                 {/* @ts-ignore */}
                 <Container>
                   <div className="pt-14 lg:pt-20 pb-14 px-5 sm:px-0 lg:px-16">
-                    <h1 className="text-center pb-8">{page.data.title}</h1>
+                    <h1 className="text-center leading-tight pb-8">{page.data.title}</h1>
                     <p className="uppercase text-center text-sm pb-12">{page.data.category.data?.name}</p>
                     <div className="relative h-[490px] rounded-2xl overflow-hidden">
                       <Image src={page.data.image.url} alt={page.data.title} fill={true} style={{objectFit: "cover"}} />
                     </div>
                   </div>
-                  <div className="px-5 sm:px-0 lg:px-40 pb-16">
+                  <div className="px-5 sm:px-0 lg:px-40 pb-6 md:pb-16">
                     <PageBody slices={page.data.slices} />
                   </div>
-                  <Link href="/posts" className="px-5 sm:px-0 block pb-32 mx-auto w-[200px]">
+                  <Link href="/posts" className=" sm:px-0 block pb-24 md:pb-32 mx-auto w-[200px]">
                     <button className="w-full text-lg font-semibold flex items-center justify-center gap-3 inline-block border-solid border-[1px] border-main-black rounded-full px-6 py-3">
                       <ArrowLeftIcon className="h-6" />
                       Back to Blog
