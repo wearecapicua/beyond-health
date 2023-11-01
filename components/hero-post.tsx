@@ -1,9 +1,6 @@
 import Link from "next/link";
-import { DateField, ImageField, TitleField } from "@prismicio/types";
-import { PrismicText } from "@prismicio/react";
-import { asText } from "@prismicio/helpers";
+import { ImageField } from "@prismicio/types";
 import CoverImage from "../components/cover-image";
-import Date from "../components/date";
 
 type HeroPostProps = {
   title: string;

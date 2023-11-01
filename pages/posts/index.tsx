@@ -9,8 +9,6 @@ type PostsProps = {
 };
 
 function BlogHome({ posts }: PostsProps) {
-  console.log("p", posts)
-
   return (
     <Layout>
       <div className="bg-gray-000 min-h-screen">

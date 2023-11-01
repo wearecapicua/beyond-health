@@ -14,7 +14,7 @@ type PostProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export default function Post({ page, preview }: PostProps) {
   const router = useRouter();
-  console.log("pvv", page)
+  
   return (
     <Layout preview={preview}>
       <div className="bg-gray-000 min-h-screen">
@@ -40,7 +40,7 @@ export default function Post({ page, preview }: PostProps) {
                 <Container>
                   <div className="pt-20 pb-14 lg:px-16">
                     <h1 className="text-center pb-8">{page.data.title}</h1>
-                    <p className="uppercase text-center text-sm pb-12">{page.data.category.data.name}</p>
+                    <p className="uppercase text-center text-sm pb-12">{page.data.category.data?.name}</p>
                     <div className="relative h-[490px] rounded-2xl overflow-hidden">
                       <Image src={page.data.image.url} alt={page.data.title} fill={true} style={{objectFit: "cover"}} />
                     </div>
