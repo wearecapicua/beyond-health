@@ -48,6 +48,38 @@ export type AuthorDocument<Lang extends string = string> =
   >;
 
 /**
+ * Content for Category documents
+ */
+interface CategoryDocumentData {
+  /**
+   * Name field in *Category*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+}
+
+/**
+ * Category document from Prismic
+ *
+ * - **API ID**: `category`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CategoryDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<CategoryDocumentData>,
+    "category",
+    Lang
+  >;
+
+/**
  * Content for FAQ documents
  */
 interface FaqDocumentData {
@@ -284,6 +316,17 @@ interface PostDocumentData {
   image: prismic.ImageField<never>;
 
   /**
+   * Category field in *Post*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: post.category
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  category: prismic.ContentRelationshipField<"category">;
+
+  /**
    * Slice Zone field in *Post*
    *
    * - **Field Type**: Slice Zone
@@ -414,6 +457,7 @@ export type TreatmentDocument<Lang extends string = string> =
 
 export type AllDocumentTypes =
   | AuthorDocument
+  | CategoryDocument
   | FaqDocument
   | FormDocument
   | LandingPageDocument
@@ -800,6 +844,16 @@ export interface ImageSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#image
    */
   image: prismic.ImageField<never>;
+
+  /**
+   * Alt Text field in *Image → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image.primary.alt_text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  alt_text: prismic.RichTextField;
 }
 
 /**
@@ -1281,6 +1335,8 @@ declare module "@prismicio/client" {
     export type {
       AuthorDocument,
       AuthorDocumentData,
+      CategoryDocument,
+      CategoryDocumentData,
       FaqDocument,
       FaqDocumentData,
       FormDocument,

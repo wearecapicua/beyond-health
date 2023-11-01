@@ -23,6 +23,7 @@ function BlogHome({ posts }: PostsProps) {
               date={posts[0]?.data.date}
               description={posts[0]?.data.description!}
               href={posts[0]?.url!}
+              category={posts[0]?.data.category.data?.name}
             />
           }
           {posts.length ? <MoreStories posts={posts.slice(1)} />
@@ -38,6 +39,7 @@ export async function getServerSideProps() {
   const client = createClient();
 
   const posts = await client.getAllByType("post", {
+    fetchLinks: 'category.name',
     orderings: {
       field: 'document.first_publication_date',
       direction: 'desc',

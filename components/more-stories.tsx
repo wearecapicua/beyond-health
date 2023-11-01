@@ -13,11 +13,9 @@ export default function MoreStories({ posts }: MoreStoriesProps) {
           <PostPreview
             key={post.uid}
             href={post.url ?? "#"}
+            category={post.data.category.data?.name}
             title={post.data.title}
             coverImage={post.data.image.url}
-            date={post.data.date}
-            author={post.data.author}
-            description={post.data.description ?? ""}
           />
         ))}
       </div>

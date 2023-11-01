@@ -8,15 +8,15 @@ import Date from "../components/date";
 type HeroPostProps = {
   title: string;
   coverImage: ImageField;
-  date: DateField;
   description: string;
   href: string;
+  category: string;
 };
 
 export default function HeroPost({
   title,
   coverImage,
-  date,
+  category,
   href,
   description
 }: HeroPostProps) {
@@ -32,7 +32,7 @@ export default function HeroPost({
               </h3>
               <p className="text-lg mb-6">{description}</p>
             </div>
-            <p className="font-semibold text-sm leading-relaxed">Category</p>
+            <p className="font-semibold text-sm leading-relaxed">{category}</p>
           </div>
         </div>
       </Link>

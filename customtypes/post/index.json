@@ -42,6 +42,14 @@
           "thumbnails": []
         }
       },
+      "category": {
+        "type": "Link",
+        "config": {
+          "label": "Category",
+          "select": "document",
+          "customtypes": ["category"]
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
