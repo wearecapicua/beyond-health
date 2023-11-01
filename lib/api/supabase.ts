@@ -91,6 +91,14 @@ export async function uploadImages(file: File) {
     
 }
 
+export async function deleteImage(publicUrl: string) {
+  const response = await fetchPostJSON("/api/delete-image", {
+    method: "POST",
+    publicUrl,
+  });
+  return response;
+}
+
 // export async function uploadImages(file: any) {
 //   const body = new FormData();
 //   body.append('file', file.fileObject);

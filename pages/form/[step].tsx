@@ -145,7 +145,15 @@ const FormStep = ({ formData, products }: StepProps) => {
       router.push(`/form/${next}`);
     }
 
-    if (isStepValid && activeStep !== "step-18") {
+    if (isStepValid && 
+      activeStep !== "step-18" ||
+      (
+        formStore.profile_image_url ||
+        formStore.photo_id_url ||
+        formStore.health_card_image_url ||
+        formStore.insurance_image_url
+      )
+    ) {
       updateFormStore(data);
       
       const next = incrementString(formData.step);

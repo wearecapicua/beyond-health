@@ -6,6 +6,9 @@ import Webcam from "react-webcam";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CameraIcon } from "@heroicons/react/24/outline";
 import dataURLtoFile from "lib/dataURLtoFile";
+import { deleteImage, sendUpdatedData } from "lib/api/supabase";
+import { de } from "date-fns/locale";
+import useFormStore from "store/useFormStore";
 
 const videoConstraints = {
   width: 320,
@@ -39,16 +42,41 @@ export default function FormFileDrop({
   insuranceImageSaved,
 }: FormFileDrop) {
   const { setValue, control } = useFormContext();
+  const { updateFormStore } = useFormStore();
   const [openCam, setOpenCam] = useState(false);
 
   const webcamRef = React.useRef<Webcam>(null);
 
-  const capture = useCallback(() => {
+  const deleteSavedImage = async () => {
+    if (profileImageSaved) {
+      updateFormStore({ profile_image_url: null});
+      await sendUpdatedData({ profile_image_url: null });
+      await deleteImage(profileImageSaved);
+    }
+    if (photoIdSaved) {
+      updateFormStore({ photo_id_url: null});
+      await sendUpdatedData({ photo_id_url: null });
+      await deleteImage(photoIdSaved);
+    }
+    if (healthCardImageSaved) {
+      updateFormStore({ health_card_image_url: null});
+      await sendUpdatedData({ health_card_image_url: null });
+      await deleteImage(healthCardImageSaved);
+    }
+    if (insuranceImageSaved) {
+      updateFormStore({ insurance_image_url: null});
+      await sendUpdatedData({ insurance_image_url: null });
+      await deleteImage(insuranceImageSaved);
+    }
+  }
+
+  const capture = useCallback(async () => {
     const pictureSrc = webcamRef.current?.getScreenshot();
     if (!pictureSrc) {
       console.error("Error capturing image");
       return;
     }
+    await deleteSavedImage();
     setFileData({
       fileUrl: pictureSrc,
       fileName: `${fieldName}-screenshot.jpg`,
@@ -63,7 +91,8 @@ export default function FormFileDrop({
     setOpenCam(false);
   }, [webcamRef]);
 
-  const onDrop = useCallback((acceptedFiles: Array<File>) => {
+  const onDrop = useCallback(async (acceptedFiles: Array<File>) => {
+    await deleteSavedImage();
     const fileUrl = URL.createObjectURL(acceptedFiles[0]);
     setFileData({
       file: acceptedFiles[0],
@@ -78,9 +107,10 @@ export default function FormFileDrop({
     });
   }, []);
 
-  const undoPhoto = () => {
+  const undoPhoto = async () => {
     setValue(fieldName, null)
     setFileData(null);
+    await deleteSavedImage();
   };
 
   const fileUrl = fileData?.fileUrl;
