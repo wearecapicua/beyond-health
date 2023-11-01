@@ -8,7 +8,7 @@ type MoreStoriesProps = {
 export default function MoreStories({ posts }: MoreStoriesProps) {
   return (
     <section>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-x-16 gap-y-20 mb-32">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 md:gap-16 md:gap-y-20 mb-4 lg:mb-32">
         {posts.map((post) => (
           <PostPreview
             key={post.uid}

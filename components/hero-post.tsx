@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ImageField } from "@prismicio/types";
-import CoverImage from "../components/cover-image";
+import CoverImage from "components/cover-image";
 
 type HeroPostProps = {
   title: string;
@@ -20,14 +20,16 @@ export default function HeroPost({
   return (
     <section>
       <Link href={href || "/"} className="mb-20 block">
-        <div className="mb-8 md:mb-16 flex rounded-2xl overflow-hidden">
+        <div className="mb-8 md:mb-16 md:flex rounded-2xl overflow-hidden">
+          <div className="w-full md:w-1/2">
           <CoverImage title={title} href={href} image={coverImage} />
-          <div className="bg-white w-1/2 p-8 flex flex-col justify-between">
+          </div>
+          <div className="bg-white w-full md:w-1/2 p-8 flex flex-col justify-between">
             <div>
-              <h3 className="mb-6 text-4xl lg:text-6xl leading-tight font-raleway font-bold">
+              <h3 className="mb-6 text-4xl lg:text-6xl lg:leading-tight font-raleway font-bold">
                 {title}
               </h3>
-              <p className="text-lg mb-6">{description}</p>
+              <p className="text-lg mb-6 line-clamp-4 lg:line-clamp-6">{description}</p>
             </div>
             <p className="font-semibold text-sm leading-relaxed">{category}</p>
           </div>

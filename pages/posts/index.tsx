@@ -12,7 +12,7 @@ function BlogHome({ posts }: PostsProps) {
   return (
     <Layout>
       <div className="bg-gray-000 min-h-screen">
-        <div className="max-w-[1200px] px-6 py-20 mx-auto">
+        <div className="max-w-[1200px] px-6 py-16 lg:py-20 mx-auto">
           {posts.length > 0 &&
             <HeroPost
               /* @ts-ignore */
