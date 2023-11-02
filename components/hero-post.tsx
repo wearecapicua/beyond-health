@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DateField, ImageField, TitleField } from "@prismicio/types";
+import { DateField, TitleField } from "@prismicio/types";
 import { PrismicText } from "@prismicio/react";
 import { asText, isFilled } from "@prismicio/helpers";
 
@@ -8,10 +8,11 @@ import { AuthorContentRelationshipField } from "../lib/types";
 import Avatar from "../components/avatar";
 import CoverImage from "../components/cover-image";
 import Date from "../components/date";
+import { ImageFieldImage } from "@prismicio/client";
 
 type HeroPostProps = {
   title: TitleField;
-  coverImage: ImageField;
+  coverImage: ImageFieldImage | null | undefined;
   date: DateField;
   description: string;
   author: AuthorContentRelationshipField;

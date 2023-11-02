@@ -1,5 +1,6 @@
 import { SliceSimulator } from "@prismicio/slice-simulator-react";
-import { SliceZone } from "@prismicio/react";
+// @ts-ignore
+import SliceZone from "next-slicezone";
 
 import { components } from "../slices";
 

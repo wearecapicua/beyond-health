@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DateField, ImageField, TitleField } from "@prismicio/types";
+import { DateField, TitleField } from "@prismicio/types";
 import { PrismicText } from "@prismicio/react";
 import { asText, isFilled } from "@prismicio/helpers";
 
@@ -9,10 +9,11 @@ import Avatar from "../components/avatar";
 import Date from "../components/date";
 
 import CoverImage from "./cover-image";
+import { ImageFieldImage } from "@prismicio/client";
 
 type PostPreviewProps = {
   title: TitleField;
-  coverImage: ImageField;
+  coverImage: ImageFieldImage | null | undefined;
   date: DateField;
   description: string;
   author: AuthorContentRelationshipField;

@@ -1,6 +1,6 @@
+import { ImageFieldImage } from "@prismicio/client";
 import {
   FieldState,
-  ImageField,
   RelationField,
   TitleField,
 } from "@prismicio/types";
@@ -17,7 +17,7 @@ export type AuthorContentRelationshipField = RelationField<
   string,
   {
     name: TitleField;
-    picture: ImageField;
+    picture: ImageFieldImage;
   },
   FieldState
 >;
