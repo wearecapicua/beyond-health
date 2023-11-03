@@ -55,6 +55,7 @@
   "devDependencies": {
     "@slicemachine/adapter-next": "^0.3.23",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/file-saver": "^2.0.6",
     "@types/react": "18.2.14",
     "autoprefixer": "10.4.10",
     "eslint": "^8.5.0",
