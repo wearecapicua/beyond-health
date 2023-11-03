@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { ImageField } from "@prismicio/types";
+import { DateField } from "@prismicio/types";
 import CoverImage from "components/cover-image";
+import { ImageFieldImage } from "@prismicio/client";
 
 type HeroPostProps = {
   title: string;
-  coverImage: ImageField;
+  coverImage: ImageFieldImage | null | undefined;
+  date: DateField;
   description: string;
   href: string;
   category: string;

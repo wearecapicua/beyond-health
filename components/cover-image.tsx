@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { PrismicNextImage } from "@prismicio/next";
-import { ImageField } from "@prismicio/types";
 import cn from "classnames";
+import { ImageFieldImage } from "@prismicio/client";
 
 type CoverImageProps = {
   title: string;
-  image: ImageField;
+  image: ImageFieldImage | null | undefined;
   href?: string;
 };
 
@@ -24,7 +24,7 @@ export default function CoverImage({
       className={cn("shadow-small", {
         "hover:shadow-medium transition-shadow duration-200 w-full h-full object-cover": href,
       })}
-      alt={imageField.alt as ""}
+      alt={imageField?.alt as ""}
       fallbackAlt=""
       priority
     />

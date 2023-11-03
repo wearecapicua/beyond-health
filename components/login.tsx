@@ -3,6 +3,7 @@ import Avatar from "components/avatar"
 import { signIn, signOut as nextAuthSignOut, useSession } from "next-auth/react"
 import React from "react"
 import { createCustomerPortalSession } from "lib/stripeUtils"
+import { number } from 'zod'
 
 type Props = {};
 
@@ -34,7 +35,14 @@ const LoginButton = (props: Props) => {
           <button onClick={handlePortalClick} disabled={loading}>
             <Avatar
               picture={{
-                url: session.data.user.image,
+                id: "",
+                edit: {
+                  x: 0,
+                  y: 0, 
+                  zoom: 0, 
+                  background: "",
+                },
+                url: session.data.user.image ?? "",
                 dimensions: {
                   width: 40,
                   height: 40,

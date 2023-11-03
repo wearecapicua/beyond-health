@@ -1,9 +1,9 @@
+import { ImageFieldImage } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
-import { ImageField } from "@prismicio/types";
 
 type AvatarProps = {
   name?: string;
-  picture: ImageField;
+  picture: ImageFieldImage | null | undefined;
 };
 
 export default function Avatar({ name, picture }: AvatarProps) {

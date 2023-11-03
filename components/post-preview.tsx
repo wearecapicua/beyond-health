@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { DateField } from "@prismicio/types";
-import Image from 'next/image'
 import { AuthorContentRelationshipField } from "../lib/types";
+import Image from 'next/image'
 
 type PostPreviewProps = {
   title: string;
   coverImage: any;
+  date: DateField;
+  description: string;
+  author: AuthorContentRelationshipField;
   href: string;
   category: string;
 };

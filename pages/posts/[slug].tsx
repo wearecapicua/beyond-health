@@ -40,8 +40,10 @@ export default function Post({ page, preview }: PostProps) {
                 <Container>
                   <div className="pt-14 lg:pt-20 pb-14 px-5 sm:px-0 lg:px-16">
                     <h1 className="text-center leading-tight pb-8">{page.data.title}</h1>
+                    {/* @ts-ignore */}
                     <p className="uppercase text-center text-sm pb-12">{page.data.category.data?.name}</p>
                     <div className="relative h-[490px] rounded-2xl overflow-hidden">
+                      {/* @ts-ignore */}
                       <Image src={page.data.image.url} alt={page.data.title} fill={true} style={{objectFit: "cover"}} />
                     </div>
                   </div>

@@ -13,8 +13,10 @@ export default function MoreStories({ posts }: MoreStoriesProps) {
           <PostPreview
             key={post.uid}
             href={post.url ?? "#"}
+            /* @ts-ignore */
             category={post.data.category.data?.name}
-            title={post.data.title}
+            /* @ts-ignore */
+            title={post.data?.title}
             coverImage={post.data.image.url}
           />
         ))}

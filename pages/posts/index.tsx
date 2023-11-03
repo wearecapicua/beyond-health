@@ -21,6 +21,7 @@ function BlogHome({ posts }: PostsProps) {
               date={posts[0]?.data.date}
               description={posts[0]?.data.description!}
               href={posts[0]?.url!}
+              /* @ts-ignore */
               category={posts[0]?.data.category.data?.name}
             />
           }
