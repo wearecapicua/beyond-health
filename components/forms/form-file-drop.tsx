@@ -48,23 +48,23 @@ export default function FormFileDrop({
 
   const deleteSavedImage = async () => {
     if (profileImageSaved) {
-      updateFormStore({ profile_image_url: null});
+      updateFormStore({ profile_image_url: null, picture: null});
       await sendUpdatedData({ profile_image_url: null });
       await deleteImage(profileImageSaved);
 
     }
     if (photoIdSaved) {
-      updateFormStore({ photo_id_url: null});
+      updateFormStore({ photo_id_url: null, photo_id: null});
       await sendUpdatedData({ photo_id_url: null });
       await deleteImage(photoIdSaved);
     }
     if (healthCardImageSaved) {
-      updateFormStore({ health_card_image_url: null});
+      updateFormStore({ health_card_image_url: null, health_card: null});
       await sendUpdatedData({ health_card_image_url: null });
       await deleteImage(healthCardImageSaved);
     }
     if (insuranceImageSaved) {
-      updateFormStore({ insurance_image_url: null});
+      updateFormStore({ insurance_image_url: null, insurance: null});
       await sendUpdatedData({ insurance_image_url: null });
       await deleteImage(insuranceImageSaved);
     }
@@ -76,7 +76,6 @@ export default function FormFileDrop({
       console.error("Error capturing image");
       return;
     }
-    await deleteSavedImage();
     setFileData({
       fileUrl: pictureSrc,
       fileName: `${fieldName}-screenshot.jpg`,
@@ -89,10 +88,10 @@ export default function FormFileDrop({
       fileUrl: pictureSrc
     });
     setOpenCam(false);
-  }, [webcamRef]);
+    await deleteSavedImage();
+  }, [webcamRef, profileImageSaved, photoIdSaved, healthCardImageSaved, insuranceImageSaved]);
 
   const onDrop = useCallback(async (acceptedFiles: Array<File>) => {
-    await deleteSavedImage();
     const fileUrl = URL.createObjectURL(acceptedFiles[0]);
     setFileData({
       file: acceptedFiles[0],
@@ -105,7 +104,8 @@ export default function FormFileDrop({
       fileName: acceptedFiles[0].path,
       fileUrl: fileUrl
     });
-  }, []);
+    await deleteSavedImage();
+  }, [profileImageSaved, photoIdSaved, healthCardImageSaved, insuranceImageSaved]);
 
   const undoPhoto = async () => {
     setValue(fieldName, null)

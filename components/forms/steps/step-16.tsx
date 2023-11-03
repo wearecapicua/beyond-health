@@ -37,7 +37,7 @@ export default function StepSixteen() {
       setSelected("yes")
     } else {
       setValue("has_health_card", formStore.has_health_card)
-      setSelected(formStore.has_health_card)
+      setSelected(formStore.has_health_card || null)
     }
   }, [formStore.health_card, formStore.health_card_image_url]);
 
@@ -84,7 +84,7 @@ export default function StepSixteen() {
             label="No, I don't have a Provincial Health Card"
             value="no"
             groupId="health_card"
-            selected={!selected ? "no" : ""}
+            selected={!selected && selected !== null ? "no" : ""}
             setSelected={setSelected}
             customValidate={customValidateNo}
           />

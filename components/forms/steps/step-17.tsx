@@ -37,7 +37,7 @@ export default function StepSeventeen() {
       setSelected("yes")
     } else {
       setValue("has_insurance", formStore.has_insurance)
-      setSelected(formStore.has_insurance)
+      setSelected(formStore.has_insurance || null)
     }
   }, [formStore.insurance, formStore.insurance_image_url]);
 
@@ -76,7 +76,7 @@ export default function StepSeventeen() {
             label="Yes, I do have insurance"
             value="yes"
             groupId="has_insurance"
-            selected={selected}
+            selected={selected ? "yes" : ""}
             setSelected={setSelected}
             customValidate={customValidateYes}
           />
@@ -84,7 +84,7 @@ export default function StepSeventeen() {
             label="No, I don't have insurance"
             value="no"
             groupId="insurance"
-            selected={selected}
+            selected={!selected && selected !== null ? "no" : ""}
             setSelected={setSelected}
             customValidate={customValidateNo}
           />

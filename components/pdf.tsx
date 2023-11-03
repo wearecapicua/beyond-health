@@ -37,7 +37,7 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
         {user?.has_insurance && 
           <span>
             <Text>Insurance image:</Text>
-            <Image src={userImages?.insuranceImageUrl.signedUrl} />
+            <Image src={userImages?.insuranceImageUrl?.signedUrl} />
           </span>
         }
         <Text>Has health card: {user?.has_health_card ? "yes" : "no" }</Text>
@@ -45,7 +45,7 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
           user?.has_health_card &&
           <span>
             <Text>Health card image:</Text>
-            <Image src={userImages?.healthCardImageUrl.signedUrl} />
+            <Image src={userImages?.healthCardImageUrl?.signedUrl} />
           </span>
         }
         <Text>Product: {user?.product.name}</Text>
@@ -64,9 +64,9 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
         <Text>{user.billing_address?.state}</Text>
         <Text>{user.billing_address?.postal_code}</Text>
         <Text>Profile image:</Text>
-        <Image src={userImages?.profileImageUrl.signedUrl} />
+        <Image src={userImages?.profileImageUrl?.signedUrl} />
         <Text>ID Image:</Text>
-        <Image src={userImages?.photoIdUrl.signedUrl} />
+        <Image src={userImages?.photoIdUrl?.signedUrl} />
       </View>
     </Page>
   </Document>
