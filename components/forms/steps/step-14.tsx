@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 import { useFormStore } from 'store/useFormStore';
+import { getProfileImage } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -19,6 +20,17 @@ export default function StepFourteen() {
     fileUrl: null,
     fileName: null,
   });
+  const [profileImage, setProfileImage] = useState<string>();
+
+  useEffect(() => {
+    async function getSavedProfileImage() {
+      const profileImageSaved = await getProfileImage();
+      setProfileImage(profileImageSaved?.signedUrl);
+    }
+
+    getSavedProfileImage();
+
+  }, [formStore.picture]);
 
   return (
     <>
@@ -31,7 +43,7 @@ export default function StepFourteen() {
           fieldName="picture"
           setFileData={setFileData}
           fileData={fileData}
-          profileImageSaved={formStore.profile_image_url}
+          profileImageSaved={profileImage}
         />
         {!!errors.picture && !fileData?.fileUrl ? (
           <p className="text-red-500 text-sm text-center pt-4">

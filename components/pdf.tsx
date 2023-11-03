@@ -1,10 +1,26 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Document, Page, Text, View, StyleSheet, PDFViewer, Image, BlobProvider, pdf } from '@react-pdf/renderer';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { User } from "lib/types"
 import { saveAs } from 'file-saver';
+import { getUserImages } from 'lib/api/supabase';
 
-const PDFDocument = ({ user }: { user: User }) => (
+type UserImages = {
+  profileImageUrl: {
+    signedUrl: string;
+  };
+  photoIdUrl: {
+    signedUrl: string;
+  };
+  healthCardImageUrl: {
+    signedUrl: string;
+  };
+  insuranceImageUrl: {
+    signedUrl: string;
+  };
+};
+
+const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
@@ -21,7 +37,7 @@ const PDFDocument = ({ user }: { user: User }) => (
         {user?.has_insurance && 
           <span>
             <Text>Insurance image:</Text>
-            <Image src={user?.insurance_image_url} />
+            <Image src={userImages?.insuranceImageUrl.signedUrl} />
           </span>
         }
         <Text>Has health card: {user?.has_health_card ? "yes" : "no" }</Text>
@@ -29,7 +45,7 @@ const PDFDocument = ({ user }: { user: User }) => (
           user?.has_health_card &&
           <span>
             <Text>Health card image:</Text>
-            <Image src={user?.health_card_image_url} />
+            <Image src={userImages?.healthCardImageUrl.signedUrl} />
           </span>
         }
         <Text>Product: {user?.product.name}</Text>
@@ -48,9 +64,9 @@ const PDFDocument = ({ user }: { user: User }) => (
         <Text>{user.billing_address?.state}</Text>
         <Text>{user.billing_address?.postal_code}</Text>
         <Text>Profile image:</Text>
-        <Image src={user?.profile_image_url} />
+        <Image src={userImages?.profileImageUrl.signedUrl} />
         <Text>ID Image:</Text>
-        <Image src={user?.photo_id_url} />
+        <Image src={userImages?.photoIdUrl.signedUrl} />
       </View>
     </Page>
   </Document>
@@ -78,8 +94,25 @@ const styles = StyleSheet.create({
 const Pdf = ({ user }: { user: User }) => {
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const pdfRef = useRef();
+  const [userImagesUrls, setUserImagesUrls] = useState({
+    profileImageUrl: {
+      signedUrl: "",
+    },
+    photoIdUrl: {
+      signedUrl: "",
+    },
+    healthCardImageUrl: {
+      signedUrl: "",
+    },
+    insuranceImageUrl: {
+      signedUrl: "",
+    },
+  });
 
-  const handleOpenPdfViewer = () => {
+  const handleOpenPdfViewer = async () => {
+    const userImages = await getUserImages(user.user_id);
+    // @ts-ignore
+    setUserImagesUrls(userImages);
     setShowPdfViewer(true);
   };
 
@@ -88,7 +121,7 @@ const Pdf = ({ user }: { user: User }) => {
   };
 
   const handleDownloadPDF = async () => {
-    let blobPDF = await pdf(<PDFDocument user={user} />).toBlob();
+    let blobPDF = await pdf(<PDFDocument user={user} userImages={userImagesUrls} />).toBlob();
 
     if (blobPDF) {
       saveAs(blobPDF, `${user.first_name}_${user.last_name}_information.pdf`);
@@ -105,10 +138,10 @@ const Pdf = ({ user }: { user: User }) => {
         <div className="fixed inset-0 bg-white z-50 flex justify-center items-center">
           {/* @ts-ignore */}
           <PDFViewer width="100%" height="100%" ref={pdfRef} >
-            <PDFDocument user={user} />
+            <PDFDocument user={user} userImages={userImagesUrls} />
           </PDFViewer>
           <button
-            className="absolute bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg"
+            className="absolute bottom-4 right-6 bg-red-500 text-white px-4 py-2 rounded-lg"
             onClick={handleClosePdfViewer}
           >
             Close

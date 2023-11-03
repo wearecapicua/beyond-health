@@ -5,6 +5,7 @@ import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 import FormSelectorButton from "../form-selector-button";
+import { getInsuranceImage } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -21,8 +22,16 @@ export default function StepSeventeen() {
     fileName: null 
   });
   const [selected, setSelected] = useState("");
+  const [insuranceImage, setInsuranceImage] = useState<string>();
 
   useEffect(() => {
+    async function getSavedInsuranceImage() {
+      const insuranceImageSaved = await getInsuranceImage();
+      setInsuranceImage(insuranceImageSaved?.publicUrl);
+    }
+
+    getSavedInsuranceImage();
+    
     if (formStore.insurance_image_url) {
       setValue("has_insurance", true)
       setSelected("yes")
@@ -56,7 +65,7 @@ export default function StepSeventeen() {
               fieldName="insurance" 
               setFileData={setFileData} 
               fileData={fileData} 
-              insuranceImageSaved={formStore.insurance_image_url}
+              insuranceImageSaved={insuranceImage}
             />
             {!!errors.insurance && !fileData?.fileName && <p className="text-red-500 text-sm text-center pt-4">Please select an image</p>}
           </>
