@@ -7,7 +7,6 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { CameraIcon } from "@heroicons/react/24/outline";
 import dataURLtoFile from "lib/dataURLtoFile";
 import { deleteImage, sendUpdatedData } from "lib/api/supabase";
-import { de } from "date-fns/locale";
 import useFormStore from "store/useFormStore";
 
 const videoConstraints = {

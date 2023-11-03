@@ -84,11 +84,6 @@ export async function uploadImages(file: File) {
   return supabaseClient()
     .storage.from("profile-images")
     .uploadToSignedUrl(response.path, response.token, file);
-
-  // return supabaseClient()
-  //   .storage.from("profile-images")
-  //   .getPublicUrl(response.path);
-    
 }
 
 export async function getProfileImage() {
