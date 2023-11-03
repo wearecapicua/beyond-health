@@ -1,58 +1,42 @@
 import Link from "next/link";
-import { DateField, TitleField } from "@prismicio/types";
-import { PrismicText } from "@prismicio/react";
-import { asText, isFilled } from "@prismicio/helpers";
-
-import { AuthorContentRelationshipField } from "../lib/types";
-
-import Avatar from "../components/avatar";
-import CoverImage from "../components/cover-image";
-import Date from "../components/date";
+import { DateField } from "@prismicio/types";
+import CoverImage from "components/cover-image";
 import { ImageFieldImage } from "@prismicio/client";
 
 type HeroPostProps = {
-  title: TitleField;
+  title: string;
   coverImage: ImageFieldImage | null | undefined;
   date: DateField;
   description: string;
-  author: AuthorContentRelationshipField;
   href: string;
+  category: string;
 };
 
 export default function HeroPost({
   title,
   coverImage,
-  date,
-  description,
-  author,
+  category,
   href,
+  description
 }: HeroPostProps) {
   return (
     <section>
-      <div className="mb-8 md:mb-16">
-        <CoverImage title={asText(title)} href={href} image={coverImage} />
-      </div>
-      <div className="md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8 mb-20 md:mb-28">
-        <div>
-          <h3 className="mb-4 text-4xl lg:text-6xl leading-tight">
-            <Link href={href} className="hover:underline">
-              <PrismicText field={title} />
-            </Link>
-          </h3>
-          <div className="mb-4 md:mb-0 text-lg">
-            <Date dateField={date} />
+      <Link href={href || "/"} className="mb-20 block">
+        <div className="mb-8 md:mb-16 md:flex rounded-2xl overflow-hidden">
+          <div className="w-full md:w-1/2">
+          <CoverImage title={title} href={href} image={coverImage} />
+          </div>
+          <div className="bg-white w-full md:w-1/2 p-8 flex flex-col justify-between">
+            <div>
+              <h3 className="mb-6 text-4xl lg:text-6xl lg:leading-tight font-raleway font-bold">
+                {title}
+              </h3>
+              <p className="text-lg mb-6 line-clamp-4 lg:line-clamp-5">{description}</p>
+            </div>
+            <p className="font-semibold text-sm leading-relaxed">{category}</p>
           </div>
         </div>
-        <div>
-          <p className="text-lg leading-relaxed mb-4">{description}</p>
-          {isFilled.contentRelationship(author) && author.data && (
-            <Avatar
-              name={asText(author.data.name)}
-              picture={author.data.picture}
-            />
-          )}
-        </div>
-      </div>
+      </Link>
     </section>
-  );
+  )
 }

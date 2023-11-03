@@ -7,8 +7,6 @@ type PageBodyProps = {
 
 export default function PageBody({ slices }: PageBodyProps) {
   return (
-    <div>
-      <SliceZone slices={slices} components={components} />
-    </div>
+    <SliceZone slices={slices} components={components} />
   );
 }

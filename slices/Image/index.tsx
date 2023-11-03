@@ -7,12 +7,8 @@ type ImageProps = SliceComponentProps<ImageSlice>;
 
 const Image = ({ slice }: ImageProps) => {
   return (
-    <section className="my-12">
-      <PrismicNextImage 
-        /* @ts-ignore */ 
-        field={slice.primary.image} 
-        layout="responsive" 
-      />
+    <section className="my-16">
+      <PrismicNextImage field={slice.primary.image} alt={slice.primary.image.alt || ""} layout="responsive" className="rounded-2xl"/>
     </section>
   );
 };

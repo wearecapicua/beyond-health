@@ -9,6 +9,7 @@ import { PostDocument } from "prismic-types";
 export type PostDocumentWithAuthor = PostDocument & {
   data: {
     author: AuthorContentRelationshipField;
+    title: TitleField
   };
 };
 

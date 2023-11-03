@@ -18,11 +18,11 @@ export default function CoverImage({
     <PrismicNextImage
       /* @ts-ignore */
       field={imageField}
-      width={2000}
-      height={1000}
-      imgixParams={{ fit: "crop", ar: "2:1" }}
+      width={600}
+      height={460}
+      imgixParams={{ fit: "fill", ar: "2:1" }}
       className={cn("shadow-small", {
-        "hover:shadow-medium transition-shadow duration-200": href,
+        "hover:shadow-medium transition-shadow duration-200 w-full h-full object-cover": href,
       })}
       alt={imageField?.alt as ""}
       fallbackAlt=""
@@ -31,7 +31,7 @@ export default function CoverImage({
   );
 
   return (
-    <div className="sm:mx-0">
+    <>
       {href ? (
         <Link href={href} aria-label={title}>
           {image}
@@ -39,6 +39,6 @@ export default function CoverImage({
       ) : (
         image
       )}
-    </div>
+    </>
   );
 }
