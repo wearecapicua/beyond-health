@@ -27,7 +27,7 @@ export default function StepSeventeen() {
   useEffect(() => {
     async function getSavedInsuranceImage() {
       const insuranceImageSaved = await getInsuranceImage();
-      setInsuranceImage(insuranceImageSaved?.publicUrl);
+      setInsuranceImage(insuranceImageSaved?.signedUrl);
     }
 
     getSavedInsuranceImage();
@@ -39,7 +39,7 @@ export default function StepSeventeen() {
       setValue("has_insurance", formStore.has_insurance)
       setSelected(formStore.has_insurance)
     }
-  }, [formStore.insurance]);
+  }, [formStore.insurance, formStore.insurance_image_url]);
 
   const customValidateYes = () => {
     setSelected("yes")

@@ -107,6 +107,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   };
 
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
+    const stepNum = parseInt(activeStep.split("-")[1]);
     const isStepValid = await trigger();
 
     if (isStepValid && activeStep === "step-14" && data.picture?.file) {
@@ -145,15 +146,7 @@ const FormStep = ({ formData, products }: StepProps) => {
       router.push(`/form/${next}`);
     }
 
-    if (isStepValid && 
-      activeStep !== "step-18" ||
-      (
-        formStore.profile_image_url ||
-        formStore.photo_id_url ||
-        formStore.health_card_image_url ||
-        formStore.insurance_image_url
-      )
-    ) {
+    if (isStepValid && stepNum < 14) {
       updateFormStore(data);
       
       const next = incrementString(formData.step);

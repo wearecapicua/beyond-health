@@ -106,10 +106,10 @@ export async function getInsuranceImage() {
   return response;
 }
 
-export async function deleteImage(publicUrl: string) {
+export async function deleteImage(signedUrl: string) {
   const response = await fetchPostJSON("/api/delete-image", {
     method: "POST",
-    publicUrl,
+    signedUrl,
   });
   return response;
 }

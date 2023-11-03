@@ -30,7 +30,7 @@ export default function StepFourteen() {
 
     getSavedProfileImage();
 
-  }, [formStore.picture]);
+  }, [formStore.picture, formStore.profile_image_url]);
 
   return (
     <>

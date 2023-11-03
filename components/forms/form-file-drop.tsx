@@ -51,6 +51,7 @@ export default function FormFileDrop({
       updateFormStore({ profile_image_url: null});
       await sendUpdatedData({ profile_image_url: null });
       await deleteImage(profileImageSaved);
+
     }
     if (photoIdSaved) {
       updateFormStore({ photo_id_url: null});
@@ -68,7 +69,7 @@ export default function FormFileDrop({
       await deleteImage(insuranceImageSaved);
     }
   }
-
+  
   const capture = useCallback(async () => {
     const pictureSrc = webcamRef.current?.getScreenshot();
     if (!pictureSrc) {

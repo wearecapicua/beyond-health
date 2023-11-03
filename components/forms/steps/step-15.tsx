@@ -30,7 +30,7 @@ export default function StepFifteen() {
 
     getSavedPhotoId();
 
-  }, [formStore.photo_id]);
+  }, [formStore.photo_id, formStore.photo_id_url]);
 
   return (
     <>

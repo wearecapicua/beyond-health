@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth/next"
 import env from "lib/env";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { publicUrl } = req.body;
+  const { signedUrl } = req.body;
   const session = await getServerSession(req, res, authOptions)
   
   if (!session?.user) {
@@ -15,7 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const supabase = supabaseClient(supabaseAccessToken);
 
   if (req.method === 'POST') {
-    const path = publicUrl.split('profile-images/')[1];
+    const pathTemporary = signedUrl.split('profile-images/')[1];
+    const path = pathTemporary.split('?')[0];
     try {
       const { data, error } = await supabase.storage.from('profile-images').remove([path]);
 
