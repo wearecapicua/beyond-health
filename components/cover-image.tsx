@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { PrismicNextImage } from "@prismicio/next";
-import { ImageField } from "@prismicio/types";
 import cn from "classnames";
+import { ImageFieldImage } from "@prismicio/client";
 
 type CoverImageProps = {
   title: string;
-  image: ImageField;
+  image: ImageFieldImage | null | undefined;
   href?: string;
 };
 
@@ -17,20 +17,20 @@ export default function CoverImage({
   const image = (
     <PrismicNextImage
       field={imageField}
-      width={2000}
-      height={1000}
-      imgixParams={{ fit: "crop", ar: "2:1" }}
+      width={600}
+      height={460}
+      imgixParams={{ fit: "fill", ar: "2:1" }}
       className={cn("shadow-small", {
-        "hover:shadow-medium transition-shadow duration-200": href,
+        "hover:shadow-medium transition-shadow duration-200 w-full h-full object-cover": href,
       })}
-      alt={imageField.alt as ""}
+      alt={imageField?.alt as ""}
       fallbackAlt=""
       priority
     />
   );
 
   return (
-    <div className="sm:mx-0">
+    <>
       {href ? (
         <Link href={href} aria-label={title}>
           {image}
@@ -38,6 +38,6 @@ export default function CoverImage({
       ) : (
         image
       )}
-    </div>
+    </>
   );
 }

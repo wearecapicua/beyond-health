@@ -1,6 +1,6 @@
+import { ImageFieldImage } from "@prismicio/client";
 import {
   FieldState,
-  ImageField,
   RelationField,
   TitleField,
 } from "@prismicio/types";
@@ -9,6 +9,7 @@ import { PostDocument } from "prismic-types";
 export type PostDocumentWithAuthor = PostDocument & {
   data: {
     author: AuthorContentRelationshipField;
+    title: TitleField
   };
 };
 
@@ -17,7 +18,7 @@ export type AuthorContentRelationshipField = RelationField<
   string,
   {
     name: TitleField;
-    picture: ImageField;
+    picture: ImageFieldImage;
   },
   FieldState
 >;
