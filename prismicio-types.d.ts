@@ -48,6 +48,38 @@ export type AuthorDocument<Lang extends string = string> =
   >;
 
 /**
+ * Content for Category documents
+ */
+interface CategoryDocumentData {
+  /**
+   * Name field in *Category*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+}
+
+/**
+ * Category document from Prismic
+ *
+ * - **API ID**: `category`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CategoryDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<CategoryDocumentData>,
+    "category",
+    Lang
+  >;
+
+/**
  * Content for FAQ documents
  */
 interface FaqDocumentData {
@@ -240,15 +272,15 @@ type PostDocumentDataSlicesSlice = TextSlice | ImageSlice;
  */
 interface PostDocumentData {
   /**
-   * Product name field in *Post*
+   * Title field in *Post*
    *
-   * - **Field Type**: Title
-   * - **Placeholder**: Name of the product
-   * - **API ID Path**: post.name
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: post.title
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  name: prismic.TitleField;
+  title: prismic.KeyTextField;
 
   /**
    * Description field in *Post*
@@ -273,17 +305,6 @@ interface PostDocumentData {
   date: prismic.DateField;
 
   /**
-   * Author field in *Post*
-   *
-   * - **Field Type**: Content Relationship
-   * - **Placeholder**: *None*
-   * - **API ID Path**: post.author
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
-   */
-  author: prismic.ContentRelationshipField<"author">;
-
-  /**
    * Cover Image field in *Post*
    *
    * - **Field Type**: Image
@@ -295,15 +316,15 @@ interface PostDocumentData {
   image: prismic.ImageField<never>;
 
   /**
-   * Price field in *Post*
+   * Category field in *Post*
    *
-   * - **Field Type**: Number
-   * - **Placeholder**: Price in USD
-   * - **API ID Path**: post.price
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: post.category
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#number
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  price: prismic.NumberField;
+  category: prismic.ContentRelationshipField<"category">;
 
   /**
    * Slice Zone field in *Post*
@@ -436,6 +457,7 @@ export type TreatmentDocument<Lang extends string = string> =
 
 export type AllDocumentTypes =
   | AuthorDocument
+  | CategoryDocument
   | FaqDocument
   | FormDocument
   | LandingPageDocument
@@ -822,6 +844,16 @@ export interface ImageSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#image
    */
   image: prismic.ImageField<never>;
+
+  /**
+   * Alt Text field in *Image → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image.primary.alt_text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  alt_text: prismic.RichTextField;
 }
 
 /**
@@ -1303,6 +1335,8 @@ declare module "@prismicio/client" {
     export type {
       AuthorDocument,
       AuthorDocumentData,
+      CategoryDocument,
+      CategoryDocumentData,
       FaqDocument,
       FaqDocumentData,
       FormDocument,
