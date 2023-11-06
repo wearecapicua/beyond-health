@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
+import { getIdImage } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -19,6 +20,17 @@ export default function StepFifteen() {
     fileUrl: null, 
     fileName: null 
   });
+  const [photoId, setPhotoId] = useState<string>();
+
+  useEffect(() => {
+    async function getSavedPhotoId() {
+      const photoIdSaved = await getIdImage();
+      setPhotoId(photoIdSaved?.signedUrl);
+    }
+
+    getSavedPhotoId();
+
+  }, [formStore.photo_id, formStore.photo_id_url]);
 
   return (
     <>
@@ -31,7 +43,7 @@ export default function StepFifteen() {
           fieldName="photo_id" 
           setFileData={setFileData} 
           fileData={fileData} 
-          photoIdSaved={formStore.photo_id_url}
+          photoIdSaved={photoId}
         />
         {!!errors.photo_id && !fileData?.fileUrl ? <p className="text-red-500 text-sm text-center pt-4">Please select an image</p> : null}
       </FormContainer>

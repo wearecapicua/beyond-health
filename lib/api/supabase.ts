@@ -81,14 +81,45 @@ export async function uploadImages(file: File) {
     file,
   });
 
-  supabaseClient()
-    .storage.from("profile-images")
-    .uploadToSignedUrl(response.path, response.token, file);
-
   return supabaseClient()
     .storage.from("profile-images")
-    .getPublicUrl(response.path);
-    
+    .uploadToSignedUrl(response.path, response.token, file);
+}
+
+export async function getProfileImage() {
+  const response = await fetchGetJSON("/api/get-profile-image");
+  return response;
+}
+
+export async function getIdImage() {
+  const response = await fetchGetJSON("/api/get-id-image");
+  return response;
+}
+
+export async function getHealthCardImage() {
+  const response = await fetchGetJSON("/api/get-health-card-image");
+  return response;
+}
+
+export async function getInsuranceImage() {
+  const response = await fetchGetJSON("/api/get-insurance-image");
+  return response;
+}
+
+export async function deleteImage(signedUrl: string) {
+  const response = await fetchPostJSON("/api/delete-image", {
+    method: "POST",
+    signedUrl,
+  });
+  return response;
+}
+
+export async function getUserImages(userId: string) {
+  const response = await fetchPostJSON("/api/get-user-images", {
+    method: "POST",
+    userId,
+  });
+  return response;
 }
 
 // export async function uploadImages(file: any) {

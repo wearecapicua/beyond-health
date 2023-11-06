@@ -5,6 +5,7 @@ import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 import FormSelectorButton from "../form-selector-button";
+import { getHealthCardImage } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -21,16 +22,24 @@ export default function StepSixteen() {
     fileName: null 
   });
   const [selected, setSelected] = useState("");
+  const [healthCardImage, setHealthCardImage] = useState<string>();
 
   useEffect(() => {
+    async function getSavedHealthCardImage() {
+      const healthCardImageSaved = await getHealthCardImage();
+      setHealthCardImage(healthCardImageSaved?.signedUrl);
+    }
+
+    getSavedHealthCardImage();
+    
     if (formStore.health_card_image_url) {
       setValue("has_health_card", true)
       setSelected("yes")
     } else {
       setValue("has_health_card", formStore.has_health_card)
-      setSelected(formStore.has_health_card)
+      setSelected(formStore.has_health_card || null)
     }
-  }, [formStore.health_card]);
+  }, [formStore.health_card, formStore.health_card_image_url]);
 
   const customValidateYes = () => {
     setSelected("yes")
@@ -56,7 +65,7 @@ export default function StepSixteen() {
               fieldName="health_card" 
               setFileData={setFileData} 
               fileData={fileData}
-              healthCardImageSaved={formStore.health_card_image_url} 
+              healthCardImageSaved={healthCardImage} 
             />
             {!!errors.health_card && !fileData?.fileName && <p className="text-red-500 text-sm text-center pt-4">Please select an image</p>}
           </>
@@ -67,7 +76,7 @@ export default function StepSixteen() {
             label="Yes, I do have a Provincial Health Card"
             value="yes"
             groupId="has_health_card"
-            selected={selected}
+            selected={selected ? "yes" : ""}
             setSelected={setSelected}
             customValidate={customValidateYes}
           />
@@ -75,7 +84,7 @@ export default function StepSixteen() {
             label="No, I don't have a Provincial Health Card"
             value="no"
             groupId="health_card"
-            selected={selected}
+            selected={!selected && selected !== null ? "no" : ""}
             setSelected={setSelected}
             customValidate={customValidateNo}
           />

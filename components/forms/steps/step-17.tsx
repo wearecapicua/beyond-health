@@ -5,6 +5,7 @@ import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 import FormSelectorButton from "../form-selector-button";
+import { getInsuranceImage } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -21,16 +22,24 @@ export default function StepSeventeen() {
     fileName: null 
   });
   const [selected, setSelected] = useState("");
+  const [insuranceImage, setInsuranceImage] = useState<string>();
 
   useEffect(() => {
+    async function getSavedInsuranceImage() {
+      const insuranceImageSaved = await getInsuranceImage();
+      setInsuranceImage(insuranceImageSaved?.signedUrl);
+    }
+
+    getSavedInsuranceImage();
+    
     if (formStore.insurance_image_url) {
       setValue("has_insurance", true)
       setSelected("yes")
     } else {
       setValue("has_insurance", formStore.has_insurance)
-      setSelected(formStore.has_insurance)
+      setSelected(formStore.has_insurance || null)
     }
-  }, [formStore.insurance]);
+  }, [formStore.insurance, formStore.insurance_image_url]);
 
   const customValidateYes = () => {
     setSelected("yes")
@@ -56,7 +65,7 @@ export default function StepSeventeen() {
               fieldName="insurance" 
               setFileData={setFileData} 
               fileData={fileData} 
-              insuranceImageSaved={formStore.insurance_image_url}
+              insuranceImageSaved={insuranceImage}
             />
             {!!errors.insurance && !fileData?.fileName && <p className="text-red-500 text-sm text-center pt-4">Please select an image</p>}
           </>
@@ -67,7 +76,7 @@ export default function StepSeventeen() {
             label="Yes, I do have insurance"
             value="yes"
             groupId="has_insurance"
-            selected={selected}
+            selected={selected ? "yes" : ""}
             setSelected={setSelected}
             customValidate={customValidateYes}
           />
@@ -75,7 +84,7 @@ export default function StepSeventeen() {
             label="No, I don't have insurance"
             value="no"
             groupId="insurance"
-            selected={selected}
+            selected={!selected && selected !== null ? "no" : ""}
             setSelected={setSelected}
             customValidate={customValidateNo}
           />

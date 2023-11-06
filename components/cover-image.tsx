@@ -16,7 +16,6 @@ export default function CoverImage({
 }: CoverImageProps) {
   const image = (
     <PrismicNextImage
-      /* @ts-ignore */
       field={imageField}
       width={600}
       height={460}

@@ -107,12 +107,13 @@ const FormStep = ({ formData, products }: StepProps) => {
   };
 
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
+    const stepNum = parseInt(activeStep.split("-")[1]);
     const isStepValid = await trigger();
 
     if (isStepValid && activeStep === "step-14" && data.picture?.file) {
       const imageSaveData = await uploadImages(data.picture?.file);
-      await sendUpdatedData({ profile_image_url: imageSaveData.data?.publicUrl });
-      updateFormStore({ profile_image_url: imageSaveData?.data?.publicUrl });
+      await sendUpdatedData({ profile_image_url: imageSaveData.data?.path });
+      updateFormStore({ profile_image_url: imageSaveData?.data?.path, picture: null });
       const next = incrementString(formData.step);
       setActiveStep(next);
       router.push(`/form/${next}`);
@@ -120,8 +121,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 
     if (isStepValid && activeStep === "step-15" && data.photo_id?.file) {
       const imageSaveData = await uploadImages(data.photo_id?.file);
-      await sendUpdatedData({ photo_id_url: imageSaveData.data?.publicUrl });
-      updateFormStore({ photo_id_url: imageSaveData?.data?.publicUrl });
+      await sendUpdatedData({ photo_id_url: imageSaveData.data?.path });
+      updateFormStore({ photo_id_url: imageSaveData?.data?.path, photo_id: null });
       const next = incrementString(formData.step);
       setActiveStep(next);
       router.push(`/form/${next}`);
@@ -129,8 +130,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 
     if (isStepValid && activeStep === "step-16" && data.health_card?.file) {
       const imageSaveData = await uploadImages(data.health_card?.file);
-      await sendUpdatedData({ health_card_image_url: imageSaveData.data?.publicUrl });
-      updateFormStore({ health_card_image_url: imageSaveData?.data?.publicUrl });
+      await sendUpdatedData({ health_card_image_url: imageSaveData.data?.path });
+      updateFormStore({ health_card_image_url: imageSaveData?.data?.path, health_card: null });
       const next = incrementString(formData.step);
       setActiveStep(next);
       router.push(`/form/${next}`);
@@ -138,14 +139,14 @@ const FormStep = ({ formData, products }: StepProps) => {
 
     if (isStepValid && activeStep === "step-17" && data.insurance?.file) {
       const imageSaveData = await uploadImages(data.insurance?.file);
-      await sendUpdatedData({ insurance_image_url: imageSaveData.data?.publicUrl });
-      updateFormStore({ insurance_image_url: imageSaveData?.data?.publicUrl });
+      await sendUpdatedData({ insurance_image_url: imageSaveData.data?.path });
+      updateFormStore({ insurance_image_url: imageSaveData?.data?.path, insurance: null });
       const next = incrementString(formData.step);
       setActiveStep(next);
       router.push(`/form/${next}`);
     }
 
-    if (isStepValid && activeStep !== "step-18") {
+    if (isStepValid && stepNum < 14 || ( formStore.profile_image_url && formStore.photo_id_url && formStore.health_card_image_url && formStore.insurance_image_url )) {
       updateFormStore(data);
       
       const next = incrementString(formData.step);
@@ -180,26 +181,26 @@ const FormStep = ({ formData, products }: StepProps) => {
     if (isStepValid) {
       if (!data.profile_image_url && data.picture?.file) {
         const imageSaveData = await uploadImages(data.picture?.file);
-        await sendUpdatedData({ profile_image_url: imageSaveData?.data?.publicUrl });
-        updateFormStore({ profile_image_url: imageSaveData?.data?.publicUrl });
+        await sendUpdatedData({ profile_image_url: imageSaveData?.data?.path });
+        updateFormStore({ profile_image_url: imageSaveData?.data?.path });
       }
 
       if (!data.photo_id_url && data.photo_id?.file) {
         const photoIdSaveData = await uploadImages(data.photo_id?.file);
-        await sendUpdatedData({ photo_id_url: photoIdSaveData?.data?.publicUrl });
-        updateFormStore({ photo_id_url: photoIdSaveData?.data?.publicUrl });
+        await sendUpdatedData({ photo_id_url: photoIdSaveData?.data?.path });
+        updateFormStore({ photo_id_url: photoIdSaveData?.data?.path });
       }
 
       if (!data.health_card_image_url && data.health_card?.file) {
         const healthCardImageSaveData = await uploadImages(data.health_card?.file);
-        await sendUpdatedData({ health_card_image_url: healthCardImageSaveData?.data?.publicUrl });
-        updateFormStore({ health_card_image_url: healthCardImageSaveData?.data?.publicUrl });
+        await sendUpdatedData({ health_card_image_url: healthCardImageSaveData?.data?.path });
+        updateFormStore({ health_card_image_url: healthCardImageSaveData?.data?.path });
       }
 
       if (!data.insurance_image_url && data.insurance?.file) {
         const insuranceImageSaveData = await uploadImages(data.insurance?.file);
-        await sendUpdatedData({ insurance_image_url: insuranceImageSaveData?.data?.publicUrl });
-        updateFormStore({ insurance_image_url: insuranceImageSaveData?.data?.publicUrl });
+        await sendUpdatedData({ insurance_image_url: insuranceImageSaveData?.data?.path });
+        updateFormStore({ insurance_image_url: insuranceImageSaveData?.data?.path });
       }
 
       const isSubmitSuccess = await submitFormData(data);
