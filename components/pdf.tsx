@@ -37,8 +37,8 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
         {user?.has_insurance && 
           <span>
             <Text>Insurance image:</Text>
-            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
-              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.insuranceImageUrl?.signedUrl} />
+            <View style={{ maxHeight: '80%', width: 300 }}>
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.insuranceImageUrl?.signedUrl} />
             </View>
           </span>
         }
@@ -47,8 +47,8 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
           user?.has_health_card &&
           <span>
             <Text>Health card image:</Text>
-            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
-              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.healthCardImageUrl?.signedUrl} />
+            <View style={{ maxHeight: '80%', width: 300 }}>
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.healthCardImageUrl?.signedUrl} />
             </View>
           </span>
         }
@@ -71,8 +71,8 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
           userImages?.profileImageUrl?.signedUrl &&
           <span>
             <Text>Profile image:</Text>
-            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
-              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.profileImageUrl?.signedUrl} />
+            <View style={{ maxHeight: '80%', width: 300 }}>
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.profileImageUrl?.signedUrl} />
             </View>
           </span>
         }
@@ -80,8 +80,8 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
           userImages?.photoIdUrl?.signedUrl &&
           <span>
             <Text>ID Image:</Text>
-            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
-              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.photoIdUrl?.signedUrl} />
+            <View style={{ maxHeight: '80%', width: 300 }}>
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.photoIdUrl?.signedUrl} />
             </View>
           </span>
         }
