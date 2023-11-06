@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { Document, Page, Text, View, StyleSheet, PDFViewer, Image, BlobProvider, pdf } from '@react-pdf/renderer';
+import { useState, useRef } from 'react';
+import { Document, Page, Text, View, StyleSheet, PDFViewer, Image, pdf } from '@react-pdf/renderer';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { User } from "lib/types"
 import { saveAs } from 'file-saver';
@@ -37,7 +37,9 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
         {user?.has_insurance && 
           <span>
             <Text>Insurance image:</Text>
-            <Image src={userImages?.insuranceImageUrl?.signedUrl} />
+            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
+              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.insuranceImageUrl?.signedUrl} />
+            </View>
           </span>
         }
         <Text>Has health card: {user?.has_health_card ? "yes" : "no" }</Text>
@@ -45,7 +47,9 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
           user?.has_health_card &&
           <span>
             <Text>Health card image:</Text>
-            <Image src={userImages?.healthCardImageUrl?.signedUrl} />
+            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
+              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.healthCardImageUrl?.signedUrl} />
+            </View>
           </span>
         }
         <Text>Product: {user?.product.name}</Text>
@@ -63,10 +67,24 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
         <Text>{user.billing_address?.city}</Text>
         <Text>{user.billing_address?.state}</Text>
         <Text>{user.billing_address?.postal_code}</Text>
-        <Text>Profile image:</Text>
-        <Image src={userImages?.profileImageUrl?.signedUrl} />
-        <Text>ID Image:</Text>
-        <Image src={userImages?.photoIdUrl?.signedUrl} />
+        {
+          userImages?.profileImageUrl?.signedUrl &&
+          <span>
+            <Text>Profile image:</Text>
+            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
+              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.profileImageUrl?.signedUrl} />
+            </View>
+          </span>
+        }
+        {
+          userImages?.photoIdUrl?.signedUrl &&
+          <span>
+            <Text>ID Image:</Text>
+            <View style={{ height: 320, textAlign: 'right', width: '70%' }}>
+              <Image style={{ marginHorizontal: '10%', width: 'auto', height: 'auto' }} src={userImages?.photoIdUrl?.signedUrl} />
+            </View>
+          </span>
+        }
       </View>
     </Page>
   </Document>
