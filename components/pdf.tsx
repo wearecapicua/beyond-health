@@ -34,21 +34,21 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
         <Text>Questions: {user?.questions || "none"}</Text>
         <Text>Stage: {user?.stage}</Text>
         <Text>Has insurance: {user?.has_insurance ? "yes" : "no" }</Text>
-        {user?.has_insurance && 
+        {user?.has_insurance && userImages?.insuranceImageUrl?.signedUrl && 
           <span>
             <Text>Insurance image:</Text>
             <View style={{ maxHeight: '80%', width: 300 }}>
-              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.insuranceImageUrl?.signedUrl} />
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.insuranceImageUrl?.signedUrl ?? ""} />
             </View>
           </span>
         }
         <Text>Has health card: {user?.has_health_card ? "yes" : "no" }</Text>
         {
-          user?.has_health_card &&
+          user?.has_health_card && userImages?.healthCardImageUrl?.signedUrl &&
           <span>
             <Text>Health card image:</Text>
             <View style={{ maxHeight: '80%', width: 300 }}>
-              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.healthCardImageUrl?.signedUrl} />
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.healthCardImageUrl?.signedUrl ?? ""} />
             </View>
           </span>
         }
@@ -72,7 +72,7 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
           <span>
             <Text>Profile image:</Text>
             <View style={{ maxHeight: '80%', width: 300 }}>
-              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.profileImageUrl?.signedUrl} />
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.profileImageUrl?.signedUrl ?? ""} />
             </View>
           </span>
         }
@@ -81,7 +81,7 @@ const PDFDocument = ({ user, userImages }: { user: User, userImages:  UserImages
           <span>
             <Text>ID Image:</Text>
             <View style={{ maxHeight: '80%', width: 300 }}>
-              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.photoIdUrl?.signedUrl} />
+              <Image style={{ width: 'auto', height: 'auto' }} src={userImages?.photoIdUrl?.signedUrl ?? ""} />
             </View>
           </span>
         }
