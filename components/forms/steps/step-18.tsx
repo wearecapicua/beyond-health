@@ -63,10 +63,11 @@ export default function StepEighteen() {
                 defaultValue={formStore.billing_address?.line1}
               />
               <FormInput
-                label="Address Line 2*"
+                label="Address Line 2"
                 id="billing_address.line2"
                 type="text"
                 defaultValue={formStore.billing_address?.line2}
+                isRequired={false}
               />
               <div className="lg:grid lg:grid-cols-2 gap-4">
                 <FormInput

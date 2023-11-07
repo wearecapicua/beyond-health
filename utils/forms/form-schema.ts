@@ -50,7 +50,7 @@ export const schema = {
   "step-13": z.object({
     shipping_address: z.object({
       line1: z.string().min(1, "Street address is required").max(100),
-      line2: z.string().min(1, "Address is required").max(100),
+      line2: z.string().max(100).optional(),
       city: z.string().min(1, "City is required").max(100),
       state: z.string().min(1, "State or Province is required").max(100),
       postal_code: z.string().min(1, "Zipcode is required").max(100),
@@ -74,7 +74,7 @@ export const schema = {
   "step-18": z.object({
     billing_address: z.object({
       line1: z.string().min(1, "Street address is required").max(100),
-      line2: z.string().min(1, "Address is required").max(100),
+      line2: z.string().max(100).optional(),
       city: z.string().min(1, "City is required").max(100),
       state: z.string().min(1, "State or Province is required").max(100),
       postal_code: z.string().min(1, "Zipcode is required").max(100),
