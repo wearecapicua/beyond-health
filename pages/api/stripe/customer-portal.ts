@@ -37,7 +37,7 @@ export default async function handler(
       }
 
       const customerId = userData?.stripe_customer_id;
-      const returnUrl = env.vercelEnv === 'localhost' ? 'http://localhost:3000' : `https://${env.host}`;
+      const returnUrl = `${env.host}`;
 
       const portalLink = await stripe.billingPortal.sessions.create({
         customer: customerId, // Replace with the actual customer ID or identifier
