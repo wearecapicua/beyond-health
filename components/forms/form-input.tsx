@@ -10,6 +10,7 @@ type FormInputProps = {
   setSelected?: (name: any) => void;
   defaultValue: string;
   customValidate?: any;
+  isRequired?: boolean;
 };
 
 export default function FormInput({
@@ -20,7 +21,8 @@ export default function FormInput({
   defaultValue,
   large,
   setSelected,
-  customValidate
+  customValidate,
+  isRequired
 }: FormInputProps) {
   const {
     register,
@@ -41,6 +43,7 @@ export default function FormInput({
           placeholder={placeholder || ""}
           defaultValue={defaultValue || ""}
           {...register(id, {
+            required: isRequired,
             onChange: () => setSelected && setSelected(undefined)
           })}
         />

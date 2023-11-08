@@ -21,10 +21,11 @@ export default function StepOne() {
           defaultValue={formStore.shipping_address?.line1}
         />
         <FormInput
-          label="Address Line 2*"
+          label="Address Line 2 (optional)"
           id="shipping_address.line2"
           type="text"
           defaultValue={formStore.shipping_address?.line2}
+          isRequired={false}
         />
         <div className="sm:grid sm:grid-cols-2 gap-4">
           <FormInput
