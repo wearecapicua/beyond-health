@@ -146,15 +146,25 @@ const FormStep = ({ formData, products }: StepProps) => {
       router.push(`/form/${next}`);
     }
 
-    if (isStepValid && stepNum < 14 || ( formStore.profile_image_url && formStore.photo_id_url && formStore.health_card_image_url && formStore.insurance_image_url )) {
+    if (isStepValid && ( stepNum === 14 && formStore.profile_image_url || 
+      stepNum === 15 && formStore.photo_id_url || 
+      stepNum === 16 && (formStore.health_card_image_url || !formStore.has_health_card) || 
+      stepNum === 17 && formStore.insurance_image_url )) {
       updateFormStore(data);
       
       const next = incrementString(formData.step);
       setActiveStep(next);
       router.push(`/form/${next}`);
     }
+    if(stepNum === 14 && formStore.profile_image_url === null && !data.picture?.file || 
+      stepNum === 15 && formStore.photo_id_url === null && !data.photo_id?.file || 
+      stepNum === 16 && formStore.health_card_image_url === null && data.has_health_card || 
+      stepNum === 17 && formStore.insurance_image_url === null && data.has_insurance){
+        toast.error("Please upload an image");
+      }
     if (isStepValid && activeStep === "step-18") {
       const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
+      console.log("validate results ", validateResults)
      
       if (validateResults) {
         toast.error("Missing data in previous step", {

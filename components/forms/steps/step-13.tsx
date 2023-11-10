@@ -7,6 +7,7 @@ import { useFormContext } from "react-hook-form";
 export default function StepOne() {
   const { register } = useFormContext();
   const { formStore } = useFormStore();
+  
   return (
     <>
       <FormHeader
@@ -45,7 +46,7 @@ export default function StepOne() {
           label="ZIP / Postal Code*"
           id="shipping_address.postal_code"
           type="text"
-          defaultValue={formStore.shipping_address?.postal} 
+          defaultValue={formStore.shipping_address?.postal_code} 
         />
         <p className="pt-2.5">{"Delivery Instructions (optional)"}</p>
         <textarea
