@@ -35,10 +35,13 @@ export default function StepSixteen() {
     if (formStore.health_card_image_url) {
       setValue("has_health_card", true)
       setSelected("yes")
-    } else {
-      setValue("has_health_card", formStore.has_health_card)
-      setSelected(formStore.has_health_card || null)
+    } 
+    
+    if (!formStore.has_health_card) {
+      setValue("has_health_card", false)
+      setSelected("no")
     }
+    
   }, [formStore.health_card, formStore.health_card_image_url]);
 
   const customValidateYes = () => {
@@ -59,7 +62,7 @@ export default function StepSixteen() {
         subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
       />
       <FormContainer>
-        {selected ?
+        {selected === 'yes' ?
           <>
             <FormFileDrop 
               fieldName="health_card" 
@@ -76,7 +79,7 @@ export default function StepSixteen() {
             label="Yes, I do have a Provincial Health Card"
             value="yes"
             groupId="has_health_card"
-            selected={selected ? "yes" : ""}
+            selected={selected}
             setSelected={setSelected}
             customValidate={customValidateYes}
           />
@@ -84,7 +87,7 @@ export default function StepSixteen() {
             label="No, I don't have a Provincial Health Card"
             value="no"
             groupId="health_card"
-            selected={!selected && selected !== null ? "no" : ""}
+            selected={selected}
             setSelected={setSelected}
             customValidate={customValidateNo}
           />

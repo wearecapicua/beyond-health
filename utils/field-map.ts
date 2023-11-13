@@ -14,7 +14,7 @@ export const fieldMap = {
   shipping_address: 13,
   profile_image_url: 14,
   photo_id_url: 15,
-  health_card_image_url: 16,
-  insurance_image_url: 17,
+  has_health_card: 16,
+  has_insurance: 17,
   billing_address: 18,
 };

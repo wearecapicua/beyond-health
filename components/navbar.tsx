@@ -16,14 +16,23 @@ type NavbarProps = {
 export default function Navbar({ fullPage }: NavbarProps) {
   const session = useSession();
   const router = useRouter();
-  const userLoggedIn = session.status === "authenticated" && session.data?.user
-  const { formStep } = useFormStatusStore()
-  const { updateFormStore } = useFormStore()
+  const userLoggedIn = session.status === "authenticated" && session.data?.user;
+  const { formStep } = useFormStatusStore();
+  const { updateFormStore } = useFormStore();
   
   async function handleResume() {
     const profileData = await getProfileData();
-    updateFormStore(profileData)
-    router.push(`/form/${formStep}`)
+    updateFormStore(profileData);
+    router.push(`/form/${formStep}`);
+  }
+  async function handleStartNow() {
+    const profileData = await getProfileData();
+    if(userLoggedIn){
+      updateFormStore(profileData);
+      router.push('/form/step-1');
+    } else {
+      router.push('/login');
+    }
   }
 
   const isCurrentRoute = (route: string) => router.asPath === route;
@@ -79,14 +88,13 @@ export default function Navbar({ fullPage }: NavbarProps) {
                   </div> 
                   : !fullPage ?
                   <div className="flex-shrink-0">
-                    <a href={userLoggedIn ? "/form/step-1" : "/login"}>
-                      <button
-                        type="button"
-                        className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
-                      >
-                        Start Now
-                      </button>
-                    </a>
+                    <button
+                      onClick={handleStartNow}
+                      type="button"
+                      className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
+                    >
+                      Start Now
+                    </button>
                   </div> 
                   : null
                 }
