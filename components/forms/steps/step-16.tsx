@@ -54,7 +54,6 @@ export default function StepSixteen() {
     setValue("healthCard", null);
     setValue("has_health_card", false)
   }
-  console.log(selected);
 
   return (
     <>

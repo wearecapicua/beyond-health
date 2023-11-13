@@ -59,7 +59,6 @@ const FormStep = ({ formData, products }: StepProps) => {
   }, []);
 
   const currentSchema = schema[activeStep];
-
   const methods = useForm<IFormProps>({
     resolver: zodResolver(currentSchema) as unknown as Resolver<IFormProps>,
     mode: "onBlur",
@@ -106,65 +105,81 @@ const FormStep = ({ formData, products }: StepProps) => {
     }
   };
 
+  const uploadImageAndSubmit = async (dbName: string, temporalFileName: string, file: File) => {
+    const imageSaveData = await uploadImages(file);
+    await sendUpdatedData({ [dbName]: imageSaveData.data?.path });
+    updateFormStore({ [dbName]: imageSaveData?.data?.path, [temporalFileName]: null });
+    const next = incrementString(formData.step);
+    setActiveStep(next);
+    router.push(`/form/${next}`);
+  };
+
+  const updateStoreAndSubmit = async (data: any) => {
+    updateFormStore(data);
+      
+    const next = incrementString(formData.step);
+    setActiveStep(next);
+    router.push(`/form/${next}`);
+  };
+
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
     const stepNum = parseInt(activeStep.split("-")[1]);
     const isStepValid = await trigger();
 
-    if (isStepValid && activeStep === "step-14" && data.picture?.file) {
-      const imageSaveData = await uploadImages(data.picture?.file);
-      await sendUpdatedData({ profile_image_url: imageSaveData.data?.path });
-      updateFormStore({ profile_image_url: imageSaveData?.data?.path, picture: null });
-      const next = incrementString(formData.step);
-      setActiveStep(next);
-      router.push(`/form/${next}`);
-    }
-
-    if (isStepValid && activeStep === "step-15" && data.photo_id?.file) {
-      const imageSaveData = await uploadImages(data.photo_id?.file);
-      await sendUpdatedData({ photo_id_url: imageSaveData.data?.path });
-      updateFormStore({ photo_id_url: imageSaveData?.data?.path, photo_id: null });
-      const next = incrementString(formData.step);
-      setActiveStep(next);
-      router.push(`/form/${next}`);
-    }
-
-    if (isStepValid && activeStep === "step-16" && data.health_card?.file) {
-      const imageSaveData = await uploadImages(data.health_card?.file);
-      await sendUpdatedData({ health_card_image_url: imageSaveData.data?.path });
-      updateFormStore({ health_card_image_url: imageSaveData?.data?.path, health_card: null });
-      const next = incrementString(formData.step);
-      setActiveStep(next);
-      router.push(`/form/${next}`);
-    }
-
-    if (isStepValid && activeStep === "step-17" && data.insurance?.file) {
-      const imageSaveData = await uploadImages(data.insurance?.file);
-      await sendUpdatedData({ insurance_image_url: imageSaveData.data?.path });
-      updateFormStore({ insurance_image_url: imageSaveData?.data?.path, insurance: null });
-      const next = incrementString(formData.step);
-      setActiveStep(next);
-      router.push(`/form/${next}`);
-    }
-
-    if (isStepValid && ( stepNum === 14 && formStore.profile_image_url || 
-      stepNum === 15 && formStore.photo_id_url || 
-      stepNum === 16 && (formStore.health_card_image_url || !formStore.has_health_card) || 
-      stepNum === 17 && formStore.insurance_image_url )) {
-      updateFormStore(data);
-      
-      const next = incrementString(formData.step);
-      setActiveStep(next);
-      router.push(`/form/${next}`);
-    }
-    if(stepNum === 14 && formStore.profile_image_url === null && !data.picture?.file || 
-      stepNum === 15 && formStore.photo_id_url === null && !data.photo_id?.file || 
-      stepNum === 16 && formStore.health_card_image_url === null && data.has_health_card || 
-      stepNum === 17 && formStore.insurance_image_url === null && data.has_insurance){
+    if (isStepValid && stepNum === 14) {
+      if (data.picture?.file && formStore.profile_image_url === null) {
+        uploadImageAndSubmit("profile_image_url", "picture", data.picture?.file);
+      }
+      if (!data.picture?.file && formStore.profile_image_url === null) {
         toast.error("Please upload an image");
       }
+      if (formStore.profile_image_url) {
+        updateStoreAndSubmit(data);
+      }
+    }
+
+    if (isStepValid && stepNum === 15) {
+      if (data.photo_id?.file && formStore.photo_id_url === null) {
+        uploadImageAndSubmit("photo_id_url", "photo_id", data.photo_id?.file);
+      }
+      if (!data.photo_id?.file && formStore.photo_id_url === null) {
+        toast.error("Please upload an image");
+      }
+      if (formStore.photo_id_url) {
+        updateStoreAndSubmit(data);
+      }
+    }
+
+    if (isStepValid && stepNum === 16) {
+      if (data.health_card?.file && formStore.has_health_card && formStore.health_card_image_url === null) {
+        uploadImageAndSubmit("health_card_image_url", "health_card", data.health_card?.file);
+      }
+      if (!data.health_card?.file && formStore.has_health_card && formStore.health_card_image_url === null) {
+        toast.error("Please upload an image");
+      }
+      if ((formStore.has_health_card && formStore.health_image_url) || !formStore.has_health_card) {
+        updateStoreAndSubmit(data);
+      }
+    }
+
+    if (isStepValid && stepNum === 17) {
+      if (data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
+        uploadImageAndSubmit("insurance_image_url", "insurance", data.insurance?.file);
+      }
+      if (!data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
+        toast.error("Please upload an image");
+      }
+      if ((formStore.has_insurance && formStore.insurance_image_url) || !formStore.has_insurance) {
+        updateStoreAndSubmit(data);
+      }
+    }
+
+    if (isStepValid && stepNum < 14) {
+      updateStoreAndSubmit(data);
+    }
+
     if (isStepValid && activeStep === "step-18") {
       const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
-      console.log("validate results ", validateResults)
      
       if (validateResults) {
         toast.error("Missing data in previous step", {
