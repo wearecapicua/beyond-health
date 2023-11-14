@@ -44,6 +44,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<FormStep>(formData.step);
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const StepComponent = formSteps[activeStep];
   const stripe = useStripe();
 
@@ -106,10 +107,12 @@ const FormStep = ({ formData, products }: StepProps) => {
   };
 
   const uploadImageAndSubmit = async (dbName: string, temporalFileName: string, file: File) => {
+    setIsLoading(true);
     const imageSaveData = await uploadImages(file);
-    await sendUpdatedData({ [dbName]: imageSaveData.data?.path });
+    const imageWasUploaded = await sendUpdatedData({ [dbName]: imageSaveData.data?.path });
     updateFormStore({ [dbName]: imageSaveData?.data?.path, [temporalFileName]: null });
     const next = incrementString(formData.step);
+    if (imageWasUploaded) setIsLoading(false);
     setActiveStep(next);
     router.push(`/form/${next}`);
   };
@@ -247,7 +250,7 @@ const FormStep = ({ formData, products }: StepProps) => {
       <Container>
         <FormStepper activeStep={numericStep} />
       </Container>
-      {activeStep === "step-18" && isSaving?
+      {(activeStep === "step-18" && isSaving) || isLoading ?
         <div className="flex flex-col align-items justify-center h-[70vh] w-full">
           <Spinner />
         </div>
