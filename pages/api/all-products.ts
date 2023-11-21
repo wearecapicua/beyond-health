@@ -22,6 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         description: product.description,
         metadata: product.metadata,
         name: product.name,
+        id: product.id,
         price: prices.data[0].unit_amount,
       };
 

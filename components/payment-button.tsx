@@ -4,7 +4,6 @@ import { fetchPostJSON } from "lib/http";
 import { type PaymentIntentBody } from "pages/api/checkout_sessions/post-payment";
 import type Stripe from "stripe";
 import { adminUpdatePayments, createOrder } from "lib/api/supabase";
-import Spinner from "./forms/spinner";
 
 type Props = {
   setupId: string;
@@ -24,8 +23,7 @@ const PaymentButton = ({
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<string | null>();
   const priceString = (price / 100).toFixed(2).toString();
-
-  console.log({product})
+  const productId = product.id || "prod_OXaDW7p5UyyWnX"
  
   const handlePayment = async () => {
     setLoading(true);
@@ -49,7 +47,7 @@ const PaymentButton = ({
       /* @ts-ignore */
       if (response?.status === "succeeded") {
         adminUpdatePayments(userId)
-        createOrder(userId)
+        createOrder(userId, productId)
       }
       
       setLoading(false);

@@ -47,10 +47,11 @@ export async function adminUpdatePayments(userId: string) {
   return response;
 }
 
-export async function createOrder(userId: string) {
+export async function createOrder(userId: string, productId: string) {
   const response = await fetchPostJSON("/api/create-order", {
     method: "POST",
-    userId
+    userId,
+    productId
   });
   console.log("res", response);
   return response;

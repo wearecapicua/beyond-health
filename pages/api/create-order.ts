@@ -2,44 +2,16 @@ import env from "lib/env";
 import { supabaseClient } from "lib/supabaseClient";
 import { getEmailForUserId, getUserShippingAddress } from 'lib/supabaseUtils';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { productOne, productTwo, productThree } from "utils/productToShip";
+import { generateOrderNumber } from "utils";
 
-const test = {
-  "to_address": {
-      "city": "San Francisco",
-      "company": "Shippo",
-      "country": "US",
-      "email": "shippotle@shippo.com",
-      "name": "Mr Hippo",
-      "phone": "15553419393",
-      "state": "CA",
-      "street1": "215 Clayton St.",
-      "zip": "94117"
-  },
-  "line_items": [
-      {
-          "quantity": 1,
-          "sku": "HM-123",
-          "title": "Hippo Magazines",
-          "total_price": "12.10",
-          "currency": "USD",
-          "weight": "0.40",
-          "weight_unit": "lb",
-      }
-  ],
-  "placed_at": "2016-09-23T01:28:12Z",
-  "order_number": "#1068",
-  "order_status": "PAID",
-  "shipping_cost": "12.83",
-  "shipping_cost_currency": "USD",
-  "shipping_method": "USPS First Class Package",
-  "subtotal_price": "12.10",
-  "total_price": "24.93",
-  "total_tax": "0.00",
-  "currency": "USD",
-  "weight": "0.40",
-  "weight_unit": "lb"
-}
 const paymentTimestamp = new Date().toISOString();
+const randomOrderNumber = generateOrderNumber();
+
+export function findProductById(productId: string) {
+  const products = [productOne, productTwo, productThree];
+  return products.find(product => product.line_items[0].sku === productId) || null;
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -47,8 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const supabaseAccessToken = env.supabaseServiceRoleKey;
-  const supabase = supabaseClient(supabaseAccessToken);
-  const { userId, setupId } = req.body;
+  const { userId, productId } = req.body;
+
+  const selectedProduct = findProductById(productId);
+
+  console.log({selectedProduct})
 
   try {
     const userEmail = await getEmailForUserId(userId, supabaseAccessToken);
@@ -58,7 +33,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const shippoApiUrl = 'https://api.goshippo.com/orders';
 
     const newData = {
-        ...test,
+        ...selectedProduct,
+        order_number: `#${randomOrderNumber}`,
         placed_at: paymentTimestamp,
         to_address: {
           ...userShippingAddress,

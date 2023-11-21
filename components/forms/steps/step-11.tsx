@@ -24,6 +24,7 @@ export default function StepEleven() {
       default_price: filteredProducts[0].default_price,
       price: filteredProducts[0].price,
       name: filteredProducts[0].name,
+      id: filteredProducts[0].id
     })
     setSelected(filteredProducts[0].default_price)
   }
