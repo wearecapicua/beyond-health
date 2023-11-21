@@ -125,8 +125,8 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                             >
                               {showItems && (
                                 <ul className="text-main-black mb-2">
-                                  {dates.slice(1).map((item: any) => (
-                                    <li key={item.timestamp} className="text-xs">
+                                  {dates.slice(1).map((item: any, index: any) => (
+                                    <li key={`${item.timestamp}-${index}`} className="text-xs">
                                       <span className="mr-3">{item.orderNumber}</span>
                                       <span>{item.timestamp}</span>
                                     </li>
