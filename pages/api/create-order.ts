@@ -1,5 +1,4 @@
 import env from "lib/env";
-import { supabaseClient } from "lib/supabaseClient";
 import { getEmailForUserId, getUserShippingAddress } from 'lib/supabaseUtils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { productOne, productTwo, productThree } from "utils/productToShip";
@@ -23,8 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const selectedProduct = findProductById(productId);
 
-  console.log({selectedProduct})
-
   try {
     const userEmail = await getEmailForUserId(userId, supabaseAccessToken);
     const userShippingAddress = await getUserShippingAddress(userId, supabaseAccessToken);
@@ -41,7 +38,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           email: userEmail,
         },
     }
-    console.log({newData})
 
     const shippoResponse = await fetch(shippoApiUrl, {
       method: 'POST',
@@ -53,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     const shippoData = await shippoResponse.json();
-console.log({shippoData})
+
     if (shippoResponse.ok) {
       res.status(200).json({ success: true, shippoData });
     } else {

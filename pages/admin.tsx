@@ -49,7 +49,15 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
       })
       .reverse();
   }
+  const [userStates, setUserStates] = useState<UserState>({});
 
+  // Function to toggle the visibility of items for a specific user
+  const toggleItems = (userId: string) => {
+    setUserStates((prevStates) => ({
+      ...prevStates,
+      [userId]: !prevStates[userId],
+    }));
+  };
   return (
     <Layout preview={preview} fullPage >
       <Head>
@@ -72,6 +80,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                 </tr>
                 
                 {users?.map((user, index) => {
+                  const showItems = userStates[user.user_id] || false;
                   const dates = formatDates(user?.payments_history)
                   return (
                     <tr key={`user-${index}`}>
@@ -95,11 +104,24 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                         />
                       </td>
                       <td className="p-4">
-                        {dates && dates.map((payment, i) => {
-                          return (
-                            <p className="text-xs" key={`payment-${i}`}>{payment}</p>
-                          )
-                        })}
+                          <p className={`${showItems ? 'font-bold' : 'font-normal'} text-xs mb-2`}>{dates[0]}</p>
+                          <div
+                            className="text-xs uppercase text-main-light-blue"
+                            onClick={() => toggleItems(user.user_id)}
+                          >
+                            {showItems && (
+                              <ul className="text-main-black mb-2">
+                                {dates.slice(1).map((item) => (
+                                  <li key={item} className="text-xs">
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                            {showItems
+                              ? `Hide items`
+                              : `Show more (${dates.length - 1})`}
+                          </div>
                       </td>
                     </tr>
                   )}
