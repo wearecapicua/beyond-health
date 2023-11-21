@@ -12,6 +12,13 @@ type Props = {
   product: any;
 };
 
+interface CreateOrderResponse {
+  success: boolean;
+  shippoData?: {
+    order_number: string;
+  };
+}
+
 const PaymentButton = ({
   setupId,
   price,
@@ -32,30 +39,36 @@ const PaymentButton = ({
       return;
     }
 
-    // Create a Checkout Session.
-    try {
-      const response = await fetchPostJSON<
-        PaymentIntentBody,
-        Stripe.Checkout.Session
-      >(`/api/checkout_sessions/post-payment`, {
+    
+  try {
+    const response = await fetchPostJSON<PaymentIntentBody, Stripe.Checkout.Session>(
+      `/api/checkout_sessions/post-payment`,
+      {
         method: 'POST',
         setupId,
         price
-      })
-
-      setResults(response?.status)
-      /* @ts-ignore */
-      if (response?.status === "succeeded") {
-        adminUpdatePayments(userId)
-        createOrder(userId, productId)
       }
-      
-      setLoading(false);
-      
-    } catch (error) {
-      console.error("Error", error);
+    );
+
+    setResults(response?.status);
+    /* @ts-ignore */
+    if (response?.status === "succeeded") {
+      /* @ts-ignore */
+      const orderResponse: CreateOrderResponse = await createOrder(userId, productId)
+      if (orderResponse?.success) {
+        await adminUpdatePayments(userId, orderResponse.shippoData?.order_number || "#");
+      } else {
+        await adminUpdatePayments(userId, "#00000");
+      }
+    } else {
+      await adminUpdatePayments(userId, "#00000");
     }
-  };
+
+    setLoading(false);
+  } catch (error) {
+    console.error("Error", error);
+  }
+};
 
   return (
     <div className="text-sm text-main-blue">

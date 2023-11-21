@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth/next"
 import env from 'lib/env';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { userId } = req.body;
+  const { userId, orderNumber } = req.body;
 
   const session = await getServerSession(req, res, authOptions)
   /* @ts-ignore */
@@ -16,7 +16,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const supabase = supabaseClient(supabaseAccessToken)
 
-  const paymentTimestamp = new Date().toISOString();
+  const paymentTimestamp = {
+    timestamp: new Date().toISOString(),
+    orderNumber: orderNumber || "#00000", // Use a default value if orderNumber is not provided
+  };
+  
 
   if (req.method === 'POST') {
     try {

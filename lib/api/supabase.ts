@@ -38,10 +38,11 @@ export async function adminUpdateData(updatedData: any, userId: string) {
   return response;
 }
 
-export async function adminUpdatePayments(userId: string) {
+export async function adminUpdatePayments(userId: string, orderNumber: string) {
   const response = await fetchPostJSON("/api/admin/update-payment-history", {
     method: "POST",
     userId,
+    orderNumber
   });
   console.log("res", response);
   return response;

@@ -28,10 +28,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
     const shippoApiKey = env.shippoApiKey;
     const shippoApiUrl = 'https://api.goshippo.com/orders';
+    const orderNumber = `#${randomOrderNumber}`
 
     const newData = {
         ...selectedProduct,
-        order_number: `#${randomOrderNumber}`,
+        order_number: orderNumber,
         placed_at: paymentTimestamp,
         to_address: {
           ...userShippingAddress,

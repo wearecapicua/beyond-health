@@ -15,7 +15,11 @@ type AdminPageProps = {
   preview: any;
 };
 
-type DateStamp = string;
+type UserState = {
+  [userId: string]: boolean;
+};
+
+type DateStamp = any;
 
 export default function AdminPage({ preview, users }: AdminPageProps) {
   const { data: session } = useSession();
@@ -43,11 +47,15 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
     }
   }, [session]);
 
-  function formatDates(dateStamps: DateStamp[]): string[] {
+  function formatDates(dateStamps: DateStamp[]): any {
     return dateStamps?.map((dateStamp) => {
-        return format(new Date(dateStamp), 'MM-dd-yyyy HH:mm');
-      })
-      .reverse();
+      const newDate = format(new Date(dateStamp.timestamp), 'MM-dd-yyyy HH:mm');
+      return {
+        ...dateStamp,
+        timestamp: newDate,
+      }
+    })
+    .reverse();
   }
   const [userStates, setUserStates] = useState<UserState>({});
 
@@ -58,6 +66,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
       [userId]: !prevStates[userId],
     }));
   };
+
   return (
     <Layout preview={preview} fullPage >
       <Head>
@@ -76,7 +85,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                   <th className="p-4">Product</th>
                   <th className="p-4">Price</th>
                   <th className="p-4">Submit</th>
-                  <th className="p-4">Payments History</th>
+                  <th className="p-4 w-[190px]">Payments History</th>
                 </tr>
                 
                 {users?.map((user, index) => {
@@ -103,25 +112,36 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                           product={user.product}
                         />
                       </td>
-                      <td className="p-4">
-                          <p className={`${showItems ? 'font-bold' : 'font-normal'} text-xs mb-2`}>{dates[0]}</p>
-                          <div
-                            className="text-xs uppercase text-main-light-blue"
-                            onClick={() => toggleItems(user.user_id)}
-                          >
-                            {showItems && (
-                              <ul className="text-main-black mb-2">
-                                {dates.slice(1).map((item) => (
-                                  <li key={item} className="text-xs">
-                                    {item}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                            {showItems
-                              ? `Hide items`
-                              : `Show more (${dates.length - 1})`}
-                          </div>
+                      <td className="p-4 w-[190px]">
+                        {dates && 
+                          <>
+                            <div className={`${showItems ? 'font-bold' : 'font-normal mb-2'} text-xs`}>
+                              <span className="mr-3">{dates[0].orderNumber}</span>
+                              <span>{dates[0].timestamp}</span>
+                            </div>
+                            <div
+                              className="text-xs uppercase text-main-light-blue"
+                              onClick={() => toggleItems(user.user_id)}
+                            >
+                              {showItems && (
+                                <ul className="text-main-black mb-2">
+                                  {dates.slice(1).map((item: any) => (
+                                    <li key={item.timestamp} className="text-xs">
+                                      <span className="mr-3">{item.orderNumber}</span>
+                                      <span>{item.timestamp}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                              {showItems
+                                ? `Hide items`
+                                : dates.length > 1 ?
+                                 `Show more (${dates.length - 1})`
+                                : null
+                              }
+                            </div>
+                          </>
+                        }
                       </td>
                     </tr>
                   )}
