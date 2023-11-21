@@ -47,6 +47,15 @@ export async function adminUpdatePayments(userId: string) {
   return response;
 }
 
+export async function createOrder(userId: string) {
+  const response = await fetchPostJSON("/api/create-order", {
+    method: "POST",
+    userId
+  });
+  console.log("res", response);
+  return response;
+}
+
 export async function createUserProfile(updatedData: any) {
   const response = await fetchPostJSON("/api/update-profile", {
     method: "POST",

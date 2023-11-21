@@ -17,6 +17,7 @@ const serverEnv = z.object({
   supabaseServiceRoleKey: z.string().nonempty(),
   supabaseJwtSecret: z.string().nonempty(),
   vercelEnv: z.string().default("localhost"),
+  shippoApiKey: z.string().nonempty(),
   host: z.string().default("http://localhost:3000"),
 });
 
@@ -42,6 +43,7 @@ const processEnv: Record<
   nextPublicSupabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
   supabaseJwtSecret: process.env.SUPABASE_JWT_SECRET,
+  shippoApiKey: process.env.SHIPPO_API_KEY,
   vercelEnv: process.env.VERCEL_ENV,
   host: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined
 };

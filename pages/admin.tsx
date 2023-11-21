@@ -91,6 +91,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                           setupId={user.stripe_setup_id}
                           price={productPrices[user.user_id]}
                           userId={user.user_id}
+                          product={user.product}
                         />
                       </td>
                       <td className="p-4">

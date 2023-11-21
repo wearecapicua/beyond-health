@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import StripeTestCards from "./StripeTestCards";
 import useStripe from "lib/useStripe";
 import { fetchPostJSON } from "lib/http";
 import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
@@ -48,7 +47,6 @@ const CheckoutForm = ({ productId, amount }: Props) => {
 
   return (
     <div >
-      {/* {<StripeTestCards />} */}
       <button onClick={handleCheckout} disabled={loading}>
         Buy
       </button>
