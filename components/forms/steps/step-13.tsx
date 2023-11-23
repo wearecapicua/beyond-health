@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
@@ -6,9 +6,12 @@ import { useFormStore } from 'store/useFormStore';
 import { useFormContext } from "react-hook-form";
 
 export default function StepOne() {
-  const { register } = useFormContext();
   const { formStore } = useFormStore();
-  const { setValue } = useFormContext();
+  const {
+    register,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
 
   useEffect(() => {
     if (formStore.country && !formStore.shipping_address?.country) {
@@ -56,6 +59,8 @@ export default function StepOne() {
             id="shipping_address.country"
             type="text"
             defaultValue={formStore.shipping_address?.country} 
+            /* @ts-ignore */
+            error={errors.shipping_address?.country?.message}
           />
           <FormInput
             label="ZIP / Postal Code*"

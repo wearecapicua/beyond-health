@@ -11,6 +11,7 @@ type FormInputProps = {
   defaultValue: string;
   customValidate?: any;
   isRequired?: boolean;
+  error?: string;
 };
 
 export default function FormInput({
@@ -22,14 +23,16 @@ export default function FormInput({
   large,
   setSelected,
   customValidate,
-  isRequired
+  isRequired,
+  error
 }: FormInputProps) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
- 
-  const errorMsg = "This field is required"
+
+  const errorMsg = error || "This field is required"
+  
   return (
     <div className="py-3">
       <label htmlFor={id} className="block leading-6">
