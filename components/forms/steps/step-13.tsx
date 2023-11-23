@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
@@ -7,6 +8,13 @@ import { useFormContext } from "react-hook-form";
 export default function StepOne() {
   const { register } = useFormContext();
   const { formStore } = useFormStore();
+  const { setValue } = useFormContext();
+
+  useEffect(() => {
+    if (formStore.country && !formStore.shipping_address?.country) {
+      setValue("shipping_address.country", formStore.country)
+    }
+  }, []);
   
   return (
     <>
@@ -42,12 +50,20 @@ export default function StepOne() {
             defaultValue={formStore.shipping_address?.state} 
           />
         </div>
-        <FormInput
-          label="ZIP / Postal Code*"
-          id="shipping_address.postal_code"
-          type="text"
-          defaultValue={formStore.shipping_address?.postal_code} 
-        />
+        <div className="sm:grid sm:grid-cols-2 gap-4">
+          <FormInput
+            label="Country*"
+            id="shipping_address.country"
+            type="text"
+            defaultValue={formStore.shipping_address?.country} 
+          />
+          <FormInput
+            label="ZIP / Postal Code*"
+            id="shipping_address.postal_code"
+            type="text"
+            defaultValue={formStore.shipping_address?.postal_code} 
+          />
+        </div>
         <p className="pt-2.5">{"Delivery Instructions (optional)"}</p>
         <textarea
           id="shipping_address.delivery_instructions"

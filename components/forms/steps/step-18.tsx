@@ -26,9 +26,16 @@ export default function StepEighteen() {
         ...formStore.shipping_address
       })
     } else {
-      setValue("billing_address", {
-        ...formStore.billing_address
-      })
+      if (formStore.country && !formStore.billing_address?.country) {
+        setValue("billing_address", {
+          ...formStore.billing_address
+        })
+        setValue("billing_address.country", formStore.country)
+      } else {
+        setValue("billing_address", {
+          ...formStore.billing_address
+        })
+      }
     }
   }, [useShipping]);
 
@@ -83,12 +90,20 @@ export default function StepEighteen() {
                   defaultValue={formStore.billing_address?.state}
                 />
               </div>
-              <FormInput
-                label="ZIP / Postal Code*"
-                id="billing_address.postal_code"
-                type="text"
-                defaultValue={formStore.billing_address?.postal_code} 
-              />
+              <div className="sm:grid sm:grid-cols-2 gap-4">
+                <FormInput
+                  label="Country*"
+                  id="billing_address.country"
+                  type="text"
+                  defaultValue={formStore.billing_address?.country} 
+                />
+                <FormInput
+                  label="ZIP / Postal Code*"
+                  id="billing_address.postal_code"
+                  type="text"
+                  defaultValue={formStore.billing_address?.postal_code} 
+                />
+              </div>
               <p className="pt-2">Depending on your benefits, your medication may be free. Prices shown here do not reflect any coverage you may have.</p>
             </FormContainer>
           </div>

@@ -26,7 +26,7 @@ export async function getUserShippingAddress(userId: string, supabaseAccessToken
 
   const { data: userProfile, error } = await supabase
     .from('profile')
-    .select('shipping_address,first_name,last_name,country,phone_number')
+    .select('shipping_address,first_name,last_name,phone_number')
     .eq('user_id', userId)
     .single();
 
@@ -35,7 +35,7 @@ export async function getUserShippingAddress(userId: string, supabaseAccessToken
     throw new Error('Error fetching user profile');
   }
 
-  const { shipping_address, first_name, last_name, country, phone_number } = userProfile;
+  const { shipping_address, first_name, last_name, phone_number } = userProfile;
 
   const formattedAddress = {
     street1: shipping_address?.line1,
@@ -45,7 +45,7 @@ export async function getUserShippingAddress(userId: string, supabaseAccessToken
     zip: shipping_address?.postal_code,
     company: `${first_name} ${last_name}`,
     name: `${first_name} ${last_name}`,
-    country: country || 'CA',
+    country: shipping_address?.country,
     phone: phone_number
   };
   return formattedAddress || {};

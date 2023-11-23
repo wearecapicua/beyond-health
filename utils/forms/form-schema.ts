@@ -55,7 +55,7 @@ export const schema = {
       city: z.string().min(1, "City is required").max(100),
       state: z.string().min(1, "State or Province is required").max(100),
       postal_code: z.string().min(1, "Zipcode is required").max(100),
-      country: z.string().optional(),
+      country: z.string().min(1, "Country is required").max(2),
     }),
   }),
   "step-14": z.object({
@@ -79,7 +79,7 @@ export const schema = {
       city: z.string().min(1, "City is required").max(100),
       state: z.string().min(1, "State or Province is required").max(100),
       postal_code: z.string().min(1, "Zipcode is required").max(100),
-      country: z.string().optional(),
+      country: z.string().min(1, "Country is required").max(2),
     }),
   }),
 };
