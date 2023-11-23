@@ -4,10 +4,11 @@ import FormHeader from "../form-header";
 import DatePicker from "./form-date-picker";
 import { useFormContext } from "react-hook-form";
 import { useFormStore } from 'store/useFormStore';
+import FormErrors from "../form-errors";
 
 export default function StepThree() {
   const [fullDate, setFullDate] = useState('');
-  const { setValue } = useFormContext();
+  const { setValue, formState: { errors }} = useFormContext();
   const { formStore } = useFormStore();
 
   useEffect(() => {
@@ -25,6 +26,9 @@ export default function StepThree() {
       />
       <FormContainer>
         <DatePicker setValue={setValue} defaultDate={formStore.birthdate} setFullDate={setFullDate} />
+        <div className="flex justify-center">
+          <FormErrors errors={errors} id="birthdate" text="Birthdate required" />
+        </div>
       </FormContainer>
     </>
   );

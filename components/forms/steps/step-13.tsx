@@ -14,8 +14,8 @@ export default function StepOne() {
   } = useFormContext();
 
   useEffect(() => {
-    if (formStore.country && !formStore.shipping_address?.country) {
-      setValue("shipping_address.country", formStore.country)
+    if (formStore.country && !formStore.shipping_address?.country && formStore.country === "canada") {
+      setValue("shipping_address.country", "CA")
     }
   }, []);
   

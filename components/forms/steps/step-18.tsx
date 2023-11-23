@@ -26,11 +26,11 @@ export default function StepEighteen() {
         ...formStore.shipping_address
       })
     } else {
-      if (formStore.country && !formStore.billing_address?.country) {
+      if (formStore.country && !formStore.billing_address?.country && formStore.country === "canada") {
         setValue("billing_address", {
           ...formStore.billing_address
         })
-        setValue("billing_address.country", formStore.country)
+        setValue("billing_address.country", "CA")
       } else {
         setValue("billing_address", {
           ...formStore.billing_address
