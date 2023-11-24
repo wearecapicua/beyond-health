@@ -6,17 +6,17 @@
   "status": true,
   "json": {
     "Main": {
-      "title": {
+      "page_title": {
         "type": "Text",
         "config": {
-          "label": "Title",
+          "label": "Page Title",
           "placeholder": ""
         }
       },
       "uid": {
         "type": "UID",
         "config": {
-          "label": "UID",
+          "label": "Page UID",
           "placeholder": ""
         }
       },
