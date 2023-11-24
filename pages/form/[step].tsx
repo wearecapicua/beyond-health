@@ -57,6 +57,10 @@ const FormStep = ({ formData, products }: StepProps) => {
 
   useEffect(() => {
     updateProductStore(products.productsWithPrices);
+    if ((activeStep === "step-16" || activeStep === "step-17") && formStore?.country !== "canada") {
+      setActiveStep("step-18");
+      router.push(`/form/step-18`);
+    }
   }, []);
 
   const currentSchema = schema[activeStep];
