@@ -55,8 +55,6 @@ const FormStep = ({ formData, products }: StepProps) => {
   const { formStore, updateFormStore } = useFormStore();
   const { updateProductStore } = useProductStore();
 
-  console.log({formStore})
-
   useEffect(() => {
     updateProductStore(products.productsWithPrices);
     if ((activeStep === "step-16" || activeStep === "step-17") && formStore?.country !== "canada") {
