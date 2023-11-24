@@ -42,7 +42,7 @@ export default function Footer() {
           </div>
           <div className="grid grid-cols-2 gap-8 xl:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
+              {/* <div>
                 <ul role="list" className="space-y-4">
                   {NAV_LINKS.colOne.map((item) => (
                     <li key={item.name}>
@@ -52,7 +52,7 @@ export default function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
               <div className="mt-10 md:mt-0">
                 <ul role="list" className="space-y-4">
                   {NAV_LINKS.colTwo.map((item) => (
@@ -71,7 +71,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {NAV_LINKS.social.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white flex gap-3">
+                      <a href={item.href} target="_blank" className="text-sm leading-6 text-gray-300 hover:text-white flex gap-3">
                         <item.icon className="h-6 w-6" aria-hidden="true" />
                         <span>{item.name}</span>
                       </a>
