@@ -14,10 +14,13 @@ export default function StepEleven() {
   const { productStore } = useProductStore()
   const [productOptions, setproductOptions] = useState<[StripeProduct]>();
 
-  const filteredProducts = productStore.filter((product: StripeProduct) => {
+  const filterProductArray = productStore.filter((product: StripeProduct) => {
     const stages = product.metadata.Stage.split(', ');
     return stages.includes(formStore.stage);
   });
+
+  // Always should be one product
+  const filteredProducts = filterProductArray.slice(0, 1);
 
   const customValidate = () => {
     setValue("product", {
@@ -30,9 +33,9 @@ export default function StepEleven() {
   }
 
   useEffect(() => {
-    if (!selected && formStore.product) {
-      setSelected(formStore.product?.default_price)
-      setValue("product", formStore.product)
+    if ((!selected || selected === '') && filteredProducts) {
+      setSelected(filteredProducts[0]?.default_price)
+      setValue("product", filteredProducts[0])
     }
     setproductOptions(filteredProducts)
   }, [formStore.product]);
