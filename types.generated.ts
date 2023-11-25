@@ -322,6 +322,148 @@ interface PostDocumentData {
  */
 export type PostDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PostDocumentData>, "post", Lang>;
 
+type PrivacyPolicyDocumentDataSlicesSlice = TextSlice
+
+/**
+ * Content for Privacy Policy documents
+ */
+interface PrivacyPolicyDocumentData {
+	/**
+	 * Title field in *Privacy Policy*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: privacy_policy.title
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Slice Zone field in *Privacy Policy*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: privacy_policy.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#slices
+	 */
+	slices: prismic.SliceZone<PrivacyPolicyDocumentDataSlicesSlice>;/**
+	 * Meta Description field in *Privacy Policy*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: privacy_policy.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *Privacy Policy*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: privacy_policy.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	meta_image: prismic.ImageField<never>;
+	
+	/**
+	 * Meta Title field in *Privacy Policy*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: privacy_policy.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	meta_title: prismic.KeyTextField;
+}
+
+/**
+ * Privacy Policy document from Prismic
+ *
+ * - **API ID**: `privacy_policy`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PrivacyPolicyDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PrivacyPolicyDocumentData>, "privacy_policy", Lang>;
+
+type ReturnsDocumentDataSlicesSlice = TextSlice
+
+/**
+ * Content for Returns Policy documents
+ */
+interface ReturnsDocumentData {
+	/**
+	 * Title field in *Returns Policy*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: returns.title
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Slice Zone field in *Returns Policy*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: returns.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#slices
+	 */
+	slices: prismic.SliceZone<ReturnsDocumentDataSlicesSlice>;/**
+	 * Meta Description field in *Returns Policy*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: returns.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *Returns Policy*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: returns.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	meta_image: prismic.ImageField<never>;
+	
+	/**
+	 * Meta Title field in *Returns Policy*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: returns.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	meta_title: prismic.KeyTextField;
+}
+
+/**
+ * Returns Policy document from Prismic
+ *
+ * - **API ID**: `returns`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ReturnsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<ReturnsDocumentData>, "returns", Lang>;
+
 /**
  * Content for Review documents
  */
@@ -370,6 +512,77 @@ interface ReviewDocumentData {
  * @typeParam Lang - Language API ID of the document.
  */
 export type ReviewDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<ReviewDocumentData>, "review", Lang>;
+
+type TermsOfServiceDocumentDataSlicesSlice = TextSlice
+
+/**
+ * Content for Terms of Service documents
+ */
+interface TermsOfServiceDocumentData {
+	/**
+	 * Title field in *Terms of Service*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: terms_of_service.title
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Slice Zone field in *Terms of Service*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: terms_of_service.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/field#slices
+	 */
+	slices: prismic.SliceZone<TermsOfServiceDocumentDataSlicesSlice>;/**
+	 * Meta Description field in *Terms of Service*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: terms_of_service.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *Terms of Service*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: terms_of_service.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#image
+	 */
+	meta_image: prismic.ImageField<never>;
+	
+	/**
+	 * Meta Title field in *Terms of Service*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: terms_of_service.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/field#key-text
+	 */
+	meta_title: prismic.KeyTextField;
+}
+
+/**
+ * Terms of Service document from Prismic
+ *
+ * - **API ID**: `terms_of_service`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TermsOfServiceDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<TermsOfServiceDocumentData>, "terms_of_service", Lang>;
 
 /**
  * Content for Treatment documents
@@ -421,7 +634,7 @@ interface TreatmentDocumentData {
  */
 export type TreatmentDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<TreatmentDocumentData>, "treatment", Lang>;
 
-export type AllDocumentTypes = AuthorDocument | CategoryDocument | FaqDocument | FormDocument | LandingPageDocument | PostDocument | ReviewDocument | TreatmentDocument;
+export type AllDocumentTypes = AuthorDocument | CategoryDocument | FaqDocument | FormDocument | LandingPageDocument | PostDocument | PrivacyPolicyDocument | ReturnsDocument | ReviewDocument | TermsOfServiceDocument | TreatmentDocument;
 
 /**
  * Primary content in *CtaSection → Primary*
@@ -1232,8 +1445,17 @@ declare module "@prismicio/client" {
 			PostDocument,
 			PostDocumentData,
 			PostDocumentDataSlicesSlice,
+			PrivacyPolicyDocument,
+			PrivacyPolicyDocumentData,
+			PrivacyPolicyDocumentDataSlicesSlice,
+			ReturnsDocument,
+			ReturnsDocumentData,
+			ReturnsDocumentDataSlicesSlice,
 			ReviewDocument,
 			ReviewDocumentData,
+			TermsOfServiceDocument,
+			TermsOfServiceDocumentData,
+			TermsOfServiceDocumentDataSlicesSlice,
 			TreatmentDocument,
 			TreatmentDocumentData,
 			AllDocumentTypes,
