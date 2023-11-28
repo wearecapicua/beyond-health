@@ -34,12 +34,12 @@ export default function StepSixteen() {
     getSavedHealthCardImage();
     
     if (formStore.health_card_image_url) {
-      updateFormStore({ has_health_card: true});
+      setValue("has_health_card", true);
       setSelected("yes")
     } 
     
     if (!formStore.has_health_card) {
-      updateFormStore({ has_health_card: false});
+      setValue("has_health_card", false);
       setSelected("no")
     }
     
@@ -56,8 +56,9 @@ export default function StepSixteen() {
       updateFormStore({ health_card_image_url: null, health_card: null, has_health_card: false });
       await sendUpdatedData({ health_card_image_url: null });
       await deleteImage(healthCardImage);
+    } else {
+      updateFormStore({ has_health_card: false, health_card: null});
     }
-    updateFormStore({ has_health_card: false, health_card: null});
   }
 
   return (

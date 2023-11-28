@@ -34,12 +34,12 @@ export default function StepSeventeen() {
     getSavedInsuranceImage();
     
     if (formStore.insurance_image_url) {
-      updateFormStore({ has_insurance: true });
+      setValue("has_insurance", true);
       setSelected("yes")
     } 
 
     if (!formStore.has_insurance) {
-      updateFormStore({ has_insurance: false });
+      setValue("has_insurance", false);
       setSelected("no")
     } 
   }, [formStore.insurance, formStore.insurance_image_url]);
@@ -55,8 +55,9 @@ export default function StepSeventeen() {
       updateFormStore({ insurance_image_url: null, insurance: null, has_insurance: false });
       await sendUpdatedData({ insurance_image_url: null });
       await deleteImage(insuranceImage);
+    } else {
+      updateFormStore({ has_insurance: false });
     }
-    updateFormStore({ has_insurance: false });
   }
 
   return (
