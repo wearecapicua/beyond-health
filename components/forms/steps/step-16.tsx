@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 import FormSelectorButton from "../form-selector-button";
 import { getHealthCardImage } from "lib/api/supabase";
+import { deleteImage, sendUpdatedData } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -14,7 +15,7 @@ interface FileData {
 }
 
 export default function StepSixteen() {
-  const { formStore } = useFormStore();
+  const { formStore, updateFormStore } = useFormStore();
   const {setValue, formState: { errors }  } = useFormContext();
   const [fileData, setFileData] = useState<FileData>({
     file: null,
@@ -33,12 +34,12 @@ export default function StepSixteen() {
     getSavedHealthCardImage();
     
     if (formStore.health_card_image_url) {
-      setValue("has_health_card", true)
+      setValue("has_health_card", true);
       setSelected("yes")
     } 
     
     if (!formStore.has_health_card) {
-      setValue("has_health_card", false)
+      setValue("has_health_card", false);
       setSelected("no")
     }
     
@@ -46,13 +47,18 @@ export default function StepSixteen() {
 
   const customValidateYes = () => {
     setSelected("yes")
-    setValue("has_health_card", true)
+    updateFormStore({ has_health_card: true});
   }
 
-  const customValidateNo = () => {
+  const customValidateNo = async () => {
     setSelected("no")
-    setValue("healthCard", null);
-    setValue("has_health_card", false)
+    if (healthCardImage) {
+      updateFormStore({ health_card_image_url: null, health_card: null, has_health_card: false });
+      await sendUpdatedData({ health_card_image_url: null });
+      await deleteImage(healthCardImage);
+    } else {
+      updateFormStore({ has_health_card: false, health_card: null});
+    }
   }
 
   return (

@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form";
 import FormFileDrop from "../form-file-drop";
 import FormSelectorButton from "../form-selector-button";
 import { getInsuranceImage } from "lib/api/supabase";
+import { deleteImage, sendUpdatedData } from "lib/api/supabase";
 
 interface FileData {
   file: File | null;
@@ -14,7 +15,7 @@ interface FileData {
 }
 
 export default function StepSeventeen() {
-  const { formStore } = useFormStore();
+  const { formStore, updateFormStore } = useFormStore();
   const {setValue, formState: { errors }  } = useFormContext();
   const [fileData, setFileData] = useState<FileData>({
     file: null,
@@ -33,23 +34,30 @@ export default function StepSeventeen() {
     getSavedInsuranceImage();
     
     if (formStore.insurance_image_url) {
-      setValue("has_insurance", true)
+      setValue("has_insurance", true);
       setSelected("yes")
-    } else {
-      setValue("has_insurance", formStore.has_insurance)
-      setSelected(formStore.has_insurance || null)
-    }
+    } 
+
+    if (!formStore.has_insurance) {
+      setValue("has_insurance", false);
+      setSelected("no")
+    } 
   }, [formStore.insurance, formStore.insurance_image_url]);
 
   const customValidateYes = () => {
     setSelected("yes")
-    setValue("has_insurance", true)
+    updateFormStore({ has_insurance: true });
   }
 
-  const customValidateNo = () => {
-    setSelected("no")
-    setValue("insurance", null);
-    setValue("has_insurance", false)
+  const customValidateNo = async () => {
+    setSelected("no");
+    if (insuranceImage) {
+      updateFormStore({ insurance_image_url: null, insurance: null, has_insurance: false });
+      await sendUpdatedData({ insurance_image_url: null });
+      await deleteImage(insuranceImage);
+    } else {
+      updateFormStore({ has_insurance: false });
+    }
   }
 
   return (
@@ -59,7 +67,7 @@ export default function StepSeventeen() {
         subtitle="Telemedicine laws require healthcare practitioners to know who they are treating."
       />
       <FormContainer>
-        {selected ?
+        {selected === 'yes' ?
           <>
             <FormFileDrop 
               fieldName="insurance" 
@@ -76,7 +84,7 @@ export default function StepSeventeen() {
             label="Yes, I do have insurance"
             value="yes"
             groupId="has_insurance"
-            selected={selected ? "yes" : ""}
+            selected={selected}
             setSelected={setSelected}
             customValidate={customValidateYes}
           />
@@ -84,7 +92,7 @@ export default function StepSeventeen() {
             label="No, I don't have insurance"
             value="no"
             groupId="insurance"
-            selected={!selected && selected !== null ? "no" : ""}
+            selected={selected}
             setSelected={setSelected}
             customValidate={customValidateNo}
           />
