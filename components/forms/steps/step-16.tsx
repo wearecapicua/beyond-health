@@ -36,9 +36,13 @@ export default function StepSixteen() {
     if (formStore.health_card_image_url) {
       setValue("has_health_card", true);
       setSelected("yes")
-    } 
+    }
+
+    if (formStore.has_health_card && !formStore.health_card_image_url) {
+      updateFormStore({ has_health_card: null });
+    }
     
-    if (!formStore.has_health_card) {
+    if (formStore.has_health_card === false) {
       setValue("has_health_card", false);
       setSelected("no")
     }
