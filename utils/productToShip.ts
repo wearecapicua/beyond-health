@@ -26,7 +26,7 @@ export const productTwo = {
   "line_items": [
     {
       "quantity": 1,
-      "sku": "prod_OXfLqfSDwRCqlW",
+      "sku": "prod_OKVhSF2SloWm0r",
       "title": "Topical Finasteride 0.1% + Minoxidil 5%",
       "total_price": "12.10",
       "currency": "USD",
@@ -50,7 +50,7 @@ export const productThree = {
   "line_items": [
     {
       "quantity": 1,
-      "sku": "prod_OKVhSF2SloWm0r",
+      "sku": "prod_OXfLqfSDwRCqlW",
       "title": "Topical Finasteride 0.1% + Minoxidil 5%+ Tretinoin 0.01% + Trimcinalone 0.01%",
       "total_price": "12.10",
       "currency": "USD",

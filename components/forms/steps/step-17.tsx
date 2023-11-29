@@ -38,7 +38,11 @@ export default function StepSeventeen() {
       setSelected("yes")
     } 
 
-    if (!formStore.has_insurance) {
+    if (formStore.has_insurance && !formStore.insurance_image_url) {
+      updateFormStore({ has_insurance: null });
+    }
+
+    if (formStore.has_health_card === false) {
       setValue("has_insurance", false);
       setSelected("no")
     } 
