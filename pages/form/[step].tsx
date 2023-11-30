@@ -89,9 +89,15 @@ const FormStep = ({ formData, products }: StepProps) => {
   };
 
   const prevPage = () => {
-    const next = decrementString(formData.step);
-    setActiveStep(next);
-    router.push(`/form/${next}`);
+    if (formStore.country === "canada") {
+      const next = decrementString(formData.step);
+      setActiveStep(next);
+      router.push(`/form/${next}`);
+    } else {
+      setActiveStep('step-15');
+      router.push("/form/step-15");
+    }
+    
   };
 
   const submitFormData = async (data: any) => {

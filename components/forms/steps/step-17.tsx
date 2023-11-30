@@ -42,7 +42,7 @@ export default function StepSeventeen() {
       updateFormStore({ has_insurance: null });
     }
 
-    if (formStore.has_health_card === false) {
+    if (formStore.has_insurance === false) {
       setValue("has_insurance", false);
       setSelected("no")
     } 
@@ -63,7 +63,7 @@ export default function StepSeventeen() {
       updateFormStore({ has_insurance: false });
     }
   }
-
+  
   return (
     <>
       <FormHeader
