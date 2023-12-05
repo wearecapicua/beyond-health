@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Container from "components/container";
 import Layout from "components/layout";
