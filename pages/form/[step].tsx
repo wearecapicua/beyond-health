@@ -54,8 +54,7 @@ const FormStep = ({ formData, products }: StepProps) => {
   const { formStep, setFormStep } = useFormStatusStore();
   const { formStore, updateFormStore } = useFormStore();
   const { updateProductStore } = useProductStore();
-
-  console.log({formStore})
+  const stepNum = parseInt(activeStep.split("-")[1]);
 
   useEffect(() => {
     updateProductStore(products.productsWithPrices);
@@ -90,9 +89,15 @@ const FormStep = ({ formData, products }: StepProps) => {
   };
 
   const prevPage = () => {
-    const next = decrementString(formData.step);
-    setActiveStep(next);
-    router.push(`/form/${next}`);
+    if (formStore.country === "canada") {
+      const next = decrementString(formData.step);
+      setActiveStep(next);
+      router.push(`/form/${next}`);
+    } else {
+      setActiveStep('step-15');
+      router.push("/form/step-15");
+    }
+    
   };
 
   const submitFormData = async (data: any) => {
@@ -117,7 +122,7 @@ const FormStep = ({ formData, products }: StepProps) => {
     const imageSaveData = await uploadImages(file);
     const imageWasUploaded = await sendUpdatedData({ [dbName]: imageSaveData.data?.path });
     updateFormStore({ [dbName]: imageSaveData?.data?.path, [temporalFileName]: null });
-    const next = incrementString(formData.step);
+    const next = stepNum === 15 && formStore.country === "anotherCountry" ? 'step-18' : incrementString(formData.step);
     if (imageWasUploaded) setIsLoading(false);
     setActiveStep(next);
     router.push(`/form/${next}`);
@@ -126,13 +131,12 @@ const FormStep = ({ formData, products }: StepProps) => {
   const updateStoreAndSubmit = async (data: any) => {
     updateFormStore(data);
       
-    const next = incrementString(formData.step);
+    const next = stepNum === 15 && formStore.country === "anotherCountry" ? 'step-18' : incrementString(formData.step);
     setActiveStep(next);
     router.push(`/form/${next}`);
   };
 
   const onSubmit: SubmitHandler<IFormProps> = async (data: any) => {
-    const stepNum = parseInt(activeStep.split("-")[1]);
     const isStepValid = await trigger();
 
     if (isStepValid && stepNum === 14) {
@@ -159,26 +163,32 @@ const FormStep = ({ formData, products }: StepProps) => {
       }
     }
 
-    if (isStepValid && stepNum === 16) {
+    if (isStepValid && stepNum === 16 && formStore.country === "canada") {
       if (data.health_card?.file && formStore.has_health_card && formStore.health_card_image_url === null) {
         uploadImageAndSubmit("health_card_image_url", "health_card", data.health_card?.file);
       }
       if (!data.health_card?.file && formStore.has_health_card && formStore.health_card_image_url === null) {
         toast.error("Please upload an image");
       }
-      if ((formStore.has_health_card && formStore.health_image_url) || !formStore.has_health_card) {
+      if (formStore.has_health_card === null) {
+        toast.error("Please select an option");
+      }
+      if ((formStore.has_health_card && formStore.health_image_url) || formStore.has_health_card === false) {
         updateStoreAndSubmit(data);
       }
     }
 
-    if (isStepValid && stepNum === 17) {
+    if (isStepValid && stepNum === 17 && formStore.country === "canada") {
       if (data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
         uploadImageAndSubmit("insurance_image_url", "insurance", data.insurance?.file);
       }
       if (!data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
         toast.error("Please upload an image");
       }
-      if ((formStore.has_insurance && formStore.insurance_image_url) || !formStore.has_insurance) {
+      if (formStore.has_insurance === null) {
+        toast.error("Please select an option");
+      }
+      if ((formStore.has_insurance && formStore.insurance_image_url) || formStore.has_insurance === false) {
         updateStoreAndSubmit(data);
       }
     }
@@ -191,13 +201,15 @@ const FormStep = ({ formData, products }: StepProps) => {
       const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
      
       if (validateResults) {
-        toast.error("Missing data in previous step", {
-          onClose: () => {
-            setActiveStep(validateResults as FormStep);
-            router.push(`/form/${validateResults}`)
-          },
-        });
-        return
+        if ((validateResults === 'step-16' || validateResults === 'step-17') && formStore.country === "canada") {
+          toast.error("Missing data in previous step", {
+            onClose: () => {
+              setActiveStep(validateResults as FormStep);
+              router.push(`/form/${validateResults}`)
+            },
+          });
+          return;
+        }
       }
       setIsSaving(true)
       const isSubmitSuccess = await submitFormData(data);
