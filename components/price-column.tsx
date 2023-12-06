@@ -9,15 +9,15 @@ interface PriceColumnProps {
 }
 
 function PriceColumn({ product, userId, onPriceUpdate }: PriceColumnProps) {
-  const initialPrice = product.price
-  const { default_price, name } = product
+  const initialPrice = product?.price
+  const { default_price, name } = product ?? {}
   const [isEditing, setIsEditing] = useState(false);
-  const [priceStr, setPriceStr] = useState(initialPrice.toString());
+  const [priceStr, setPriceStr] = useState((initialPrice ?? '').toString());
   const [priceNum, setPriceNum] = useState(initialPrice);
 
   useEffect(() => {
-    setPriceStr(priceNum.toString());
-  }, [priceNum]);
+    setPriceStr((priceNum ?? '').toString());
+  }, [priceNum])
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -52,7 +52,7 @@ function PriceColumn({ product, userId, onPriceUpdate }: PriceColumnProps) {
     setPriceStr(event.target.value);
   };
 
-  const formattedPrice = (priceNum / 100).toFixed(2);
+  const formattedPrice = priceNum ? (priceNum / 100).toFixed(2) : "0.00"
 
   return (
     <td className="p-4">
