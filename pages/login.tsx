@@ -8,6 +8,8 @@ import { signIn } from "next-auth/react";
 import useLoginStore from "store/login"
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
+import { getProfileData } from "lib/api/supabase";
+import { useFormStore } from 'store/useFormStore';
 
 type LoginProps = {
   preview: boolean;
@@ -18,8 +20,9 @@ type LoginProps = {
 export default function LoginPage({ preview }: LoginProps) {
   const session = useSession();
   const router = useRouter();
-  const userLoggedIn = session.status === "authenticated" && session.data?.user
-
+  const userLoggedIn = session.status === "authenticated" && session.data?.user;
+  const [profileData, setProfileData] = useState();
+  const { updateFormStore } = useFormStore();
   const { loginState, setLoginState } = useLoginStore()
   const [loginDetails, setLoginDetails] = useState({
     titleText: "Log In",
@@ -41,6 +44,20 @@ export default function LoginPage({ preview }: LoginProps) {
     });
   }, [loginState]);
 
+  useEffect(() => {
+    const getUserProfileData = async () => {
+      const userProfileData = await getProfileData();
+
+      setProfileData(userProfileData);
+    }
+    
+    getUserProfileData();
+
+    if (userLoggedIn && profileData) {
+      updateFormStore(profileData);
+    }
+
+  }, [userLoggedIn]);
 
   if (userLoggedIn) {
     router.push('/form/step-1');
