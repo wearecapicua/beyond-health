@@ -67,6 +67,8 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
     }));
   };
 
+  console.log(users)
+
   return (
     <Layout preview={preview} fullPage >
       <Head>

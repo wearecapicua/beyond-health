@@ -60,7 +60,7 @@ export default async function handler(
           amount: data.product.price
         },
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.origin}/donate-with-checkout`,
+        cancel_url: `${req.headers.origin}/`,
       };
 
       const checkoutSession: Stripe.Checkout.Session =

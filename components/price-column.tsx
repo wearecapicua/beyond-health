@@ -52,7 +52,7 @@ function PriceColumn({ product, userId, onPriceUpdate }: PriceColumnProps) {
     setPriceStr(event.target.value);
   };
 
-  const formattedPrice = (priceNum / 100).toFixed(2);
+  const formattedPrice = priceNum ? (priceNum / 100).toFixed(2) : "0.00"
 
   return (
     <td className="p-4">
