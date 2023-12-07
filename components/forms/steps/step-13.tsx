@@ -69,7 +69,9 @@ export default function StepOne() {
             name="country"
             control={control}
             defaultValue=""
-            render={({ field }) => <CountryDropdown {...field} />}
+            render={({ onChange, value, ref }) => (
+              <CountryDropdown value={value} onChange={onChange} />
+            )}
           />
           <FormInput
             label="ZIP / Postal Code*"
