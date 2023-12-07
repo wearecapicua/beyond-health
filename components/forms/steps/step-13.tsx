@@ -3,7 +3,8 @@ import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import { useFormStore } from 'store/useFormStore';
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller, useForm } from "react-hook-form";
+import CountryDropdown from "components/country-dropdown";
 
 export default function StepOne() {
   const { formStore } = useFormStore();
@@ -12,12 +13,15 @@ export default function StepOne() {
     setValue,
     formState: { errors },
   } = useFormContext();
+  const { control } = useForm();
 
   useEffect(() => {
     if (formStore.country && !formStore.shipping_address?.country && formStore.country === "canada") {
       setValue("shipping_address.country", "CA")
     }
   }, []);
+
+  console.log(formStore.shipping_address?.country, errors);
   
   return (
     <>
@@ -54,13 +58,18 @@ export default function StepOne() {
           />
         </div>
         <div className="sm:grid sm:grid-cols-2 gap-4">
-          <FormInput
+          {/* <FormInput
             label="Country*"
             id="shipping_address.country"
             type="text"
             defaultValue={formStore.shipping_address?.country} 
-            /* @ts-ignore */
             error={errors.shipping_address?.country?.message}
+          /> */}
+          <Controller
+            name="country"
+            control={control}
+            defaultValue=""
+            render={({ field }) => <CountryDropdown {...field} />}
           />
           <FormInput
             label="ZIP / Postal Code*"
