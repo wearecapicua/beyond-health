@@ -1,14 +1,15 @@
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
+import Select from "react-select";
 
 interface CountryDropdownProps {
-  control: any; // Replace with your type for 'control'
-  name: string;
+  value: string;
+  onChange: (value: string) => void;
   large?: boolean;
 }
 
-const CountryDropdown: React.FC<CountryDropdownProps> = ({ control, name, large }) => {
-  const { field } = useController({ name, control });
+const CountryDropdown: React.FC<CountryDropdownProps> = ({ value, onChange }) => {
+  //const { field } = useController({ name, control });
   const {
     register,
     formState: { errors },
@@ -17,8 +18,8 @@ const CountryDropdown: React.FC<CountryDropdownProps> = ({ control, name, large 
   //const errorMsg = error || "This field is required"
 
   const countries = [
-    { code: 'US', name: 'United States' },
-    { code: 'CA', name: 'Canada' },
+    { value: 'US', label: 'United States' },
+    { value: 'CA', label: 'Canada' },
     // Add more countries as needed
   ];
   console.log(field);
@@ -29,13 +30,19 @@ const CountryDropdown: React.FC<CountryDropdownProps> = ({ control, name, large 
         Country
       </label>
       <div className="mt-2">
-        <select {...field} className={`${large ? "py-5" : "py-3"} block w-full rounded-full border-0 px-6 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-main-light-blue sm:leading-6`}>
+        <Select
+          options={countries}
+          value={countries.find((c) => c.value === value)}
+          onChange={(val) => onChange(val.value)}
+          defaultValue={country.find((c) => c.value === countryValue)}
+        />
+        {/* <select {...field} >
           {countries.map((country) => (
             <option key={country.code} value={country.code}>
               {country.name}
             </option>
           ))}
-        </select>
+        </select> */}
         {/* <input
           type={type}
           id={id}
