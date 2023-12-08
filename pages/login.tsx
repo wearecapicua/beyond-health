@@ -51,13 +51,15 @@ export default function LoginPage({ preview }: LoginProps) {
       setProfileData(userProfileData);
     }
     
-    getUserProfileData();
+    if (!profileData) {
+      getUserProfileData();
+    }
 
     if (userLoggedIn && profileData) {
       updateFormStore(profileData);
     }
 
-  }, [userLoggedIn]);
+  }, [userLoggedIn, profileData]);
 
   if (userLoggedIn) {
     router.push('/form/step-1');
