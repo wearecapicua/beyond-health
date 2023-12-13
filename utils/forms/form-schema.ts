@@ -59,7 +59,6 @@ export const schema = {
         value: z.string(),
         label: z.string(),
       })
-      //country: z.string().trim().nonempty({ message: "Country is required" }),
     }),
   }),
   "step-14": z.object({
