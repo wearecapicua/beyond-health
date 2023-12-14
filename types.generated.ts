@@ -107,66 +107,6 @@ interface FaqDocumentData {
  */
 export type FaqDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<FaqDocumentData>, "faq", Lang>;
 
-type FormDocumentDataSlicesSlice = never
-
-/**
- * Content for Form documents
- */
-interface FormDocumentData {
-	/**
-	 * Slice Zone field in *Form*
-	 *
-	 * - **Field Type**: Slice Zone
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: form.slices[]
-	 * - **Tab**: Main
-	 * - **Documentation**: https://prismic.io/docs/field#slices
-	 */
-	slices: prismic.SliceZone<FormDocumentDataSlicesSlice>;/**
-	 * Meta Description field in *Form*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: A brief summary of the page
-	 * - **API ID Path**: form.meta_description
-	 * - **Tab**: SEO & Metadata
-	 * - **Documentation**: https://prismic.io/docs/field#key-text
-	 */
-	meta_description: prismic.KeyTextField;
-	
-	/**
-	 * Meta Image field in *Form*
-	 *
-	 * - **Field Type**: Image
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: form.meta_image
-	 * - **Tab**: SEO & Metadata
-	 * - **Documentation**: https://prismic.io/docs/field#image
-	 */
-	meta_image: prismic.ImageField<never>;
-	
-	/**
-	 * Meta Title field in *Form*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: A title of the page used for social media and search engines
-	 * - **API ID Path**: form.meta_title
-	 * - **Tab**: SEO & Metadata
-	 * - **Documentation**: https://prismic.io/docs/field#key-text
-	 */
-	meta_title: prismic.KeyTextField;
-}
-
-/**
- * Form document from Prismic
- *
- * - **API ID**: `form`
- * - **Repeatable**: `false`
- * - **Documentation**: https://prismic.io/docs/custom-types
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type FormDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<FormDocumentData>, "form", Lang>;
-
 type LandingPageDocumentDataSlicesSlice = HeaderSlice | SubheaderSlice | SpacerSlice | CtaSectionSlice | InfoSectionSlice | HowItWorksSlice | TreatmentsSlice | ReviewsSlice | PricingSlice | FaqsSlice
 
 /**
@@ -329,15 +269,15 @@ type PrivacyPolicyDocumentDataSlicesSlice = TextSlice
  */
 interface PrivacyPolicyDocumentData {
 	/**
-	 * Title field in *Privacy Policy*
+	 * Page Title field in *Privacy Policy*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: privacy_policy.title
+	 * - **API ID Path**: privacy_policy.page_title
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#key-text
 	 */
-	title: prismic.KeyTextField;
+	page_title: prismic.KeyTextField;
 	
 	/**
 	 * Slice Zone field in *Privacy Policy*
@@ -400,15 +340,15 @@ type ReturnsDocumentDataSlicesSlice = TextSlice
  */
 interface ReturnsDocumentData {
 	/**
-	 * Title field in *Returns Policy*
+	 * Page Title field in *Returns Policy*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: returns.title
+	 * - **API ID Path**: returns.page_title
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#key-text
 	 */
-	title: prismic.KeyTextField;
+	page_title: prismic.KeyTextField;
 	
 	/**
 	 * Slice Zone field in *Returns Policy*
@@ -520,15 +460,15 @@ type TermsOfServiceDocumentDataSlicesSlice = TextSlice
  */
 interface TermsOfServiceDocumentData {
 	/**
-	 * Title field in *Terms of Service*
+	 * Page Title field in *Terms of Service*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: terms_of_service.title
+	 * - **API ID Path**: terms_of_service.page_title
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#key-text
 	 */
-	title: prismic.KeyTextField;
+	page_title: prismic.KeyTextField;
 	
 	/**
 	 * Slice Zone field in *Terms of Service*
@@ -634,7 +574,7 @@ interface TreatmentDocumentData {
  */
 export type TreatmentDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<TreatmentDocumentData>, "treatment", Lang>;
 
-export type AllDocumentTypes = AuthorDocument | CategoryDocument | FaqDocument | FormDocument | LandingPageDocument | PostDocument | PrivacyPolicyDocument | ReturnsDocument | ReviewDocument | TermsOfServiceDocument | TreatmentDocument;
+export type AllDocumentTypes = AuthorDocument | CategoryDocument | FaqDocument | LandingPageDocument | PostDocument | PrivacyPolicyDocument | ReturnsDocument | ReviewDocument | TermsOfServiceDocument | TreatmentDocument;
 
 /**
  * Primary content in *CtaSection → Primary*
@@ -1436,9 +1376,6 @@ declare module "@prismicio/client" {
 			CategoryDocumentData,
 			FaqDocument,
 			FaqDocumentData,
-			FormDocument,
-			FormDocumentData,
-			FormDocumentDataSlicesSlice,
 			LandingPageDocument,
 			LandingPageDocumentData,
 			LandingPageDocumentDataSlicesSlice,

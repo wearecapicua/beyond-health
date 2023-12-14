@@ -31,9 +31,23 @@ export default async function handler(
 
     try {
       const customer = await stripe.customers.create({
-        address: data.billing_address,
+        address: {
+          "line1": data.billing_address.line1,
+          "line2": data.billing_address.line2,
+          "city": data.billing_address.city,
+          "state": data.billing_address.state,
+          "postal_code": data.billing_address.postal_code,
+          "country": data.billing_address.country.value,
+        },
         shipping: {
-          address: data.shipping_address,
+          address: {
+            "line1": data.shipping_address.line1,
+            "line2": data.shipping_address.line2,
+            "city": data.shipping_address.city,
+            "state": data.shipping_address.state,
+            "postal_code": data.shipping_address.postal_code,
+            "country": data.shipping_address.country.value,
+          },
           name: name
         },
         name: name,

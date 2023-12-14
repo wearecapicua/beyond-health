@@ -3,16 +3,19 @@ import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import { useFormStore } from 'store/useFormStore';
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import ProductDetails from "components/product-details";
 import { useProductStore } from 'store/useProductStore';
 import { StripeProduct } from "lib/types";
+import { BillingAddress } from "lib/types";
 import Container from "components/container";
+import CountryDropdown from "components/country-dropdown";
 
 export default function StepEighteen() {
-  const { setValue, formState: { errors }} = useFormContext();
+  const { setValue, formState: { errors }, control} = useFormContext();
   const { formStore } = useFormStore();
   const [productOptions, setproductOptions] = useState<StripeProduct>();
+  const [billingAddress, setBillingAddress] = useState<BillingAddress>();
   const { productStore } = useProductStore()
   const [useShipping, setUseShipping] = useState<boolean>(false);
 
@@ -21,16 +24,21 @@ export default function StepEighteen() {
   }, [formStore.product]);
 
   useEffect(() => {
+    setBillingAddress(formStore.billing_address)
+  }, []);
+
+  useEffect(() => {
     if (useShipping === true) {
       setValue("billing_address", {
         ...formStore.shipping_address
       })
+      setValue("billing_address.country", {...formStore.shipping_address.country})
     } else {
-      if (formStore.country && !formStore.billing_address?.country && formStore.country === "canada") {
+      if (formStore.country && !formStore.billing_address?.country?.label && formStore.country === "canada") {
         setValue("billing_address", {
           ...formStore.billing_address
         })
-        setValue("billing_address.country", "CA")
+        setValue("billing_address.country", { value: "CA", label: "Canada" })
       } else {
         setValue("billing_address", {
           ...formStore.billing_address
@@ -91,12 +99,17 @@ export default function StepEighteen() {
                 />
               </div>
               <div className="sm:grid sm:grid-cols-2 gap-4">
-                <FormInput
-                  label="Country*"
-                  id="billing_address.country"
-                  type="text"
-                  defaultValue={formStore.billing_address?.country} 
-                />
+                {
+                  billingAddress && 
+                  <Controller
+                    name="billing_address.country"
+                    control={control}
+                    defaultValue={formStore.billing_address?.country}
+                    render={({ field }) => (
+                      <CountryDropdown {...field} setValue={setValue} errors={errors}/>
+                    )} 
+                  />
+                }
                 <FormInput
                   label="ZIP / Postal Code*"
                   id="billing_address.postal_code"

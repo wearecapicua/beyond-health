@@ -35,6 +35,30 @@ export type StripeProduct = {
   description: string;
 };
 
+export type BillingAddress = {
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: {
+    value: string;
+    label: string;
+  };
+};
+
+export type ShippingAddress = {
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: {
+    value: string;
+    label: string;
+  };
+};
+
 export type User = {
   user_id: string;
   first_name: string;
