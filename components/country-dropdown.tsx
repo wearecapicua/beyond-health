@@ -86,7 +86,7 @@ const CountryDropdown = ({value, name, setValue, errors}: CountryDropdownProps) 
           onChange={(selectedOption) => {
             if (selectedOption) {
               // @ts-ignore
-              setValue("shipping_address.country", selectedOption);
+              setValue(`${name}`, selectedOption);
             }
           }}
           value={value}
