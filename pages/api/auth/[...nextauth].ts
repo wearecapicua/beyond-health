@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+// import FacebookProvider from "next-auth/providers/facebook";
 import { SupabaseAdapter } from "@auth/supabase-adapter";
 import jwt from "jsonwebtoken";
 import env from "lib/env";

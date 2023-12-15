@@ -1,21 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
 import { useFormStore } from 'store/useFormStore';
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller, useForm } from "react-hook-form";
+import CountryDropdown from "components/country-dropdown";
+import { ShippingAddress } from "lib/types";
 
 export default function StepOne() {
   const { formStore } = useFormStore();
   const {
     register,
     setValue,
+    control,
     formState: { errors },
   } = useFormContext();
+  const [shippingAddress, setShippingAddress] = useState<ShippingAddress>();
 
   useEffect(() => {
-    if (formStore.country && !formStore.shipping_address?.country && formStore.country === "canada") {
-      setValue("shipping_address.country", "CA")
+    setShippingAddress(formStore.shipping_address)
+  }, []);
+
+  useEffect(() => {
+    if (formStore.country && !formStore.shipping_address?.country?.label && formStore.country === "canada") {
+      setValue("shipping_address.country", { value: "CA", label: "Canada" })
     }
   }, []);
   
@@ -54,14 +62,17 @@ export default function StepOne() {
           />
         </div>
         <div className="sm:grid sm:grid-cols-2 gap-4">
-          <FormInput
-            label="Country*"
-            id="shipping_address.country"
-            type="text"
-            defaultValue={formStore.shipping_address?.country} 
-            /* @ts-ignore */
-            error={errors.shipping_address?.country?.message}
-          />
+          {
+            shippingAddress && 
+            <Controller
+              name="shipping_address.country"
+              control={control}
+              defaultValue={formStore.shipping_address?.country}
+              render={({ field }) => (
+                <CountryDropdown {...field} setValue={setValue} errors={errors} />
+              )} 
+            />
+          }
           <FormInput
             label="ZIP / Postal Code*"
             id="shipping_address.postal_code"

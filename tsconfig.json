@@ -16,7 +16,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "prismic-types": ["./types.generated.ts"]
+      "prismic-types": ["./types.generated.ts"],
+      "react": ["./node_modules/@types/react"] 
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

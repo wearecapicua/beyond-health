@@ -26,7 +26,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [productPrices, setProductPrices] = useState<{ [key: string]: number }>(
     users.reduce((acc, user) => {
-      acc[user.user_id] = user.product.price;
+      acc[user.user_id] = user.product?.price;
       return acc;
     }, {} as { [key: string]: number })
   );
@@ -67,6 +67,8 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
     }));
   };
 
+  console.log(users)
+
   return (
     <Layout preview={preview} fullPage >
       <Head>
@@ -98,7 +100,7 @@ export default function AdminPage({ preview, users }: AdminPageProps) {
                       </td>
                       <td className="p-4">{`${user.first_name} ${user.last_name}`}</td>
                       <td className="p-4">{user.email}</td>
-                      <td className="p-4 max-w-sm">{user.product.name}</td>
+                      <td className="p-4 max-w-sm">{user.product?.name}</td>
                       <PriceColumn
                         product={user.product}
                         userId={user.user_id}

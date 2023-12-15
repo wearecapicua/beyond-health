@@ -52,7 +52,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const id = ctx.query.session_id as string;
  
   try {
-    if (!id.startsWith("cs_")) {
+    if (!id?.startsWith("cs_")) {
       throw Error("Incorrect CheckoutSession ID.");
     }
     const checkout_session: Stripe.Checkout.Session =

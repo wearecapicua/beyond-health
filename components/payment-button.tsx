@@ -30,7 +30,7 @@ const PaymentButton = ({
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<string | null>();
   const priceString = (price / 100).toFixed(2).toString();
-  const productId = product.id || "prod_OXaDW7p5UyyWnX"
+  const productId = product?.id
  
   const handlePayment = async () => {
     setLoading(true);
