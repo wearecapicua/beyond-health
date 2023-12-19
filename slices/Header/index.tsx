@@ -1,5 +1,6 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
+import React from "react";
 
 /**
  * Props for `Header`.
@@ -30,7 +31,7 @@ const Header = ({ slice }: HeaderProps): JSX.Element => {
           {cta_button_text &&
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="#"
+                href="/mens-hair-loss"
                 className="w-full sm:w-auto rounded-full bg-main-light-blue px-16 py-3 font-semibold text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {cta_button_text}

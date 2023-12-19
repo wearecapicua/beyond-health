@@ -1,6 +1,7 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import Image from 'next/image'
+import React from "react";
 /**
  * Props for `CtaSection`.
  */
@@ -29,7 +30,7 @@ const MediumCta = ({ slice }: CtaSectionProps): JSX.Element => {
           </p>
           <div className="mt-10 mb-6 lg:mb-0 flex items-center justify-center gap-x-6 lg:justify-start">
             <a
-              href="#"
+              href="/mens-hair-loss"
               className="w-full sm:w-auto rounded-full text-center bg-accent-green px-16 py-3 text-xl font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               {cta_button_text}
