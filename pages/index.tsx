@@ -3,7 +3,8 @@ import Container from "../components/container";
 import Layout from "../components/layout";
 import { createClient } from "../lib/prismic";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
-import PageBody from "components/page-body";
+import PageBody from "../components/page-body";
+import React from "react";
 
 type IndexProps = InferGetStaticPropsType<typeof getStaticProps>
 

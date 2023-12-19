@@ -1,5 +1,6 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
+import React from "react";
 
 /**
  * Props for `CtaSection`.
@@ -70,7 +71,7 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
           }
           <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
             <a
-              href="#"
+              href="/form/step-1"
               className="w-full sm:w-auto text-center rounded-full bg-accent-green px-14 py-3 font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               {cta_button_text}
