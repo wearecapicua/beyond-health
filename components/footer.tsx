@@ -1,6 +1,5 @@
-import { EXAMPLE_PATH } from '../lib/constants'
-
 import { NAV_LINKS } from '../constants/navigation'
+import React from 'react'
 
 export default function Footer() {
   return (
@@ -42,17 +41,6 @@ export default function Footer() {
           </div>
           <div className="grid grid-cols-2 gap-8 xl:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
-              {/* <div>
-                <ul role="list" className="space-y-4">
-                  {NAV_LINKS.colOne.map((item) => (
-                    <li key={item.name}>
-                      <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white">
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div> */}
               <div className="mt-10 md:mt-0">
                 <ul role="list" className="space-y-4">
                   {NAV_LINKS.colTwo.map((item) => (

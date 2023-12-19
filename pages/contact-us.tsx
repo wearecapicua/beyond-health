@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 type IndexProps = InferGetStaticPropsType<typeof getStaticProps>
 
-export default function ContactPage({ preview, page}: IndexProps) {
+export default function ContactUsPage({ preview, page}: IndexProps) {
   const imageLocationStyle = "mx-auto relative top-[-64px]";
   const titleStyle = "text-2xl font-bold text-center mb-[2%]";
   const textAreaStyle = "mx-auto relative top-[-34px] text-center mb-[2%] text-[16px]";
