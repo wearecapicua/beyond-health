@@ -5,6 +5,7 @@ import Layout from "../components/layout";
 import { createClient } from "../lib/prismic";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Image from 'next/image';
+import ContactForm from "../components/contact-form";
 
 type IndexProps = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -35,7 +36,7 @@ export default function ContactUsPage({ preview, page}: IndexProps) {
               </div>
             </div>
             <div className="flex text-white justify-between mb-[6%] mt-[5%] max-[860px]:flex-col">
-              <div className="bg-[#8DC63E] w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%]">
+              <div className="bg-accent-green-800 w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%]">
                 <Image
                   src="/images/LocationGreen.png"
                   alt="Icon Location Green"
@@ -87,7 +88,7 @@ export default function ContactUsPage({ preview, page}: IndexProps) {
                   </div>
                 </div>
               </div>
-              <div className="bg-[#143E6F] w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%] max-[860px]:mt-[5%]">
+              <div className="bg-dark-blue w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%] max-[860px]:mt-[5%]">
                 <Image
                   src="/images/LocationBlue.png"
                   alt="Icon Location Green"
@@ -141,7 +142,7 @@ export default function ContactUsPage({ preview, page}: IndexProps) {
               </div>
             </div>
             <div className="flex text-white justify-between mb-[10%] max-[860px]:flex-col">
-              <div className="bg-[#8DC63E] w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%]">
+              <div className="bg-accent-green-800 w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%]">
                 <Image
                   src="/images/LocationGreen.png"
                   alt="Icon Location Green"
@@ -183,7 +184,7 @@ export default function ContactUsPage({ preview, page}: IndexProps) {
                   </div>
                 </div>
               </div>
-              <div className="bg-[#143E6F] w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%] max-[860px]:mt-[5%]">
+              <div className="bg-dark-blue w-[49%] max-[860px]:w-[100%] max-[860px]:mb-[10%] max-[860px]:mt-[5%]">
                 <Image
                   src="/images/LocationBlue.png"
                   alt="Icon Location Green"
@@ -235,6 +236,9 @@ export default function ContactUsPage({ preview, page}: IndexProps) {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="mx-[20px]">
+              <ContactForm />
             </div>
           </Container>
         </div>

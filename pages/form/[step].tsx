@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
-import Layout from "components/layout";
-import Container from "components/container";
-import FormStepper from "components/forms/form-stepper";
-import FormButton from "components/forms/form-button";
-import FormContainer from "components/forms/form-container";
-import { incrementString, decrementString } from "utils";
+import Layout from "../../components/layout";
+import Container from "../../components/container";
+import FormStepper from "../../components/forms/form-stepper";
+import FormButton from "../../components/forms/form-button";
+import FormContainer from "../../components/forms/form-container";
+import { incrementString, decrementString } from "../../utils";
 import { useRouter } from "next/router";
 import {
   FormProvider,
@@ -15,28 +15,28 @@ import {
   useForm,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schema, IFormProps } from "utils/forms/form-schema";
+import { schema, IFormProps } from "../../utils/forms/form-schema";
 import {
   formSteps,
   FormStep,
   stepExists,
-} from "components/forms/steps/form-steps";
-import { useFormStore } from "store/useFormStore";
-import { useProductStore } from "store/useProductStore";
-import env from "lib/env";
-import useStripe from "lib/useStripe";
+} from "../../components/forms/steps/form-steps";
+import { useFormStore } from "../../store/useFormStore";
+import { useProductStore } from "../../store/useProductStore";
+import env from "../../lib/env";
+import useStripe from "../../lib/useStripe";
 import {
   createUserProfile,
   captureUserPayment,
   uploadImages,
-} from "lib/api/supabase";
-import { sendUpdatedData } from "lib/api/supabase";
-import { filterFormData } from "utils/forms/prop-filter";
-import { useFormStatusStore } from "store/useFormStatusStore";
+} from "../../lib/api/supabase";
+import { sendUpdatedData } from "../../lib/api/supabase";
+import { filterFormData } from "../../utils/forms/prop-filter";
+import { useFormStatusStore } from "../../store/useFormStatusStore";
 import { toast } from "react-toastify";
-import Snackbar from "components/snackbar";
-import Spinner from "components/forms/spinner";
-import { getNullFieldsAndMap } from "utils";
+import Snackbar from "../../components/snackbar";
+import Spinner from "../../components/forms/spinner";
+import { getNullFieldsAndMap } from "../../utils";
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
