@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
-import { useFormStore } from 'store/useFormStore';
+import { useFormStore } from '../../../store/useFormStore';
 import { useFormContext, Controller, useForm } from "react-hook-form";
-import CountryDropdown from "components/country-dropdown";
-import { ShippingAddress } from "lib/types";
+import CountryDropdown from "../../../components/country-dropdown";
+import { ShippingAddress } from "../../../lib/types";
+import React from "react";
 
 export default function StepOne() {
   const { formStore } = useFormStore();

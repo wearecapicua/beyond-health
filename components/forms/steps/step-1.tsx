@@ -1,7 +1,8 @@
 import FormContainer from "../form-container";
 import FormHeader from "../form-header";
 import FormInput from "../form-input";
-import { useFormStore } from 'store/useFormStore';
+import { useFormStore } from '../../../store/useFormStore';
+import React from "react";
 
 export default function StepOne() {
   const { formStore } = useFormStore();
