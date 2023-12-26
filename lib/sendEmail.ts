@@ -10,14 +10,11 @@ export async function sendEmail(data: FormData) {
 
     if (response) {
       const data = await response;
-      console.log("Email sent ", data);
       return data; 
     } else {
-      console.error('Error1:', response);
       return null;
     }
   } catch (error) {
-    console.error('Error2:', error);
     return null;
   }
 }
