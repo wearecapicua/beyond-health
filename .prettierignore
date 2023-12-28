@@ -1,0 +1,11 @@
+# Ignore artifacts:
+node_modules
+dist
+build
+src/serviceWorker.ts
+src/setupTests.ts
+src/serviceWorker.ts
+cypress
+.github
+mochawesome-report
+public
