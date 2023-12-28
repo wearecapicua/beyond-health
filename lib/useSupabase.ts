@@ -1,17 +1,19 @@
-import { supabaseClient } from "lib/supabaseClient";
-import { useSession } from "next-auth/react";
-import { useMemo } from "react";
-import env from 'lib/env';
+import { useMemo } from 'react'
+
+import env from 'lib/env'
+import { supabaseClient } from 'lib/supabaseClient'
+import { useSession } from 'next-auth/react'
 
 const useSupabase = () => {
-  const session = useSession();
-  const supabaseAccessToken = env.supabaseServiceRoleKey;
-  const supabase = useMemo(() => {
-    if (!session.data) return null;
-    return supabaseClient(supabaseAccessToken);
-  }, [session.data]);
+	const session = useSession()
+	const supabaseAccessToken = env.supabaseServiceRoleKey
+	const supabase = useMemo(() => {
+		if (!session.data) return null
 
-  return supabase;
-};
+		return supabaseClient(supabaseAccessToken)
+	}, [session.data])
 
-export default useSupabase;
+	return supabase
+}
+
+export default useSupabase
