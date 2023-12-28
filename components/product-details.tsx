@@ -1,47 +1,42 @@
-import { formatAmountForDisplay } from "lib/stripeUtils";
-import * as config from "stripe.config";
-import { StripeProduct } from "lib/types";
+import { formatAmountForDisplay } from 'lib/stripeUtils'
+import { StripeProduct } from 'lib/types'
+import * as config from 'stripe.config'
 
 type ProductDetailsProps = {
-  product: StripeProduct
+	product: StripeProduct
 }
 
-export default function ProductDetails({ product }: ProductDetailsProps) {
-  
-  const {
-    metadata,
-    default_price,
-    description,
-    name,
-    price
-  } = product
+const ProductDetails = ({ product }: ProductDetailsProps) => {
+	const { metadata, name, price } = product
 
-  const ingredientList = metadata.Ingredients.split(', ');
-  const formattedPrice = formatAmountForDisplay(price, config.CURRENCY)
+	const ingredientList = metadata.Ingredients.split(', ')
+	const formattedPrice = formatAmountForDisplay(price, config.CURRENCY)
 
-  return (
-    <div className="max-w-[430px] mt-10 md:mt-2 px-8 md:px-4 flex-1 flex flex-col gap-10 justify-between">
-      <div>
-        <p className="font-semibold text-xl text-main-blue pb-2">Medication</p>
-        <ul className="list-disc list-inside pl-3">
-          {ingredientList.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <p className="font-semibold text-xl text-main-blue pb-2">What you pay per shipment</p>
-        <ul className="list-disc list-inside pl-3">
-          <li>{name}</li>
-          <li>{metadata.Term}</li>
-          <li>{formattedPrice}</li>
-          <li>Shipping: FREE</li>
-        </ul>
-      </div>
-      <div className="border-t-[1px] border-solid border-main-black pt-4 pb-3 flex items-center justify-between">
-        <p className="font-semibold text-xl text-main-blue pb-2">What you pay today</p>
-        <span className="text-2xl text-main-black font-semibold">$0.00</span>
-      </div>
-    </div>
-  )
+	return (
+		<div className="mt-10 flex max-w-[430px] flex-1 flex-col justify-between gap-10 px-8 md:mt-2 md:px-4">
+			<div>
+				<p className="pb-2 text-xl font-semibold text-main-blue">Medication</p>
+				<ul className="list-inside list-disc pl-3">
+					{ingredientList.map((item) => (
+						<li key={item}>{item}</li>
+					))}
+				</ul>
+			</div>
+			<div>
+				<p className="pb-2 text-xl font-semibold text-main-blue">What you pay per shipment</p>
+				<ul className="list-inside list-disc pl-3">
+					<li>{name}</li>
+					<li>{metadata.Term}</li>
+					<li>{formattedPrice}</li>
+					<li>Shipping: FREE</li>
+				</ul>
+			</div>
+			<div className="flex items-center justify-between border-t-[1px] border-solid border-main-black pb-3 pt-4">
+				<p className="pb-2 text-xl font-semibold text-main-blue">What you pay today</p>
+				<span className="text-2xl font-semibold text-main-black">$0.00</span>
+			</div>
+		</div>
+	)
 }
+
+export default ProductDetails

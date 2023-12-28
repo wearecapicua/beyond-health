@@ -1,21 +1,23 @@
-import { asDate } from "@prismicio/helpers";
-import { DateField } from "@prismicio/types";
+import { asDate } from '@prismicio/helpers'
+import { DateField } from '@prismicio/types'
 
-const formatter = new Intl.DateTimeFormat("en-US", {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-});
+const formatter = new Intl.DateTimeFormat('en-US', {
+	month: 'long',
+	day: 'numeric',
+	year: 'numeric'
+})
 
 type DateProps = {
-  dateField: DateField;
-};
-
-export default function Date({ dateField }: DateProps) {
-  if (!dateField) {
-    return null;
-  }
-  const date = asDate(dateField);
-
-  return <time dateTime={dateField}>{formatter.format(date)}</time>;
+	dateField: DateField
 }
+
+const Date = ({ dateField }: DateProps) => {
+	if (!dateField) {
+		return null
+	}
+	const date = asDate(dateField)
+
+	return <time dateTime={dateField}>{formatter.format(date)}</time>
+}
+
+export default Date
