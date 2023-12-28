@@ -28,6 +28,7 @@ const LoginPage = ({ preview }: LoginProps) => {
 		titleText: 'Log In',
 		subtitleText: 'Sign in to start your visit.',
 		buttonText: 'Log in with Google',
+		buttonTextFacebook: 'Log in with Facebook',
 		loginSpan: "Don't have an account? ",
 		loginLink: 'Sign Up',
 		image: '/images/login_image.jpg'
@@ -38,6 +39,7 @@ const LoginPage = ({ preview }: LoginProps) => {
 			titleText: loginState ? 'Log In' : 'Sign Up',
 			subtitleText: loginState ? 'Sign in to start your visit.' : 'Create an account to start your visit.',
 			buttonText: loginState ? 'Log in with Google' : 'Sign up with Google',
+			buttonTextFacebook: loginState ? 'Log in with Facebook' : 'Sign up with Facebook',
 			loginSpan: loginState ? "Don't have an account? " : 'Already have an account? ',
 			loginLink: loginState ? 'Sign Up' : 'Log In',
 			image: loginState ? '/images/login_image.jpg' : '/images/signup_image.jpg'
@@ -81,6 +83,12 @@ const LoginPage = ({ preview }: LoginProps) => {
 						<div className="mx-auto w-full max-w-sm lg:w-96">
 							<FormHeader title={loginDetails.titleText} subtitle={loginDetails.subtitleText} />
 							<div className="mt-4 pb-20">
+								<FormButton
+									type="submit"
+									text={loginDetails.buttonTextFacebook}
+									icon="facebook"
+									onClick={() => signIn('facebook')}
+								/>
 								<FormButton
 									type="submit"
 									text={loginDetails.buttonText}
