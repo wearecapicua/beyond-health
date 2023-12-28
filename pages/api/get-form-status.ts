@@ -1,40 +1,35 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { supabaseClient } from "lib/supabaseClient";
-import { authOptions } from "pages/api/auth/[...nextauth]";
-import { getServerSession } from "next-auth/next";
-import env from 'lib/env';
+import env from 'lib/env'
+import { supabaseClient } from 'lib/supabaseClient'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from 'pages/api/auth/[...nextauth]'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const session = await getServerSession(req, res, authOptions);
-  const userId = session?.user.id;
-  if (!userId) {
-    return res.status(400).json({ error: "User ID is required" });
-  }
-  const supabaseAccessToken = env.supabaseServiceRoleKey;
-  const supabase = supabaseClient(supabaseAccessToken);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const session = await getServerSession(req, res, authOptions)
+	const userId = session?.user.id
+	if (!userId) {
+		return res.status(400).json({ error: 'User ID is required' })
+	}
+	const supabaseAccessToken = env.supabaseServiceRoleKey
+	const supabase = supabaseClient(supabaseAccessToken)
 
-  try {
-    const { data, error } = await supabase
-      .from("profile")
-      .select("form_step")
-      .eq("user_id", userId)
-      .single();
+	try {
+		const { data, error } = await supabase.from('profile').select('form_step').eq('user_id', userId).single()
 
-    if (error) {
-      console.error("Error querying user profile:", error);
-      return res.status(500).json({});
-    }
+		if (error) {
+			console.error('Error querying user profile:', error)
 
-    if (!data) {
-      return res.status(404).json({});
-    }
+			return res.status(500).json({})
+		}
 
-    return res.status(200).json(data);
-  } catch (error) {
-    console.error("Error querying user profile:", error);
-    return res.status(500).json({});
-  }
+		if (!data) {
+			return res.status(404).json({})
+		}
+
+		return res.status(200).json(data)
+	} catch (error) {
+		console.error('Error querying user profile:', error)
+
+		return res.status(500).json({})
+	}
 }
