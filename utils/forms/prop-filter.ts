@@ -35,13 +35,13 @@ export const filterFormData = <T>(obj: T): { filteredData: Partial<T>; filteredB
 	const filteredBillingData: Partial<T> = {}
 
 	for (const prop of expectedProperties) {
-		if ((obj as Record<string, unknown>).hasOwnProperty(prop)) {
+		if (Object.prototype.hasOwnProperty.call(obj, prop)) {
 			filteredData[prop as keyof T] = (obj as Record<string, unknown>)[prop] as T[keyof T]
 		}
 	}
 
 	for (const prop of expectedBillingProperties) {
-		if ((obj as Record<string, unknown>).hasOwnProperty(prop)) {
+		if (Object.prototype.hasOwnProperty.call(obj, prop)) {
 			filteredBillingData[prop as keyof T] = (obj as Record<string, unknown>)[prop] as T[keyof T]
 		}
 	}
