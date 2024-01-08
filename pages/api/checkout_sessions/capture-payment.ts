@@ -7,7 +7,7 @@ import Stripe from 'stripe'
 
 const stripe = new Stripe(env.stripeSecretKey, { apiVersion: '2022-11-15' })
 
-interface Address {
+export interface Address {
 	line1: string
 	line2: string
 	city: string

@@ -51,5 +51,5 @@ export const formSteps = {
 	// 'step-24': Step24,
 	// 'step-25': Step25,
 } as const
-export const stepExists = (x: string): x is FormStep => x in formSteps
-export type FormStep = keyof typeof formSteps
+export const stepExists = (x: string): x is FormStepType => x in formSteps
+export type FormStepType = keyof typeof formSteps

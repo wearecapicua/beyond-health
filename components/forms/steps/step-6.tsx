@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 import { useFormStore } from 'store/useFormStore'
@@ -25,7 +25,7 @@ const StepSix = () => {
 
 	useEffect(() => {
 		if (!selected && formStore.notice_hair_loss) {
-			setSelected(formStore.notice_hair_loss)
+			setSelected(formStore.notice_hair_loss as string)
 			setValue('notice_hair_loss', formStore.notice_hair_loss)
 		}
 	}, [formStore.notice_hair_loss])

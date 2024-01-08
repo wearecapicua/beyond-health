@@ -18,7 +18,7 @@ const StepFive = () => {
 					label="Phone Number*"
 					id="phone_number"
 					type="text"
-					defaultValue={formStore.phone_number}
+					defaultValue={formStore.phone_number as string}
 				/>
 			</FormContainer>
 		</>

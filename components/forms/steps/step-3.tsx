@@ -18,7 +18,7 @@ const StepThree = () => {
 
 	useEffect(() => {
 		if (!fullDate && formStore.birthdate) {
-			setFullDate(formStore.birthdate)
+			setFullDate(formStore.birthdate as string)
 			setValue('birthdate', formStore.birthdate)
 		}
 	}, [formStore.birthdate])
@@ -30,7 +30,11 @@ const StepThree = () => {
 				subtitle="For some prescription must be 18 years or older"
 			/>
 			<FormContainer>
-				<DatePicker setValue={setValue} defaultDate={formStore.birthdate} setFullDate={setFullDate} />
+				<DatePicker
+					setValue={setValue}
+					defaultDate={formStore.birthdate as string}
+					setFullDate={setFullDate}
+				/>
 				<div className="flex justify-center">
 					<FormErrors errors={errors} id="birthdate" text="Birthdate required" />
 				</div>

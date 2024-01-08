@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 
 import { formatAmountForDisplay } from 'lib/stripeUtils'
 import { StripeProduct } from 'lib/types'
@@ -21,14 +21,15 @@ const StepTwelve = () => {
 	const { productStore } = useProductStore()
 	const [productOptions, setproductOptions] = useState<[StripeProduct]>()
 
-	const filteredProducts = productStore.filter(
-		(product: StripeProduct) => product.default_price === formStore.product?.default_price
+	const filteredProducts = (productStore as unknown as [StripeProduct]).filter(
+		(product: StripeProduct) =>
+			product.default_price === (formStore.product as unknown as { default_price: string })?.default_price
 	)
 
 	useEffect(() => {
-		setSelected(formStore.product?.default_price)
+		setSelected((formStore.product as unknown as { default_price: string })?.default_price)
 		setValue('product', formStore.product)
-		setproductOptions(filteredProducts)
+		setproductOptions(filteredProducts as SetStateAction<[StripeProduct] | undefined>)
 	}, [formStore.product])
 
 	return (

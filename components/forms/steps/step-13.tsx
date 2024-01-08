@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useFormContext, Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
 import CountryDropdown from '../../../components/country-dropdown'
 import { ShippingAddress } from '../../../lib/types'
@@ -20,11 +20,15 @@ const StepOne = () => {
 	const [shippingAddress, setShippingAddress] = useState<ShippingAddress>()
 
 	useEffect(() => {
-		setShippingAddress(formStore.shipping_address)
+		setShippingAddress(formStore.shipping_address as unknown as ShippingAddress)
 	}, [])
 
 	useEffect(() => {
-		if (formStore.country && !formStore.shipping_address?.country?.label && formStore.country === 'canada') {
+		if (
+			formStore.country &&
+			!(formStore.shipping_address as unknown as ShippingAddress)?.country?.label &&
+			formStore.country === 'canada'
+		) {
 			setValue('shipping_address.country', { value: 'CA', label: 'Canada' })
 		}
 	}, [])
@@ -40,13 +44,13 @@ const StepOne = () => {
 					label="Street Address*"
 					id="shipping_address.line1"
 					type="text"
-					defaultValue={formStore.shipping_address?.line1}
+					defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.line1}
 				/>
 				<FormInput
 					label="Address Line 2 (optional)"
 					id="shipping_address.line2"
 					type="text"
-					defaultValue={formStore.shipping_address?.line2}
+					defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.line2}
 					isRequired={false}
 				/>
 				<div className="gap-4 sm:grid sm:grid-cols-2">
@@ -54,13 +58,13 @@ const StepOne = () => {
 						label="City*"
 						id="shipping_address.city"
 						type="text"
-						defaultValue={formStore.shipping_address?.city}
+						defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.city}
 					/>
 					<FormInput
 						label="State / Province*"
 						id="shipping_address.state"
 						type="text"
-						defaultValue={formStore.shipping_address?.state}
+						defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.state}
 					/>
 				</div>
 				<div className="gap-4 sm:grid sm:grid-cols-2">
@@ -68,7 +72,7 @@ const StepOne = () => {
 						<Controller
 							name="shipping_address.country"
 							control={control}
-							defaultValue={formStore.shipping_address?.country}
+							defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.country}
 							render={({ field }) => (
 								<CountryDropdown {...field} setValue={setValue} errors={errors} />
 							)}
@@ -78,14 +82,16 @@ const StepOne = () => {
 						label="ZIP / Postal Code*"
 						id="shipping_address.postal_code"
 						type="text"
-						defaultValue={formStore.shipping_address?.postal_code}
+						defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.postal_code}
 					/>
 				</div>
 				<p className="pt-2.5">{'Delivery Instructions (optional)'}</p>
 				<textarea
 					id="shipping_address.delivery_instructions"
 					rows={6}
-					defaultValue={formStore.shipping_address?.delivery_instructions}
+					defaultValue={
+						(formStore.shipping_address as unknown as ShippingAddress)?.delivery_instructions
+					}
 					className="mt-2 block w-full rounded-3xl border-0 px-6 py-3 text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 					{...register('shipping_address.delivery_instructions')}
 				/>

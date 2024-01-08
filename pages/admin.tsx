@@ -1,184 +1,210 @@
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import Container from "components/container";
-import Layout from "components/layout";
-import env from "lib/env";
-import PriceColumn from "components/price-column";
-import { useSession } from "next-auth/react"
-import PaymentButton from "components/payment-button";
-import { format } from 'date-fns';
-import Pdf from "components/pdf";
-import { User } from "lib/types"
+import { useEffect, useState } from 'react'
+
+import Container from 'components/container'
+import Layout from 'components/layout'
+import PaymentButton from 'components/payment-button'
+import Pdf from 'components/pdf'
+import PriceColumn from 'components/price-column'
+import { format } from 'date-fns'
+import env from 'lib/env'
+import { User } from 'lib/types'
+import { useSession } from 'next-auth/react'
+import Head from 'next/head'
 
 type AdminPageProps = {
-  users: User[];
-  preview: any;
-};
+	users: User[]
+	preview: boolean | undefined
+}
 
 type UserState = {
-  [userId: string]: boolean;
-};
+	[userId: string]: boolean
+}
 
-type DateStamp = any;
+const AdminPage = ({ preview, users }: AdminPageProps) => {
+	const { data: session } = useSession()
+	const [isAdmin, setIsAdmin] = useState(false)
+	const [productPrices, setProductPrices] = useState<{ [key: string]: number }>(
+		users.reduce(
+			(acc, user) => {
+				acc[user.user_id] = user.product?.price
 
-export default function AdminPage({ preview, users }: AdminPageProps) {
-  const { data: session } = useSession();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [productPrices, setProductPrices] = useState<{ [key: string]: number }>(
-    users.reduce((acc, user) => {
-      acc[user.user_id] = user.product?.price;
-      return acc;
-    }, {} as { [key: string]: number })
-  );
+				return acc
+			},
+			{} as { [key: string]: number }
+		)
+	)
 
-  const handlePriceUpdate = (userId: string, newPrice: number) => {
-    setProductPrices((prevPrices) => ({
-      ...prevPrices,
-      [userId]: newPrice,
-    }));
-  };
+	const handlePriceUpdate = (userId: string, newPrice: number) => {
+		setProductPrices((prevPrices) => ({
+			...prevPrices,
+			[userId]: newPrice
+		}))
+	}
 
-  useEffect(() => {
-    /* @ts-ignore */
-    if (session?.user?.role === 'ADMIN') {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
-  }, [session]);
+	useEffect(() => {
+		if ((session?.user as unknown as { role: string })?.role === 'ADMIN') {
+			setIsAdmin(true)
+		} else {
+			setIsAdmin(false)
+		}
+	}, [session])
 
-  function formatDates(dateStamps: DateStamp[]): any {
-    return dateStamps?.map((dateStamp) => {
-      const newDate = format(new Date(dateStamp.timestamp), 'MM-dd-yyyy HH:mm');
-      return {
-        ...dateStamp,
-        timestamp: newDate,
-      }
-    })
-    .reverse();
-  }
-  const [userStates, setUserStates] = useState<UserState>({});
+	function formatDates(dateStamps: []) {
+		return dateStamps
+			?.map((dateStamp: { timestamp: string }) => {
+				const newDate = format(new Date(dateStamp.timestamp), 'MM-dd-yyyy HH:mm')
 
-  // Function to toggle the visibility of items for a specific user
-  const toggleItems = (userId: string) => {
-    setUserStates((prevStates) => ({
-      ...prevStates,
-      [userId]: !prevStates[userId],
-    }));
-  };
+				return {
+					...dateStamp,
+					timestamp: newDate
+				}
+			})
+			.reverse()
+	}
+	const [userStates, setUserStates] = useState<UserState>({})
 
-  console.log(users)
+	// Function to toggle the visibility of items for a specific user
+	const toggleItems = (userId: string) => {
+		setUserStates((prevStates) => ({
+			...prevStates,
+			[userId]: !prevStates[userId]
+		}))
+	}
 
-  return (
-    <Layout preview={preview} fullPage >
-      <Head>
-        <title>Beyond Health</title>
-      </Head>
-      <Container>
-        {users.length !== 0 && isAdmin ?
-          <div>
-            <h3 className="mt-12 mb-7">Pending Payments</h3>
-            <table className="text-left">
-              <tbody>
-                <tr>
-                  <th className="p-4">Download</th>
-                  <th className="p-4">Name</th>
-                  <th className="p-4">Email</th>
-                  <th className="p-4">Product</th>
-                  <th className="p-4">Price</th>
-                  <th className="p-4">Submit</th>
-                  <th className="p-4 w-[190px]">Payments History</th>
-                </tr>
-                
-                {users?.map((user, index) => {
-                  const showItems = userStates[user.user_id] || false;
-                  const dates = formatDates(user?.payments_history)
-                  return (
-                    <tr key={`user-${index}`}>
-                      <td className="p-4">
-                        <Pdf user={user}/>
-                      </td>
-                      <td className="p-4">{`${user.first_name} ${user.last_name}`}</td>
-                      <td className="p-4">{user.email}</td>
-                      <td className="p-4 max-w-sm">{user.product?.name}</td>
-                      <PriceColumn
-                        product={user.product}
-                        userId={user.user_id}
-                        onPriceUpdate={handlePriceUpdate}
-                      />
-                      <td className="p-4">
-                        <PaymentButton
-                          setupId={user.stripe_setup_id}
-                          price={productPrices[user.user_id]}
-                          userId={user.user_id}
-                          product={user.product}
-                        />
-                      </td>
-                      <td className="p-4 w-[190px]">
-                        {dates && 
-                          <>
-                            <div className={`${showItems ? 'font-bold' : 'font-normal mb-2'} text-xs`}>
-                              <span className="mr-3">{dates[0].orderNumber}</span>
-                              <span>{dates[0].timestamp}</span>
-                            </div>
-                            <div
-                              className="text-xs uppercase text-main-light-blue"
-                              onClick={() => toggleItems(user.user_id)}
-                            >
-                              {showItems && (
-                                <ul className="text-main-black mb-2">
-                                  {dates.slice(1).map((item: any, index: any) => (
-                                    <li key={`${item.timestamp}-${index}`} className="text-xs">
-                                      <span className="mr-3">{item.orderNumber}</span>
-                                      <span>{item.timestamp}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                              {showItems
-                                ? `Hide items`
-                                : dates.length > 1 ?
-                                 `Show more (${dates.length - 1})`
-                                : null
-                              }
-                            </div>
-                          </>
-                        }
-                      </td>
-                    </tr>
-                  )}
-                )}
-              </tbody>
-            </table>
-          </div>
-          : users.length === 0 && isAdmin ?
-            <p>There are no current pending payments to show</p>
-          : !isAdmin ? 
-            <p>Not authorized</p>
-          : null
-        }
-      </Container>
-    </Layout>
-  );
+	console.log(users)
+
+	return (
+		<Layout preview={preview} fullPage>
+			<Head>
+				<title>Beyond Health</title>
+			</Head>
+			<Container>
+				{users.length !== 0 && isAdmin ? (
+					<div>
+						<h3 className="mb-7 mt-12">Pending Payments</h3>
+						<table className="text-left">
+							<tbody>
+								<tr>
+									<th className="p-4">Download</th>
+									<th className="p-4">Name</th>
+									<th className="p-4">Email</th>
+									<th className="p-4">Product</th>
+									<th className="p-4">Price</th>
+									<th className="p-4">Submit</th>
+									<th className="w-[190px] p-4">Payments History</th>
+								</tr>
+
+								{users?.map((user, index) => {
+									const showItems = userStates[user.user_id] || false
+									const dates = formatDates(user?.payments_history as [])
+
+									return (
+										<tr key={`user-${index}`}>
+											<td className="p-4">
+												<Pdf user={user} />
+											</td>
+											<td className="p-4">{`${user.first_name} ${user.last_name}`}</td>
+											<td className="p-4">{user.email}</td>
+											<td className="max-w-sm p-4">{user.product?.name}</td>
+											<PriceColumn
+												product={user.product}
+												userId={user.user_id}
+												onPriceUpdate={handlePriceUpdate}
+											/>
+											<td className="p-4">
+												<PaymentButton
+													setupId={user.stripe_setup_id}
+													price={productPrices[user.user_id]}
+													userId={user.user_id}
+													product={user.product}
+												/>
+											</td>
+											<td className="w-[190px] p-4">
+												{dates && (
+													<>
+														<div
+															className={`${
+																showItems ? 'font-bold' : 'mb-2 font-normal'
+															} text-xs`}>
+															<span className="mr-3">
+																{
+																	(
+																		dates[0] as unknown as {
+																			orderNumber: number
+																		}
+																	).orderNumber
+																}
+															</span>
+															<span>{dates[0].timestamp}</span>
+														</div>
+														<div
+															className="text-xs uppercase text-main-light-blue"
+															onClick={() => toggleItems(user.user_id)}>
+															{showItems && (
+																<ul className="mb-2 text-main-black">
+																	{dates.slice(1).map((item, index) => (
+																		<li
+																			key={`${item.timestamp}-${index}`}
+																			className="text-xs">
+																			<span className="mr-3">
+																				{
+																					(
+																						item as unknown as {
+																							orderNumber: number
+																						}
+																					).orderNumber
+																				}
+																			</span>
+																			<span>{item.timestamp}</span>
+																		</li>
+																	))}
+																</ul>
+															)}
+															{showItems
+																? `Hide items`
+																: dates.length > 1
+																	? `Show more (${dates.length - 1})`
+																	: null}
+														</div>
+													</>
+												)}
+											</td>
+										</tr>
+									)
+								})}
+							</tbody>
+						</table>
+					</div>
+				) : users.length === 0 && isAdmin ? (
+					<p>There are no current pending payments to show</p>
+				) : !isAdmin ? (
+					<p>Not authorized</p>
+				) : null}
+			</Container>
+		</Layout>
+	)
 }
 
 export const getServerSideProps = async () => {
-  try {
-    // Fetch user data from your API route
-    const response = await fetch(`${env.host}/api/get-stripe-customer`);
-    const data = await response.json();
+	try {
+		// Fetch user data from your API route
+		const response = await fetch(`${env.host}/api/get-stripe-customer`)
+		const data = await response.json()
 
-    return {
-      props: {
-        users: data, // Pass the fetched user data as props
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    return {
-      props: {
-        users: [], // Return an empty array if there's an error
-      },
-    }
-  }
+		return {
+			props: {
+				users: data // Pass the fetched user data as props
+			}
+		}
+	} catch (error) {
+		console.error('Error fetching user data:', error)
+
+		return {
+			props: {
+				users: [] // Return an empty array if there's an error
+			}
+		}
+	}
 }
+
+export default AdminPage

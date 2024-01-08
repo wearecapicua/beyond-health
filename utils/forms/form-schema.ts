@@ -3,6 +3,10 @@ import { z } from 'zod'
 export interface IFormProps {
 	first_name?: string
 	last_name?: string
+	picture?: { file: File }
+	photo_id?: { file: File }
+	health_card?: { file: File }
+	insurance?: { file: File }
 }
 
 export const schema = {

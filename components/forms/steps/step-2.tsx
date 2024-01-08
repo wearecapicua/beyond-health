@@ -23,7 +23,7 @@ const StepTwo = () => {
 
 	useEffect(() => {
 		if (!selected && formStore.gender) {
-			setSelected(formStore.gender)
+			setSelected(formStore.gender as string)
 			setValue('gender', formStore.gender)
 		}
 	}, [formStore.gender])

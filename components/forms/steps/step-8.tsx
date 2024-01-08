@@ -17,7 +17,7 @@ const StepEight = () => {
 
 	useEffect(() => {
 		if (!selected && formStore.conditions) {
-			setSelected(formStore?.conditions)
+			setSelected(formStore?.conditions as string)
 		}
 	}, [formStore.conditions])
 
@@ -43,7 +43,7 @@ const StepEight = () => {
 					large
 					setSelected={setSelected}
 					placeholder="Enter your answer here"
-					defaultValue={formStore.conditions}
+					defaultValue={formStore.conditions as string}
 					customValidate={customValidate}
 				/>
 				<FormSelectorButton

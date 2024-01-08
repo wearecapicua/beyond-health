@@ -53,6 +53,7 @@ export type ShippingAddress = {
 		value: string
 		label: string
 	}
+	delivery_instructions: string
 }
 
 export type User = {
@@ -72,6 +73,7 @@ export type User = {
 	product: {
 		name: string
 		price: number
+		default_price: string
 	}
 	phone_number: string
 	country: string

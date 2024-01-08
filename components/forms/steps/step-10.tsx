@@ -21,7 +21,7 @@ const StepSix = () => {
 
 	useEffect(() => {
 		if (!selected && formStore.stage) {
-			setSelected(formStore.stage)
+			setSelected(formStore.stage as string)
 			setValue('stage', formStore.stage)
 		}
 	}, [formStore.stage])

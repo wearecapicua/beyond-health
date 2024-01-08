@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 import { useFormStore } from 'store/useFormStore'
@@ -17,7 +17,7 @@ const StepSeven = () => {
 
 	useEffect(() => {
 		if (!selected && formStore.medications) {
-			setSelected(formStore.medications)
+			setSelected(formStore.medications as string)
 		}
 	}, [formStore.medications])
 
@@ -41,9 +41,9 @@ const StepSeven = () => {
 					id="medications"
 					type="text"
 					large
-					setSelected={setSelected}
+					setSelected={setSelected as (value: SetStateAction<string | undefined>) => void}
 					placeholder="Enter your answer here"
-					defaultValue={formStore.medications}
+					defaultValue={formStore.medications as string}
 					customValidate={customValidate}
 				/>
 				<FormSelectorButton

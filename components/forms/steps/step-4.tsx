@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 import { useFormStore } from 'store/useFormStore'
@@ -19,7 +19,7 @@ const StepFour = () => {
 
 	useEffect(() => {
 		if (!selected && formStore.country) {
-			setSelected(formStore.country)
+			setSelected(formStore.country as string)
 			setValue('country', formStore.country)
 		}
 	}, [formStore.gender])

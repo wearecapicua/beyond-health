@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 
 import { StripeProduct } from 'lib/types'
 import { useFormContext } from 'react-hook-form'
@@ -19,10 +19,10 @@ const StepEleven = () => {
 	const { productStore } = useProductStore()
 	const [productOptions, setproductOptions] = useState<[StripeProduct]>()
 
-	const filterProductArray = productStore.filter((product: StripeProduct) => {
+	const filterProductArray = (productStore as unknown as [StripeProduct]).filter((product: StripeProduct) => {
 		const stages = product.metadata.Stage.split(', ')
 
-		return stages.includes(formStore.stage)
+		return stages.includes(formStore.stage as string)
 	})
 
 	// Always should be one product
@@ -33,17 +33,17 @@ const StepEleven = () => {
 			default_price: filteredProducts[0].default_price,
 			price: filteredProducts[0].price,
 			name: filteredProducts[0].name,
-			id: filteredProducts[0].id
+			id: (filteredProducts[0] as unknown as { id: string }).id
 		})
-		setSelected(filteredProducts[0].default_price)
+		setSelected(filteredProducts[0].default_price as string)
 	}
 
 	useEffect(() => {
 		if ((!selected || selected === '') && filteredProducts) {
-			setSelected(filteredProducts[0]?.default_price)
+			setSelected(filteredProducts[0]?.default_price as string)
 			setValue('product', filteredProducts[0])
 		}
-		setproductOptions(filteredProducts)
+		setproductOptions(filteredProducts as unknown as SetStateAction<[StripeProduct] | undefined>)
 	}, [formStore.product])
 
 	return (

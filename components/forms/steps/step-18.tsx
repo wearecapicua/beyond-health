@@ -25,38 +25,38 @@ const StepEighteen = () => {
 	const [useShipping, setUseShipping] = useState<boolean>(false)
 
 	useEffect(() => {
-		setproductOptions(formStore.product)
+		setproductOptions(formStore.product as StripeProduct)
 	}, [formStore.product])
 
 	useEffect(() => {
-		setBillingAddress(formStore.billing_address)
+		setBillingAddress(formStore.billing_address as BillingAddress)
 	}, [])
 
 	useEffect(() => {
 		if (useShipping === true) {
 			setValue('billing_address', {
-				...formStore.shipping_address
+				...(formStore.shipping_address as object)
 			})
-			setValue('billing_address.country', { ...formStore.shipping_address.country })
+			setValue('billing_address.country', { ...(formStore.shipping_address as BillingAddress)?.country })
 		} else {
 			if (
 				formStore.country &&
-				!formStore.billing_address?.country?.label &&
+				!(formStore.billing_address as BillingAddress)?.country?.label &&
 				formStore.country === 'canada'
 			) {
 				setValue('billing_address', {
-					...formStore.billing_address
+					...(formStore.billing_address as BillingAddress)
 				})
 				setValue('billing_address.country', { value: 'CA', label: 'Canada' })
 			} else {
 				setValue('billing_address', {
-					...formStore.billing_address
+					...(formStore.billing_address as BillingAddress)
 				})
 			}
 		}
 	}, [useShipping])
 
-	const filteredProducts = productStore?.filter(
+	const filteredProducts = (productStore as unknown as [StripeProduct])?.filter(
 		(product: StripeProduct) => product.default_price === productOptions?.default_price
 	)
 
@@ -94,13 +94,13 @@ const StepEighteen = () => {
 								label="Street Address*"
 								id="billing_address.line1"
 								type="text"
-								defaultValue={formStore.billing_address?.line1}
+								defaultValue={(formStore.billing_address as BillingAddress)?.line1}
 							/>
 							<FormInput
 								label="Address Line 2 (optional)"
 								id="billing_address.line2"
 								type="text"
-								defaultValue={formStore.billing_address?.line2}
+								defaultValue={(formStore.billing_address as BillingAddress)?.line2}
 								isRequired={false}
 							/>
 							<div className="gap-4 lg:grid lg:grid-cols-2">
@@ -108,13 +108,13 @@ const StepEighteen = () => {
 									label="City*"
 									id="billing_address.city"
 									type="text"
-									defaultValue={formStore.billing_address?.city}
+									defaultValue={(formStore.billing_address as BillingAddress)?.city}
 								/>
 								<FormInput
 									label="State / Province*"
 									id="billing_address.state"
 									type="text"
-									defaultValue={formStore.billing_address?.state}
+									defaultValue={(formStore.billing_address as BillingAddress)?.state}
 								/>
 							</div>
 							<div className="gap-4 sm:grid sm:grid-cols-2">
@@ -122,7 +122,7 @@ const StepEighteen = () => {
 									<Controller
 										name="billing_address.country"
 										control={control}
-										defaultValue={formStore.billing_address?.country}
+										defaultValue={(formStore.billing_address as BillingAddress)?.country}
 										render={({ field }) => (
 											<CountryDropdown {...field} setValue={setValue} errors={errors} />
 										)}
@@ -132,7 +132,9 @@ const StepEighteen = () => {
 									label="ZIP / Postal Code*"
 									id="billing_address.postal_code"
 									type="text"
-									defaultValue={formStore.billing_address?.postal_code}
+									defaultValue={
+										(formStore.billing_address as { postal_code: string })?.postal_code
+									}
 								/>
 							</div>
 							<p className="pt-2">
@@ -141,7 +143,7 @@ const StepEighteen = () => {
 							</p>
 						</FormContainer>
 					</div>
-					{currProduct && <ProductDetails product={currProduct} />}
+					{currProduct && <ProductDetails product={currProduct as StripeProduct} />}
 				</div>
 			</Container>
 		</>

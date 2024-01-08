@@ -1,13 +1,11 @@
-import { SliceSimulator } from "@prismicio/slice-simulator-react";
-// @ts-ignore
-import SliceZone from "next-slicezone";
+import { SliceSimulator } from '@prismicio/slice-simulator-react'
+import SliceZone from 'next-slicezone'
 
-import { components } from "../slices";
+import { components } from '../slices'
 
-export default function SliceSimulatorPage() {
-  return (
-    <SliceSimulator
-      sliceZone={(props) => <SliceZone {...props} components={components} />}
-    />
-  );
+const SliceSimulatorPage = () => {
+	return <SliceSimulator sliceZone={(props) => <SliceZone {...props} components={components} />} />
 }
+
+export default SliceSimulatorPage
+// deprecated

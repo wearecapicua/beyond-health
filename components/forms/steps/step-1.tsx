@@ -13,8 +13,18 @@ const StepOne = () => {
 				subtitle="Enter your name exactly as it appears on your ID. You will upload ID later."
 			/>
 			<FormContainer>
-				<FormInput label="First Name*" id="first_name" type="text" defaultValue={formStore.first_name} />
-				<FormInput label="Last Name*" id="last_name" type="text" defaultValue={formStore.last_name} />
+				<FormInput
+					label="First Name*"
+					id="first_name"
+					type="text"
+					defaultValue={formStore.first_name as string}
+				/>
+				<FormInput
+					label="Last Name*"
+					id="last_name"
+					type="text"
+					defaultValue={formStore.last_name as string}
+				/>
 			</FormContainer>
 		</>
 	)
