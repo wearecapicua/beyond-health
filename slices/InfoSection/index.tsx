@@ -32,9 +32,7 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
 						</p>
 					</div>
 					<div className="mt-16 flex flex-col justify-between gap-12 md:flex-row md:gap-5">
-						{/* FIXME: check this conflict */}
-						{/* <div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white border-opacity-50 bg-accent-2 bg-white bg-opacity-10 px-6 py-10 md:h-[498px] md:flex-1 md:gap-14"> */}
-						<div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white  bg-accent-2   px-6 py-10 md:h-[498px] md:flex-1 md:gap-14">
+						<div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white/50 bg-white/10 px-6 py-10 md:h-[498px] md:flex-1 md:gap-14">
 							<div className="flex flex-col">
 								<span className="text-2xl font-medium text-white lg:text-[28px]">
 									{blurb_one_title}
@@ -45,9 +43,7 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
 								<img className="w-[270px]" src="/images/phone.svg" alt="phone" />
 							</div>
 						</div>
-						{/* FIXME: check this conflict */}
-						{/* <div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white border-opacity-50 bg-accent-2 bg-white bg-opacity-10 px-6 py-10 md:h-[498px] md:flex-1 md:gap-14"> */}
-						<div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white  bg-accent-2   px-6 py-10 md:h-[498px] md:flex-1 md:gap-14">
+						<div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white/50  bg-white/10 px-6 py-10 md:h-[498px] md:flex-1 md:gap-14">
 							<div className="flex flex-col">
 								<span className="text-2xl font-medium text-white lg:text-[28px]">
 									{blurb_two_title}
@@ -58,9 +54,7 @@ const InfoSection = ({ slice }: InfoSectionProps): JSX.Element => {
 								<img src="/images/phone2.svg" alt="phone-2" />
 							</div>
 						</div>
-						{/* FIXME: check this conflict */}
-						{/* <div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white border-opacity-50 bg-accent-2 bg-white bg-opacity-10 px-6 py-10 md:h-[498px] md:flex-1 md:gap-14"> */}
-						<div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white  bg-accent-2   px-6 py-10 md:h-[498px] md:flex-1 md:gap-14">
+						<div className="flex h-[370px] flex-col justify-between gap-10 overflow-hidden rounded-[20px] border border-solid border-white/50  bg-white/10 px-6 py-10 md:h-[498px] md:flex-1 md:gap-14">
 							<div className="flex flex-col">
 								<span className="text-2xl font-medium text-white lg:text-[28px]">
 									{blurb_three_title}

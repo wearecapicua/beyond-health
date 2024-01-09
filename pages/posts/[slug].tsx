@@ -57,12 +57,11 @@ const Post = ({ page, preview }: PostProps) => {
 									<div className="px-5 pb-6 sm:px-0 md:pb-16 lg:px-40">
 										<PageBody slices={page.data.slices} />
 									</div>
+									{/* TODO:check if this works well with inline-block else should be changed for flex */}
 									<Link
 										href="/posts"
 										className=" mx-auto block w-[200px] pb-24 sm:px-0 md:pb-32">
-										{/* FIXME:check this conflict */}
 										<button className="inline-block  w-full items-center justify-center gap-3 rounded-full border-[1px] border-solid border-main-black px-6 py-3 text-lg font-semibold">
-											{/* <button className="inline-block flex w-full items-center justify-center gap-3 rounded-full border-[1px] border-solid border-main-black px-6 py-3 text-lg font-semibold"> */}
 											<ArrowLeftIcon className="h-6" />
 											Back to Blog
 										</button>

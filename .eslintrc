@@ -36,6 +36,12 @@
 	],
 	"ignorePatterns": ["types.generated.ts"],
 	"rules": {
+		"prettier/prettier": [
+			"error",
+			{
+				"endOfLine": "auto"
+			}
+		],
 		"graphql/template-strings/interpolation": "off",
 
 		"@typescript-eslint/typedef": [

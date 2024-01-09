@@ -8,9 +8,10 @@ import { useFormStatusStore } from 'store/useFormStatusStore'
 import { useFormStore } from 'store/useFormStore'
 
 import { repositoryName } from '../lib/prismic'
-
-import '../styles/globals.css'
+// prettier-ignore
 import '../styles/index.css'
+// prettier-ignore
+import '../styles/globals.css'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
 	const { setFormStep } = useFormStatusStore()
