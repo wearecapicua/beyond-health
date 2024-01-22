@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+scripts
+cypress
+.github
+mochawesome-report
+public
+cypress.config.ts
+lib/api/types/RequestConfiguration.ts

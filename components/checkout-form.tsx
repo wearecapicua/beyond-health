@@ -1,57 +1,53 @@
-import React, { useState } from "react";
-import useStripe from "lib/useStripe";
-import { fetchPostJSON } from "lib/http";
-import { type CheckoutSessionBody } from "pages/api/checkout_sessions/capture-payment";
-import type Stripe from "stripe";
+import { useState } from 'react'
+
+import { fetchPostJSON } from 'lib/http'
+import useStripe from 'lib/useStripe'
 
 type Props = {
-  productId: string;
-  amount: number;
-};
+	productId: string
+	amount: number
+}
 
 const CheckoutForm = ({ productId, amount }: Props) => {
-  const stripe = useStripe();
-  const [loading, setLoading] = useState(false);
- 
-  const handleCheckout = async () => {
-    setLoading(true);
-    if (!stripe) {
-      console.error("Failed to load Stripe.js");
-      return;
-    }
+	const stripe = useStripe()
+	const [loading, setLoading] = useState(false)
 
-    // Create a Checkout Session.
-    const response = await fetchPostJSON<
-      CheckoutSessionBody,
-      Stripe.Checkout.Session
-    >("/api/checkout_sessions/capture-payment", {
-      productId,
-      amount
-    })
-    
+	const handleCheckout = async () => {
+		setLoading(true)
+		if (!stripe) {
+			console.error('Failed to load Stripe.js')
 
-    // Redirect to Checkout.
-    const { error } = await stripe.redirectToCheckout({
-      // Make the id field from the Checkout Session creation API response
-      // available to this file, so you can provide it as parameter here
-      // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-      sessionId: response.id,
-    });
-    console.error({ error });
-    // If `redirectToCheckout` fails due to a browser or network
-    // error, display the localized error message to your customer
-    // using `error.message`.
-    console.warn(error.message);
-    setLoading(false);
-  };
+			return
+		}
 
-  return (
-    <div >
-      <button onClick={handleCheckout} disabled={loading}>
-        Buy
-      </button>
-    </div>
-  );
-};
+		// Create a Checkout Session.
+		const response = await fetchPostJSON('/api/checkout_sessions/capture-payment', {
+			productId,
+			amount
+		})
 
-export default CheckoutForm;
+		// Redirect to Checkout.
+		const { error } = await stripe.redirectToCheckout({
+			// Make the id field from the Checkout Session creation API response
+			// available to this file, so you can provide it as parameter here
+			// instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+			sessionId: (response as { id: string }).id
+		})
+		console.error({ error })
+		// If `redirectToCheckout` fails due to a browser or network
+		// error, display the localized error message to your customer
+		// using `error.message`.
+		console.warn(error.message)
+		setLoading(false)
+	}
+
+	return (
+		<div>
+			<button onClick={handleCheckout} disabled={loading}>
+				Buy
+			</button>
+		</div>
+	)
+}
+
+export default CheckoutForm
