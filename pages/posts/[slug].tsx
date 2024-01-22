@@ -43,8 +43,7 @@ const Post = ({ page, preview }: PostProps) => {
 										<h1 className="pb-8 text-center leading-tight">{page.data.title}</h1>
 
 										<p className="pb-12 text-center text-sm uppercase">
-											{/* TODO:check if compiles check */}
-											{/* {page.data.category.data?.name} */}
+											{page.data.category.data?.name}
 										</p>
 										<div className="relative h-[490px] overflow-hidden rounded-2xl">
 											<Image
