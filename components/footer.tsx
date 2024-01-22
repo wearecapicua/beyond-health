@@ -1,5 +1,5 @@
-import { NAV_LINKS } from '../constants/navigation'
-import React from 'react'
+import { NAV_LINKS } from "../constants/navigation"
+import React from "react"
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="xl:grid xl:grid-cols-4 xl:gap-8">
           <div className="mt-10 xl:mt-0 col-span-2 max-w-[505px]">
             <p className="mt-2 text-2xl font-semibold leading-6 text-white">
-              The World's Healthiest Email! Delivered weekly
+              The World's Healthiest Newsletter! Delivered weekly
             </p>
             <form className="mt-6 sm:flex">
               <label htmlFor="email-address" className="sr-only">
@@ -36,7 +36,8 @@ export default function Footer() {
               </div>
             </form>
             <p className="mt-9 mb-12 text-xs leading-6 text-white xl:mb-0">
-              By subscribing you agree to with our Privacy Policy and provide consent to receive updates from our company.
+              By subscribing you agree to with our Privacy Policy and provide
+              consent to receive updates from our company.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-8 xl:col-span-2">
@@ -45,7 +46,10 @@ export default function Footer() {
                 <ul role="list" className="space-y-4">
                   {NAV_LINKS.colTwo.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white">
+                      <a
+                        href={item.href}
+                        className="text-sm leading-6 text-gray-300 hover:text-white"
+                      >
                         {item.name}
                       </a>
                     </li>
@@ -55,11 +59,17 @@ export default function Footer() {
             </div>
             <div>
               <div>
-                <p className="font-semibold leading-6 text-white">Join the conversation, Let’s get social!</p>
+                <p className="font-semibold leading-6 text-white">
+                  Join the conversation, Let’s get social!
+                </p>
                 <ul role="list" className="mt-6 space-y-4">
                   {NAV_LINKS.social.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} target="_blank" className="text-sm leading-6 text-gray-300 hover:text-white flex gap-3">
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        className="text-sm leading-6 text-gray-300 hover:text-white flex gap-3"
+                      >
                         <item.icon className="h-6 w-6" aria-hidden="true" />
                         <span>{item.name}</span>
                       </a>
@@ -73,7 +83,11 @@ export default function Footer() {
         <div className="mt-16 border-t border-accent-green pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-32">
           <div className="flex space-x-6 md:order-2">
             {NAV_LINKS.bottomRow.map((item) => (
-              <a key={item.name} href={item.href} className="text-white underline decoration-solid text-sm hover:text-gray-400">
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-white underline decoration-solid text-sm hover:text-gray-400"
+              >
                 <span>{item.name}</span>
               </a>
             ))}
