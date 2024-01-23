@@ -2,6 +2,7 @@ import { SupabaseAdapter } from '@auth/supabase-adapter'
 import jwt from 'jsonwebtoken'
 import env from 'lib/env'
 import { NextAuthOptions, Session } from 'next-auth'
+import { Adapter } from 'next-auth/adapters'
 import NextAuth from 'next-auth/next'
 import FacebookProvider from 'next-auth/providers/facebook'
 import GoogleProvider from 'next-auth/providers/google'
@@ -19,11 +20,12 @@ export const authOptions: NextAuthOptions = {
 			clientSecret: env.facebookClientSecret
 		})
 	],
-	// @ts-ignore
+	// ...
+
 	adapter: SupabaseAdapter({
 		url: env.nextPublicSupabaseUrl,
 		secret: env.supabaseServiceRoleKey
-	}),
+	}) as Adapter,
 	callbacks: {
 		async session({ session, user }) {
 			if (session?.user) {
