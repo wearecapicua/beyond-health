@@ -1,7 +1,7 @@
-import { SetStateAction, useRef, useState } from 'react'
+import { LegacyRef, SetStateAction, useRef, useState } from 'react'
 
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
-import { Document, Image, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer'
+import { Document, Image, PDFViewer, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer'
 import { saveAs } from 'file-saver'
 import { getUserImages } from 'lib/api/supabase'
 import { User } from 'lib/types'
@@ -173,12 +173,12 @@ const Pdf = ({ user }: { user: User }) => {
 			</button>
 			{showPdfViewer && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
-					{/* <PDFViewer
+					<PDFViewer
 						width="100%"
 						height="100%"
-						ref={pdfRef as unknown as LegacyRef<ReactPDF.PDFViewer> | undefined}>
+						ref={pdfRef as unknown as LegacyRef<PDFViewer> | undefined}>
 						<PDFDocument user={user} userImages={userImagesUrls} />
-					</PDFViewer> */}
+					</PDFViewer>
 					<button
 						className="absolute bottom-4 right-6 rounded-lg bg-red-500 px-4 py-2 text-white"
 						onClick={handleClosePdfViewer}>

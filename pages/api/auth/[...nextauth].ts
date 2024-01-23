@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
 			clientSecret: env.facebookClientSecret
 		})
 	],
-
+	// @ts-ignore
 	adapter: SupabaseAdapter({
 		url: env.nextPublicSupabaseUrl,
 		secret: env.supabaseServiceRoleKey
