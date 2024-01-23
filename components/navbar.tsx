@@ -1,41 +1,41 @@
-import { Disclosure } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import Image from 'next/image'
-import LoginButton from './login';
-import { useFormStatusStore } from 'store/useFormStatusStore';
-import { useRouter } from 'next/router';
-import { getProfileData } from "lib/api/supabase";
-import { useFormStore } from 'store/useFormStore';
+import { Disclosure } from "@headlessui/react"
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
+import { getProfileData } from "lib/api/supabase"
+import { useSession } from "next-auth/react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useFormStatusStore } from "store/useFormStatusStore"
+import { useFormStore } from "store/useFormStore"
+import LoginButton from "./login"
 
 type NavbarProps = {
-  fullPage: boolean | undefined;
-};
+  fullPage: boolean | undefined
+}
 
 export default function Navbar({ fullPage }: NavbarProps) {
-  const session = useSession();
-  const router = useRouter();
-  const userLoggedIn = session.status === "authenticated" && session.data?.user;
-  const { formStep } = useFormStatusStore();
-  const { updateFormStore } = useFormStore();
-  
+  const session = useSession()
+  const router = useRouter()
+  const userLoggedIn = session.status === "authenticated" && session.data?.user
+  const { formStep } = useFormStatusStore()
+  const { updateFormStore } = useFormStore()
+
   async function handleResume() {
-    const profileData = await getProfileData();
-    updateFormStore(profileData);
-    router.push(`/form/${formStep}`);
+    const profileData = await getProfileData()
+    updateFormStore(profileData)
+    router.push(`/form/${formStep}`)
   }
   async function handleStartNow() {
-    const profileData = await getProfileData();
-    if(userLoggedIn){
-      updateFormStore(profileData);
-      router.push('/form/step-1');
+    const profileData = await getProfileData()
+    if (userLoggedIn) {
+      updateFormStore(profileData)
+      router.push("/form/step-1")
     } else {
-      router.push('/login');
+      router.push("/login")
     }
   }
 
-  const isCurrentRoute = (route: string) => router.asPath === route;
+  const isCurrentRoute = (route: string) => router.asPath === route
 
   const highlightStyles = "border-b-2 border-main-light-blue text-main-blue"
   const regLinkStyles = "border-transparent"
@@ -60,14 +60,6 @@ export default function Navbar({ fullPage }: NavbarProps) {
               </div>
               <div className="hidden sm:gap-8 sm:ml-6 md:flex sm:items-center">
                 <div className="hidden md:flex sm:space-x-8">
-                  {!fullPage && 
-                    <Link
-                      href="/how-it-works"
-                      className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
-                    >
-                      How it Works
-                    </Link>
-                  }
                   <Link
                     href="/faqs"
                     className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
@@ -76,7 +68,10 @@ export default function Navbar({ fullPage }: NavbarProps) {
                   </Link>
                   <LoginButton />
                 </div>
-                {!fullPage && userLoggedIn && formStep && formStep !== "COMPLETE" ?
+                {!fullPage &&
+                userLoggedIn &&
+                formStep &&
+                formStep !== "COMPLETE" ? (
                   <div className="flex-shrink-0">
                     <button
                       onClick={handleResume}
@@ -85,8 +80,8 @@ export default function Navbar({ fullPage }: NavbarProps) {
                     >
                       Resume
                     </button>
-                  </div> 
-                  : !fullPage ?
+                  </div>
+                ) : !fullPage ? (
                   <div className="flex-shrink-0">
                     <button
                       onClick={handleStartNow}
@@ -95,9 +90,8 @@ export default function Navbar({ fullPage }: NavbarProps) {
                     >
                       Start Now
                     </button>
-                  </div> 
-                  : null
-                }
+                  </div>
+                ) : null}
               </div>
               <div className="-mr-2 flex items-center md:hidden">
                 {/* Mobile menu button */}
@@ -105,9 +99,15 @@ export default function Navbar({ fullPage }: NavbarProps) {
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XMarkIcon className="block h-8 w-8 text-main-black" aria-hidden="true" />
+                    <XMarkIcon
+                      className="block h-8 w-8 text-main-black"
+                      aria-hidden="true"
+                    />
                   ) : (
-                    <Bars3Icon className="block h-8 w-8 text-main-black" aria-hidden="true" />
+                    <Bars3Icon
+                      className="block h-8 w-8 text-main-black"
+                      aria-hidden="true"
+                    />
                   )}
                 </Disclosure.Button>
               </div>
@@ -118,27 +118,23 @@ export default function Navbar({ fullPage }: NavbarProps) {
             <div className="space-y-5 px-6 pb-10 pt-2">
               <Disclosure.Button
                 as="a"
-                href="/how-it-works"
-                className={`${isCurrentRoute("/how-it-works") ? highlightStyles : regLinkStyles} block py-[1px] pr-4 text-base font-medium`}
-              >
-                How it Works
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
                 href="/faqs"
-                className={`${isCurrentRoute("/faqs") ? highlightStyles : regLinkStyles} block py-[1px] pr-4 text-base font-medium`}
+                className={`${
+                  isCurrentRoute("/faqs") ? highlightStyles : regLinkStyles
+                } block py-[1px] pr-4 text-base font-medium`}
               >
                 FAQs
               </Disclosure.Button>
               <Disclosure.Button
                 as="a"
                 href="/login"
-                className={`${isCurrentRoute("/login") ? highlightStyles : regLinkStyles} block py-[1px] pr-4 text-base font-medium`}
+                className={`${
+                  isCurrentRoute("/login") ? highlightStyles : regLinkStyles
+                } block py-[1px] pr-4 text-base font-medium`}
               >
                 Log In
               </Disclosure.Button>
             </div>
-            
           </Disclosure.Panel>
         </>
       )}
