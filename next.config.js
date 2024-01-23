@@ -2,5 +2,11 @@
 module.exports = {
 	images: {
 		domains: ['images.prismic.io', 'files.stripe.com', 'lh3.googleusercontent.com']
+	},
+	webpack5: true,
+	webpack: (config) => {
+		config.resolve.fallback = { fs: false }
+
+		return config
 	}
 }
