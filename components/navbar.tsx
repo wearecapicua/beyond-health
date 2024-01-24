@@ -1,10 +1,10 @@
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { getProfileData } from 'lib/api/supabase'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
 import { useFormStatusStore } from 'store/useFormStatusStore'
 import { useFormStore } from 'store/useFormStore'
 
@@ -14,7 +14,7 @@ type NavbarProps = {
 	fullPage: boolean | undefined
 }
 
-const Navbar = ({ fullPage }: NavbarProps) => {
+export default function Navbar({ fullPage }: NavbarProps) {
 	const session = useSession()
 	const router = useRouter()
 	const userLoggedIn = session.status === 'authenticated' && session.data?.user
@@ -61,13 +61,6 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 							</div>
 							<div className="hidden sm:ml-6 sm:items-center sm:gap-8 md:flex">
 								<div className="hidden sm:space-x-8 md:flex">
-									{!fullPage && (
-										<Link
-											href="/how-it-works"
-											className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
-											How it Works
-										</Link>
-									)}
 									<Link
 										href="/faqs"
 										className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
@@ -101,9 +94,9 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 									<span className="absolute -inset-0.5" />
 									<span className="sr-only">Open main menu</span>
 									{open ? (
-										<XMarkIcon className="block h-8 w-8 text-main-black" aria-hidden="true" />
+										<XMarkIcon className="block size-8 text-main-black" aria-hidden="true" />
 									) : (
-										<Bars3Icon className="block h-8 w-8 text-main-black" aria-hidden="true" />
+										<Bars3Icon className="block size-8 text-main-black" aria-hidden="true" />
 									)}
 								</Disclosure.Button>
 							</div>
@@ -112,14 +105,6 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 
 					<Disclosure.Panel className="md:hidden">
 						<div className="space-y-5 px-6 pb-10 pt-2">
-							<Disclosure.Button
-								as="a"
-								href="/how-it-works"
-								className={`${
-									isCurrentRoute('/how-it-works') ? highlightStyles : regLinkStyles
-								} block py-[1px] pr-4 text-base font-medium`}>
-								How it Works
-							</Disclosure.Button>
 							<Disclosure.Button
 								as="a"
 								href="/faqs"
@@ -143,5 +128,3 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 		</Disclosure>
 	)
 }
-
-export default Navbar
