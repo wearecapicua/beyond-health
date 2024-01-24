@@ -1,11 +1,14 @@
+import React from 'react'
 type PostTitleProps = {
-  children: React.ReactNode
+	children: React.ReactNode
 }
 
-export default function PostTitle({ children }: PostTitleProps) {
-  return (
-    <h3 className="font-bold tracking-tighter leading-tight md:leading-none mt-16 mb-12 text-center">
-      {children}
-    </h3>
-  )
+const PostTitle = ({ children }: PostTitleProps) => {
+	return (
+		<h3 className="mb-12 mt-16 text-center font-bold leading-tight tracking-tighter md:leading-none">
+			{children}
+		</h3>
+	)
 }
+
+export default PostTitle

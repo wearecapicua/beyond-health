@@ -1,27 +1,26 @@
-// @ts-nocheck
-
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { StateCreator, create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export type FormState = {
-  [key: string]: string | any;
-};
+	[key: string]: string | number | null | undefined | boolean | object
+}
 
-type FormStore = {
-  formStore: FormState;
-  updateFormStore: (data: FormState) => void;
-};
+export type FormStore = {
+	formStore: FormState
+	updateFormStore: (data: FormState) => void
+}
 
 export const useFormStore = create<FormStore>(
-  persist(
-    (set) => ({
-      formStore: {},
-      updateFormStore: (data) => set((state) => ({ formStore: { ...state.formStore, ...data } })),
-    }),
-    {
-      name: 'form-store',
-    }
-  )
-);
+	persist(
+		(set) => ({
+			formStore: {},
+			updateFormStore: (data: FormState) =>
+				set((state: FormStore) => ({ formStore: { ...state.formStore, ...data } }))
+		}),
+		{
+			name: 'form-store'
+		}
+	) as unknown as StateCreator<FormStore, [], []>
+)
 
-export default useFormStore;
+export default useFormStore

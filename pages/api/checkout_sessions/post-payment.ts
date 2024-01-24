@@ -1,54 +1,48 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import Stripe from "stripe";
-import env from "lib/env";
-import { authOptions } from "pages/api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
+import env from 'lib/env'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
+import { authOptions } from 'pages/api/auth/[...nextauth]'
+import Stripe from 'stripe'
 
-const stripe = new Stripe(env.stripeSecretKey, { apiVersion: "2022-11-15" });
+const stripe = new Stripe(env.stripeSecretKey, { apiVersion: '2022-11-15' })
 
 export type PaymentIntentBody = {
-  setupId: string;
-  price: number;
-};
+	setupId: string
+	price: number
+}
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const requestBody = req.body as PaymentIntentBody;
-  if (req.method === "POST") {
-    const { setupId, price } = requestBody
-  
-    const session = await getServerSession(req, res, authOptions);
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	const requestBody = req.body as PaymentIntentBody
+	if (req.method === 'POST') {
+		const { setupId, price } = requestBody
 
-    try {
-      /* @ts-ignore */
-      const setupIntent = await stripe.setupIntents.retrieve(setupId);
-      // Create Checkout Sessions from body params.
-      const customerId = setupIntent.customer
-      const paymentMethodId = setupIntent.payment_method
+		await getServerSession(req, res, authOptions)
 
-      const params = {
-       customer: customerId,
-       payment_method: paymentMethodId,
-       amount: price,
-       currency: 'usd',
-       confirm: true
-      };
+		try {
+			const setupIntent = await stripe.setupIntents.retrieve(setupId)
+			// Create Checkout Sessions from body params.
+			const customerId = setupIntent.customer
+			const paymentMethodId = setupIntent.payment_method
 
-      const paymentIntent: Stripe.PaymentIntent =
-        /* @ts-ignore */
-        await stripe.paymentIntents.create(params);
-     
-      res.status(200).json(paymentIntent);
+			const params = {
+				customer: customerId,
+				payment_method: paymentMethodId,
+				amount: price,
+				currency: 'usd',
+				confirm: true
+			}
 
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Internal server error";
-      res.status(500).json({ statusCode: 500, message: errorMessage });
-    }
-  } else {
-    res.setHeader("Allow", "POST");
-    res.status(405).end("Method Not Allowed");
-  }
+			const paymentIntent: Stripe.PaymentIntent = await stripe.paymentIntents.create(
+				params as Stripe.PaymentIntentCreateParams
+			)
+
+			res.status(200).json(paymentIntent)
+		} catch (err) {
+			const errorMessage = err instanceof Error ? err.message : 'Internal server error'
+			res.status(500).json({ statusCode: 500, message: errorMessage })
+		}
+	} else {
+		res.setHeader('Allow', 'POST')
+		res.status(405).end('Method Not Allowed')
+	}
 }

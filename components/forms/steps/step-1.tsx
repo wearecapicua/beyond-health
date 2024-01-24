@@ -1,31 +1,33 @@
-import FormContainer from "../form-container";
-import FormHeader from "../form-header";
-import FormInput from "../form-input";
-import { useFormStore } from '../../../store/useFormStore';
-import React from "react";
+import { useFormStore } from '../../../store/useFormStore'
+import FormContainer from '../form-container'
+import FormHeader from '../form-header'
+import FormInput from '../form-input'
 
-export default function StepOne() {
-  const { formStore } = useFormStore();
-  return (
-    <>
-      <FormHeader
-        title={"Hello, what’s your name"}
-        subtitle="Enter your name exactly as it appears on your ID. You will upload ID later."
-      />
-      <FormContainer>
-        <FormInput
-          label="First Name*"
-          id="first_name"
-          type="text"
-          defaultValue={formStore.first_name} 
-        />
-        <FormInput
-          label="Last Name*"
-          id="last_name"
-          type="text"
-          defaultValue={formStore.last_name} 
-        />
-      </FormContainer>
-    </>
-  );
+const StepOne = () => {
+	const { formStore } = useFormStore()
+
+	return (
+		<>
+			<FormHeader
+				title={'Hello, what’s your name'}
+				subtitle="Enter your name exactly as it appears on your ID. You will upload ID later."
+			/>
+			<FormContainer>
+				<FormInput
+					label="First Name*"
+					id="first_name"
+					type="text"
+					defaultValue={formStore.first_name as string}
+				/>
+				<FormInput
+					label="Last Name*"
+					id="last_name"
+					type="text"
+					defaultValue={formStore.last_name as string}
+				/>
+			</FormContainer>
+		</>
+	)
 }
+
+export default StepOne
