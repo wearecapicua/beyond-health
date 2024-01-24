@@ -14,7 +14,7 @@ type NavbarProps = {
 	fullPage: boolean | undefined
 }
 
-export default function Navbar({ fullPage }: NavbarProps) {
+const Navbar = ({ fullPage }: NavbarProps) => {
 	const session = useSession()
 	const router = useRouter()
 	const userLoggedIn = session.status === 'authenticated' && session.data?.user
@@ -128,3 +128,5 @@ export default function Navbar({ fullPage }: NavbarProps) {
 		</Disclosure>
 	)
 }
+
+export default Navbar
