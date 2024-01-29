@@ -66,7 +66,7 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 										className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
 										FAQs
 									</Link>
-									<LoginButton />
+									{router.asPath === '/login' ? null : <LoginButton />}
 								</div>
 								{!fullPage && userLoggedIn && formStep && formStep !== 'COMPLETE' ? (
 									<div className="shrink-0">
