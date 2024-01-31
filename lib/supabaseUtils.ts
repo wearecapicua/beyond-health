@@ -44,7 +44,7 @@ export async function getUserShippingAddress(userId: string, supabaseAccessToken
 		zip: shipping_address?.postal_code,
 		company: `${first_name} ${last_name}`,
 		name: `${first_name} ${last_name}`,
-		country: shipping_address?.country,
+		country: shipping_address?.country.value,
 		phone: phone_number
 	}
 
