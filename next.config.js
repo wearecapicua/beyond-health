@@ -5,7 +5,7 @@ module.exports = {
 			'images.prismic.io',
 			'files.stripe.com',
 			'lh3.googleusercontent.com',
-			'platform-lookaside.fbsbx.com'
+			'platform-lookaside.fbsbx.com/platform/profilepic'
 		]
 	},
 	webpack5: true,
