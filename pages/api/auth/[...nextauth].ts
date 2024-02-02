@@ -17,7 +17,9 @@ export const authOptions: NextAuthOptions = {
 		}),
 		FacebookProvider({
 			clientId: env.facebookClientId,
-			clientSecret: env.facebookClientSecret
+			clientSecret: env.facebookClientSecret,
+			// userinfo: 'me?fields=id,name,email,picture{url}'
+			userinfo: 'me?fields=id,name,email,picture'
 		})
 	],
 	// ...
