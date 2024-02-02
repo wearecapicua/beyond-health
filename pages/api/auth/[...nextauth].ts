@@ -17,9 +17,17 @@ export const authOptions: NextAuthOptions = {
 		}),
 		FacebookProvider({
 			clientId: env.facebookClientId,
-			clientSecret: env.facebookClientSecret,
+			clientSecret: env.facebookClientSecret
 			// userinfo: 'me?fields=id,name,email,picture{url}'
-			userinfo: 'me?fields=id,name,email,picture'
+			// userinfo: 'me?fields=id,name,email,picture',
+			// profile(profile) {
+			// 	return {
+			// 		id: profile.id,
+			// 		name: profile.name,
+			// 		email: profile.email,
+			// 		image: profile.picture.data.url
+			// 	}
+			// }
 		})
 	],
 	// ...
@@ -31,13 +39,13 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async session({ session, user }) {
 			if (session?.user) {
-				console.log('session', { session })
-				console.log('user', { user })
+				// console.log('session', { session })
+				// console.log('user', { user })
 				// session.user.id = user.id
 				// session.user.role = user.role
 				session.user = {
 					...session.user,
-					email: user.email,
+					// email: user.email,
 					id: user.id,
 					role: (user as unknown as { role: string }).role
 				} as unknown as Session['user']
