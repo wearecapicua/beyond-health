@@ -29,10 +29,13 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async session({ session, user }) {
 			if (session?.user) {
+				console.log('session', { session })
+				console.log('user', { user })
 				// session.user.id = user.id
 				// session.user.role = user.role
 				session.user = {
 					...session.user,
+					email: user.email,
 					id: user.id,
 					role: (user as unknown as { role: string }).role
 				} as unknown as Session['user']
