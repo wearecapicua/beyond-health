@@ -26,16 +26,6 @@ const Post = ({ page, preview }: PostProps) => {
 							<article>
 								<Head>
 									<></>
-									{/* {<meta
-                    property="og:image"
-                    content={
-                      asImageSrc(page.data.image, {
-                        width: 1200,
-                        height: 600,
-                        fit: "crop",
-                      })!
-                    }
-                  />} */}
 								</Head>
 
 								<Container>
