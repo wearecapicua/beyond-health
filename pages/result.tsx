@@ -9,17 +9,29 @@ import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import Stripe from 'stripe'
 
+import sendEmail from './api/email/sendEmail'
+
 type ResultProps = {
 	amount: number
 	setupId: string
+	email: string
 }
 
 const stripe = new Stripe(env.stripeSecretKey, {
 	apiVersion: '2022-11-15'
 })
 
-const ResultPage = ({ setupId }: ResultProps) => {
+const ResultPage = ({ setupId, email }: ResultProps) => {
 	const router = useRouter()
+
+	if (email) {
+		sendEmail({
+			to: 'online@beyondhealth.ca',
+			from: 'online@beyondhealth.ca',
+			subject: 'New Submission',
+			html: `<p>The user <h1>${email}</h1> has completed a submission, please check it on the Admin Panel.</p>`
+		})
+	}
 
 	useEffect(() => {
 		sendUpdatedData({ stripe_setup_id: setupId, form_step: 'COMPLETE' })
@@ -71,10 +83,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
 		const setupId = (checkout_session.setup_intent as unknown as { id: string })?.id
 
+		const email = checkout_session?.customer_details?.email
+
 		return {
 			props: {
 				amount,
-				setupId
+				setupId,
+				email
 			}
 		}
 	} catch (err) {

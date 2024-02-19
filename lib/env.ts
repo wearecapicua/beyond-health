@@ -20,7 +20,8 @@ const serverEnv = z.object({
 	supabaseJwtSecret: z.string().nonempty(),
 	vercelEnv: z.string().default('localhost'),
 	shippoApiKey: z.string().nonempty(),
-	host: z.string().default('http://localhost:3000')
+	host: z.string().default('http://localhost:3000'),
+	sendgridApiKey: z.string().nonempty()
 })
 
 const mergedEnv = serverEnv.merge(clientEnv)
@@ -46,7 +47,8 @@ const processEnv: Record<keyof z.infer<typeof serverEnv> | keyof z.infer<typeof 
 	supabaseJwtSecret: process.env.SUPABASE_JWT_SECRET,
 	shippoApiKey: process.env.SHIPPO_API_KEY,
 	vercelEnv: process.env.VERCEL_ENV,
-	host: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined
+	host: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+	sendgridApiKey: process.env.SENDGRID_API_KEY
 }
 type MergedInput = z.input<typeof mergedEnv>
 type MergedOutput = z.infer<typeof mergedEnv>
