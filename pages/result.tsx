@@ -8,8 +8,8 @@ import env from 'lib/env'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import Stripe from 'stripe'
-
-import sendEmail from './api/email/sendEmail'
+import { sendEmail2 } from 'lib/sendEmail'
+import { FormData } from 'components/contact-form'
 
 type ResultProps = {
 	amount: number
@@ -25,12 +25,7 @@ const ResultPage = ({ setupId, email }: ResultProps) => {
 	const router = useRouter()
 
 	if (email) {
-		sendEmail({
-			to: 'online@beyondhealth.ca',
-			from: 'online@beyondhealth.ca',
-			subject: 'New Submission',
-			html: `<p>The user <h1>${email}</h1> has completed a submission, please check it on the Admin Panel.</p>`
-		})
+		sendEmail2(email as unknown as FormData)
 	}
 
 	useEffect(() => {

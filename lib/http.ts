@@ -16,6 +16,7 @@ export async function fetchGetJSON(url: string) {
 export async function fetchPostJSON<Response = unknown>(
 	url: string,
 	data: {
+		email?: string
 		method?: string
 		productId?: string
 		amount?: number
