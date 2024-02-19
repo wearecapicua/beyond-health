@@ -24,9 +24,16 @@ const stripe = new Stripe(env.stripeSecretKey, {
 const ResultPage = ({ setupId, email }: ResultProps) => {
 	const router = useRouter()
 
-	if (email) {
-		sendEmail2(email as unknown as FormData)
-	}
+	useEffect(() => {
+		const sendEmail = async () => {
+			await sendEmail2(email as unknown as FormData)
+		}
+		if (email) {
+			sendEmail().catch((error) => {
+				console.log('error', error)
+			})
+		}
+	}, [email])
 
 	useEffect(() => {
 		sendUpdatedData({ stripe_setup_id: setupId, form_step: 'COMPLETE' })
