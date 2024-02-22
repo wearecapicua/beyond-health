@@ -22,7 +22,7 @@ const StepEleven = () => {
 	const filterProductArray = (productStore as unknown as [StripeProduct]).filter((product: StripeProduct) => {
 		const stages = product?.metadata?.Stage?.split(', ')
 
-		return stages.includes(formStore.stage as string)
+		return stages?.includes(formStore.stage as string)
 	})
 
 	// Always should be one product
