@@ -20,7 +20,7 @@ const StepEleven = () => {
 	const [productOptions, setproductOptions] = useState<[StripeProduct]>()
 
 	const filterProductArray = (productStore as unknown as [StripeProduct]).filter((product: StripeProduct) => {
-		const stages = product.metadata.Stage.split(', ')
+		const stages = product?.metadata?.Stage?.split(', ')
 
 		return stages.includes(formStore.stage as string)
 	})
