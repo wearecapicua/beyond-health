@@ -119,8 +119,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 		if (imageWasUploaded) setIsLoading(false)
 
 		setActiveStep(next)
-
-		router.push(`/form/${next}`)
+		setTimeout(() => {
+			router.push(`/form/${next}`)
+		}, 1500)
 	}
 
 	const updateStoreAndSubmit = async (data: FormState) => {
@@ -132,7 +133,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 		setTimeout(() => {
 			router.push(`/form/${next}`)
-		}, 1000)
+		}, 1500)
 	}
 
 	const onSubmit: SubmitHandler<IFormProps> = async (data: {
