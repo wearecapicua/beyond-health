@@ -48,8 +48,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 		updateProductStore(products.productsWithPrices)
 		if ((activeStep === 'step-16' || activeStep === 'step-17') && formStore?.country !== 'canada') {
 			setActiveStep('step-18')
-
-			router.push(`/form/step-18`)
+			setTimeout(() => {
+				router.push(`/form/step-18`)
+			}, 1500)
 		}
 	}, [])
 
@@ -213,8 +214,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 					toast.error('Missing data in previous step', {
 						onClose: () => {
 							setActiveStep(validateResults as FormStepType)
-
-							router.push(`/form/${validateResults}`)
+							setTimeout(() => {
+								router.push(`/form/${validateResults}`)
+							}, 1500)
 						}
 					})
 
@@ -275,7 +277,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 				setFormStep(activeStep)
 				toast.success('Form saved successfully', {
 					onClose: () => {
-						router.push('/')
+						setTimeout(() => {
+							router.push('/')
+						}, 1500)
 					}
 				})
 			} else {
