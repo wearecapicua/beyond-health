@@ -45,12 +45,16 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const stepNum = parseInt(activeStep.split('-')[1])
 
 	useEffect(() => {
-		updateProductStore(products.productsWithPrices)
-		if ((activeStep === 'step-16' || activeStep === 'step-17') && formStore?.country !== 'canada') {
-			setActiveStep('step-18')
-			setTimeout(() => {
+		try {
+			updateProductStore(products.productsWithPrices)
+			if ((activeStep === 'step-16' || activeStep === 'step-17') && formStore?.country !== 'canada') {
+				setActiveStep('step-18')
+				// setTimeout(() => {
 				router.push(`/form/step-18`)
-			}, 1500)
+				// }, 1500)
+			}
+		} catch (ex) {
+			console.log({ ex })
 		}
 	}, [])
 
@@ -111,30 +115,43 @@ const FormStep = ({ formData, products }: StepProps) => {
 	}
 
 	const uploadImageAndSubmit = async (dbName: string, temporalFileName: string, file: File) => {
-		setIsLoading(true)
-		const imageSaveData = await uploadImages(file)
-		const imageWasUploaded = await sendUpdatedData({ [dbName]: imageSaveData.data?.path })
-		updateFormStore({ [dbName]: imageSaveData?.data?.path, [temporalFileName]: null })
-		const next =
-			stepNum === 15 && formStore.country === 'anotherCountry' ? 'step-18' : incrementString(formData.step)
-		if (imageWasUploaded) setIsLoading(false)
+		try {
+			setIsLoading(true)
+			const imageSaveData = await uploadImages(file)
+			const imageWasUploaded = await sendUpdatedData({ [dbName]: imageSaveData.data?.path })
+			updateFormStore({ [dbName]: imageSaveData?.data?.path, [temporalFileName]: null })
+			const next =
+				stepNum === 15 && formStore.country === 'anotherCountry'
+					? 'step-18'
+					: incrementString(formData.step)
+			if (imageWasUploaded) setIsLoading(false)
 
-		setActiveStep(next)
-		setTimeout(() => {
+			setActiveStep(next)
+			// setTimeout(() => {
 			router.push(`/form/${next}`)
-		}, 1500)
+			// }, 1500)
+		} catch (ex) {
+			console.log({ ex })
+		}
 	}
 
 	const updateStoreAndSubmit = async (data: FormState) => {
-		updateFormStore(data)
+		try {
+			updateFormStore(data)
 
-		const next =
-			stepNum === 15 && formStore.country === 'anotherCountry' ? 'step-18' : incrementString(formData.step)
-		setActiveStep(next)
+			const next =
+				stepNum === 15 && formStore.country === 'anotherCountry'
+					? 'step-18'
+					: incrementString(formData.step)
+			setActiveStep(next)
 
-		setTimeout(() => {
+			// setTimeout(() => {
 			router.push(`/form/${next}`)
-		}, 1500)
+		} catch (ex) {
+			console.log({ ex })
+		}
+
+		// }, 1500)
 	}
 
 	const onSubmit: SubmitHandler<IFormProps> = async (data: {
@@ -143,95 +160,113 @@ const FormStep = ({ formData, products }: StepProps) => {
 		health_card?: { file: File }
 		insurance?: { file: File }
 	}) => {
-		const isStepValid = await trigger()
-
-		if (isStepValid && stepNum === 14) {
-			if (data.picture?.file && formStore.profile_image_url === null) {
-				uploadImageAndSubmit('profile_image_url', 'picture', data.picture?.file)
-			}
-			if (!data.picture?.file && formStore.profile_image_url === null) {
-				toast.error('Please upload an image')
-			}
-			if (formStore.profile_image_url) {
-				updateStoreAndSubmit(data as unknown as FormState)
-			}
-		}
-
-		if (isStepValid && stepNum === 15) {
-			if (data.photo_id?.file && formStore.photo_id_url === null) {
-				uploadImageAndSubmit('photo_id_url', 'photo_id', data.photo_id?.file)
-			}
-			if (!data.photo_id?.file && formStore.photo_id_url === null) {
-				toast.error('Please upload an image')
-			}
-			if (formStore.photo_id_url) {
-				updateStoreAndSubmit(data as unknown as FormState)
-			}
-		}
-
-		if (isStepValid && stepNum === 16 && formStore.country === 'canada') {
-			if (data.health_card?.file && formStore.has_health_card && formStore.health_card_image_url === null) {
-				uploadImageAndSubmit('health_card_image_url', 'health_card', data.health_card?.file)
-			}
-			if (!data.health_card?.file && formStore.has_health_card && formStore.health_card_image_url === null) {
-				toast.error('Please upload an image')
-			}
-			if (formStore.has_health_card === null) {
-				toast.error('Please select an option')
-			}
-			if ((formStore.has_health_card && formStore.health_image_url) || formStore.has_health_card === false) {
-				updateStoreAndSubmit(data as unknown as FormState)
-			}
-		}
-
-		if (isStepValid && stepNum === 17 && formStore.country === 'canada') {
-			if (data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
-				uploadImageAndSubmit('insurance_image_url', 'insurance', data.insurance?.file)
-			}
-			if (!data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
-				toast.error('Please upload an image')
-			}
-			if (formStore.has_insurance === null) {
-				toast.error('Please select an option')
-			}
-			if ((formStore.has_insurance && formStore.insurance_image_url) || formStore.has_insurance === false) {
-				updateStoreAndSubmit(data as unknown as FormState)
-			}
-		}
-
-		if (isStepValid && stepNum < 14) {
-			updateStoreAndSubmit(data as unknown as FormState)
-		}
-
-		if (isStepValid && activeStep === 'step-18') {
-			const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
-
-			if (validateResults) {
-				if (
-					(validateResults === 'step-16' || validateResults === 'step-17') &&
-					formStore.country === 'canada'
-				) {
-					toast.error('Missing data in previous step', {
-						onClose: () => {
-							setActiveStep(validateResults as FormStepType)
-							setTimeout(() => {
-								router.push(`/form/${validateResults}`)
-							}, 1500)
-						}
-					})
-
-					return
+		try {
+			const isStepValid = await trigger()
+			console.log({ isStepValid })
+			if (isStepValid && stepNum === 14) {
+				if (data.picture?.file && formStore.profile_image_url === null) {
+					uploadImageAndSubmit('profile_image_url', 'picture', data.picture?.file)
+				}
+				if (!data.picture?.file && formStore.profile_image_url === null) {
+					toast.error('Please upload an image')
+				}
+				if (formStore.profile_image_url) {
+					updateStoreAndSubmit(data as unknown as FormState)
 				}
 			}
 
-			setIsSaving(true)
-			const isSubmitSuccess = await submitFormData(data)
-
-			if (isSubmitSuccess) {
-				handleCheckout(data)
-			} else {
-				toast.error('Form not saved successfully')
+			if (isStepValid && stepNum === 15) {
+				if (data.photo_id?.file && formStore.photo_id_url === null) {
+					uploadImageAndSubmit('photo_id_url', 'photo_id', data.photo_id?.file)
+				}
+				if (!data.photo_id?.file && formStore.photo_id_url === null) {
+					toast.error('Please upload an image')
+				}
+				if (formStore.photo_id_url) {
+					updateStoreAndSubmit(data as unknown as FormState)
+				}
 			}
+
+			if (isStepValid && stepNum === 16 && formStore.country === 'canada') {
+				if (
+					data.health_card?.file &&
+					formStore.has_health_card &&
+					formStore.health_card_image_url === null
+				) {
+					uploadImageAndSubmit('health_card_image_url', 'health_card', data.health_card?.file)
+				}
+				if (
+					!data.health_card?.file &&
+					formStore.has_health_card &&
+					formStore.health_card_image_url === null
+				) {
+					toast.error('Please upload an image')
+				}
+				if (formStore.has_health_card === null) {
+					toast.error('Please select an option')
+				}
+				if (
+					(formStore.has_health_card && formStore.health_image_url) ||
+					formStore.has_health_card === false
+				) {
+					updateStoreAndSubmit(data as unknown as FormState)
+				}
+			}
+
+			if (isStepValid && stepNum === 17 && formStore.country === 'canada') {
+				if (data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
+					uploadImageAndSubmit('insurance_image_url', 'insurance', data.insurance?.file)
+				}
+				if (!data.insurance?.file && formStore.has_insurance && formStore.insurance_image_url === null) {
+					toast.error('Please upload an image')
+				}
+				if (formStore.has_insurance === null) {
+					toast.error('Please select an option')
+				}
+				if (
+					(formStore.has_insurance && formStore.insurance_image_url) ||
+					formStore.has_insurance === false
+				) {
+					updateStoreAndSubmit(data as unknown as FormState)
+				}
+			}
+
+			if (isStepValid && stepNum < 14) {
+				updateStoreAndSubmit(data as unknown as FormState)
+			}
+
+			if (isStepValid && activeStep === 'step-18') {
+				const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
+
+				if (validateResults) {
+					if (
+						(validateResults === 'step-16' || validateResults === 'step-17') &&
+						formStore.country === 'canada'
+					) {
+						toast.error('Missing data in previous step', {
+							onClose: () => {
+								setActiveStep(validateResults as FormStepType)
+								// setTimeout(() => {
+								router.push(`/form/${validateResults}`)
+								// }, 1500)
+							}
+						})
+
+						return
+					}
+				}
+
+				setIsSaving(true)
+				const isSubmitSuccess = await submitFormData(data)
+
+				if (isSubmitSuccess) {
+					handleCheckout(data)
+				} else {
+					toast.error('Form not saved successfully')
+				}
+			}
+		} catch (ex) {
+			console.log({ ex })
 		}
 	}
 
@@ -245,46 +280,50 @@ const FormStep = ({ formData, products }: StepProps) => {
 		insurance_image_url: string
 		insurance: { file: File }
 	}) => {
-		setIsSaving(true)
-		const isStepValid = await trigger()
-		if (isStepValid) {
-			if (!data.profile_image_url && data.picture?.file) {
-				const imageSaveData = await uploadImages(data.picture?.file)
-				await sendUpdatedData({ profile_image_url: imageSaveData?.data?.path })
-				updateFormStore({ profile_image_url: imageSaveData?.data?.path })
-			}
+		try {
+			setIsSaving(true)
+			const isStepValid = await trigger()
+			if (isStepValid) {
+				if (!data.profile_image_url && data.picture?.file) {
+					const imageSaveData = await uploadImages(data.picture?.file)
+					await sendUpdatedData({ profile_image_url: imageSaveData?.data?.path })
+					updateFormStore({ profile_image_url: imageSaveData?.data?.path })
+				}
 
-			if (!data.photo_id_url && data.photo_id?.file) {
-				const photoIdSaveData = await uploadImages(data.photo_id?.file)
-				await sendUpdatedData({ photo_id_url: photoIdSaveData?.data?.path })
-				updateFormStore({ photo_id_url: photoIdSaveData?.data?.path })
-			}
+				if (!data.photo_id_url && data.photo_id?.file) {
+					const photoIdSaveData = await uploadImages(data.photo_id?.file)
+					await sendUpdatedData({ photo_id_url: photoIdSaveData?.data?.path })
+					updateFormStore({ photo_id_url: photoIdSaveData?.data?.path })
+				}
 
-			if (!data.health_card_image_url && data.health_card?.file) {
-				const healthCardImageSaveData = await uploadImages(data.health_card?.file)
-				await sendUpdatedData({ health_card_image_url: healthCardImageSaveData?.data?.path })
-				updateFormStore({ health_card_image_url: healthCardImageSaveData?.data?.path })
-			}
+				if (!data.health_card_image_url && data.health_card?.file) {
+					const healthCardImageSaveData = await uploadImages(data.health_card?.file)
+					await sendUpdatedData({ health_card_image_url: healthCardImageSaveData?.data?.path })
+					updateFormStore({ health_card_image_url: healthCardImageSaveData?.data?.path })
+				}
 
-			if (!data.insurance_image_url && data.insurance?.file) {
-				const insuranceImageSaveData = await uploadImages(data.insurance?.file)
-				await sendUpdatedData({ insurance_image_url: insuranceImageSaveData?.data?.path })
-				updateFormStore({ insurance_image_url: insuranceImageSaveData?.data?.path })
-			}
+				if (!data.insurance_image_url && data.insurance?.file) {
+					const insuranceImageSaveData = await uploadImages(data.insurance?.file)
+					await sendUpdatedData({ insurance_image_url: insuranceImageSaveData?.data?.path })
+					updateFormStore({ insurance_image_url: insuranceImageSaveData?.data?.path })
+				}
 
-			const isSubmitSuccess = await submitFormData(data)
-			if (isSubmitSuccess) {
-				setFormStep(activeStep)
-				toast.success('Form saved successfully', {
-					onClose: () => {
-						setTimeout(() => {
+				const isSubmitSuccess = await submitFormData(data)
+				if (isSubmitSuccess) {
+					setFormStep(activeStep)
+					toast.success('Form saved successfully', {
+						onClose: () => {
+							// setTimeout(() => {
 							router.push('/')
-						}, 1500)
-					}
-				})
-			} else {
-				toast.error('Form not saved successfully')
+							// }, 1500)
+						}
+					})
+				} else {
+					toast.error('Form not saved successfully')
+				}
 			}
+		} catch (ex) {
+			console.log({ ex })
 		}
 	}
 
