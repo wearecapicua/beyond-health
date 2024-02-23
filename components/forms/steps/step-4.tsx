@@ -10,11 +10,19 @@ import FormSelectorButton from '../form-selector-button'
 const StepFour = () => {
 	const [selected, setSelected] = useState('')
 	const { setValue } = useFormContext()
+	const { formStore } = useFormStore()
 
 	const radioButtonOptions = [
 		{ value: 'canada', label: 'Canada' },
 		{ value: 'anotherCountry', label: 'Another Country' }
 	]
+
+	useEffect(() => {
+		if (!selected && formStore.country) {
+			setSelected(formStore.country as string)
+			setValue('country', formStore.country)
+		}
+	}, [formStore.country])
 
 	useEffect(() => {
 		if (selected) {
