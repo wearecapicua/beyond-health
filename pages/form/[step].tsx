@@ -47,9 +47,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 		updateProductStore(products.productsWithPrices)
 		if ((activeStep === 'step-16' || activeStep === 'step-17') && formStore?.country !== 'canada') {
 			setActiveStep('step-18')
-			setTimeout(() => {
-				router.push(`/form/step-18`)
-			}, 1500)
+
+			router.push(`/form/step-18`)
 		}
 	}, [])
 
@@ -82,14 +81,12 @@ const FormStep = ({ formData, products }: StepProps) => {
 		if (formStore.country === 'canada') {
 			const next = decrementString(formData.step)
 			setActiveStep(next)
-			setTimeout(() => {
-				router.push(`/form/${next}`)
-			}, 1500)
+
+			router.push(`/form/${next}`)
 		} else {
 			setActiveStep('step-15')
-			setTimeout(() => {
-				router.push('/form/step-15')
-			}, 1500)
+
+			router.push('/form/step-15')
 		}
 	}
 
@@ -120,9 +117,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 			stepNum === 15 && formStore.country === 'anotherCountry' ? 'step-18' : incrementString(formData.step)
 		if (imageWasUploaded) setIsLoading(false)
 		setActiveStep(next)
-		setTimeout(() => {
-			router.push(`/form/${next}`)
-		}, 1500)
+
+		router.push(`/form/${next}`)
 	}
 
 	const updateStoreAndSubmit = async (data: FormState) => {
@@ -131,9 +127,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 		const next =
 			stepNum === 15 && formStore.country === 'anotherCountry' ? 'step-18' : incrementString(formData.step)
 		setActiveStep(next)
-		setTimeout(() => {
-			router.push(`/form/${next}`)
-		}, 1500)
+
+		router.push(`/form/${next}`)
 	}
 
 	const onSubmit: SubmitHandler<IFormProps> = async (data: {
@@ -213,9 +208,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 					toast.error('Missing data in previous step', {
 						onClose: () => {
 							setActiveStep(validateResults as FormStepType)
-							setTimeout(() => {
-								router.push(`/form/${validateResults}`)
-							}, 1500)
+
+							router.push(`/form/${validateResults}`)
 						}
 					})
 
@@ -274,9 +268,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 				setFormStep(activeStep)
 				toast.success('Form saved successfully', {
 					onClose: () => {
-						setTimeout(() => {
-							router.push('/')
-						}, 1500)
+						router.push('/')
 					}
 				})
 			} else {
