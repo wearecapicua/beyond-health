@@ -24,11 +24,7 @@ const StepOne = () => {
 	}, [])
 
 	useEffect(() => {
-		if (
-			formStore.country &&
-			!(formStore.shipping_address as unknown as ShippingAddress)?.country?.label &&
-			formStore.country === 'canada'
-		) {
+		if (formStore.country && formStore.country === 'canada') {
 			setValue('shipping_address.country', { value: 'CA', label: 'Canada' })
 		}
 	}, [])
@@ -68,16 +64,36 @@ const StepOne = () => {
 					/>
 				</div>
 				<div className="gap-4 sm:grid sm:grid-cols-2">
-					{shippingAddress && (
-						<Controller
-							name="shipping_address.country"
-							control={control}
-							defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.country}
-							render={({ field }) => (
-								<CountryDropdown {...field} setValue={setValue} errors={errors} />
-							)}
-						/>
-					)}
+					<>
+						{formStore.country === 'canada' ? (
+							<></>
+						) : (
+							<>
+								{shippingAddress ? (
+									<Controller
+										name="shipping_address.country"
+										control={control}
+										defaultValue={
+											(formStore.shipping_address as unknown as ShippingAddress)?.country
+										}
+										render={({ field }) => (
+											<CountryDropdown {...field} setValue={setValue} errors={errors} />
+										)}
+									/>
+								) : (
+									<Controller
+										name="shipping_address.country"
+										control={control}
+										// defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.country}
+										render={({ field }) => (
+											<CountryDropdown {...field} setValue={setValue} errors={errors} />
+										)}
+									/>
+								)}
+							</>
+						)}
+					</>
+
 					<FormInput
 						label="ZIP / Postal Code*"
 						id="shipping_address.postal_code"
