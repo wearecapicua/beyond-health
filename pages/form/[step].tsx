@@ -130,7 +130,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 			stepNum === 15 && formStore.country === 'anotherCountry' ? 'step-18' : incrementString(formData.step)
 		setActiveStep(next)
 
-		router.push(`/form/${next}`)
+		setTimeout(() => {
+			router.push(`/form/${next}`)
+		}, 1000)
 	}
 
 	const onSubmit: SubmitHandler<IFormProps> = async (data: {
