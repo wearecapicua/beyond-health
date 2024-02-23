@@ -40,6 +40,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const { formStep, setFormStep } = useFormStatusStore()
 	const { formStore, updateFormStore } = useFormStore()
+
 	const { updateProductStore } = useProductStore()
 	const stepNum = parseInt(activeStep.split('-')[1])
 
@@ -78,16 +79,16 @@ const FormStep = ({ formData, products }: StepProps) => {
 	}
 
 	const prevPage = () => {
-		if (formStore.country === 'canada') {
-			const next = decrementString(formData.step)
-			setActiveStep(next)
+		// if (formStore.country === 'canada') {
+		const next = decrementString(formData.step)
+		setActiveStep(next)
 
-			router.push(`/form/${next}`)
-		} else {
-			setActiveStep('step-15')
+		router.push(`/form/${next}`)
+		// } else {
+		// 	setActiveStep('step-15')
 
-			router.push('/form/step-15')
-		}
+		// 	router.push('/form/step-15')
+		// }
 	}
 
 	const submitFormData = async (data: Record<string, unknown>) => {
@@ -116,6 +117,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 		const next =
 			stepNum === 15 && formStore.country === 'anotherCountry' ? 'step-18' : incrementString(formData.step)
 		if (imageWasUploaded) setIsLoading(false)
+
 		setActiveStep(next)
 
 		router.push(`/form/${next}`)
@@ -216,8 +218,10 @@ const FormStep = ({ formData, products }: StepProps) => {
 					return
 				}
 			}
+
 			setIsSaving(true)
 			const isSubmitSuccess = await submitFormData(data)
+
 			if (isSubmitSuccess) {
 				handleCheckout(data)
 			} else {
