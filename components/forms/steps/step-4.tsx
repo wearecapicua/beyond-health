@@ -22,7 +22,13 @@ const StepFour = () => {
 			setSelected(formStore.country as string)
 			setValue('country', formStore.country)
 		}
-	}, [formStore.gender])
+	}, [formStore.country])
+
+	useEffect(() => {
+		if (selected) {
+			setValue('country', selected)
+		}
+	}, [selected])
 
 	return (
 		<>
