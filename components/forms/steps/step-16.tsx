@@ -46,7 +46,7 @@ const StepSixteen = () => {
 			updateFormStore({ has_health_card: null })
 		}
 
-		if (formStore.has_health_card === false) {
+		if (!formStore.has_health_card) {
 			setValue('has_health_card', false)
 			setSelected('no')
 		}
@@ -64,7 +64,7 @@ const StepSixteen = () => {
 			await sendUpdatedData({ health_card_image_url: null })
 			await deleteImage(healthCardImage)
 		} else {
-			updateFormStore({ has_health_card: false, health_card: null })
+			updateFormStore({ has_health_card: false })
 		}
 	}
 

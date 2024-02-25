@@ -46,7 +46,7 @@ const StepSeventeen = () => {
 			updateFormStore({ has_insurance: null })
 		}
 
-		if (formStore.has_insurance === false) {
+		if (!formStore.has_insurance) {
 			setValue('has_insurance', false)
 			setSelected('no')
 		}

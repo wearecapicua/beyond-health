@@ -84,7 +84,9 @@ const StepOne = () => {
 									<Controller
 										name="shipping_address.country"
 										control={control}
-										// defaultValue={(formStore.shipping_address as unknown as ShippingAddress)?.country}
+										defaultValue={
+											(formStore.shipping_address as unknown as ShippingAddress)?.country
+										}
 										render={({ field }) => (
 											<CountryDropdown {...field} setValue={setValue} errors={errors} />
 										)}
