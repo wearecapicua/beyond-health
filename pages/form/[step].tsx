@@ -49,14 +49,18 @@ const FormStep = ({ formData, products }: StepProps) => {
 			updateProductStore(products.productsWithPrices)
 			if ((activeStep === 'step-16' || activeStep === 'step-17') && formStore?.country !== 'canada') {
 				setActiveStep('step-18')
-				// setTimeout(() => {
 				router.push(`/form/step-18`)
-				// }, 1500)
 			}
 		} catch (ex) {
 			console.log({ ex })
 		}
 	}, [])
+
+	useEffect(() => {
+		if (activeStep === 'step-13') {
+			createUserProfile({ form_step: activeStep })
+		}
+	}, [activeStep])
 
 	const currentSchema = schema[activeStep]
 	const methods = useForm<IFormProps>({
@@ -164,7 +168,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 			const isStepValid = await trigger()
 			console.log({ isStepValid })
 			if (isStepValid && stepNum === 14) {
-				if (data.picture?.file && formStore.profile_image_url === null) {
+				if (data.picture?.file && !formStore.profile_image_url) {
 					uploadImageAndSubmit('profile_image_url', 'picture', data.picture?.file)
 				}
 				if (!data.picture?.file && formStore.profile_image_url === null) {
@@ -176,7 +180,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 			}
 
 			if (isStepValid && stepNum === 15) {
-				if (data.photo_id?.file && formStore.photo_id_url === null) {
+				if (data.photo_id?.file && !formStore.photo_id_url) {
 					uploadImageAndSubmit('photo_id_url', 'photo_id', data.photo_id?.file)
 				}
 				if (!data.photo_id?.file && formStore.photo_id_url === null) {
