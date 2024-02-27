@@ -187,6 +187,10 @@ export const getServerSideProps = async () => {
 	try {
 		// Fetch user data from your API route
 		const response = await fetch(`${env.host}/api/get-stripe-customer`)
+
+		if (response.status === 500) {
+			throw new Error('Internal Server Error')
+		}
 		const data = await response.json()
 
 		return {
