@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			const { data: profileData, error: profileError } = await supabase
 				.from('profile')
 				.select('*')
-				.not('stripe_customer_id', 'is', null) // Filter users with stripe_customer_id
+				.not('stripe_setup_id', 'is', null) // Filter users with stripe_setup_id
 
 			if (profileError) {
 				throw profileError
