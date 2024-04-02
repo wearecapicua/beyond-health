@@ -1,9 +1,5 @@
 import { useState } from 'react'
 
-import { adminUpdatePayments, createOrder } from 'lib/api/supabase'
-import { fetchPostJSON } from 'lib/http'
-import useStripe from 'lib/useStripe'
-
 import { Product } from './price-column'
 
 type Props = {
@@ -13,70 +9,67 @@ type Props = {
 	product: Product
 }
 
-interface CreateOrderResponse {
-	success: boolean
-	shippoData?: {
-		order_number: string
-	}
-}
-
-const PaymentButton = ({ setupId, price, userId, product }: Props) => {
-	const stripe = useStripe()
+const PaymentButton = ({ price, userId }: Props) => {
 	const [loading, setLoading] = useState(false)
-	const [results, setResults] = useState<string | null>()
 	const priceString = (price / 100).toFixed(2).toString()
-	const productId = product?.id
 
 	const handlePayment = async () => {
 		setLoading(true)
-		if (!stripe) {
-			console.error('Failed to load Stripe.js')
+		console.log(userId)
 
-			return
-		}
+		// Define the string
+		debugger
+		const pepe = await fetch('/api/bambora/create-profile', {
+			method: 'POST',
+			body: JSON.stringify({ userId })
+		})
 
-		try {
-			const response: { status: string } = await fetchPostJSON(`/api/checkout_sessions/post-payment`, {
-				method: 'POST',
-				setupId,
-				price
-			})
+		const pepa = await pepe.json()
+		console.log(pepa)
 
-			setResults(response?.status)
+		// if (!stripe) {
+		// 	console.error('Failed to load Stripe.js')
 
-			if (response?.status === 'succeeded') {
-				const orderResponse: CreateOrderResponse = (await createOrder(
-					userId,
-					productId as string
-				)) as CreateOrderResponse
-				if (orderResponse?.success) {
-					await adminUpdatePayments(userId, orderResponse.shippoData?.order_number || '#')
-				} else {
-					await adminUpdatePayments(userId, '#00000')
-				}
-			} else {
-				await adminUpdatePayments(userId, '#00000')
-			}
+		// 	return
+		// }
 
-			setLoading(false)
-		} catch (error) {
-			console.error('Error', error)
-		}
+		// try {
+		// 	const response: { status: string } = await fetchPostJSON(`/api/checkout_sessions/post-payment`, {
+		// 		method: 'POST',
+		// 		setupId,
+		// 		price
+		// 	})
+
+		// 	setResults(response?.status)
+
+		// 	if (response?.status === 'succeeded') {
+		// 		const orderResponse: CreateOrderResponse = (await createOrder(
+		// 			userId,
+		// 			productId as string
+		// 		)) as CreateOrderResponse
+		// 		if (orderResponse?.success) {
+		// 			await adminUpdatePayments(userId, orderResponse.shippoData?.order_number || '#')
+		// 		} else {
+		// 			await adminUpdatePayments(userId, '#00000')
+		// 		}
+		// 	} else {
+		// 		await adminUpdatePayments(userId, '#00000')
+		// 	}
+
+		// 	setLoading(false)
+		// } catch (error) {
+		// 	console.error('Error', error)
+		// }
 	}
 
 	return (
 		<div className="text-sm text-main-blue">
-			{!results ? (
-				<button onClick={handlePayment} disabled={loading} className={loading ? 'text-gray-500' : ''}>
-					<p>Submit payment for </p>
-					<span>{`$${priceString}`}</span>
-				</button>
-			) : (
-				<div className="text-center">
-					<p>Payment status:</p>
-					<span>{results}</span>
-				</div>
-			)}
+			(
+			<button onClick={handlePayment} disabled={loading} className={loading ? 'text-gray-500' : ''}>
+				<p>Submit payment for </p>
+				<span>{`$${priceString}`}</span>
+			</button>
+			)
 		</div>
 	)
 }

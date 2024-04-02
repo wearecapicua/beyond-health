@@ -8,8 +8,8 @@ import PriceColumn from 'components/price-column'
 import { format } from 'date-fns'
 import env from 'lib/env'
 import { User } from 'lib/types'
-import { useSession } from 'next-auth/react'
 import Head from 'next/head'
+import { useSession } from 'next-auth/react'
 
 type AdminPageProps = {
 	users: User[]
@@ -110,12 +110,16 @@ const AdminPage = ({ preview, users }: AdminPageProps) => {
 												onPriceUpdate={handlePriceUpdate}
 											/>
 											<td className="p-4">
-												<PaymentButton
-													setupId={user.stripe_setup_id}
-													price={productPrices[user.user_id]}
-													userId={user.user_id}
-													product={user.product}
-												/>
+												{!dates ? (
+													<PaymentButton
+														setupId={user.stripe_setup_id}
+														price={productPrices[user.user_id]}
+														userId={user.user_id}
+														product={user.product}
+													/>
+												) : (
+													'Payment Complete'
+												)}
 											</td>
 											<td className="w-[190px] p-4">
 												{dates && (

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import Spinner from 'components/forms/spinner'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
-import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { getSession } from 'next-auth/react'
 import { FormProvider, Resolver, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -11,13 +12,11 @@ import Container from '../../components/container'
 import FormButton from '../../components/forms/form-button'
 import FormContainer from '../../components/forms/form-container'
 import FormStepper from '../../components/forms/form-stepper'
-import Spinner from '../../components/forms/spinner'
 import { FormStepType, formSteps, stepExists } from '../../components/forms/steps/form-steps'
 import Layout from '../../components/layout'
 import Snackbar from '../../components/snackbar'
-import { captureUserPayment, createUserProfile, sendUpdatedData, uploadImages } from '../../lib/api/supabase'
+import { createUserProfile, sendUpdatedData, uploadImages } from '../../lib/api/supabase'
 import env from '../../lib/env'
-import useStripe from '../../lib/useStripe'
 import { useFormStatusStore } from '../../store/useFormStatusStore'
 import { FormState, useFormStore } from '../../store/useFormStore'
 import { useProductStore } from '../../store/useProductStore'
@@ -33,7 +32,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const [isSaving, setIsSaving] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const StepComponent = formSteps[activeStep]
-	const stripe = useStripe()
+	// const stripe = useStripe()
 
 	const numericSplit = activeStep.replace('step-', '')
 	const numericStep = parseInt(numericSplit, 10)
@@ -42,14 +41,14 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const { formStore, updateFormStore } = useFormStore()
 
 	const { updateProductStore } = useProductStore()
-	const stepNum = parseInt(activeStep.split('-')[1])
+	const stepNum = parseInt(activeStep.split('-')[1], 10)
 
 	useEffect(() => {
 		try {
 			updateProductStore(products.productsWithPrices)
 			if ((activeStep === 'step-16' || activeStep === 'step-17') && formStore?.country !== 'canada') {
-				setActiveStep('step-18')
-				router.push(`/form/step-18`)
+				setActiveStep('step-19')
+				router.push(`/form/step-19`)
 			}
 		} catch (ex) {
 			console.log({ ex })
@@ -70,39 +69,48 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const { handleSubmit, trigger } = methods
 
-	const handleCheckout = async (data: Record<string, unknown>) => {
-		if (!stripe) {
-			console.error('Failed to load Stripe.js')
+	const handleCheckout = async () => {
+		try {
+			const orderToken = await fetch(`http://localhost:3000/api/bambora/tokens`, {
+				body: JSON.stringify({
+					number: formStore.card_number,
+					expiry_date: formStore.expiry_date,
+					cvd: formStore.cvd
+				})
+			})
+			const res = await orderToken.json()
 
-			return
+			return res.token
+		} catch (error) {
+			console.log(error)
 		}
-		const updatedData = { ...formStore, ...data, form_step: activeStep }
-		const { filteredBillingData } = filterFormData(updatedData)
-		const response = await captureUserPayment(filteredBillingData)
-		const { error } = await stripe.redirectToCheckout({
-			sessionId: (response as { id: string }).id
-		})
-		setIsSaving(false)
-		console.error({ error })
-		console.warn(error.message)
 	}
 
 	const prevPage = () => {
-		// if (formStore.country === 'canada') {
-		const next = decrementString(formData.step)
-		setActiveStep(next)
+		if (formStore.country === 'canada') {
+			const next = decrementString(formData.step)
+			setActiveStep(next)
 
-		router.push(`/form/${next}`)
-		// } else {
-		// 	setActiveStep('step-15')
+			router.push(`/form/${next}`)
+		} else {
+			setActiveStep('step-15')
 
-		// 	router.push('/form/step-15')
-		// }
+			router.push('/form/step-15')
+		}
 	}
 
 	const submitFormData = async (data: Record<string, unknown>) => {
 		updateFormStore(data as unknown as FormState)
-		const updatedData = { ...formStore, ...data, form_step: activeStep }
+		let updatedData: { form_step: string; stripe_setup_id: string } = {
+			...formStore,
+			...data,
+			form_step: activeStep === 'step-19' ? 'COMPLETE' : activeStep,
+			stripe_setup_id: ''
+		}
+		if (activeStep === 'step-19') {
+			const token = await handleCheckout()
+			updatedData = { ...updatedData, stripe_setup_id: token }
+		}
 		const { filteredData } = filterFormData(updatedData)
 
 		try {
@@ -126,7 +134,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 			updateFormStore({ [dbName]: imageSaveData?.data?.path, [temporalFileName]: null })
 			const next =
 				stepNum === 15 && formStore.country === 'anotherCountry'
-					? 'step-18'
+					? 'step-19'
 					: incrementString(formData.step)
 			if (imageWasUploaded) setIsLoading(false)
 
@@ -144,10 +152,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 			const next =
 				stepNum === 15 && formStore.country === 'anotherCountry'
-					? 'step-18'
+					? 'step-19'
 					: incrementString(formData.step)
 			setActiveStep(next)
-
 			router.push(`/form/${next}`)
 		} catch (ex) {
 			console.log({ ex })
@@ -216,7 +223,10 @@ const FormStep = ({ formData, products }: StepProps) => {
 				updateStoreAndSubmit(data as unknown as FormState)
 			}
 
-			if (isStepValid && activeStep === 'step-18') {
+			if (isStepValid && stepNum === 18) {
+				updateStoreAndSubmit(data as unknown as FormState)
+			}
+			if (isStepValid && activeStep === 'step-19') {
 				const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
 
 				if (validateResults) {
@@ -237,13 +247,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 				}
 
 				setIsSaving(true)
-				const isSubmitSuccess = await submitFormData(data)
-
-				if (isSubmitSuccess) {
-					handleCheckout(data)
-				} else {
-					toast.error('Form not saved successfully')
-				}
+				await submitFormData(data)
 			}
 		} catch (ex) {
 			console.log({ ex })
@@ -310,46 +314,38 @@ const FormStep = ({ formData, products }: StepProps) => {
 			<Container>
 				<FormStepper activeStep={numericStep} />
 			</Container>
-			{(activeStep === 'step-18' && isSaving) || isLoading ? (
-				<div className="align-items flex h-[70vh] w-full flex-col justify-center">
+			{isLoading && (
+				<div className="flex h-[70vh] w-full flex-col justify-center">
 					<Spinner />
 				</div>
-			) : (
-				<FormProvider {...methods}>
-					<form onSubmit={handleSubmit(onSubmit)}>
-						<StepComponent />
-						<FormContainer>
-							<div className="flex flex-col gap-4 py-6">
-								{activeStep === 'step-18' ? (
-									<FormButton
-										disabled={isSaving}
-										text="Go to Checkout"
-										type="submit"
-										style="solid"
-									/>
-								) : (
-									<FormButton disabled={isSaving} text="Next" type="submit" style="solid" />
-								)}
-								<FormButton
-									disabled={isSaving}
-									text="Save for later"
-									type="button"
-									style="outline"
-									onClick={handleSubmit(handleSave as SubmitHandler<IFormProps>)}
-								/>
-								{activeStep !== 'step-1' && (
-									<FormButton
-										disabled={isSaving}
-										text="Go Back"
-										type="button"
-										onClick={prevPage}
-									/>
-								)}
-							</div>
-						</FormContainer>
-					</form>
-				</FormProvider>
 			)}
+			<FormProvider {...methods}>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<StepComponent />
+					<FormContainer>
+						<div className="flex flex-col gap-4 py-6">
+							<FormButton
+								disabled={isSaving}
+								text={activeStep === 'step-19' ? 'Checkout' : 'Next'}
+								type="submit"
+								style="solid"
+							/>
+
+							<FormButton
+								disabled={isSaving}
+								text="Save for later"
+								type="button"
+								style="outline"
+								onClick={handleSubmit(handleSave as SubmitHandler<IFormProps>)}
+							/>
+							{activeStep !== 'step-1' && (
+								<FormButton disabled={isSaving} text="Go Back" type="button" onClick={prevPage} />
+							)}
+						</div>
+					</FormContainer>
+				</form>
+			</FormProvider>
+
 			<Snackbar />
 		</Layout>
 	)
@@ -376,8 +372,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const res = await fetch(`${env.host}/api/all-products`)
 	const products = await res.json()
 
-	const restwo = await fetch(`${env.host}/api/get-stripe-customer`)
-	await restwo.json()
+	// const restwo = await fetch(`${env.host}/api/get-stripe-customer`)
+	// await restwo.json()
 
 	return {
 		props: {

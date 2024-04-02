@@ -46,7 +46,8 @@ const LoginButton = () => {
 			<>
 				<button
 					onClick={() => signOut()}
-					className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
+					className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
+				>
 					Log Out
 				</button>
 				{session.data.user.image && (
@@ -78,7 +79,8 @@ const LoginButton = () => {
 	return (
 		<button
 			onClick={handleStartNow}
-			className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
+			className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
+		>
 			Log In
 		</button>
 	)

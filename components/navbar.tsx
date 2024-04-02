@@ -63,7 +63,8 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 								<div className="hidden sm:space-x-8 md:flex">
 									<Link
 										href="/faqs"
-										className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
+										className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
+									>
 										FAQs
 									</Link>
 									{router.asPath === '/login' ? null : <LoginButton />}
@@ -73,7 +74,8 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 										<button
 											onClick={handleResume}
 											type="button"
-											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500">
+											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
+										>
 											Resume
 										</button>
 									</div>
@@ -82,7 +84,8 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 										<button
 											onClick={handleStartNow}
 											type="button"
-											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500">
+											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
+										>
 											Start Now
 										</button>
 									</div>
@@ -110,7 +113,8 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 								href="/faqs"
 								className={`${
 									isCurrentRoute('/faqs') ? highlightStyles : regLinkStyles
-								} block py-[1px] pr-4 text-base font-medium`}>
+								} block py-[1px] pr-4 text-base font-medium`}
+							>
 								FAQs
 							</Disclosure.Button>
 							<Disclosure.Button
@@ -118,7 +122,8 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 								href="/login"
 								className={`${
 									isCurrentRoute('/login') ? highlightStyles : regLinkStyles
-								} block py-[1px] pr-4 text-base font-medium`}>
+								} block py-[1px] pr-4 text-base font-medium`}
+							>
 								Log In
 							</Disclosure.Button>
 						</div>

@@ -104,7 +104,8 @@ const FormStepper = ({ activeStep }: FormStepperProps) => {
 								<a
 									href={step.href}
 									className="flex flex-1 items-center gap-3 text-sm font-medium last-of-type:flex-initial md:px-6"
-									aria-current="step">
+									aria-current="step"
+								>
 									<span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-main-light-blue">
 										<span className="text-sm text-white">{step.id}</span>
 									</span>

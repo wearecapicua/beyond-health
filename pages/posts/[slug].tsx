@@ -50,7 +50,8 @@ const Post = ({ page, preview }: PostProps) => {
 									{/* TODO:check if this works well with inline-block else should be changed for flex */}
 									<Link
 										href="/posts"
-										className=" mx-auto block w-[200px] pb-24 sm:px-0 md:pb-32">
+										className=" mx-auto block w-[200px] pb-24 sm:px-0 md:pb-32"
+									>
 										<button className="inline-block  w-full items-center justify-center gap-3 rounded-full border-[1px] border-solid border-main-black px-6 py-3 text-lg font-semibold">
 											<ArrowLeftIcon className="h-6" />
 											Back to Blog

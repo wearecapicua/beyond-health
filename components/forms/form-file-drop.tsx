@@ -138,7 +138,8 @@ const FormFileDrop = ({
 				<div className="relative mx-auto max-w-[320px]">
 					<button
 						className="absolute right-[-12px] top-[-12px] w-10 rounded-full bg-main-black p-1 text-white"
-						onClick={undoPhoto}>
+						onClick={undoPhoto}
+					>
 						<XMarkIcon />
 					</button>
 					<div className="mb-10 overflow-hidden rounded-xl">
@@ -162,12 +163,14 @@ const FormFileDrop = ({
 							e.preventDefault()
 							capture()
 						}}
-						className={`${innerButtonStyles} w-1/2 py-3 hover:bg-blue-500 hover:bg-opacity-5`}>
+						className={`${innerButtonStyles} w-1/2 py-3 hover:bg-blue-500 hover:bg-opacity-5`}
+					>
 						Capture
 					</button>
 					<button
 						onClick={() => setOpenCam(false)}
-						className={`${innerButtonStyles} w-1/2 py-3 hover:bg-blue-500 hover:bg-opacity-5`}>
+						className={`${innerButtonStyles} w-1/2 py-3 hover:bg-blue-500 hover:bg-opacity-5`}
+					>
 						Cancel
 					</button>
 				</div>
@@ -189,7 +192,8 @@ const FormFileDrop = ({
 												isDragActive || fileName
 													? 'border-main-light-blue bg-blue-500 bg-opacity-5'
 													: 'border-main-black'
-											} ${baseButtonStyles} mb-4`}>
+											} ${baseButtonStyles} mb-4`}
+										>
 											{isDragActive ? (
 												<p>Drop the files here ...</p>
 											) : !fileName ? (

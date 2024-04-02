@@ -86,7 +86,8 @@ const ContactForm: FC = () => {
 					rows={4}
 					placeholder="Type your message"
 					className="w-full resize-none rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 outline-none focus:border-purple-500 focus:shadow-md"
-					{...register('message', { required: true })}></textarea>
+					{...register('message', { required: true })}
+				></textarea>
 				{errors && <FormErrors errors={errors} id="message" text="This field is required" />}
 			</div>
 			<div>

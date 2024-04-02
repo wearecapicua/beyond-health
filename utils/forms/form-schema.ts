@@ -91,5 +91,6 @@ export const schema = {
 				label: z.string()
 			})
 		})
-	})
+	}),
+	'step-19': z.object({})
 }

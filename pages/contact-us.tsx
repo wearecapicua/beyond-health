@@ -29,7 +29,8 @@ const ContactUsPage = ({ preview }: IndexProps) => {
 							"url('/images/portrait-handsome-thinking-young-man-isolated-gray-wall 2.png')",
 						backgroundRepeat: 'no-repeat',
 						backgroundSize: 'contain'
-					}}>
+					}}
+				>
 					<Container>
 						{/* FIXME: check if this keeps the page ok*/}
 						{/* <div className="mb-[10%] flex h-[300px] max-[640px]:h-[200px] max-[640px]:h-[250px] md:mb-[10%] md:h-[360px] lg:mb-[15%] lg:h-[425px] xl:mb-[10%] xl:h-[521px] 2xl:mb-[17%] 2xl:h-[621px]"> */}

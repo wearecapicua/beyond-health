@@ -15,7 +15,9 @@ export const useFormStore = create<FormStore>(
 		(set) => ({
 			formStore: {},
 			updateFormStore: (data: FormState) =>
-				set((state: FormStore) => ({ formStore: { ...state.formStore, ...data } }))
+				set((state: FormStore) => ({
+					formStore: { ...state.formStore, ...data }
+				}))
 		}),
 		{
 			name: 'form-store'

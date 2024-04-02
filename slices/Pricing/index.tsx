@@ -1,76 +1,66 @@
-import { Content } from "@prismicio/client";
-import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { Content } from '@prismicio/client'
+import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
+import { CheckCircleIcon } from '@heroicons/react/24/solid'
 
 /**
  * Props for `Pricing`.
  */
-export type PricingProps = SliceComponentProps<Content.PricingSlice>;
+export type PricingProps = SliceComponentProps<Content.PricingSlice>
 
 interface ListItemProps {
-  text: string | null;
+	text: string | null
 }
 /**
  * Component for "Pricing" Slices.
  */
- const ListItem = ({ text }: ListItemProps) => {
-  return (
-    <div className="flex items-center space-x-4">
-      <div className="flex-shrink-0 w-6 h-6">
-        <CheckCircleIcon className="w-full h-full text-accent-green" />
-      </div>
-      <p className="text-sm font-medium">{text}</p>
-    </div>
-  );
-};
+const ListItem = ({ text }: ListItemProps) => {
+	return (
+		<div className="flex items-center space-x-4">
+			<div className="flex-shrink-0 w-6 h-6">
+				<CheckCircleIcon className="w-full h-full text-accent-green" />
+			</div>
+			<p className="text-sm font-medium">{text}</p>
+		</div>
+	)
+}
 
 const Pricing = ({ slice }: PricingProps): JSX.Element => {
-  const {
-    title,
-    subtitle,
-    description,
-    bullet_one,
-    bullet_two,
-    bullet_three
-  } = slice.primary
+	const { title, subtitle, description, bullet_one, bullet_two, bullet_three } = slice.primary
 
-  const bulletsArray = [bullet_one, bullet_two, bullet_three]
+	const bulletsArray = [bullet_one, bullet_two, bullet_three]
 
-  return (
-    <section
-      data-slice-type={slice.slice_type}
-      data-slice-variation={slice.variation}
-    >
-      <div className="sm:px-6 pt-8 sm:px-6 sm:py-10 lg:px-8">
-        <div className="mx-auto max-w-7xl sm:rounded-3xl px-8 sm:px-10 py-24 text-center bg-white">
-          <h2 className="leading-tight">
-            {title}
-          </h2>
-          {subtitle && 
-            <p className="mx-auto mt-6 max-w-[820px] text-lg leading-8">
-              {subtitle}
-            </p>
-          }
-          <div className="flex flex-col sm:flex-row mt-14 sm:mt-10 justify-center sm:items-center gap-12 sm:gap-20">
-            <div>
-              <PrismicRichText
-                field={description}
-                components={{
-                  paragraph: ({ children }) => <p className="font-raleway font-bold text-2xl sm:text-3xl text-left">{children}</p>,
-                  strong: ({ children }) => <strong className="text-main-light-blue block">{children}</strong>
-                }}
-              />
-            </div>
-            <div className="flex flex-col gap-3 text-left sm:text-center">
-              {bulletsArray.map((item, index) => (
-                <ListItem key={index} text={item} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+	return (
+		<section data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
+			<div className="sm:px-6 pt-8 sm:px-6 sm:py-10 lg:px-8">
+				<div className="mx-auto max-w-7xl sm:rounded-3xl px-8 sm:px-10 py-24 text-center bg-white">
+					<h2 className="leading-tight">{title}</h2>
+					{subtitle && <p className="mx-auto mt-6 max-w-[820px] text-lg leading-8">{subtitle}</p>}
+					<div className="flex flex-col sm:flex-row mt-14 sm:mt-10 justify-center sm:items-center gap-12 sm:gap-20">
+						<div>
+							<PrismicRichText
+								field={description}
+								components={{
+									paragraph: ({ children }) => (
+										<p className="font-raleway font-bold text-2xl sm:text-3xl text-left">
+											{children}
+										</p>
+									),
+									strong: ({ children }) => (
+										<strong className="text-main-light-blue block">{children}</strong>
+									)
+								}}
+							/>
+						</div>
+						<div className="flex flex-col gap-3 text-left sm:text-center">
+							{bulletsArray.map((item, index) => (
+								<ListItem key={index} text={item} />
+							))}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	)
+}
 
-export default Pricing;
+export default Pricing
