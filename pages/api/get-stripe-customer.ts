@@ -12,30 +12,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		try {
 			const { data: profileData, error: profileError } = await supabase
 				.from('profile')
-				.select('*')
-				.not('stripe_setup_id', 'is', null) // Filter users with stripe_setup_id
+				.select('*, products (*)')
+				.not('customer_code', 'is', null)
 
 			if (profileError) {
 				throw profileError
 			}
-
-			// const enrichedUserData = await Promise.all(
-			// 	profileData.map(async (user) => {
-			// 		const setupIntent = await stripe.setupIntents.retrieve(user.stripe_setup_id)
-
-			// 		const email = await getEmailForUserId(user.user_id, supabaseAccessToken!)
-
-			// 		return {
-			// 			...user,
-			// 			email,
-			// 			setupIntentCreated: setupIntent.created
-			// 		}
-			// 	})
-			// )
-
-			// const sortedUserData = enrichedUserData.sort((a, b) => {
-			// 	return new Date(b.setupIntentCreated).getTime() - new Date(a.setupIntentCreated).getTime()
-			// })
 
 			res.status(200).json(profileData)
 		} catch (error) {

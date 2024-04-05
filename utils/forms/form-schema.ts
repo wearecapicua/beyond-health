@@ -43,10 +43,11 @@ export const schema = {
 	}),
 	'step-11': z.object({
 		product: z.object({
-			default_price: z.string().refine((value) => !!value),
 			price: z.number().refine((value) => !!value),
 			name: z.string().refine((value) => !!value),
-			id: z.string().refine((value) => !!value)
+			id: z.number().refine((value) => !!value),
+			ingredients: z.string().refine((value) => !!value),
+			term: z.string().refine((value) => !!value)
 		})
 	}),
 	'step-12': z.object({

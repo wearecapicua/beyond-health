@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Container from 'components/container'
 import CountryDropdown from 'components/country-dropdown'
 import ProductDetails from 'components/product-details'
-import { BillingAddress, StripeProduct } from 'lib/types'
+import { BillingAddress, Product } from 'lib/types'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useFormStore } from 'store/useFormStore'
 import { useProductStore } from 'store/useProductStore'
@@ -19,13 +19,13 @@ const StepEighteen = () => {
 		control
 	} = useFormContext()
 	const { formStore } = useFormStore()
-	const [productOptions, setproductOptions] = useState<StripeProduct>()
+	const [productOptions, setproductOptions] = useState<Product>()
 	const [billingAddress, setBillingAddress] = useState<BillingAddress>()
 	const { productStore } = useProductStore()
 	const [useShipping, setUseShipping] = useState<boolean>(false)
 
 	useEffect(() => {
-		setproductOptions(formStore.product as StripeProduct)
+		setproductOptions(formStore.product as Product)
 	}, [formStore.product])
 
 	useEffect(() => {
@@ -56,8 +56,8 @@ const StepEighteen = () => {
 		}
 	}, [useShipping])
 
-	const filteredProducts = (productStore as unknown as [StripeProduct])?.filter(
-		(product: StripeProduct) => product.default_price === productOptions?.default_price
+	const filteredProducts = (productStore as unknown as [Product])?.filter(
+		(product: Product) => product.id.toString() === productOptions?.id
 	)
 
 	const currProduct = filteredProducts[0]
@@ -86,8 +86,7 @@ const StepEighteen = () => {
 								/>
 								<label
 									htmlFor="default-checkbox"
-									className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-								>
+									className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
 									Same as shipping address
 								</label>
 							</div>
@@ -144,7 +143,7 @@ const StepEighteen = () => {
 							</p>
 						</FormContainer>
 					</div>
-					{currProduct && <ProductDetails product={currProduct as StripeProduct} />}
+					{currProduct && <ProductDetails product={currProduct as Product} />}
 				</div>
 			</Container>
 		</>

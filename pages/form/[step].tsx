@@ -32,7 +32,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const [isSaving, setIsSaving] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const StepComponent = formSteps[activeStep]
-	// const stripe = useStripe()
 
 	const numericSplit = activeStep.replace('step-', '')
 	const numericStep = parseInt(numericSplit, 10)
@@ -71,16 +70,21 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const handleCheckout = async () => {
 		try {
+			debugger
 			const orderToken = await fetch(`http://localhost:3000/api/bambora/tokens`, {
+				method: 'POST',
 				body: JSON.stringify({
 					number: formStore.card_number,
 					expiry_date: formStore.expiry_date,
-					cvd: formStore.cvd
+					cvd: formStore.cvc,
+					userId: formStore.user_id
 				})
 			})
 			const res = await orderToken.json()
 
-			return res.token
+			debugger
+
+			return res.customer_code
 		} catch (error) {
 			console.log(error)
 		}
@@ -101,15 +105,17 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const submitFormData = async (data: Record<string, unknown>) => {
 		updateFormStore(data as unknown as FormState)
-		let updatedData: { form_step: string; stripe_setup_id: string } = {
+		let updatedData: { form_step: string; customer_code: string } = {
 			...formStore,
 			...data,
 			form_step: activeStep === 'step-19' ? 'COMPLETE' : activeStep,
-			stripe_setup_id: ''
+			customer_code: ''
 		}
 		if (activeStep === 'step-19') {
-			const token = await handleCheckout()
-			updatedData = { ...updatedData, stripe_setup_id: token }
+			const customerCode = await handleCheckout()
+			debugger
+			if (!customerCode) throw new Error('Customer code not found')
+			updatedData = { ...updatedData, customer_code: customerCode }
 		}
 		const { filteredData } = filterFormData(updatedData)
 
@@ -166,10 +172,15 @@ const FormStep = ({ formData, products }: StepProps) => {
 		photo_id?: { file: File }
 		health_card?: { file: File }
 		insurance?: { file: File }
+		product?: { price: number; name: string; id: string }
 	}) => {
 		try {
 			const isStepValid = await trigger()
 
+			if (isStepValid && stepNum === 11) {
+				await sendUpdatedData({ productId: data.product?.id })
+				updateFormStore({ productId: data.product?.id })
+			}
 			if (isStepValid && stepNum === 14) {
 				if (data.picture?.file && !formStore.profile_image_url) {
 					uploadImageAndSubmit('profile_image_url', 'picture', data.picture?.file)
@@ -248,6 +259,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 				setIsSaving(true)
 				await submitFormData(data)
+				router.push(`/`)
 			}
 		} catch (ex) {
 			console.log({ ex })
@@ -371,9 +383,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 	const res = await fetch(`${env.host}/api/all-products`)
 	const products = await res.json()
-
-	// const restwo = await fetch(`${env.host}/api/get-stripe-customer`)
-	// await restwo.json()
 
 	return {
 		props: {

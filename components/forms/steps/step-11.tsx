@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react'
 
-import { StripeProduct } from 'lib/types'
+import { Product } from 'lib/types'
 import { useFormContext } from 'react-hook-form'
 import { useFormStore } from 'store/useFormStore'
 import { useProductStore } from 'store/useProductStore'
@@ -17,10 +17,10 @@ const StepEleven = () => {
 	} = useFormContext()
 	const { formStore } = useFormStore()
 	const { productStore } = useProductStore()
-	const [productOptions, setproductOptions] = useState<[StripeProduct]>()
+	const [productOptions, setproductOptions] = useState<[Product]>()
 
-	const filterProductArray = (productStore as unknown as [StripeProduct]).filter((product: StripeProduct) => {
-		const stages = product?.metadata?.Stage?.split(', ')
+	const filterProductArray = (productStore as unknown as [Product]).filter((product: Product) => {
+		const stages = product?.stage?.split(', ')
 
 		return stages?.includes(formStore.stage as string)
 	})
@@ -30,20 +30,27 @@ const StepEleven = () => {
 
 	const customValidate = () => {
 		setValue('product', {
-			default_price: filteredProducts[0].default_price,
 			price: filteredProducts[0].price,
 			name: filteredProducts[0].name,
-			id: (filteredProducts[0] as unknown as { id: string }).id
+			id: filteredProducts[0].id,
+			ingredients: filteredProducts[0].ingredients,
+			term: filteredProducts[0].term
 		})
-		setSelected(filteredProducts[0].default_price as string)
+		setSelected(`${filteredProducts[0].id}` as string)
 	}
 
 	useEffect(() => {
 		if ((!selected || selected === '') && filteredProducts) {
-			setSelected(filteredProducts[0]?.default_price as string)
-			setValue('product', filteredProducts[0])
+			setSelected(`${filteredProducts[0].id}` as string)
+			setValue('product', {
+				price: filteredProducts[0].price,
+				name: filteredProducts[0].name,
+				id: filteredProducts[0].id,
+				ingredients: filteredProducts[0].ingredients,
+				term: filteredProducts[0].term
+			})
 		}
-		setproductOptions(filteredProducts as unknown as SetStateAction<[StripeProduct] | undefined>)
+		setproductOptions(filteredProducts as unknown as SetStateAction<[Product] | undefined>)
 	}, [formStore.product])
 
 	return (
@@ -53,12 +60,12 @@ const StepEleven = () => {
 				subtitle="Based on your input, this is the recommended hair growth solution final approval from your doctor"
 			/>
 			<FormContainer>
-				{productOptions?.map((option: StripeProduct) => {
+				{productOptions?.map((option: Product) => {
 					return (
 						<FormSelectorButton
 							key={option.name}
 							label={option.name}
-							value={option.default_price}
+							value={`${option.id}`}
 							groupId="product"
 							large
 							selected={selected}

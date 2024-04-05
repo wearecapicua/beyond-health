@@ -24,7 +24,8 @@ const serverEnv = z.object({
 	sendgridApiKey: z.string().nonempty(),
 	bamboraMerchantId: z.string().nonempty(),
 	bamboraApiPasscode: z.string().nonempty(),
-	bamboraApiUrl: z.string().nonempty()
+	bamboraApiUrl: z.string().nonempty(),
+	bamboraPaymentPasscode: z.string().nonempty()
 })
 
 const mergedEnv = serverEnv.merge(clientEnv)
@@ -54,7 +55,8 @@ const processEnv: Record<keyof z.infer<typeof serverEnv> | keyof z.infer<typeof 
 	sendgridApiKey: process.env.SENDGRID_API_KEY,
 	bamboraMerchantId: process.env.BAMBORA_MERCHANT_ID,
 	bamboraApiPasscode: process.env.BAMBORA_API_PASSCODE,
-	bamboraApiUrl: process.env.BAMBORA_API_URL
+	bamboraApiUrl: process.env.BAMBORA_API_URL,
+	bamboraPaymentPasscode: process.env.BAMBORA_PAYMENT_PASSCODE
 }
 type MergedInput = z.input<typeof mergedEnv>
 type MergedOutput = z.infer<typeof mergedEnv>

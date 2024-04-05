@@ -1,11 +1,9 @@
 import { SetStateAction, useEffect, useState } from 'react'
 
-import { formatAmountForDisplay } from 'lib/stripeUtils'
-import { StripeProduct } from 'lib/types'
+import { Product } from 'lib/types'
 import { useFormContext } from 'react-hook-form'
 import { useFormStore } from 'store/useFormStore'
 import { useProductStore } from 'store/useProductStore'
-import * as config from 'stripe.config'
 
 import FormContainer from '../form-container'
 import FormHeader from '../form-header'
@@ -19,17 +17,17 @@ const StepTwelve = () => {
 	} = useFormContext()
 	const { formStore } = useFormStore()
 	const { productStore } = useProductStore()
-	const [productOptions, setproductOptions] = useState<[StripeProduct]>()
+	const [productOptions, setproductOptions] = useState<[Product]>()
 
-	const filteredProducts = (productStore as unknown as [StripeProduct]).filter(
-		(product: StripeProduct) =>
-			product.default_price === (formStore.product as unknown as { default_price: string })?.default_price
-	)
+	const filteredProducts = (productStore as unknown as [Product]).filter((product: Product) => {
+		const stages = product?.stage?.split(', ')
 
+		return stages?.includes(formStore.stage as string)
+	})
 	useEffect(() => {
-		setSelected((formStore.product as unknown as { default_price: string })?.default_price)
+		setSelected((formStore.product as unknown as { id: string })?.id)
 		setValue('product', formStore.product)
-		setproductOptions(filteredProducts as SetStateAction<[StripeProduct] | undefined>)
+		setproductOptions(filteredProducts as SetStateAction<[Product] | undefined>)
 	}, [formStore.product])
 
 	return (
@@ -39,17 +37,14 @@ const StepTwelve = () => {
 				subtitle="Unless the healthcare practitioner has a medical reason to prescribe you less, you will always get a year's worth of medication with prescriptions written through Beyond Health & Medical."
 			/>
 			<FormContainer wide>
-				{productOptions?.map((option: StripeProduct) => {
-					const productPrice = formatAmountForDisplay(option.price, config.CURRENCY)
-
+				{productOptions?.map((option: Product) => {
 					return (
 						<FormSelectorProduct
 							key={option.name}
 							label={option.name}
-							value={option.default_price}
+							value={option.id}
 							groupId="product"
-							description={option?.description}
-							price={productPrice}
+							price={option.price}
 							selected={selected}
 							setSelected={setSelected}
 						/>

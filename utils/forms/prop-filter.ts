@@ -11,13 +11,14 @@ const expectedProperties: string[] = [
 	'questions',
 	'stage',
 	'product',
+	'productId',
 	'shipping_address',
 	'billing_address',
 	'has_health_card',
 	'has_insurance',
 	'form_step',
 	'stripe_customer_id',
-	'stripe_setup_id'
+	'customer_code'
 ]
 
 const expectedBillingProperties: string[] = [
@@ -29,8 +30,8 @@ const expectedBillingProperties: string[] = [
 	'shipping_address',
 	'billing_address',
 	'stripe_customer_id',
-
-	'stripe_setup_id'
+	'productId',
+	'customer_code'
 ]
 
 export const filterFormData = <T>(obj: T): { filteredData: Partial<T>; filteredBillingData: Partial<T> } => {
