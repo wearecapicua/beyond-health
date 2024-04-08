@@ -1,10 +1,10 @@
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { getProfileData } from 'lib/api/supabase'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import { useFormStatusStore } from 'store/useFormStatusStore'
 import { useFormStore } from 'store/useFormStore'
 
@@ -63,8 +63,7 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 								<div className="hidden sm:space-x-8 md:flex">
 									<Link
 										href="/faqs"
-										className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue"
-									>
+										className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
 										FAQs
 									</Link>
 									{router.asPath === '/login' ? null : <LoginButton />}
@@ -74,8 +73,7 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 										<button
 											onClick={handleResume}
 											type="button"
-											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
-										>
+											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500">
 											Resume
 										</button>
 									</div>
@@ -84,8 +82,7 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 										<button
 											onClick={handleStartNow}
 											type="button"
-											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500"
-										>
+											className="relative inline-flex items-center gap-x-1.5 rounded-full bg-main-light-blue px-5 py-2 font-semibold tracking-wide text-white shadow-sm hover:bg-main-light-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500">
 											Start Now
 										</button>
 									</div>
@@ -97,9 +94,9 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 									<span className="absolute -inset-0.5" />
 									<span className="sr-only">Open main menu</span>
 									{open ? (
-										<XMarkIcon className="block size-8 text-main-black" aria-hidden="true" />
+										<XMarkIcon className="size-8 block text-main-black" aria-hidden="true" />
 									) : (
-										<Bars3Icon className="block size-8 text-main-black" aria-hidden="true" />
+										<Bars3Icon className="size-8 block text-main-black" aria-hidden="true" />
 									)}
 								</Disclosure.Button>
 							</div>
@@ -113,8 +110,7 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 								href="/faqs"
 								className={`${
 									isCurrentRoute('/faqs') ? highlightStyles : regLinkStyles
-								} block py-[1px] pr-4 text-base font-medium`}
-							>
+								} block py-[1px] pr-4 text-base font-medium`}>
 								FAQs
 							</Disclosure.Button>
 							<Disclosure.Button
@@ -122,8 +118,7 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 								href="/login"
 								className={`${
 									isCurrentRoute('/login') ? highlightStyles : regLinkStyles
-								} block py-[1px] pr-4 text-base font-medium`}
-							>
+								} block py-[1px] pr-4 text-base font-medium`}>
 								Log In
 							</Disclosure.Button>
 						</div>

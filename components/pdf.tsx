@@ -1,4 +1,4 @@
-import { LegacyRef, SetStateAction, useRef, useState } from 'react'
+import { SetStateAction, useState } from 'react'
 
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { Document, Image, PDFViewer, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer'
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
 
 const Pdf = ({ user }: { user: User }) => {
 	const [showPdfViewer, setShowPdfViewer] = useState(false)
-	const pdfRef = useRef()
+	// const pdfRef = useRef()
+
 	const [userImagesUrls, setUserImagesUrls] = useState({
 		profileImageUrl: {
 			signedUrl: ''
@@ -173,10 +174,7 @@ const Pdf = ({ user }: { user: User }) => {
 			</button>
 			{showPdfViewer && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
-					<PDFViewer
-						width="100%"
-						height="100%"
-						ref={pdfRef as unknown as LegacyRef<PDFViewer> | undefined}>
+					<PDFViewer width="100%" height="100%">
 						<PDFDocument user={user} userImages={userImagesUrls} />
 					</PDFViewer>
 					<button
