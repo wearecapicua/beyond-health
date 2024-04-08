@@ -1,6 +1,6 @@
+import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import { Content } from '@prismicio/client'
 import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
-import { CheckCircleIcon } from '@heroicons/react/24/solid'
 
 /**
  * Props for `Pricing`.
@@ -16,8 +16,8 @@ interface ListItemProps {
 const ListItem = ({ text }: ListItemProps) => {
 	return (
 		<div className="flex items-center space-x-4">
-			<div className="flex-shrink-0 w-6 h-6">
-				<CheckCircleIcon className="w-full h-full text-accent-green" />
+			<div className="h-6 w-6 shrink-0">
+				<CheckCircleIcon className="h-full w-full text-accent-green" />
 			</div>
 			<p className="text-sm font-medium">{text}</p>
 		</div>
@@ -31,22 +31,22 @@ const Pricing = ({ slice }: PricingProps): JSX.Element => {
 
 	return (
 		<section data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
-			<div className="sm:px-6 pt-8 sm:px-6 sm:py-10 lg:px-8">
-				<div className="mx-auto max-w-7xl sm:rounded-3xl px-8 sm:px-10 py-24 text-center bg-white">
+			<div className="pt-8 sm:px-6 sm:py-10 lg:px-8">
+				<div className="mx-auto max-w-7xl bg-white px-8 py-24 text-center sm:rounded-3xl sm:px-10">
 					<h2 className="leading-tight">{title}</h2>
 					{subtitle && <p className="mx-auto mt-6 max-w-[820px] text-lg leading-8">{subtitle}</p>}
-					<div className="flex flex-col sm:flex-row mt-14 sm:mt-10 justify-center sm:items-center gap-12 sm:gap-20">
+					<div className="mt-14 flex flex-col justify-center gap-12 sm:mt-10 sm:flex-row sm:items-center sm:gap-20">
 						<div>
 							<PrismicRichText
 								field={description}
 								components={{
 									paragraph: ({ children }) => (
-										<p className="font-raleway font-bold text-2xl sm:text-3xl text-left">
+										<p className="text-left font-raleway text-2xl font-bold sm:text-3xl">
 											{children}
 										</p>
 									),
 									strong: ({ children }) => (
-										<strong className="text-main-light-blue block">{children}</strong>
+										<strong className="block text-main-light-blue">{children}</strong>
 									)
 								}}
 							/>

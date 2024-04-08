@@ -11,7 +11,8 @@ export type SpacerProps = SliceComponentProps<Content.SpacerSlice>
  */
 const Spacer = ({ slice }: SpacerProps): JSX.Element => {
 	const large = slice.primary.spacer
-	return large ? <div className="py-9 hidden sm:block" /> : <div className="py-4 hidden sm:block" />
+
+	return large ? <div className="hidden py-9 sm:block" /> : <div className="hidden py-4 sm:block" />
 }
 
 export default Spacer

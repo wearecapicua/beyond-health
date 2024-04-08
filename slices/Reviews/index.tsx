@@ -1,6 +1,6 @@
+import { StarIcon } from '@heroicons/react/20/solid'
 import { Content } from '@prismicio/client'
 import { SliceComponentProps } from '@prismicio/react'
-import { StarIcon } from '@heroicons/react/20/solid'
 
 /**
  * Props for `Reviews`.
@@ -15,14 +15,15 @@ const Reviews = ({ slice }: ReviewsProps): JSX.Element => {
 
 	return (
 		<section data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
-			<div className="px-5 sm:px-0 max-w-[1180px] mx-auto py-10">
-				<div className="flex gap-7 sm:gap-5 flex-col md:flex-row">
+			<div className="mx-auto max-w-[1180px] px-5 py-10 sm:px-0">
+				<div className="flex flex-col gap-7 sm:gap-5 md:flex-row">
 					{items.map((item: any, index) => {
 						const starCount = parseInt(item.review?.data.rating)
+
 						return (
-							<div key={index} className="relative flex-1 h-426 bg-white py-10 px-6 rounded-3xl">
-								<div className="flex justify-between mb-10">
-									<span className="text-[22px] font-semibold font-raleway">
+							<div key={index} className="h-426 relative flex-1 rounded-3xl bg-white px-6 py-10">
+								<div className="mb-10 flex justify-between">
+									<span className="font-raleway text-[22px] font-semibold">
 										{item.review.data?.name}
 									</span>
 									<div className="flex gap-1">

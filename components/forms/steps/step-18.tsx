@@ -86,7 +86,8 @@ const StepEighteen = () => {
 								/>
 								<label
 									htmlFor="default-checkbox"
-									className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+									className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+								>
 									Same as shipping address
 								</label>
 							</div>

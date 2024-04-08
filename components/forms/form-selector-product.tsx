@@ -19,7 +19,8 @@ const FormSelectorProduct = ({ selected, label, value, price }: FormSelectorButt
 		<div
 			className={`${
 				selected === value ? 'border-main-light-blue bg-blue-500 bg-opacity-5' : 'border-gray-400'
-			} hover:opacity-8 relative my-3 flex w-full overflow-hidden rounded-[40px] border-[1px] px-10 py-5 leading-6 sm:px-12`}>
+			} hover:opacity-8 relative my-3 flex w-full overflow-hidden rounded-[40px] border-[1px] px-10 py-5 leading-6 sm:px-12`}
+		>
 			<input
 				type="radio"
 				id={value}

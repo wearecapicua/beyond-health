@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { useFormStore } from 'store/useFormStore'
 
+import DatePicker from './form-date-picker'
 import FormContainer from '../form-container'
 import FormErrors from '../form-errors'
 import FormHeader from '../form-header'
-import DatePicker from './form-date-picker'
 
 const StepThree = () => {
 	const [fullDate, setFullDate] = useState('')

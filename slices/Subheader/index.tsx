@@ -11,6 +11,7 @@ export type SubheaderProps = SliceComponentProps<Content.SubheaderSlice>
  */
 const Subheader = ({ slice }: SubheaderProps): JSX.Element => {
 	const { title, subtitle } = slice.primary
+
 	return (
 		<section data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
 			<div className="px-6 py-8 sm:px-6 sm:py-14 lg:px-8">

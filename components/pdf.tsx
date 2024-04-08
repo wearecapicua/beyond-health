@@ -179,12 +179,14 @@ const Pdf = ({ user }: { user: User }) => {
 					</PDFViewer>
 					<button
 						className="absolute bottom-4 right-6 rounded-lg bg-red-500 px-4 py-2 text-white"
-						onClick={handleClosePdfViewer}>
+						onClick={handleClosePdfViewer}
+					>
 						Close
 					</button>
 					<button
 						className="absolute bottom-4 left-4 rounded-lg bg-main-blue px-4 py-2 text-white"
-						onClick={handleDownloadPDF}>
+						onClick={handleDownloadPDF}
+					>
 						Download PDF
 					</button>
 				</div>
