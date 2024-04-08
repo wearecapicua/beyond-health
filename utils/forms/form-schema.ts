@@ -50,9 +50,7 @@ export const schema = {
 			term: z.string().refine((value) => !!value)
 		})
 	}),
-	'step-12': z.object({
-		// product: z.string().refine(value => !!value)
-	}),
+	'step-12': z.object({}),
 	'step-13': z.object({
 		shipping_address: z.object({
 			line1: z.string().min(1, 'Street address is required').max(100),
