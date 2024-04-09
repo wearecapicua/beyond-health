@@ -26,7 +26,7 @@ import { filterFormData } from '../../utils/forms/prop-filter'
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const FormStep = ({ formData, products }: StepProps) => {
+const FormStep = ({ formData, products, host }: StepProps) => {
 	const router = useRouter()
 	const [activeStep, setActiveStep] = useState<FormStepType>(formData.step)
 	const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -71,7 +71,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const handleCheckout = async () => {
 		try {
 			debugger
-			const orderToken = await fetch(`${env.host}/api/bambora/tokens`, {
+			const orderToken = await fetch(`${host}/api/bambora/tokens`, {
 				method: 'POST',
 				body: JSON.stringify({
 					number: formStore.card_number,
@@ -390,7 +390,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 			formData: {
 				step
 			},
-			user: session.user
+			user: session.user,
+			host: env.host
 		}
 	}
 }
