@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 const clientEnv = z.object({
-	stripePublicKey: z.string().nonempty()
+	stripePublicKey: z.string().nonempty(),
+	host: z.string().default('http://localhost:3000')
 })
 
 const serverEnv = z.object({
