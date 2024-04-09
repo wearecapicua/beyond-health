@@ -71,7 +71,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const handleCheckout = async () => {
 		try {
 			debugger
-			const orderToken = await fetch(`http://localhost:3000/api/bambora/tokens`, {
+			const orderToken = await fetch(`${env.host}/api/bambora/tokens`, {
 				method: 'POST',
 				body: JSON.stringify({
 					number: formStore.card_number,
