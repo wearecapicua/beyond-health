@@ -23,7 +23,8 @@ const FormButton = ({ disabled, type, text, onClick, icon, style }: FormButtonPr
 			disabled={disabled}
 			type={type}
 			onClick={onClick}
-			className={`${buttonStyles} flex w-full items-center justify-center gap-4 rounded-full px-6 py-3 font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500 md:text-sm`}>
+			className={`${buttonStyles} flex w-full items-center justify-center gap-4 rounded-full px-6 py-3 font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main-light-blue-500 md:text-sm`}
+		>
 			{icon && icon === 'google' ? <GoogleIcon /> : null}
 			{icon && icon === 'facebook' ? <FacebookIcon /> : null}
 			{text}

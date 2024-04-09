@@ -21,7 +21,11 @@ const serverEnv = z.object({
 	vercelEnv: z.string().default('localhost'),
 	shippoApiKey: z.string().nonempty(),
 	host: z.string().default('http://localhost:3000'),
-	sendgridApiKey: z.string().nonempty()
+	sendgridApiKey: z.string().nonempty(),
+	bamboraMerchantId: z.string().nonempty(),
+	bamboraApiPasscode: z.string().nonempty(),
+	bamboraApiUrl: z.string().nonempty(),
+	bamboraPaymentPasscode: z.string().nonempty()
 })
 
 const mergedEnv = serverEnv.merge(clientEnv)
@@ -48,7 +52,11 @@ const processEnv: Record<keyof z.infer<typeof serverEnv> | keyof z.infer<typeof 
 	shippoApiKey: process.env.SHIPPO_API_KEY,
 	vercelEnv: process.env.VERCEL_ENV,
 	host: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
-	sendgridApiKey: process.env.SENDGRID_API_KEY
+	sendgridApiKey: process.env.SENDGRID_API_KEY,
+	bamboraMerchantId: process.env.BAMBORA_MERCHANT_ID,
+	bamboraApiPasscode: process.env.BAMBORA_API_PASSCODE,
+	bamboraApiUrl: process.env.BAMBORA_API_URL,
+	bamboraPaymentPasscode: process.env.BAMBORA_PAYMENT_PASSCODE
 }
 type MergedInput = z.input<typeof mergedEnv>
 type MergedOutput = z.infer<typeof mergedEnv>

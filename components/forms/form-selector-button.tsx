@@ -25,7 +25,8 @@ const FormButton = ({
 		<div
 			className={`${
 				large ? 'py-10' : 'py-8'
-			} relative my-4 rounded-full border-[1px] border-gray-400 bg-white px-6 text-xl font-semibold leading-6 text-main-blue`}>
+			} relative my-4 rounded-full border-[1px] border-gray-400 bg-white px-6 text-xl font-semibold leading-6 text-main-blue`}
+		>
 			{customValidate ? (
 				<input
 					type="radio"
@@ -51,7 +52,8 @@ const FormButton = ({
 					selected === value
 						? 'bg-main-light-blue text-white'
 						: 'border-[1px] border-gray-400 text-main-blue'
-				} rounded-full`}>
+				} rounded-full`}
+			>
 				{label}
 			</label>
 		</div>

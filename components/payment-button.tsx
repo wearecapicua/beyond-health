@@ -1,10 +1,7 @@
 import { useState } from 'react'
 
 import { adminUpdatePayments, createOrder } from 'lib/api/supabase'
-import { fetchPostJSON } from 'lib/http'
-import useStripe from 'lib/useStripe'
-
-import { Product } from './price-column'
+import { Product } from 'lib/types'
 
 type Props = {
 	setupId: string
@@ -12,7 +9,6 @@ type Props = {
 	userId: string
 	product: Product
 }
-
 interface CreateOrderResponse {
 	success: boolean
 	shippoData?: {
@@ -20,34 +16,23 @@ interface CreateOrderResponse {
 	}
 }
 
-const PaymentButton = ({ setupId, price, userId, product }: Props) => {
-	const stripe = useStripe()
+const PaymentButton = ({ userId, product }: Props) => {
+	const { price } = product
 	const [loading, setLoading] = useState(false)
-	const [results, setResults] = useState<string | null>()
-	const priceString = (price / 100).toFixed(2).toString()
-	const productId = product?.id
 
 	const handlePayment = async () => {
 		setLoading(true)
-		if (!stripe) {
-			console.error('Failed to load Stripe.js')
-
-			return
-		}
 
 		try {
-			const response: { status: string } = await fetchPostJSON(`/api/checkout_sessions/post-payment`, {
+			const payment = await fetch('/api/bambora/payment', {
 				method: 'POST',
-				setupId,
-				price
+				body: JSON.stringify({ userId, price })
 			})
 
-			setResults(response?.status)
-
-			if (response?.status === 'succeeded') {
+			if (payment?.ok) {
 				const orderResponse: CreateOrderResponse = (await createOrder(
 					userId,
-					productId as string
+					`${product.id}`
 				)) as CreateOrderResponse
 				if (orderResponse?.success) {
 					await adminUpdatePayments(userId, orderResponse.shippoData?.order_number || '#')
@@ -55,9 +40,8 @@ const PaymentButton = ({ setupId, price, userId, product }: Props) => {
 					await adminUpdatePayments(userId, '#00000')
 				}
 			} else {
-				await adminUpdatePayments(userId, '#00000')
+				throw new Error('Payment failed')
 			}
-
 			setLoading(false)
 		} catch (error) {
 			console.error('Error', error)
@@ -66,17 +50,12 @@ const PaymentButton = ({ setupId, price, userId, product }: Props) => {
 
 	return (
 		<div className="text-sm text-main-blue">
-			{!results ? (
-				<button onClick={handlePayment} disabled={loading} className={loading ? 'text-gray-500' : ''}>
-					<p>Submit payment for </p>
-					<span>{`$${priceString}`}</span>
-				</button>
-			) : (
-				<div className="text-center">
-					<p>Payment status:</p>
-					<span>{results}</span>
-				</div>
-			)}
+			(
+			<button onClick={handlePayment} disabled={loading} className={loading ? 'text-gray-500' : ''}>
+				<p>Submit payment for </p>
+				<span>{`$${price}`}</span>
+			</button>
+			)
 		</div>
 	)
 }

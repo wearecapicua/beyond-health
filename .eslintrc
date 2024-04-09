@@ -36,8 +36,9 @@
 	],
 	"ignorePatterns": ["types.generated.ts"],
 	"rules": {
+
 		"prettier/prettier": [
-			"error",
+			"off",
 			{
 				"endOfLine": "auto"
 			}
@@ -148,7 +149,7 @@
 				"pathGroupsExcludedImportTypes": ["react"],
 				"newlines-between": "always",
 				"alphabetize": {
-					// "order": "asc",
+					"order": "asc",
 					"caseInsensitive": true
 				}
 			}

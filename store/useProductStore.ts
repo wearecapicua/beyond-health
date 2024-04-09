@@ -12,7 +12,10 @@ export const useProductStore = create<ProductStore>(
 	persist(
 		(set) => ({
 			productStore: [],
-			updateProductStore: (value: FormState) => set({ productStore: value })
+			updateProductStore: (value: FormState) =>
+				set({
+					productStore: value
+				})
 		}),
 		{
 			name: 'product-store'

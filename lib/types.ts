@@ -19,16 +19,13 @@ export type AuthorContentRelationshipField = RelationField<
 	FieldState
 >
 
-export type StripeProduct = {
-	default_price: string
-	metadata: {
-		Stage: string
-		Term: string
-		Ingredients: string
-	}
+export type Product = {
+	stage: string
 	name: string
 	price: number
-	description: string
+	id: string
+	ingredients: string
+	term: string
 }
 
 export type BillingAddress = {
@@ -70,11 +67,7 @@ export type User = {
 	stage: string
 	has_insurance: boolean
 	has_health_card: boolean
-	product: {
-		name: string
-		price: number
-		default_price: string
-	}
+	products: Product
 	phone_number: string
 	country: string
 	shipping_address: {

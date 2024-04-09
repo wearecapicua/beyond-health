@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 
+import { FormData } from 'components/contact-form'
 import Container from 'components/container'
 import Layout from 'components/layout'
 import PostTitle from 'components/post-title'
 import { sendUpdatedData } from 'lib/api/supabase'
 import env from 'lib/env'
+import { sendEmail2 } from 'lib/sendEmail'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
 import Stripe from 'stripe'
-import { sendEmail2 } from 'lib/sendEmail'
-import { FormData } from 'components/contact-form'
 
 type ResultProps = {
 	amount: number

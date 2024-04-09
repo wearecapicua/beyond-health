@@ -1,0 +1,47 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+	// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+	// List of extensions which should be recommended for users of this workspace.
+	"recommendations": [
+		"naumovs.color-highlight",
+		"kisstkondoros.vscode-codemetrics",
+		"formulahendry.auto-close-tag",
+		"formulahendry.auto-rename-tag",
+		"mrmlnc.vscode-autoprefixer",
+		"trongthanh.theme-boxythemekit",
+		"mikestead.dotenv",
+		"editorconfig.editorconfig",
+		"spoonscen.es6-mocha-snippets",
+		"dsznajder.es7-react-js-snippets",
+		"eamodio.gitlens",
+		"graphql.vscode-graphql",
+		"mkaufman.htmlhint",
+		"wix.vscode-import-cost",
+		"oderwat.indent-rainbow",
+		"zignd.html-css-class-completion",
+		"xabikos.javascriptsnippets",
+		"atlassian.atlascode",
+		"gregorbiswanger.json2ts",
+		"ms-vsliveshare.vsliveshare",
+		"ms-vsliveshare.vsliveshare-audio",
+		"ms-vsliveshare.vsliveshare-pack",
+		"davidanson.vscode-markdownlint",
+		"pkief.material-icon-theme",
+		"stringham.move-ts",
+		"christian-kohler.npm-intellisense",
+		"christian-kohler.path-intellisense",
+		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
+		"alduncanson.react-hooks-snippets",
+		"wayou.vscode-todo-highlight",
+		"loiane.ts-extension-pack",
+		"rbbit.typescript-hero",
+		"pmneo.tsimporter",
+		"pflannery.vscode-versionlens",
+		"vscode-icons-team.vscode-icons",
+		"redhat.vscode-yaml"
+	],
+	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+	"unwantedRecommendations": []
+}

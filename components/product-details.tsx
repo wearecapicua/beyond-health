@@ -1,16 +1,13 @@
-import { formatAmountForDisplay } from 'lib/stripeUtils'
-import { StripeProduct } from 'lib/types'
-import * as config from 'stripe.config'
+import { Product } from 'lib/types'
 
 type ProductDetailsProps = {
-	product: StripeProduct
+	product: Product
 }
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
-	const { metadata, name, price } = product
+	const { ingredients, term, name, price } = product
 
-	const ingredientList = metadata.Ingredients.split(', ')
-	const formattedPrice = formatAmountForDisplay(price, config.CURRENCY)
+	const ingredientList = ingredients.split(', ')
 
 	return (
 		<div className="mt-10 flex max-w-[430px] flex-1 flex-col justify-between gap-10 px-8 md:mt-2 md:px-4">
@@ -26,14 +23,14 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
 				<p className="pb-2 text-xl font-semibold text-main-blue">What you pay per shipment</p>
 				<ul className="list-inside list-disc pl-3">
 					<li>{name}</li>
-					<li>{metadata.Term}</li>
-					<li>{formattedPrice}</li>
+					<li>{term}</li>
+					<li>${price}</li>
 					<li>Shipping: FREE</li>
 				</ul>
 			</div>
 			<div className="flex items-center justify-between border-t-[1px] border-solid border-main-black pb-3 pt-4">
 				<p className="pb-2 text-xl font-semibold text-main-blue">What you pay today</p>
-				<span className="text-2xl font-semibold text-main-black">$0.00</span>
+				<span className="text-2xl font-semibold text-main-black">${price}</span>
 			</div>
 		</div>
 	)

@@ -1,30 +1,26 @@
+import env from 'lib/env'
+import { supabaseClient } from 'lib/supabaseClient'
 import { NextApiRequest, NextApiResponse } from 'next'
-import Stripe from 'stripe'
-
-const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2022-11-15' })
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
-		const products = await stripeInstance.products.list({
-			limit: 100
-		})
+		const supabaseAccessToken = env.supabaseServiceRoleKey
+		const supabase = supabaseClient(supabaseAccessToken)
+		const response = await supabase.from('products').select('*')
+		const products = response.data
 
-		// Fetch prices for each product using Promise.all
+		if (!products) {
+			throw new Error('No products found')
+		}
 		const productsWithPrices = await Promise.all(
-			products.data.map(async (product) => {
-				const prices = await stripeInstance.prices.list({
-					product: product.id,
-					limit: 10 // Adjust the limit as needed
-				})
-
-				// Select only the desired properties from the product
+			products.map(async (product) => {
 				const selectedProductProps = {
-					default_price: product.default_price,
-					description: product.description,
-					metadata: product.metadata,
+					stage: product.stage,
 					name: product.name,
 					id: product.id,
-					price: prices.data[0].unit_amount
+					price: product.price,
+					ingredients: product.ingredients,
+					term: product.term
 				}
 
 				return selectedProductProps

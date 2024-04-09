@@ -73,7 +73,8 @@ const InfoLeftCta = ({ slice }: CtaSectionProps): JSX.Element => {
 					<div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
 						<a
 							href="/form/step-1"
-							className="w-full rounded-full bg-accent-green px-14 py-3 text-center font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto">
+							className="w-full rounded-full bg-accent-green px-14 py-3 text-center font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto"
+						>
 							{cta_button_text}
 						</a>
 					</div>

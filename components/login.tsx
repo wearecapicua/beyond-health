@@ -3,8 +3,8 @@ import { useState } from 'react'
 import Avatar from 'components/avatar'
 import { getProfileData } from 'lib/api/supabase'
 import { createCustomerPortalSession } from 'lib/stripeUtils'
-import { signOut as nextAuthSignOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { signOut as nextAuthSignOut, useSession } from 'next-auth/react'
 import { useFormStore } from 'store/useFormStore'
 
 const LoginButton = () => {
@@ -37,7 +37,7 @@ const LoginButton = () => {
 			const portalUrl = await createCustomerPortalSession()
 
 			if (portalUrl) {
-				window.location.href = portalUrl // Redirect to the Customer Portal
+				window.location.href = portalUrl
 			}
 			setLoading(false)
 		}

@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { PrismicPreview } from '@prismicio/next'
 import { getFormStatus } from 'lib/api/supabase'
-import { SessionProvider } from 'next-auth/react'
 import { AppProps } from 'next/app'
+import { SessionProvider } from 'next-auth/react'
 import { useFormStatusStore } from 'store/useFormStatusStore'
 import { useFormStore } from 'store/useFormStore'
 

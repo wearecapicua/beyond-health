@@ -1,4 +1,4 @@
-import { LegacyRef, SetStateAction, useRef, useState } from 'react'
+import { SetStateAction, useState } from 'react'
 
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { Document, Image, PDFViewer, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer'
@@ -58,7 +58,7 @@ const PDFDocument = ({ user, userImages }: { user: User; userImages: UserImages 
 						</View>
 					</span>
 				)}
-				<Text>Product: {user?.product.name}</Text>
+				<Text>Product: {user?.products.name}</Text>
 				<Text>Phone number: {user?.phone_number}</Text>
 				<Text>Country: {user?.country}</Text>
 				<Text>Shipping address:</Text>
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
 
 const Pdf = ({ user }: { user: User }) => {
 	const [showPdfViewer, setShowPdfViewer] = useState(false)
-	const pdfRef = useRef()
+	// const pdfRef = useRef()
+
 	const [userImagesUrls, setUserImagesUrls] = useState({
 		profileImageUrl: {
 			signedUrl: ''
@@ -173,20 +174,19 @@ const Pdf = ({ user }: { user: User }) => {
 			</button>
 			{showPdfViewer && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
-					<PDFViewer
-						width="100%"
-						height="100%"
-						ref={pdfRef as unknown as LegacyRef<PDFViewer> | undefined}>
+					<PDFViewer width="100%" height="100%">
 						<PDFDocument user={user} userImages={userImagesUrls} />
 					</PDFViewer>
 					<button
 						className="absolute bottom-4 right-6 rounded-lg bg-red-500 px-4 py-2 text-white"
-						onClick={handleClosePdfViewer}>
+						onClick={handleClosePdfViewer}
+					>
 						Close
 					</button>
 					<button
 						className="absolute bottom-4 left-4 rounded-lg bg-main-blue px-4 py-2 text-white"
-						onClick={handleDownloadPDF}>
+						onClick={handleDownloadPDF}
+					>
 						Download PDF
 					</button>
 				</div>

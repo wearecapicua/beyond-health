@@ -7,7 +7,7 @@
     "slicemachine": "start-slicemachine",
     "slicemachine:login": "start-slicemachine",
     "codegen": "prismic-ts-codegen",
-    "eslint": "eslint  -c .eslintrc \"**/*.{ts,tsx,js,graphql, gql}\"",
+    "eslint": "eslint -c .eslintrc \"**/*.{ts,tsx,js,graphql, gql}\"",
     "prettier": "prettier --write \"**/*.{ts,tsx,js,graphql, gql}\"",
     "precommit:eslint": "eslint -c .eslintrc-precommit --fix \"**/*.{ts,tsx,js,graphql, gql}\"",
     "precommit:prettier": "npm run prettier"

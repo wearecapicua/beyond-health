@@ -8,8 +8,8 @@ import PriceColumn from 'components/price-column'
 import { format } from 'date-fns'
 import env from 'lib/env'
 import { User } from 'lib/types'
-import { useSession } from 'next-auth/react'
 import Head from 'next/head'
+import { useSession } from 'next-auth/react'
 
 type AdminPageProps = {
 	users: User[]
@@ -23,23 +23,13 @@ type UserState = {
 const AdminPage = ({ preview, users }: AdminPageProps) => {
 	const { data: session } = useSession()
 	const [isAdmin, setIsAdmin] = useState(false)
-	const [productPrices, setProductPrices] = useState<{ [key: string]: number }>(
-		users.reduce(
-			(acc, user) => {
-				acc[user.user_id] = user.product?.price
 
-				return acc
-			},
-			{} as { [key: string]: number }
-		)
-	)
-
-	const handlePriceUpdate = (userId: string, newPrice: number) => {
-		setProductPrices((prevPrices) => ({
-			...prevPrices,
-			[userId]: newPrice
-		}))
-	}
+	// const handlePriceUpdate = (userId: string, newPrice: number) => {
+	// 	setProductPrices((prevPrices) => ({
+	// 		...prevPrices,
+	// 		[userId]: newPrice
+	// 	}))
+	// }
 
 	useEffect(() => {
 		if ((session?.user as unknown as { role: string })?.role === 'ADMIN') {
@@ -103,19 +93,19 @@ const AdminPage = ({ preview, users }: AdminPageProps) => {
 											</td>
 											<td className="p-4">{`${user.first_name} ${user.last_name}`}</td>
 											<td className="p-4">{user.email}</td>
-											<td className="max-w-sm p-4">{user.product?.name}</td>
-											<PriceColumn
-												product={user.product}
-												userId={user.user_id}
-												onPriceUpdate={handlePriceUpdate}
-											/>
+											<td className="max-w-sm p-4">{user.products?.name}</td>
+											<PriceColumn product={user.products} />
 											<td className="p-4">
+												{/* {!dates ? ( */}
 												<PaymentButton
 													setupId={user.stripe_setup_id}
-													price={productPrices[user.user_id]}
+													price={user.products.price || 0}
 													userId={user.user_id}
-													product={user.product}
+													product={user.products}
 												/>
+												{/* ) : (
+													'Payment Complete'
+												)} */}
 											</td>
 											<td className="w-[190px] p-4">
 												{dates && (
@@ -123,7 +113,8 @@ const AdminPage = ({ preview, users }: AdminPageProps) => {
 														<div
 															className={`${
 																showItems ? 'font-bold' : 'mb-2 font-normal'
-															} text-xs`}>
+															} text-xs`}
+														>
 															<span className="mr-3">
 																{
 																	(
@@ -137,13 +128,15 @@ const AdminPage = ({ preview, users }: AdminPageProps) => {
 														</div>
 														<div
 															className="text-xs uppercase text-main-light-blue"
-															onClick={() => toggleItems(user.user_id)}>
+															onClick={() => toggleItems(user.user_id)}
+														>
 															{showItems && (
 																<ul className="mb-2 text-main-black">
 																	{dates.slice(1).map((item, index) => (
 																		<li
 																			key={`${item.timestamp}-${index}`}
-																			className="text-xs">
+																			className="text-xs"
+																		>
 																			<span className="mr-3">
 																				{
 																					(

@@ -17,7 +17,8 @@ const FormSelectorImage = ({ selected, setSelected, image, label, value, groupId
 
 	return (
 		<div
-			className={`${selectedStyles} hover:opacity-8 relative my-4 flex w-full rounded-full px-6 py-5 text-xl font-semibold leading-6 text-main-blue`}>
+			className={`${selectedStyles} hover:opacity-8 relative my-4 flex w-full rounded-full px-6 py-5 text-xl font-semibold leading-6 text-main-blue`}
+		>
 			<input
 				type="radio"
 				id={value}

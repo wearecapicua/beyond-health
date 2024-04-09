@@ -28,7 +28,8 @@ const Footer = () => {
 							<div className="mt-4 sm:ml-4 sm:mt-0 sm:shrink-0">
 								<button
 									type="submit"
-									className="flex w-full items-center justify-center rounded-full bg-accent-green px-6 py-3 text-sm font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+									className="flex w-full items-center justify-center rounded-full bg-accent-green px-6 py-3 text-sm font-semibold text-main-black shadow-sm hover:bg-accent-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+								>
 									Subscribe
 								</button>
 							</div>
@@ -46,7 +47,8 @@ const Footer = () => {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="text-sm leading-6 text-gray-300 hover:text-white">
+												className="text-sm leading-6 text-gray-300 hover:text-white"
+											>
 												{item.name}
 											</a>
 										</li>
@@ -66,7 +68,8 @@ const Footer = () => {
 												href={item.href}
 												target="_blank"
 												className="flex gap-3 text-sm leading-6 text-gray-300 hover:text-white"
-												rel="noreferrer">
+												rel="noreferrer"
+											>
 												<item.icon className="h-6 w-6" aria-hidden="true" />
 												<span>{item.name}</span>
 											</a>
@@ -83,7 +86,8 @@ const Footer = () => {
 							<a
 								key={item.name}
 								href={item.href}
-								className="text-sm text-white underline decoration-solid hover:text-gray-400">
+								className="text-sm text-white underline decoration-solid hover:text-gray-400"
+							>
 								<span>{item.name}</span>
 							</a>
 						))}
