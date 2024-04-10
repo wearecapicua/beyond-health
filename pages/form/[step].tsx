@@ -70,19 +70,16 @@ const FormStep = ({ formData, products, host }: StepProps) => {
 
 	const handleCheckout = async () => {
 		try {
-			debugger
 			const orderToken = await fetch(`${host}/api/bambora/tokens`, {
 				method: 'POST',
 				body: JSON.stringify({
 					number: formStore.card_number,
 					expiry_date: formStore.expiry_date,
 					cvd: formStore.cvc,
-					userId: formStore.user_id
+					formStore
 				})
 			})
 			const res = await orderToken.json()
-
-			debugger
 
 			return res.customer_code
 		} catch (error) {
@@ -113,7 +110,6 @@ const FormStep = ({ formData, products, host }: StepProps) => {
 		}
 		if (activeStep === 'step-19') {
 			const customerCode = await handleCheckout()
-			debugger
 			if (!customerCode) throw new Error('Customer code not found')
 			updatedData = { ...updatedData, customer_code: customerCode }
 		}
