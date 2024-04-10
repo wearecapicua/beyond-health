@@ -55,11 +55,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				res.status(200).json(data)
 			} else {
 				console.error('Error obtaining token:', response.status)
-				res.status(500).json({ error: 'Internal server error' })
+				res.status(500).json({ error: response.statusText })
 			}
 		} catch (error) {
 			console.error(error)
-			res.status(500).json({ error: 'Internal server error' })
+			res.status(500).json({ error })
 		}
 	} else {
 		res.setHeader('Allow', 'POST')
