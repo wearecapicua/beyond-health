@@ -1,11 +1,10 @@
 import env from 'lib/env'
-import { supabaseClient } from 'lib/supabaseClient'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === 'POST') {
 		const urlToken = `${env.bamboraApiUrl}/scripts/tokenization/tokens`
-		const { userId, number, cvd, expiry_date } = await JSON.parse(req.body)
+		const { formStore, number, cvd, expiry_date } = await JSON.parse(req.body)
 		const bodyToken = {
 			number,
 			expiry_month: expiry_date.split('/')[0],
@@ -23,34 +22,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			})
 
 			const { token } = await responseToken.json()
-
-			const supabaseAccessToken = env.supabaseServiceRoleKey
-			const supabase = supabaseClient(supabaseAccessToken)
 			const decodedStringBtoA = `${env.bamboraMerchantId}:${env.bamboraApiPasscode}`
 
 			const encodedStringBtoA = btoa(decodedStringBtoA)
-
-			const { data, error } = await supabase.from('profile').select('*').eq('user_id', userId).single()
-
-			if (error) {
-				return res.status(404).json({ error: 'Profile not found' })
-			}
 			const url = `${env.bamboraApiUrl}/v1/profiles`
 			const body = {
 				token: {
-					name: data.first_name,
+					name: formStore.first_name,
 					code: token
 				},
 				billing: {
-					name: data.first_name,
-					address_line1: data.billing_address.line1,
-					address_line2: data.billing_address.line2,
-					city: data.billing_address.city,
-					postal_code: data.billing_address.postal_code,
-					phone_number: data.phone_number
+					name: formStore.first_name,
+					address_line1: formStore.billing_address.line1,
+					address_line2: formStore.billing_address.line2 || '',
+					city: formStore.billing_address.city,
+					postal_code: formStore.billing_address.postal_code,
+					phone_number: formStore.phone_number
 				}
 			}
-			console.log(body)
 
 			const response = await fetch(url, {
 				method: 'POST',
