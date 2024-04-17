@@ -12,7 +12,7 @@ import Container from '../../components/container'
 import FormButton from '../../components/forms/form-button'
 import FormContainer from '../../components/forms/form-container'
 import FormStepper from '../../components/forms/form-stepper'
-import { FormStepType, formSteps, stepExists } from '../../components/forms/steps/form-steps'
+import { formSteps, FormStepType, stepExists } from '../../components/forms/steps/form-steps'
 import Layout from '../../components/layout'
 import Snackbar from '../../components/snackbar'
 import { createUserProfile, sendUpdatedData, uploadImages } from '../../lib/api/supabase'
@@ -80,6 +80,7 @@ const FormStep = ({ formData, products, host }: StepProps) => {
 				})
 			})
 			const res = await orderToken.json()
+			console.log('res handleCheckout', res)
 
 			return res.customer_code
 		} catch (error) {
@@ -110,6 +111,7 @@ const FormStep = ({ formData, products, host }: StepProps) => {
 		}
 		if (activeStep === 'step-19') {
 			const customerCode = await handleCheckout()
+			console.log('res customerCode', customerCode)
 			if (!customerCode) throw new Error('Customer code not found')
 			updatedData = { ...updatedData, customer_code: customerCode }
 		}
