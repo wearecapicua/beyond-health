@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Spinner from 'components/forms/spinner'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
-import { useRouter } from 'next/router'
 import { getSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { FormProvider, Resolver, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -80,6 +80,7 @@ const FormStep = ({ formData, products, host }: StepProps) => {
 				})
 			})
 			const res = await orderToken.json()
+			console.log('res handleCheckout', res)
 
 			return res.customer_code
 		} catch (error) {
@@ -110,6 +111,7 @@ const FormStep = ({ formData, products, host }: StepProps) => {
 		}
 		if (activeStep === 'step-19') {
 			const customerCode = await handleCheckout()
+			console.log('res customerCode', customerCode)
 			if (!customerCode) throw new Error('Customer code not found')
 			updatedData = { ...updatedData, customer_code: customerCode }
 		}
