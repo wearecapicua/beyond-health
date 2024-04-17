@@ -20,7 +20,7 @@ const serverEnv = z.object({
 	supabaseJwtSecret: z.string().nonempty(),
 	vercelEnv: z.string().default('localhost'),
 	shippoApiKey: z.string().nonempty(),
-	host: z.string().default('http://localhost:3000'),
+	host: z.string().default('localhost'),
 	sendgridApiKey: z.string().nonempty(),
 	bamboraMerchantId: z.string().nonempty(),
 	bamboraApiPasscode: z.string().nonempty(),
