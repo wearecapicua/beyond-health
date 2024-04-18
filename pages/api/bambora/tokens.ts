@@ -29,6 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			const decodedStringBtoA = `${env.bamboraMerchantId}:${env.bamboraApiPasscode}`
 
 			const encodedStringBtoA = btoa(decodedStringBtoA)
+			if (!encodedStringBtoA) throw new Error('Error encoding string to base64')
+
 			const url = `${env.bamboraApiUrl}/v1/profiles`
 			const body = {
 				token: {
@@ -60,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				res.status(200).json(data)
 			} else {
 				console.error('Error obtaining token:', response.status)
-				res.status(500).json({ error: response.statusText })
+				res.status(response.status).json({ error: response.statusText })
 			}
 		} catch (error) {
 			console.error(error)

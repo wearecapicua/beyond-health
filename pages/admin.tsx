@@ -24,13 +24,6 @@ const AdminPage = ({ preview, users }: AdminPageProps) => {
 	const { data: session } = useSession()
 	const [isAdmin, setIsAdmin] = useState(false)
 
-	// const handlePriceUpdate = (userId: string, newPrice: number) => {
-	// 	setProductPrices((prevPrices) => ({
-	// 		...prevPrices,
-	// 		[userId]: newPrice
-	// 	}))
-	// }
-
 	useEffect(() => {
 		if ((session?.user as unknown as { role: string })?.role === 'ADMIN') {
 			setIsAdmin(true)
@@ -113,8 +106,7 @@ const AdminPage = ({ preview, users }: AdminPageProps) => {
 														<div
 															className={`${
 																showItems ? 'font-bold' : 'mb-2 font-normal'
-															} text-xs`}
-														>
+															} text-xs`}>
 															<span className="mr-3">
 																{
 																	(
@@ -128,15 +120,13 @@ const AdminPage = ({ preview, users }: AdminPageProps) => {
 														</div>
 														<div
 															className="text-xs uppercase text-main-light-blue"
-															onClick={() => toggleItems(user.user_id)}
-														>
+															onClick={() => toggleItems(user.user_id)}>
 															{showItems && (
 																<ul className="mb-2 text-main-black">
 																	{dates.slice(1).map((item, index) => (
 																		<li
 																			key={`${item.timestamp}-${index}`}
-																			className="text-xs"
-																		>
+																			className="text-xs">
 																			<span className="mr-3">
 																				{
 																					(
