@@ -3,16 +3,19 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === 'POST') {
-		const urlToken = `${env.bamboraApiUrl}/scripts/tokenization/tokens`
-		const { formStore, number, cvd, expiry_date } = await JSON.parse(req.body)
-		const bodyToken = {
-			number,
-			expiry_month: expiry_date.split('/')[0],
-			expiry_year: expiry_date.split('/')[1],
-			cvd
-		}
-
 		try {
+			const urlToken = `${env.bamboraApiUrl}/scripts/tokenization/tokens`
+			const { formStore, number, cvd, expiry_date } = await JSON.parse(req.body)
+			const { first_name, billing_address, phone_number } = formStore
+			if (!first_name || !billing_address || !phone_number || !number || !cvd || !expiry_date)
+				throw new Error('Missing required fields')
+			const bodyToken = {
+				number,
+				expiry_month: expiry_date.split('/')[0],
+				expiry_year: expiry_date.split('/')[1],
+				cvd
+			}
+
 			const responseToken = await fetch(urlToken, {
 				method: 'POST',
 				headers: {
@@ -22,22 +25,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			})
 
 			const { token } = await responseToken.json()
+			if (!token) throw new Error('Error obtaining token from Bambora')
 			const decodedStringBtoA = `${env.bamboraMerchantId}:${env.bamboraApiPasscode}`
 
 			const encodedStringBtoA = btoa(decodedStringBtoA)
 			const url = `${env.bamboraApiUrl}/v1/profiles`
 			const body = {
 				token: {
-					name: formStore.first_name,
+					name: first_name,
 					code: token
 				},
 				billing: {
-					name: formStore.first_name,
-					address_line1: formStore.billing_address.line1,
-					address_line2: formStore.billing_address.line2 || '',
-					city: formStore.billing_address.city,
-					postal_code: formStore.billing_address.postal_code,
-					phone_number: formStore.phone_number
+					name: first_name,
+					address_line1: billing_address.line1,
+					address_line2: billing_address.line2 || '',
+					city: billing_address.city,
+					postal_code: billing_address.postal_code,
+					phone_number
 				}
 			}
 
@@ -52,6 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 			if (response.ok) {
 				const data = await response.json()
+				if (!data.customer_code) throw new Error('Error obtaining customerCode from Bambora')
 				res.status(200).json(data)
 			} else {
 				console.error('Error obtaining token:', response.status)
