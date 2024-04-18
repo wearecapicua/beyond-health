@@ -79,8 +79,8 @@ const FormStep = ({ formData, products, host }: StepProps) => {
 					formStore
 				})
 			})
+			if (!orderToken.ok) throw Error(`HTTP tokens error! status: ${orderToken.status}`)
 			const res = await orderToken.json()
-			console.log('res handleCheckout', res)
 
 			return res.customer_code
 		} catch (error) {
