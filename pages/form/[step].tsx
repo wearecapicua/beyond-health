@@ -70,7 +70,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const handleCheckout = async () => {
 		try {
-			debugger
 			const orderToken = await fetch(`/api/bambora/tokens`, {
 				method: 'POST',
 				body: JSON.stringify({
@@ -112,7 +111,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 		}
 		if (activeStep === 'step-19') {
 			const customerCode = await handleCheckout()
-			console.log('res customerCode', customerCode)
 			if (!customerCode) throw new Error('Customer code not found')
 			updatedData = { ...updatedData, customer_code: customerCode }
 		}
