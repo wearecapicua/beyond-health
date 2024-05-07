@@ -31,6 +31,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const [activeStep, setActiveStep] = useState<FormStepType>(formData.step)
 	const [isSaving, setIsSaving] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [step19Error, setStep19Error] = useState('')
 	const StepComponent = formSteps[activeStep]
 
 	const numericSplit = activeStep.replace('step-', '')
@@ -70,13 +71,16 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const handleCheckout = async () => {
 		try {
+			if (formStore.customer_code) return formStore.customer_code
+
 			const orderToken = await fetch(`/api/bambora/tokens`, {
 				method: 'POST',
 				body: JSON.stringify({
 					number: formStore.card_number,
 					expiry_date: formStore.expiry_date,
 					cvd: formStore.cvc,
-					formStore
+					formStore,
+					profileId: formStore.customer_code
 				})
 			})
 
@@ -111,7 +115,10 @@ const FormStep = ({ formData, products }: StepProps) => {
 		}
 		if (activeStep === 'step-19') {
 			const customerCode = await handleCheckout()
-			if (!customerCode) throw new Error('Customer code not found')
+			if (!customerCode) {
+				setStep19Error('Customer code not found')
+				throw new Error('Customer code not found')
+			}
 			updatedData = { ...updatedData, customer_code: customerCode }
 		}
 		const { filteredData } = filterFormData(updatedData)
@@ -123,6 +130,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 				return await createUserProfile(filteredData)
 			}
 		} catch (error) {
+			const err = error as string
+			setStep19Error(err)
 			console.error('Form submission error:', error)
 
 			return false
@@ -331,6 +340,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 			<FormProvider {...methods}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<StepComponent />
+					{activeStep === 'step-19' && <p className="text-center text-red-600">{step19Error}</p>}
 					<FormContainer>
 						<div className="flex flex-col gap-4 py-6">
 							<FormButton
