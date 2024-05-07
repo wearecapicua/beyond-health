@@ -4,8 +4,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === 'POST') {
 		try {
-			const urlToken = `${env.bamboraApiUrl}/scripts/tokenization/tokens`
 			const { formStore, number, cvd, expiry_date } = await JSON.parse(req.body)
+
+			const urlToken = `${env.bamboraApiUrl}/scripts/tokenization/tokens`
 			const { first_name, billing_address, phone_number } = formStore
 			if (!first_name || !billing_address || !phone_number || !number || !cvd || !expiry_date)
 				throw new Error('Missing required fields')
