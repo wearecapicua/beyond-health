@@ -5,6 +5,8 @@ type ProductDetailsProps = {
 }
 
 const ProductDetails = ({ product }: ProductDetailsProps) => {
+	console.log(product)
+
 	// const { ingredients, term, name, price } = product
 
 	// const ingredientList = ingredients.split(', ')
