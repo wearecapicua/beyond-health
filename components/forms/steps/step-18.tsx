@@ -56,8 +56,9 @@ const StepEighteen = () => {
 	return (
 		<>
 			<FormHeader
-				title={'Review and submit your online visit'}
-				subtitle="Confirm the formula and auto-refill schedule and submit your online visit."
+				title={'Please submit your payment for your telehealth visit'}
+				// title={'Review and submit your online visit'}
+				// subtitle="Confirm the formula and auto-refill schedule and submit your online visit."
 			/>
 			<Container>
 				<div className="justify-center gap-10 pb-10 md:flex">

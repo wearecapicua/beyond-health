@@ -69,28 +69,28 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const { handleSubmit, trigger } = methods
 
-	const handleCheckout = async () => {
-		try {
-			if (formStore.customer_code) return formStore.customer_code
+	// const handleCheckout = async () => {
+	// 	try {
+	// 		if (formStore.customer_code) return formStore.customer_code
 
-			const orderToken = await fetch(`/api/bambora/tokens`, {
-				method: 'POST',
-				body: JSON.stringify({
-					number: formStore.card_number,
-					expiry_date: formStore.expiry_date,
-					cvd: formStore.cvc,
-					formStore,
-					profileId: formStore.customer_code
-				})
-			})
+	// 		const orderToken = await fetch(`/api/bambora/tokens`, {
+	// 			method: 'POST',
+	// 			body: JSON.stringify({
+	// 				number: formStore.card_number,
+	// 				expiry_date: formStore.expiry_date,
+	// 				cvd: formStore.cvc,
+	// 				formStore,
+	// 				profileId: formStore.customer_code
+	// 			})
+	// 		})
 
-			const res = await orderToken.json()
+	// 		const res = await orderToken.json()
 
-			return res.customer_code
-		} catch (error) {
-			console.log(error)
-		}
-	}
+	// 		return res.customer_code
+	// 	} catch (error) {
+	// 		console.log(error)
+	// 	}
+	// }
 
 	const prevPage = () => {
 		if (formStore.country === 'canada') {
@@ -114,12 +114,13 @@ const FormStep = ({ formData, products }: StepProps) => {
 			customer_code: ''
 		}
 		if (activeStep === 'step-19') {
-			const customerCode = await handleCheckout()
-			if (!customerCode) {
-				setStep19Error('Customer code not found')
-				throw new Error('Customer code not found')
-			}
-			updatedData = { ...updatedData, customer_code: customerCode }
+			// const customerCode = await handleCheckout()
+			// if (!customerCode) {
+			// 	setStep19Error('Customer code not found')
+			// 	throw new Error('Customer code not found')
+			// }
+			// updatedData = { ...updatedData, customer_code: customerCode }
+			updatedData = { ...updatedData }
 		}
 		const { filteredData } = filterFormData(updatedData)
 
