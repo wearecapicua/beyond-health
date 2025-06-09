@@ -43,6 +43,7 @@
     "next-auth": "^4.22.1",
     "next-slicezone": "^0.2.6",
     "nodemailer": "^6.9.7",
+    "nuvei": "^1.0.2",
     "prismic-ts-codegen": "0.1.19",
     "raw-body": "^2.5.2",
     "react": "^18.2.0",
