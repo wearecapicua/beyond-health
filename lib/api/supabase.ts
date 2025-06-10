@@ -27,7 +27,6 @@ export async function sendUpdatedData(updatedData: Record<string, unknown>) {
 		method: 'PUT',
 		updatedData
 	})
-	console.log('res', response)
 
 	return response
 }

@@ -26,13 +26,22 @@ import { filterFormData } from '../../utils/forms/prop-filter'
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
+// Define la interfaz para SafeCharge
+
 const FormStep = ({ formData, products }: StepProps) => {
 	const router = useRouter()
 	const [activeStep, setActiveStep] = useState<FormStepType>(formData.step)
 	const [isSaving, setIsSaving] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const [step19Error, setStep19Error] = useState('')
+	// const [safeCharge, setSafeCharge] = useState<SafeCharge>()
+	// const [sessionToken, setSessionToken] = useState()
+	// const [step19Error, setStep19Error] = useState('')
 	const StepComponent = formSteps[activeStep]
+	// const [timeStamp, setTimeStamp] = useState('')
+	// const [checksum, setChecksum] = useState('')
+	// const [userTokenId, setUserTokenId] = useState('')
+	// const currency = 'USD'
+	// const [amount, setAmount] = useState(0)
 
 	const numericSplit = activeStep.replace('step-', '')
 	const numericStep = parseInt(numericSplit, 10)
@@ -43,23 +52,125 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const { updateProductStore } = useProductStore()
 	const stepNum = parseInt(activeStep.split('-')[1], 10)
 
+	// useEffect(() => {
+	// 	if (sessionToken !== undefined) {
+	// 		if (window.SafeCharge) {
+	// 			setSafeCharge(
+	// 				window.SafeCharge({
+	// 					env: 'int',
+	// 					sessionToken,
+	// 					merchantId: env.publicMerchantId,
+	// 					merchantSiteId: env.publicMerchantSiteId
+	// 				})
+	// 			)
+	// 			console.log('safecharge.js está listo para usarse en step-18')
+	// 		}
+	// 	}
+	// 	console.log('safeCharge:', safeCharge)
+	// }, [sessionToken])
+
+	useEffect(() => {
+		// if (activeStep === 'step-18') {
+		// 	const product = formStore.product as { price: number }
+		// 	const user_id = formStore.user_id as string
+		// 	// setAmount(product.price)
+		// 	// setTimeStamp(generateTimestamp())
+		// 	// setUserTokenId(user_id)
+		// }
+		if (activeStep === 'step-13') {
+			createUserProfile({ form_step: activeStep })
+		}
+	}, [activeStep])
+
+	// useEffect(() => {
+	// 	if (timeStamp !== '' && userTokenId !== '' && amount > 0) {
+	// 		handleGenerateChecksum()
+	// 	}
+	// }, [timeStamp, userTokenId, amount])
+
+	// useEffect(() => {
+	// 	if (checksum !== '') {
+	// 		openOrder()
+	// 			.then((sessionToken) => {
+	// 				setSessionToken(sessionToken)
+	// 			})
+	// 			.catch((error) => {
+	// 				console.error('Error al abrir la orden:', error)
+	// 			})
+	// 	}
+	// }, [checksum])
+
+	// const handleGenerateChecksum = async () => {
+	// 	const response = await fetch('/api/nuvei/generateChecksum', {
+	// 		method: 'POST',
+	// 		headers: {
+	// 			'Content-Type': 'application/json'
+	// 		},
+	// 		body: JSON.stringify({
+	// 			publicMerchantId: env.publicMerchantId,
+	// 			publicMerchantSiteId: env.publicMerchantSiteId,
+	// 			user_id: userTokenId,
+	// 			productPrice: amount,
+	// 			timeStamp
+	// 		})
+	// 	})
+
+	// 	if (response.ok) {
+	// 		const data = await response.json()
+	// 		setChecksum(data.checksum)
+	// 	}
+	// }
+
+	// const generateTimestamp = (): string => {
+	// 	const now = new Date()
+
+	// 	return now
+	// 		.toISOString()
+	// 		.replace(/[-:.TZ]/g, '')
+	// 		.slice(0, 14)
+	// }
+
+	// const openOrder = async () => {
+	// 	const response = await fetch('https://ppp-test.nuvei.com/ppp/api/v1/openOrder.do', {
+	// 		method: 'POST',
+	// 		headers: {
+	// 			'Content-Type': 'application/json'
+	// 		},
+	// 		body: JSON.stringify({
+	// 			merchantId: env.publicMerchantId,
+	// 			merchantSiteId: env.publicMerchantSiteId,
+	// 			timeStamp,
+	// 			checksum,
+	// 			amount,
+	// 			userTokenId,
+	// 			currency
+	// 		})
+	// 	})
+
+	// 	if (!response.ok) {
+	// 		throw new Error(response.statusText)
+	// 	}
+
+	// 	const order = await response.json()
+
+	// 	if (order.status !== 'SUCCESS') {
+	// 		throw new Error(order.reason)
+	// 	}
+
+	// 	return order.sessionToken
+	// }
+
 	useEffect(() => {
 		try {
 			updateProductStore(products.productsWithPrices)
 			if ((activeStep === 'step-16' || activeStep === 'step-17') && formStore?.country !== 'canada') {
-				setActiveStep('step-19')
-				router.push(`/form/step-19`)
+				setActiveStep('step-18')
+				router.push(`/form/step-18`)
 			}
 		} catch (ex) {
 			console.log({ ex })
 		}
 	}, [])
-
-	useEffect(() => {
-		if (activeStep === 'step-13') {
-			createUserProfile({ form_step: activeStep })
-		}
-	}, [activeStep])
 
 	const currentSchema = schema[activeStep]
 	const methods = useForm<IFormProps>({
@@ -69,34 +180,118 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const { handleSubmit, trigger } = methods
 
-	// const handleCheckout = async () => {
-	// 	try {
-	// 		if (formStore.customer_code) return formStore.customer_code
+	const handleCheckout = async () => {
+		try {
+			const { user_id } = formStore
+			const product = formStore.product as { price: number; name: string; id: string }
+			const data = await fetch('/api/insert-order', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					user_id,
+					product_id: product.id
+				})
+			})
 
-	// 		const orderToken = await fetch(`/api/bambora/tokens`, {
-	// 			method: 'POST',
-	// 			body: JSON.stringify({
-	// 				number: formStore.card_number,
-	// 				expiry_date: formStore.expiry_date,
-	// 				cvd: formStore.cvc,
-	// 				formStore,
-	// 				profileId: formStore.customer_code
-	// 			})
-	// 		})
+			const res = await data.json()
 
-	// 		const res = await orderToken.json()
-
-	// 		return res.customer_code
-	// 	} catch (error) {
-	// 		console.log(error)
-	// 	}
-	// }
+			return res
+			// const date = expiry_date as string
+			// const [month, year] = date.split('/')
+			// const res = await fetch('/api/get-user', {
+			// 	method: 'POST',
+			// 	headers: {
+			// 		'Content-Type': 'application/json'
+			// 	},
+			// 	body: JSON.stringify({
+			// 		user_id
+			// 	})
+			// })
+			// const userRes = await res.json()
+			// // if (formStore.customer_code) return formStore.customer_code
+			// if (safeCharge && sessionToken) {
+			// 	debugger
+			// 	const payment: CreatePaymentResponse = await new Promise((resolve, reject) => {
+			// 		safeCharge.createPayment(
+			// 			{
+			// 				sessionToken,
+			// 				paymentOption: {
+			// 					card: {
+			// 						cardNumber: card_number as string,
+			// 						cardHolderName: `${first_name} ${last_name}` as string,
+			// 						expirationMonth: month,
+			// 						expirationYear: `20${year}`,
+			// 						CVV: cvc as string
+			// 					}
+			// 				},
+			// 				billingAddress: {
+			// 					firstName: first_name as string,
+			// 					lastName: last_name as string,
+			// 					email: userRes.user.email as string,
+			// 					country: 'US'
+			// 				}
+			// 			},
+			// 			(res) => {
+			// 				if (res.errCode === '0') {
+			// 					resolve(res)
+			// 				} else {
+			// 					reject(new Error(res.errorDescription))
+			// 				}
+			// 			}
+			// 		)
+			// 	})
+			// 	console.log('Payment response:', payment)
+			// 	if (payment.result !== 'ERROR') {
+			// 		const response = await fetch('https://ppp-test.nuvei.com/ppp/api/v1/getPaymentStatus.do', {
+			// 			method: 'POST',
+			// 			headers: {
+			// 				'Content-Type': 'application/json'
+			// 			},
+			// 			body: JSON.stringify({
+			// 				sessionToken
+			// 			})
+			// 		})
+			// 		const paymentStatus = await response.json()
+			// 		// const orderResponse: CreateOrderResponse = (await createOrder(
+			// 		// 	userId,
+			// 		// 	`${product.id}`
+			// 		// )) as CreateOrderResponse
+			// 		console.log('Payment status:', paymentStatus)
+			// 		if (paymentStatus?.transactionStatus === 'APPROVED') {
+			// 			const orderResponse: CreateOrderResponse = (await createOrder(
+			// 				user_id as string,
+			// 				`${product.id}`
+			// 			)) as CreateOrderResponse
+			// 			console.log('Order response:', orderResponse)
+			// 			if (orderResponse?.success) {
+			// 				await adminUpdatePayments(
+			// 					user_id as string,
+			// 					orderResponse.shippoData?.order_number || '#'
+			// 				)
+			// 			} else {
+			// 				await adminUpdatePayments(user_id as string, '#00000')
+			// 			}
+			// 			return paymentStatus.transactionStatus
+			// 		} else {
+			// 			throw new Error('Payment failed')
+			// 		}
+			// 	}
+			// } else {
+			// 	throw new Error('SafeCharge not found')
+			// }
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	const prevPage = () => {
 		if (formStore.country === 'canada') {
 			const next = decrementString(formData.step)
 			setActiveStep(next)
 
+			// console.log('prevPage', next)
 			router.push(`/form/${next}`)
 		} else {
 			setActiveStep('step-15')
@@ -107,32 +302,33 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const submitFormData = async (data: Record<string, unknown>) => {
 		updateFormStore(data as unknown as FormState)
-		let updatedData: { form_step: string; customer_code: string } = {
-			...formStore,
-			...data,
-			form_step: activeStep === 'step-19' ? 'COMPLETE' : activeStep,
-			customer_code: ''
-		}
-		if (activeStep === 'step-19') {
-			// const customerCode = await handleCheckout()
-			// if (!customerCode) {
-			// 	setStep19Error('Customer code not found')
-			// 	throw new Error('Customer code not found')
-			// }
-			// updatedData = { ...updatedData, customer_code: customerCode }
-			updatedData = { ...updatedData }
-		}
-		const { filteredData } = filterFormData(updatedData)
-
 		try {
+			let updatedData: { form_step: string; customer_code: string } = {
+				...formStore,
+				...data,
+				form_step: activeStep === 'step-18' ? 'COMPLETE' : activeStep,
+				customer_code: ''
+			}
+			if (activeStep === 'step-18') {
+				await handleCheckout()
+				// console.log('Customer code:', customerCode)
+
+				// if (customerCode. !== 200) {
+				// 	// setStep19Error('UserPaymentOptionId not found')
+				// 	throw new Error('UserPaymentOptionId not found')
+				// }
+				updatedData = { ...updatedData }
+			}
+			const { filteredData } = filterFormData(updatedData)
+
 			if (formStep) {
 				return await sendUpdatedData(filteredData)
 			} else {
 				return await createUserProfile(filteredData)
 			}
 		} catch (error) {
-			const err = error as string
-			setStep19Error(err)
+			// const err = error as string
+			// setStep19Error(err)
 			console.error('Form submission error:', error)
 
 			return false
@@ -147,12 +343,13 @@ const FormStep = ({ formData, products }: StepProps) => {
 			updateFormStore({ [dbName]: imageSaveData?.data?.path, [temporalFileName]: null })
 			const next =
 				stepNum === 15 && formStore.country === 'anotherCountry'
-					? 'step-19'
+					? 'step-18'
 					: incrementString(formData.step)
 			if (imageWasUploaded) setIsLoading(false)
 
 			setActiveStep(next)
 
+			// console.log('uploadImageAndSubmit', next)
 			router.push(`/form/${next}`)
 		} catch (ex) {
 			console.log({ ex })
@@ -165,9 +362,10 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 			const next =
 				stepNum === 15 && formStore.country === 'anotherCountry'
-					? 'step-19'
+					? 'step-18'
 					: incrementString(formData.step)
 			setActiveStep(next)
+			// console.log('updateStoreAndSubmit', next)
 			router.push(`/form/${next}`)
 		} catch (ex) {
 			console.log({ ex })
@@ -181,6 +379,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 		insurance?: { file: File }
 		product?: { price: number; name: string; id: string }
 	}) => {
+		debugger
 		try {
 			const isStepValid = await trigger()
 
@@ -241,10 +440,10 @@ const FormStep = ({ formData, products }: StepProps) => {
 				updateStoreAndSubmit(data as unknown as FormState)
 			}
 
-			if (isStepValid && stepNum === 18) {
-				updateStoreAndSubmit(data as unknown as FormState)
-			}
-			if (isStepValid && activeStep === 'step-19') {
+			// if (isStepValid && stepNum === 18) {
+			// 	updateStoreAndSubmit(data as unknown as FormState)
+			// }
+			if (isStepValid && activeStep === 'step-18') {
 				const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
 
 				if (validateResults) {
@@ -266,7 +465,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 				setIsSaving(true)
 				await submitFormData(data)
-				router.push(`/`)
+				router.push(`/order`)
 			}
 		} catch (ex) {
 			console.log({ ex })
@@ -341,12 +540,12 @@ const FormStep = ({ formData, products }: StepProps) => {
 			<FormProvider {...methods}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<StepComponent />
-					{activeStep === 'step-19' && <p className="text-center text-red-600">{step19Error}</p>}
+					{/* {activeStep === 'step-18' && <p className="text-center text-red-600">{step19Error}</p>} */}
 					<FormContainer>
 						<div className="flex flex-col gap-4 py-6">
 							<FormButton
 								disabled={isSaving}
-								text={activeStep === 'step-19' ? 'Checkout' : 'Next'}
+								text={activeStep === 'step-18' ? 'Checkout' : 'Next'}
 								type="submit"
 								style="solid"
 							/>
