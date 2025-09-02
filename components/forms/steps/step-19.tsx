@@ -36,7 +36,7 @@ const StepNineteen = () => {
 									label="Name on Card*"
 									id="card_name"
 									type="text"
-									defaultValue={formStore.card_name}
+									defaultValue={formStore.card_name as string}
 								/>
 
 								{/* Card Number */}
