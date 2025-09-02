@@ -223,9 +223,12 @@ const FormStep = ({ formData, products }: StepProps) => {
 		try {
 			setIsSaving(true)
 			const { billing_address, card_name } = formStore
-			const { country, line1, line2, city, postal_code, state } = billing_address
-			const { value } = country
+			// eslint-disable-next-line
+			// @ts-ignore
+			const { country, line1, city, postal_code, state } = billing_address
 
+			// eslint-disable-next-line
+			// @ts-ignore
 			const { user } = session
 			const { email, id, name } = user
 			const { firstName, lastName } = splitName(name)
