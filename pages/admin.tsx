@@ -49,7 +49,7 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 	}
 
 	function formatDates(dateStamps: [], id: number) {
-		return dateStamps
+		return (dateStamps as { orderId: number; timestamp: string }[])
 			.filter((ph) => ph.orderId === id)
 			?.map((dateStamp: { timestamp: string }) => {
 				const newDate = format(new Date(dateStamp.timestamp), 'MM-dd-yyyy HH:mm')
