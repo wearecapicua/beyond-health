@@ -81,7 +81,8 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 			env.publicMerchantSecretKey
 
 		const checksum = crypto.createHash('sha256').update(rawString).digest('hex')
-		const holderName = document?.getElementById('card-name')?.value?.trim() || ''
+		const el = document.getElementById('card-name')
+		const holderName = el && 'value' in el ? (el as HTMLInputElement).value.trim() : ''
 
 		const payload2 = {
 			paymentFlow: 'direct',
