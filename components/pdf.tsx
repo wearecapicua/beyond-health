@@ -149,17 +149,19 @@ const Pdf = ({ user, profile, products }: { user: User; profile: any; products: 
 	})
 
 	const handleOpenPdfViewer = async () => {
-		const userImages = await getUserImages(user.id)
+		if (user.id) {
+			const userImages = await getUserImages(user.id)
 
-		setUserImagesUrls(
-			userImages as SetStateAction<{
-				profileImageUrl: { signedUrl: string }
-				photoIdUrl: { signedUrl: string }
-				healthCardImageUrl: { signedUrl: string }
-				insuranceImageUrl: { signedUrl: string }
-			}>
-		)
-		setShowPdfViewer(true)
+			setUserImagesUrls(
+				userImages as SetStateAction<{
+					profileImageUrl: { signedUrl: string }
+					photoIdUrl: { signedUrl: string }
+					healthCardImageUrl: { signedUrl: string }
+					insuranceImageUrl: { signedUrl: string }
+				}>
+			)
+			setShowPdfViewer(true)
+		}
 	}
 
 	const handleClosePdfViewer = () => {
