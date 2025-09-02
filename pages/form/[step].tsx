@@ -141,6 +141,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 					}
 				}
 
+				// eslint-disable-next-line
+				// @ts-ignore
 				const fields = sc.fields({
 					locale: 'en',
 					style,
