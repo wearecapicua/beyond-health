@@ -5,7 +5,10 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const { userId, orderNumber } = req.body
+	const { userId, orderNumber, orderId } = req.body
+
+	console.log('orderId')
+	console.log(orderId)
 
 	const session = await getServerSession(req, res, authOptions)
 
@@ -18,7 +21,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	const paymentTimestamp = {
 		timestamp: new Date().toISOString(),
-		orderNumber: orderNumber || '#00000' // Use a default value if orderNumber is not provided
+		orderNumber: orderNumber || '#00000', // Use a default value if orderNumber is not provided
+		orderId
 	}
 
 	if (req.method === 'POST') {
@@ -33,6 +37,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			if (error) {
 				throw error
 			}
+
+			const { data: updateOrderData, error: updateOrderError } = await supabase
+				.from('orders')
+				.update({
+					status: 'Paid'
+				})
+				.eq('id', orderId)
+
+			console.log('updateOrderData')
+			console.log(updateOrderData)
+			console.log('updateOrderError')
+			console.log(updateOrderError)
 
 			// Extract the current payment history array
 			const currentPaymentHistory = data.payments_history || []
@@ -51,8 +67,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			}
 
 			console.log('Payment added to history successfully.')
+
+			return res.status(200).json(true)
 		} catch (error) {
 			if (error instanceof Error) console.error('Error adding payment to history:', error.message)
+
+			return res.status(500).json({ error: 'Internal server error' })
 		}
 	}
 }

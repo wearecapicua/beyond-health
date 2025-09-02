@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react'
+import crypto from 'crypto'
+
+import { useEffect, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Spinner from 'components/forms/spinner'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
-import { getSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
+import { ScreenLoader } from 'pages/screenLoader'
 import { FormProvider, Resolver, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -26,22 +29,17 @@ import { filterFormData } from '../../utils/forms/prop-filter'
 
 type StepProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-// Define la interfaz para SafeCharge
-
 const FormStep = ({ formData, products }: StepProps) => {
 	const router = useRouter()
 	const [activeStep, setActiveStep] = useState<FormStepType>(formData.step)
 	const [isSaving, setIsSaving] = useState<boolean>(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
-	// const [safeCharge, setSafeCharge] = useState<SafeCharge>()
-	// const [sessionToken, setSessionToken] = useState()
+	const [sessionToken, setSessionToken] = useState()
 	// const [step19Error, setStep19Error] = useState('')
 	const StepComponent = formSteps[activeStep]
-	// const [timeStamp, setTimeStamp] = useState('')
-	// const [checksum, setChecksum] = useState('')
-	// const [userTokenId, setUserTokenId] = useState('')
-	// const currency = 'USD'
-	// const [amount, setAmount] = useState(0)
+	const [timeStamp, setTimeStamp] = useState('')
+	const scRef = useRef<any>(null)
+	const cardRef = useRef<any>(null)
 
 	const numericSplit = activeStep.replace('step-', '')
 	const numericStep = parseInt(numericSplit, 10)
@@ -52,113 +50,128 @@ const FormStep = ({ formData, products }: StepProps) => {
 	const { updateProductStore } = useProductStore()
 	const stepNum = parseInt(activeStep.split('-')[1], 10)
 
-	// useEffect(() => {
-	// 	if (sessionToken !== undefined) {
-	// 		if (window.SafeCharge) {
-	// 			setSafeCharge(
-	// 				window.SafeCharge({
-	// 					env: 'int',
-	// 					sessionToken,
-	// 					merchantId: env.publicMerchantId,
-	// 					merchantSiteId: env.publicMerchantSiteId
-	// 				})
-	// 			)
-	// 			console.log('safecharge.js está listo para usarse en step-18')
-	// 		}
-	// 	}
-	// 	console.log('safeCharge:', safeCharge)
-	// }, [sessionToken])
+	const { data: session } = useSession()
 
 	useEffect(() => {
-		// if (activeStep === 'step-18') {
-		// 	const product = formStore.product as { price: number }
-		// 	const user_id = formStore.user_id as string
-		// 	// setAmount(product.price)
-		// 	// setTimeStamp(generateTimestamp())
-		// 	// setUserTokenId(user_id)
-		// }
+		if (activeStep === 'step-19') {
+			const initSafeCharge = async () => {
+				const ts = getNuveiTimeStamp() // current UNIX timestamp in milliseconds
+				const product = formStore.product as { price: number; name: string; id: string }
+				setTimeStamp(ts)
+				const { user_id } = formStore
+				const client_request_id = `mit-${Date.now()}`
+
+				const orderPayload = {
+					sessionToken,
+					transactionType: 'Auth',
+					merchantId: env.publicMerchantId,
+					merchantSiteId: env.publicMerchantSiteId,
+					clientUniqueId: user_id,
+					clientRequestId: client_request_id,
+					currency: 'USD',
+					amount: product.price.toString(),
+					isRebilling: 0,
+					timeStamp: ts,
+					paymentOption: {
+						card: {
+							threeD: {
+								v2AdditionalParams: {
+									rebillExpiry: '20260201',
+									rebillFrequency: '90'
+								}
+							}
+						}
+					},
+					items: [
+						{
+							name: product.name,
+							quantity: 1,
+							price: product.price.toString()
+						}
+					],
+					checksum: ''
+				}
+
+				const orderChecksumStr =
+					env.publicMerchantId +
+					env.publicMerchantSiteId +
+					orderPayload.clientRequestId +
+					orderPayload.amount +
+					orderPayload.currency +
+					ts +
+					env.publicMerchantSecretKey
+
+				orderPayload.checksum = crypto.createHash('sha256').update(orderChecksumStr).digest('hex')
+
+				const responseOrders = await fetch('https://ppp-test.safecharge.com/ppp/api/v1/openOrder.do', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(orderPayload)
+				})
+
+				const dataOrders = await responseOrders.json()
+
+				const st = dataOrders.sessionToken
+
+				setSessionToken(st)
+
+				const sc = window.SafeCharge({
+					env: 'int', // Use "prod" in production
+					sessionToken: st,
+					merchantId: env.publicMerchantId,
+					merchantSiteId: env.publicMerchantSiteId,
+					logLevel: '6',
+					showAccountCapture: true
+				})
+
+				const style = {
+					base: {
+						fontSize: '16px',
+						color: '#000',
+						fontFamily: 'inherit',
+						padding: '12px 16px',
+						border: '1px solid #e5e7eb', // Tailwind border-gray-300
+						borderRadius: '9999px' // fully rounded
+					},
+					focus: {
+						borderColor: '#2563eb' // Tailwind blue-600
+					},
+					invalid: {
+						color: '#dc2626' // Tailwind red-600
+					}
+				}
+
+				const fields = sc.fields({
+					locale: 'en',
+					style,
+					fields: {
+						cardNumber: { id: 'sc-card-number', placeholder: 'Card Number' },
+						expirationDate: { id: 'sc-expiry', placeholder: 'MM / YY' },
+						cvv: { id: 'sc-cvv', placeholder: 'CVV' }
+					}
+				})
+
+				const card = fields.create('card', {
+					// This will create card number + expiry + CVV together
+					style: {
+						base: {
+							color: '#000'
+						}
+					}
+				})
+
+				card.attach(document.getElementById('sc_form'))
+
+				cardRef.current = card
+				scRef.current = sc
+			}
+
+			initSafeCharge()
+		}
 		if (activeStep === 'step-13') {
 			createUserProfile({ form_step: activeStep })
 		}
 	}, [activeStep])
-
-	// useEffect(() => {
-	// 	if (timeStamp !== '' && userTokenId !== '' && amount > 0) {
-	// 		handleGenerateChecksum()
-	// 	}
-	// }, [timeStamp, userTokenId, amount])
-
-	// useEffect(() => {
-	// 	if (checksum !== '') {
-	// 		openOrder()
-	// 			.then((sessionToken) => {
-	// 				setSessionToken(sessionToken)
-	// 			})
-	// 			.catch((error) => {
-	// 				console.error('Error al abrir la orden:', error)
-	// 			})
-	// 	}
-	// }, [checksum])
-
-	// const handleGenerateChecksum = async () => {
-	// 	const response = await fetch('/api/nuvei/generateChecksum', {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			'Content-Type': 'application/json'
-	// 		},
-	// 		body: JSON.stringify({
-	// 			publicMerchantId: env.publicMerchantId,
-	// 			publicMerchantSiteId: env.publicMerchantSiteId,
-	// 			user_id: userTokenId,
-	// 			productPrice: amount,
-	// 			timeStamp
-	// 		})
-	// 	})
-
-	// 	if (response.ok) {
-	// 		const data = await response.json()
-	// 		setChecksum(data.checksum)
-	// 	}
-	// }
-
-	// const generateTimestamp = (): string => {
-	// 	const now = new Date()
-
-	// 	return now
-	// 		.toISOString()
-	// 		.replace(/[-:.TZ]/g, '')
-	// 		.slice(0, 14)
-	// }
-
-	// const openOrder = async () => {
-	// 	const response = await fetch('https://ppp-test.nuvei.com/ppp/api/v1/openOrder.do', {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			'Content-Type': 'application/json'
-	// 		},
-	// 		body: JSON.stringify({
-	// 			merchantId: env.publicMerchantId,
-	// 			merchantSiteId: env.publicMerchantSiteId,
-	// 			timeStamp,
-	// 			checksum,
-	// 			amount,
-	// 			userTokenId,
-	// 			currency
-	// 		})
-	// 	})
-
-	// 	if (!response.ok) {
-	// 		throw new Error(response.statusText)
-	// 	}
-
-	// 	const order = await response.json()
-
-	// 	if (order.status !== 'SUCCESS') {
-	// 		throw new Error(order.reason)
-	// 	}
-
-	// 	return order.sessionToken
-	// }
 
 	useEffect(() => {
 		try {
@@ -180,110 +193,138 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 	const { handleSubmit, trigger } = methods
 
+	const getNuveiTimeStamp = (): string => {
+		const now = new Date()
+
+		const YYYY = now.getFullYear().toString()
+		const MM = String(now.getMonth() + 1).padStart(2, '0')
+		const DD = String(now.getDate()).padStart(2, '0')
+		const HH = String(now.getHours()).padStart(2, '0')
+		const mm = String(now.getMinutes()).padStart(2, '0')
+		const ss = String(now.getSeconds()).padStart(2, '0')
+
+		return `${YYYY}${MM}${DD}${HH}${mm}${ss}`
+	}
+
+	const splitName = (fullName = '') => {
+		const parts = fullName.trim().split(/\s+/).filter(Boolean)
+		if (parts.length === 0) return { firstName: '', lastName: '' }
+		if (parts.length === 1) return { firstName: parts[0], lastName: '' }
+
+		const [firstName, ...rest] = parts
+		const lastName = rest.join(' ') // keeps compound last names
+
+		return { firstName, lastName }
+	}
+
 	const handleCheckout = async () => {
 		try {
-			const { user_id } = formStore
-			const product = formStore.product as { price: number; name: string; id: string }
-			const data = await fetch('/api/insert-order', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					user_id,
-					product_id: product.id
-				})
+			setIsSaving(true)
+			const { billing_address, card_name } = formStore
+			const { country, line1, line2, city, postal_code, state } = billing_address
+			const { value } = country
+
+			const { user } = session
+			const { email, id, name } = user
+			const { firstName, lastName } = splitName(name)
+
+			const userTokenId = `utid-${timeStamp}`
+			const ipData = await fetch('/api/get-user-ip', {
+				method: 'get'
 			})
 
-			const res = await data.json()
+			const { ip } = await ipData.json()
 
-			return res
-			// const date = expiry_date as string
-			// const [month, year] = date.split('/')
-			// const res = await fetch('/api/get-user', {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json'
-			// 	},
-			// 	body: JSON.stringify({
-			// 		user_id
-			// 	})
-			// })
-			// const userRes = await res.json()
-			// // if (formStore.customer_code) return formStore.customer_code
-			// if (safeCharge && sessionToken) {
-			// 	debugger
-			// 	const payment: CreatePaymentResponse = await new Promise((resolve, reject) => {
-			// 		safeCharge.createPayment(
-			// 			{
-			// 				sessionToken,
-			// 				paymentOption: {
-			// 					card: {
-			// 						cardNumber: card_number as string,
-			// 						cardHolderName: `${first_name} ${last_name}` as string,
-			// 						expirationMonth: month,
-			// 						expirationYear: `20${year}`,
-			// 						CVV: cvc as string
-			// 					}
-			// 				},
-			// 				billingAddress: {
-			// 					firstName: first_name as string,
-			// 					lastName: last_name as string,
-			// 					email: userRes.user.email as string,
-			// 					country: 'US'
-			// 				}
-			// 			},
-			// 			(res) => {
-			// 				if (res.errCode === '0') {
-			// 					resolve(res)
-			// 				} else {
-			// 					reject(new Error(res.errorDescription))
-			// 				}
-			// 			}
-			// 		)
-			// 	})
-			// 	console.log('Payment response:', payment)
-			// 	if (payment.result !== 'ERROR') {
-			// 		const response = await fetch('https://ppp-test.nuvei.com/ppp/api/v1/getPaymentStatus.do', {
-			// 			method: 'POST',
-			// 			headers: {
-			// 				'Content-Type': 'application/json'
-			// 			},
-			// 			body: JSON.stringify({
-			// 				sessionToken
-			// 			})
-			// 		})
-			// 		const paymentStatus = await response.json()
-			// 		// const orderResponse: CreateOrderResponse = (await createOrder(
-			// 		// 	userId,
-			// 		// 	`${product.id}`
-			// 		// )) as CreateOrderResponse
-			// 		console.log('Payment status:', paymentStatus)
-			// 		if (paymentStatus?.transactionStatus === 'APPROVED') {
-			// 			const orderResponse: CreateOrderResponse = (await createOrder(
-			// 				user_id as string,
-			// 				`${product.id}`
-			// 			)) as CreateOrderResponse
-			// 			console.log('Order response:', orderResponse)
-			// 			if (orderResponse?.success) {
-			// 				await adminUpdatePayments(
-			// 					user_id as string,
-			// 					orderResponse.shippoData?.order_number || '#'
-			// 				)
-			// 			} else {
-			// 				await adminUpdatePayments(user_id as string, '#00000')
-			// 			}
-			// 			return paymentStatus.transactionStatus
-			// 		} else {
-			// 			throw new Error('Payment failed')
-			// 		}
-			// 	}
-			// } else {
-			// 	throw new Error('SafeCharge not found')
-			// }
+			const sc = scRef.current
+
+			if (!sc || !sessionToken) {
+				console.error('❌ Nuvei form or session token not ready')
+
+				toast.error('❌ Payment failed')
+
+				return
+			}
+			const card = cardRef.current
+
+			const { ccTempToken } = await sc.getToken(card, { cardHolderName: card_name })
+
+			sc.createPayment(
+				{
+					transactionType: 'Auth',
+					sessionToken,
+					userTokenId,
+					clientUniqueId: id,
+					currency: 'USD',
+					amount: '0.00',
+					items: [
+						{
+							name: 'Tokenization Setup',
+							quantity: 1,
+							price: '0.00'
+						}
+					],
+					isRebilling: 0,
+					authenticationOnlyType: 'addCard',
+					paymentOption: {
+						card: { ccTempToken, cardHolderName: card_name }
+					},
+					paymentFlow: 'redirect',
+					billingAddress: {
+						firstName,
+						lastName,
+						email, // shopper’s e-mail
+						address: line1, // street line 1
+						city,
+						state, // 2-letter for US/CA; full name elsewhere
+						country: country.value, // ISO-2 or ISO-3
+						/* still smart to keep the old risk helpers */
+						zip: postal_code
+					},
+					deviceDetails: {
+						ipAddress: '34.21.9.50' // ip // **IPv4** string
+					}
+				},
+				(response: any) => {
+					setIsSaving(false)
+
+					if (response.result === 'APPROVED') {
+						console.log('✅ Approved:', response)
+						insertOrder(response.transactionId, response.userPaymentOptionId, userTokenId)
+					} else {
+						console.error('❌ Payment failed:', response)
+
+						toast.error('❌ Payment failed: ' + response.errorDescription)
+					}
+				}
+			)
+
+			return null
 		} catch (error) {
 			console.log(error)
 		}
+	}
+
+	const insertOrder = async (transactionId: string, userPaymentOptionId: string, userTokenId: string) => {
+		const { user_id } = formStore
+		const product = formStore.product as { price: number; name: string; id: string }
+
+		const data = await fetch('/api/insert-order', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				user_id,
+				product_id: product.id,
+				transactionId,
+				userPaymentOptionId,
+				userTokenId
+			})
+		})
+
+		router.push(`/orders`)
+
+		return data
 	}
 
 	const prevPage = () => {
@@ -306,17 +347,12 @@ const FormStep = ({ formData, products }: StepProps) => {
 			let updatedData: { form_step: string; customer_code: string } = {
 				...formStore,
 				...data,
-				form_step: activeStep === 'step-18' ? 'COMPLETE' : activeStep,
+				form_step: activeStep === 'step-19' ? 'COMPLETE' : activeStep,
 				customer_code: ''
 			}
-			if (activeStep === 'step-18') {
-				await handleCheckout()
-				// console.log('Customer code:', customerCode)
 
-				// if (customerCode. !== 200) {
-				// 	// setStep19Error('UserPaymentOptionId not found')
-				// 	throw new Error('UserPaymentOptionId not found')
-				// }
+			if (activeStep === 'step-19') {
+				await handleCheckout()
 				updatedData = { ...updatedData }
 			}
 			const { filteredData } = filterFormData(updatedData)
@@ -362,7 +398,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 			const next =
 				stepNum === 15 && formStore.country === 'anotherCountry'
-					? 'step-18'
+					? 'step-19'
 					: incrementString(formData.step)
 			setActiveStep(next)
 			// console.log('updateStoreAndSubmit', next)
@@ -379,7 +415,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 		insurance?: { file: File }
 		product?: { price: number; name: string; id: string }
 	}) => {
-		debugger
 		try {
 			const isStepValid = await trigger()
 
@@ -440,10 +475,11 @@ const FormStep = ({ formData, products }: StepProps) => {
 				updateStoreAndSubmit(data as unknown as FormState)
 			}
 
-			// if (isStepValid && stepNum === 18) {
-			// 	updateStoreAndSubmit(data as unknown as FormState)
-			// }
-			if (isStepValid && activeStep === 'step-18') {
+			if (isStepValid && stepNum === 18) {
+				updateStoreAndSubmit(data as unknown as FormState)
+			}
+
+			if (isStepValid && activeStep === 'step-19') {
 				const validateResults = getNullFieldsAndMap({ ...formStore, ...data })
 
 				if (validateResults) {
@@ -465,7 +501,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 				setIsSaving(true)
 				await submitFormData(data)
-				router.push(`/order`)
 			}
 		} catch (ex) {
 			console.log({ ex })
@@ -540,23 +575,32 @@ const FormStep = ({ formData, products }: StepProps) => {
 			<FormProvider {...methods}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<StepComponent />
-					{/* {activeStep === 'step-18' && <p className="text-center text-red-600">{step19Error}</p>} */}
+					{activeStep === 'step-19' ? <ScreenLoader active={isSaving} /> : null}
+
 					<FormContainer>
 						<div className="flex flex-col gap-4 py-6">
 							<FormButton
 								disabled={isSaving}
-								text={activeStep === 'step-18' ? 'Checkout' : 'Next'}
+								text={
+									activeStep === 'step-19'
+										? 'Complete'
+										: activeStep === 'step-18'
+											? 'Submit'
+											: 'Next'
+								}
 								type="submit"
 								style="solid"
 							/>
 
-							<FormButton
-								disabled={isSaving}
-								text="Save for later"
-								type="button"
-								style="outline"
-								onClick={handleSubmit(handleSave as SubmitHandler<IFormProps>)}
-							/>
+							{activeStep !== 'step-19' && (
+								<FormButton
+									disabled={isSaving}
+									text="Save for later"
+									type="button"
+									style="outline"
+									onClick={handleSubmit(handleSave as SubmitHandler<IFormProps>)}
+								/>
+							)}
 							{activeStep !== 'step-1' && (
 								<FormButton disabled={isSaving} text="Go Back" type="button" onClick={prevPage} />
 							)}

@@ -42,10 +42,11 @@ export async function adminUpdateData(updatedData: Record<string, unknown>, user
 	return response
 }
 
-export async function adminUpdatePayments(userId: string, orderNumber: string) {
+export async function adminUpdatePayments(userId: string, orderId: number, orderNumber: string) {
 	const response = await fetchPostJSON('/api/admin/update-payment-history', {
 		method: 'POST',
 		userId,
+		orderId,
 		orderNumber
 	})
 	console.log('res', response)
@@ -53,11 +54,22 @@ export async function adminUpdatePayments(userId: string, orderNumber: string) {
 	return response
 }
 
-export async function createOrder(userId: string, productId: string) {
-	const response = await fetchPostJSON('/api/create-order', {
+export async function createShippoOrder(userId: string, productName: string) {
+	const response = await fetchPostJSON('/api/create-shippo-order', {
 		method: 'POST',
 		userId,
-		productId
+		productName
+	})
+	console.log('res', response)
+
+	return response
+}
+
+export async function updateOrder(orderId: number, status: string) {
+	const response = await fetchPostJSON('/api/update-order', {
+		method: 'PUT',
+		orderId,
+		status
 	})
 	console.log('res', response)
 

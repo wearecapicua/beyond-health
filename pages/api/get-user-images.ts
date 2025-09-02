@@ -22,6 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				.eq('user_id', userId)
 				.single()
 
+			console.log('userImagesPath')
+			console.log(userImagesPath)
+
 			if (userImagesPath) {
 				const { data: profileImageUrl } = await supabase.storage
 					.from('profile-images')

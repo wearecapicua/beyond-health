@@ -7,10 +7,10 @@ import { productOne, productTwo, productThree } from 'utils/productToShip'
 const paymentTimestamp = new Date().toISOString()
 const randomOrderNumber = generateOrderNumber()
 
-export function findProductById(productId: string) {
+export function findProductByName(productName: string) {
 	const products = [productOne, productTwo, productThree]
 
-	return products.find((product) => product.line_items[0].sku === productId) || null
+	return products.find((product) => product.line_items[0].title === productName) || null
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -19,9 +19,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	const supabaseAccessToken = env.supabaseServiceRoleKey
-	const { userId, productId } = req.body
+	const { userId, productName } = req.body
 
-	const selectedProduct = findProductById(productId)
+	const selectedProduct = findProductByName(productName)
 
 	try {
 		const userEmail = await getEmailForUserId(userId, supabaseAccessToken)
@@ -51,6 +51,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		})
 
 		const shippoData = await shippoResponse.json()
+
+		console.log(shippoData)
 
 		if (shippoResponse.ok) {
 			res.status(200).json({ success: true, shippoData })

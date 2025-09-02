@@ -90,6 +90,12 @@ export interface SafeCharge {
 	addCardUpo: (params: AddCardUpoParams, callback: AddCardUpoCallback) => AddCardUpoCallback
 }
 
+export type ProductOrder = {
+	id: string
+	status: string
+	created_at: string
+	products: { name: string }
+}
 type SafeChargeFunction = (params: {
 	env: string
 	merchantId: string

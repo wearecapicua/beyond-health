@@ -90,5 +90,8 @@ export const schema = {
 				label: z.string()
 			})
 		})
+	}),
+	'step-19': z.object({
+		card_name: z.string()
 	})
 }

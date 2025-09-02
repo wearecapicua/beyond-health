@@ -29,6 +29,9 @@ export async function fetchPostJSON<Response = unknown>(
 		filteredData?: Record<string, unknown>
 		orderNumber?: string
 		data?: FormData
+		productName?: string
+		orderId?: number
+		status?: string
 	}
 ) {
 	const { method } = data

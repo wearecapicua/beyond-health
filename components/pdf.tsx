@@ -21,21 +21,31 @@ type UserImages = {
 	}
 }
 
-const PDFDocument = ({ user, userImages }: { user: User; userImages: UserImages }) => (
+const PDFDocument = ({
+	user,
+	profile,
+	products,
+	userImages
+}: {
+	user: User
+	profile: any
+	products: any
+	userImages: UserImages
+}) => (
 	<Document>
 		<Page size="A4" style={styles.page}>
 			<View style={styles.section}>
-				<Text style={styles.title}>{`${user?.first_name} ${user?.last_name}`}</Text>
+				<Text style={styles.title}>{`${profile?.first_name} ${profile?.last_name}`}</Text>
 				<Text>Email: {user?.email}</Text>
-				<Text>Gender: {user?.gender}</Text>
-				<Text>Birthdate: {user?.birthdate}</Text>
-				<Text>Notice hair loss: {user?.notice_hair_loss}</Text>
-				<Text>Medications: {user?.medications}</Text>
-				<Text>Conditions: {user?.conditions}</Text>
-				<Text>Questions: {user?.questions || 'none'}</Text>
-				<Text>Stage: {user?.stage}</Text>
-				<Text>Has insurance: {user?.has_insurance ? 'yes' : 'no'}</Text>
-				{user?.has_insurance && userImages?.insuranceImageUrl?.signedUrl && (
+				<Text>Gender: {profile?.gender}</Text>
+				<Text>Birthdate: {profile?.birthdate}</Text>
+				<Text>Notice hair loss: {profile?.notice_hair_loss}</Text>
+				<Text>Medications: {profile?.medications}</Text>
+				<Text>Conditions: {profile?.conditions}</Text>
+				<Text>Questions: {profile?.questions || 'none'}</Text>
+				<Text>Stage: {profile?.stage}</Text>
+				<Text>Has insurance: {profile?.has_insurance ? 'yes' : 'no'}</Text>
+				{profile?.has_insurance && userImages?.insuranceImageUrl?.signedUrl && (
 					<span>
 						<Text>Insurance image:</Text>
 						<View style={{ maxHeight: '100%', width: 300 }}>
@@ -58,21 +68,21 @@ const PDFDocument = ({ user, userImages }: { user: User; userImages: UserImages 
 						</View>
 					</span>
 				)}
-				<Text>Product: {user?.products.name}</Text>
-				<Text>Phone number: {user?.phone_number}</Text>
-				<Text>Country: {user?.country}</Text>
+				<Text>Product: {products.name}</Text>
+				<Text>Phone number: {profile?.phone_number}</Text>
+				<Text>Country: {profile?.country}</Text>
 				<Text>Shipping address:</Text>
-				<Text>{user.shipping_address?.line1}</Text>
-				<Text>{user.shipping_address?.line2}</Text>
-				<Text>{user.shipping_address?.city}</Text>
-				<Text>{user.shipping_address?.state}</Text>
-				<Text>{user.shipping_address?.postal_code}</Text>
+				<Text>{profile.shipping_address?.line1}</Text>
+				<Text>{profile.shipping_address?.line2}</Text>
+				<Text>{profile.shipping_address?.city}</Text>
+				<Text>{profile.shipping_address?.state}</Text>
+				<Text>{profile.shipping_address?.postal_code}</Text>
 				<Text>Billing Address:</Text>
-				<Text>{user.billing_address?.line1}</Text>
-				<Text>{user.billing_address?.line2}</Text>
-				<Text>{user.billing_address?.city}</Text>
-				<Text>{user.billing_address?.state}</Text>
-				<Text>{user.billing_address?.postal_code}</Text>
+				<Text>{profile.billing_address?.line1}</Text>
+				<Text>{profile.billing_address?.line2}</Text>
+				<Text>{profile.billing_address?.city}</Text>
+				<Text>{profile.billing_address?.state}</Text>
+				<Text>{profile.billing_address?.postal_code}</Text>
 				{userImages?.profileImageUrl?.signedUrl && (
 					<span>
 						<Text>Profile image:</Text>
@@ -119,7 +129,7 @@ const styles = StyleSheet.create({
 	}
 })
 
-const Pdf = ({ user }: { user: User }) => {
+const Pdf = ({ user, profile, products }: { user: User; profile: any; products: any }) => {
 	const [showPdfViewer, setShowPdfViewer] = useState(false)
 	// const pdfRef = useRef()
 
@@ -139,7 +149,7 @@ const Pdf = ({ user }: { user: User }) => {
 	})
 
 	const handleOpenPdfViewer = async () => {
-		const userImages = await getUserImages(user.user_id)
+		const userImages = await getUserImages(user.id)
 
 		setUserImagesUrls(
 			userImages as SetStateAction<{
@@ -157,7 +167,9 @@ const Pdf = ({ user }: { user: User }) => {
 	}
 
 	const handleDownloadPDF = async () => {
-		const blobPDF = await pdf(<PDFDocument user={user} userImages={userImagesUrls} />).toBlob()
+		const blobPDF = await pdf(
+			<PDFDocument user={user} profile={profile} products={products} userImages={userImagesUrls} />
+		).toBlob()
 
 		if (blobPDF) {
 			saveAs(blobPDF, `${user.first_name}_${user.last_name}_information.pdf`)
@@ -175,18 +187,21 @@ const Pdf = ({ user }: { user: User }) => {
 			{showPdfViewer && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
 					<PDFViewer width="100%" height="100%">
-						<PDFDocument user={user} userImages={userImagesUrls} />
+						<PDFDocument
+							user={user}
+							profile={profile}
+							products={products}
+							userImages={userImagesUrls}
+						/>
 					</PDFViewer>
 					<button
 						className="absolute bottom-4 right-6 rounded-lg bg-red-500 px-4 py-2 text-white"
-						onClick={handleClosePdfViewer}
-					>
+						onClick={handleClosePdfViewer}>
 						Close
 					</button>
 					<button
 						className="absolute bottom-4 left-4 rounded-lg bg-main-blue px-4 py-2 text-white"
-						onClick={handleDownloadPDF}
-					>
+						onClick={handleDownloadPDF}>
 						Download PDF
 					</button>
 				</div>

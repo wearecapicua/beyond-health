@@ -18,6 +18,8 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 	const session = useSession()
 	const router = useRouter()
 	const userLoggedIn = session.status === 'authenticated' && session.data?.user
+	const adminLoggedIn = session.status === 'authenticated' && session.data?.user?.role === 'ADMIN'
+
 	const { formStep } = useFormStatusStore()
 	const { updateFormStore } = useFormStore()
 
@@ -29,6 +31,7 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 	}
 	async function handleStartNow() {
 		const profileData = await getProfileData()
+
 		if (userLoggedIn) {
 			updateFormStore(profileData)
 			router.push('/form/step-1')
@@ -67,6 +70,23 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 										className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
 										FAQs
 									</Link>
+
+									{userLoggedIn && !adminLoggedIn ? (
+										<Link
+											href="/orders"
+											className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
+											Orders
+										</Link>
+									) : null}
+
+									{adminLoggedIn ? (
+										<Link
+											href="/admin"
+											className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
+											Clients Orders
+										</Link>
+									) : null}
+
 									{router.asPath === '/login' ? null : <LoginButton />}
 								</div>
 								{!fullPage && userLoggedIn && formStep && formStep !== 'COMPLETE' ? (
