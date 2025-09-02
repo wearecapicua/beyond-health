@@ -1,4 +1,4 @@
-# A statically generated blog example using Next.js and Prismic
+# A statically generated blog example using Next.js and Prismic 
 
 This example showcases Next.js's [Static Generation](https://nextjs.org/docs/basic-features/pages) feature using [Prismic](https://prismic.io/) as the data source.
 
