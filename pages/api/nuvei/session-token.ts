@@ -4,8 +4,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const payload = {
-		merchant_id: process.env.NEXT_PUBLIC_MERCHANT_ID!,
-		merchant_site_id: process.env.NEXT_PUBLIC_MERCHANT_SITE_ID!,
+		merchant_id: process.env.NUVEI_MERCHANT_ID!,
+		merchant_site_id: process.env.NUVEI_MERCHANT_SITE_ID!,
 		client_request_id: 'user-123', // unique per session
 		time_stamp: new Date().toISOString(),
 		checksum: '', // see below
