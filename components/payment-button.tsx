@@ -47,12 +47,12 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 		const ts = getNuveiTimeStamp()
 		const client_request_id = `crid-${Date.now()}`
 
-		const rawString1 = env.publicMerchantId + env.publicMerchantSiteId + ts + env.publicMerchantSecretKey
+		const rawString1 = env.nuveiMerchantId + env.nuveiMerchantSiteId + ts + env.nuveiMerchantSecretKey
 		const checksum1 = crypto.createHash('sha256').update(rawString1).digest('hex')
 
 		const payload1 = {
-			merchantId: env.publicMerchantId,
-			merchantSiteId: env.publicMerchantSiteId,
+			merchantId: env.nuveiMerchantId,
+			merchantSiteId: env.nuveiMerchantSiteId,
 			timeStamp: ts,
 			checksum: checksum1
 		}
@@ -71,13 +71,13 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 		const amount = product.price.toString()
 
 		const rawString =
-			env.publicMerchantId +
-			env.publicMerchantSiteId +
+			env.nuveiMerchantId +
+			env.nuveiMerchantSiteId +
 			client_request_id +
 			amount +
 			currency +
 			ts +
-			env.publicMerchantSecretKey
+			env.nuveiMerchantSecretKey
 
 		const checksum = crypto.createHash('sha256').update(rawString).digest('hex')
 		const el = document.getElementById('card-name')
@@ -85,8 +85,8 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 
 		const payload2 = {
 			paymentFlow: 'direct',
-			merchantId: env.publicMerchantId,
-			merchantSiteId: env.publicMerchantSiteId,
+			merchantId: env.nuveiMerchantId,
+			merchantSiteId: env.nuveiMerchantSiteId,
 			timeStamp: ts,
 			sessionToken: st,
 			userTokenId,
