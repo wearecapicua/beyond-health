@@ -1,4 +1,4 @@
-export const ScreenLoader = ({ active }: { active: boolean }) => {
+const ScreenLoader = ({ active }: { active: boolean }) => {
 	if (!active) return null
 
 	return (
@@ -7,3 +7,5 @@ export const ScreenLoader = ({ active }: { active: boolean }) => {
 		</div>
 	)
 }
+
+export default ScreenLoader
