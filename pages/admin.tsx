@@ -11,7 +11,7 @@ import env from 'lib/env'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { ScreenLoader } from 'pages/screenLoader'
+import ScreenLoader from 'pages/screenLoader'
 type AdminPageProps = {
 	ordersData: any[]
 	preview: boolean | undefined

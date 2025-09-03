@@ -7,7 +7,7 @@ import Spinner from 'components/forms/spinner'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import { getSession, useSession } from 'next-auth/react'
-import { ScreenLoader } from 'pages/screenLoader'
+import ScreenLoader from 'pages/screenLoader'
 import { FormProvider, Resolver, SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
