@@ -1,10 +1,7 @@
 import { z } from 'zod'
 
 const clientEnv = z.object({
-	stripePublicKey: z.string().nonempty(),
-	publicMerchantId: z.string().nonempty(), // Cambiado
-	publicMerchantSiteId: z.string().nonempty(), // Cambiado
-	publicMerchantSecretKey: z.string().nonempty() // Cambiado
+	stripePublicKey: z.string().nonempty()
 })
 
 const serverEnv = z.object({
@@ -64,9 +61,9 @@ const processEnv: Record<keyof z.infer<typeof serverEnv> | keyof z.infer<typeof 
 	bamboraApiPasscode: process.env.BAMBORA_API_PASSCODE,
 	bamboraApiUrl: process.env.BAMBORA_API_URL,
 	bamboraPaymentPasscode: process.env.BAMBORA_PAYMENT_PASSCODE,
-	nuveiMerchantId: process.env.NUVEI_MERCHANT_ID, // Cambiado
-	nuveiMerchantSiteId: process.env.NUVEI_MERCHANT_SITE_ID, // Cambiado
-	nuveiMerchantSecretKey: process.env.NUVEI_MERCHANT_SECRET_KEY // Cambiado
+	nuveiMerchantId: process.env.NUVEI_MERCHANT_ID,
+	nuveiMerchantSiteId: process.env.NUVEI_MERCHANT_SITE_ID,
+	nuveiMerchantSecretKey: process.env.NUVEI_MERCHANT_SECRET_KEY
 }
 type MergedInput = z.input<typeof mergedEnv>
 type MergedOutput = z.infer<typeof mergedEnv>
