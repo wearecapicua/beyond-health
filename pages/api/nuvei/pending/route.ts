@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
 		console.log('🔔 Received Nuvei pending:', body)
 
 		// ✅ Example: extract important fields
-		const { transactionId, transactionType, transactionStatus, totalAmount, currency, customData } = body
+		// const { transactionId, transactionType, transactionStatus, totalAmount, currency, customData } = body
 
 		// TODO: verify DMN signature here (Nuvei docs: https://docs.nuvei.com/documentation/integration/webhooks/payment-dmns/)
 		// Example: use the secret key to validate hash parameters

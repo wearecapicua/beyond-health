@@ -286,7 +286,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 						zip: postal_code
 					},
 					deviceDetails: {
-						ipAddress: '34.21.9.50' // ip // **IPv4** string
+						ipAddress: ip // **IPv4** string
 					}
 				},
 				(response: any) => {

@@ -22,7 +22,6 @@ export interface CreateOrderResponse {
 }
 
 const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Props) => {
-	const { price } = product
 	const [loading, setLoading] = useState(false)
 
 	const getNuveiTimeStamp = (): string => {
