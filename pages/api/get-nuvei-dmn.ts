@@ -35,6 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		for await (const chunk of req) {
 			chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk)
 		}
+		// eslint-disable-next-line
+		// @ts-ignore
 		const raw = Buffer.concat(chunks).toString('utf-8')
 		const forwarded = req.headers['x-forwarded-for']
 		let ip =
@@ -49,6 +51,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		// Parse form-encoded body
 		const params = new URLSearchParams(raw)
 		const dmnData: Record<string, string> = {}
+		// eslint-disable-next-line
+		// @ts-ignore
 		for (const [key, value] of params.entries()) {
 			dmnData[key] = value
 		}
@@ -80,100 +84,106 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			console.log(subscriptionData)
 			console.log(subscriptionDataError)
 
-			const { data: prevOrder, error: prevOrderError } = await supabase
-				.from('orders')
-				.select(
-					'id, status, created_at, user_id, user_token_id, subscription_id, shipo_order_number, payment_date, transaction_id, user_payment_option_id, products(id,name, price, nuvei_plan_id), subscriptions(nuvei_subscription_id)'
-				)
-				.eq('subscription_id', subscriptionData.id)
-				.order('created_at', { ascending: false })
-				.limit(1)
-				.single() // returns the first row directly
+			if (subscriptionData) {
+				const { data: prevOrder, error: prevOrderError } = await supabase
+					.from('orders')
+					.select(
+						'id, status, created_at, user_id, user_token_id, subscription_id, shipo_order_number, payment_date, transaction_id, user_payment_option_id, products(id,name, price, nuvei_plan_id), subscriptions(nuvei_subscription_id)'
+					)
+					.eq('subscription_id', subscriptionData.id)
+					.order('created_at', { ascending: false })
+					.limit(1)
+					.single() // returns the first row directly
 
-			console.log(prevOrder)
-			console.log(prevOrderError)
-			if (!prevOrder) {
-				return
-			}
-
-			const shippoApiKey = env.shippoApiKey
-			const shippoApiUrl = 'https://api.goshippo.com/orders'
-			const orderNumber = `#${randomOrderNumber}`
-
-			const selectedProduct = findProductByName(prevOrder?.products.name)
-			const userShippingAddress = await getUserShippingAddress(prevOrder?.user_id, supabaseAccessToken)
-			const userEmail = await getEmailForUserId(prevOrder?.user_id, supabaseAccessToken)
-
-			const newData = {
-				...selectedProduct,
-				order_number: orderNumber,
-				placed_at: paymentTimestamp,
-				to_address: {
-					...userShippingAddress,
-					email: userEmail
+				console.log(prevOrder)
+				console.log(prevOrderError)
+				if (!prevOrder) {
+					return
 				}
+
+				const shippoApiKey = env.shippoApiKey
+				const shippoApiUrl = 'https://api.goshippo.com/orders'
+				const orderNumber = `#${randomOrderNumber}`
+
+				// eslint-disable-next-line
+				// @ts-ignore
+				const selectedProduct = findProductByName(prevOrder?.products.name)
+				const userShippingAddress = await getUserShippingAddress(prevOrder?.user_id, supabaseAccessToken)
+				const userEmail = await getEmailForUserId(prevOrder?.user_id, supabaseAccessToken)
+
+				const newData = {
+					...selectedProduct,
+					order_number: orderNumber,
+					placed_at: paymentTimestamp,
+					to_address: {
+						...userShippingAddress,
+						email: userEmail
+					}
+				}
+
+				const shippoResponse = await fetch(shippoApiUrl, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `ShippoToken ${shippoApiKey}`
+					},
+					body: JSON.stringify(newData)
+				})
+
+				const shippoData = await shippoResponse.json()
+
+				console.log(shippoData)
+
+				//  Insert new order
+				const resultNewOrder = await supabase
+					.from('orders')
+					.insert({
+						// eslint-disable-next-line
+						// @ts-ignore
+						product_id: prevOrder.products.id,
+						user_id: prevOrder.user_id,
+						transaction_id: null,
+						user_payment_option_id: userPaymentOptionId,
+						status: 'DMN Paid',
+						ip,
+						user_token_id,
+						shipo_order_number: shippoData?.order_number || '#',
+						payment_date: new Date().toISOString(),
+						subscription_id: prevOrder.subscription_id,
+						origin: 'DMN'
+					})
+					.select('id')
+					.single()
+
+				const orderId = resultNewOrder?.data?.id
+
+				console.log(resultNewOrder)
+
+				// Call Resend API directly with fetch
+				await fetch('https://api.resend.com/emails', {
+					method: 'POST',
+					headers: {
+						Authorization: `Bearer re_GqW4wsPr_MbpTq9P5wuUTfMUcLy7wDGsi`,
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						from: 'ariel@aurorastore.uy', // Must match a verified domain in Resend
+						to: 'ariel@capicua.com.uy',
+						subject: 'DMN webhook SAVED DATA',
+						html:
+							'<div>' +
+							'orderId: ' +
+							orderId +
+							'<br/>orderId: ' +
+							(shippoData?.order_number || '#') +
+							'<br/>subscriptionId: ' +
+							subscriptionData?.id +
+							'</div>'
+					})
+				})
+
+				console.log('✅ DMN received:', dmnData)
 			}
-
-			const shippoResponse = await fetch(shippoApiUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `ShippoToken ${shippoApiKey}`
-				},
-				body: JSON.stringify(newData)
-			})
-
-			const shippoData = await shippoResponse.json()
-
-			console.log(shippoData)
-
-			//  Insert new order
-			const resultNewOrder = await supabase
-				.from('orders')
-				.insert({
-					product_id: prevOrder.products.id,
-					user_id: prevOrder.user_id,
-					transaction_id: null,
-					user_payment_option_id: userPaymentOptionId,
-					status: 'DMN Paid',
-					ip,
-					user_token_id,
-					shipo_order_number: shippoData?.order_number || '#',
-					payment_date: new Date().toISOString(),
-					subscription_id: prevOrder.subscription_id,
-					origin: 'DMN'
-				})
-				.select('id')
-				.single()
-
-			const orderId = resultNewOrder?.data?.id
-
-			console.log(resultNewOrder)
-
-			// Call Resend API directly with fetch
-			await fetch('https://api.resend.com/emails', {
-				method: 'POST',
-				headers: {
-					Authorization: `Bearer re_GqW4wsPr_MbpTq9P5wuUTfMUcLy7wDGsi`,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					from: 'ariel@aurorastore.uy', // Must match a verified domain in Resend
-					to: 'ariel@capicua.com.uy',
-					subject: 'DMN webhook SAVED DATA',
-					html:
-						'<div>' +
-						'orderId: ' +
-						orderId +
-						'<br/>orderId: ' +
-						(shippoData?.order_number || '#') +
-						'<br/>subscriptionId: ' +
-						subscriptionData.id +
-						'</div>'
-				})
-			})
-
-			console.log('✅ DMN received:', dmnData)
 		}
 
 		res.status(200).send('OK') // Always respond with 200/OK

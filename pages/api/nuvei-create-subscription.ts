@@ -64,6 +64,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		console.error('❌ Error handling Nuvei DMN:', err)
 
 		// Still return 200 so Nuvei doesn’t keep retrying, but log the error
-		return res.status(500).json({ ok: false, error: err?.message ?? 'Unknown error' })
+
+		if (err instanceof Error) {
+			return res.status(500).json({ ok: false, error: err?.message ?? 'Unknown error' })
+		}
 	}
 }

@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			console.log(orderError)
 
 			console.log('orderData.subscription_id')
-			console.log(orderData.subscription_id)
+			console.log(orderData?.subscription_id)
 
 			if (orderData) {
 				const { data: updateSubscriptionData, error: updateSubscriptionError } = await supabase
