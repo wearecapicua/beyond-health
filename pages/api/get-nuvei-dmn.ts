@@ -20,6 +20,30 @@ export const config = {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+	// Call Resend API directly with fetch
+	await fetch('https://api.resend.com/emails', {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer re_GqW4wsPr_MbpTq9P5wuUTfMUcLy7wDGsi`,
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			from: 'ariel@aurorastore.uy', // Must match a verified domain in Resend
+			to: 'ariel@capicua.com.uy',
+			subject: 'DMN webhook Entry',
+			html:
+				'<div>Method:' +
+				req.method +
+				'<br/>Headers:' +
+				JSON.stringify(req.headers) +
+				'<br/>Query:' +
+				JSON.stringify(req.query) +
+				'<br/>Body:' +
+				JSON.stringify(req.body) +
+				'</div>'
+		})
+	})
+
 	if (req.method !== 'POST') {
 		res.status(200).send('OK')
 
