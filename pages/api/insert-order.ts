@@ -18,6 +18,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		}
 		const { transactionId, userPaymentOptionId, userTokenId, product_id, user_id } = req.body
 
+		const resultSubscription = await supabase
+			.from('subscriptions')
+			.insert({
+				product_id,
+				user_id,
+				active: true,
+				nuve_subscription_id: null
+			})
+			.select('id')
+			.single()
+
 		const result = await supabase
 			.from('orders')
 			.insert({
@@ -27,9 +38,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				user_payment_option_id: userPaymentOptionId,
 				status: 'Pending Approve',
 				ip,
-				user_token_id: userTokenId
+				user_token_id: userTokenId,
+				subscription_id: resultSubscription?.data?.id
 			})
-			.select('id') // 👈 This tells Supabase to return the 'id' of the inserted row
+			.select('id')
 			.single()
 
 		const orderId = result?.data?.id

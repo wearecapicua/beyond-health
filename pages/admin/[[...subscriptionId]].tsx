@@ -12,22 +12,24 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import ScreenLoader from 'pages/screenLoader'
+
 type AdminPageProps = {
 	ordersData: any[]
 	preview: boolean | undefined
 }
 
-type UserState = {
-	[userId: string]: boolean
-}
-
 const statusColors: Record<string, string> = {
 	Paid: 'text-green-600',
 	'Pending Approve': 'text-yellow-600',
-	Rejected: 'text-red-500'
+	Rejected: 'text-red-500',
+	'DMN Paid': 'text-blue-600'
 }
 
 const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
+	const { subscriptionId: filteredIds } = useRouter().query
+	const subscriptionId = filteredIds?.[0]
+
+	debugger
 	const { data: session } = useSession()
 	const [isAdmin, setIsAdmin] = useState(false)
 	const [busy, setBusy] = useState(false)
@@ -48,29 +50,6 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 		})
 	}
 
-	function formatDates(dateStamps: [], id: number) {
-		return (dateStamps as { orderId: number; timestamp: string }[])
-			.filter((ph) => ph.orderId === id)
-			?.map((dateStamp: { timestamp: string }) => {
-				const newDate = format(new Date(dateStamp.timestamp), 'MM-dd-yyyy HH:mm')
-
-				return {
-					...dateStamp,
-					timestamp: newDate
-				}
-			})
-			.reverse()
-	}
-	const [userStates, setUserStates] = useState<UserState>({})
-
-	// Function to toggle the visibility of items for a specific user
-	const toggleItems = (userId: string) => {
-		setUserStates((prevStates) => ({
-			...prevStates,
-			[userId]: !prevStates[userId]
-		}))
-	}
-
 	return (
 		<Layout preview={preview} fullPage>
 			<Head>
@@ -78,7 +57,12 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 			</Head>
 			<Container>
 				<ScreenLoader active={busy} />
-				{ordersData.length !== 0 && isAdmin ? (
+				{ordersData?.filter(
+					(order) =>
+						subscriptionId === null ||
+						subscriptionId === undefined ||
+						subscriptionId === order.subscriptions?.nuvei_subscription_id
+				).length !== 0 && isAdmin ? (
 					<div>
 						<h3 className="mb-7 mt-12">Pending Payments</h3>
 						<table className="text-left">
@@ -89,8 +73,10 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 									<th className="p-4">Email</th>
 									<th className="p-4">Product</th>
 									<th className="p-4">Price</th>
+									<th className="p-4">Origin</th>
 									<th className="p-4">Submit</th>
-									<th className="w-[190px] p-4">Shippo Order</th>
+									<th className="w-[190px] p-4">Shippo</th>
+									<th className="p-4">Nuvei Subscription</th>
 									<th className="p-4">Reject Order</th>
 								</tr>
 								{ordersData?.map(
@@ -103,13 +89,17 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 											transaction_id,
 											user_payment_option_id,
 											id,
-											status
+											status,
+											payment_date,
+											shipo_order_number,
+											subscriptions,
+											origin
 										},
 										index
 									) => {
-										const showItems = userStates[user.user_id] || false
-
-										const dates = formatDates(profile?.payments_history as [], id)
+										const date = payment_date
+											? format(new Date(payment_date), 'MM-dd-yyyy HH:mm')
+											: ''
 
 										return (
 											<tr key={`user-${index}`}>
@@ -120,6 +110,7 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 												<td className="p-4">{user.email}</td>
 												<td className="max-w-sm p-4">{products?.name}</td>
 												<PriceColumn product={products} />
+												<td className="max-w-sm p-4">{origin}</td>
 												<td className={`px-4 py-2 text-base ${statusColors[status]}`}>
 													{status === 'Pending Approve' ? (
 														<PaymentButton
@@ -137,60 +128,28 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 														/>
 													) : status === 'Paid' ? (
 														'Paid'
+													) : status === 'DMN Paid' ? (
+														'DMN Paid'
 													) : (
 														'-'
 													)}
 												</td>
 												<td className="w-[190px] p-4">
-													{dates?.length > 0 && (
+													{
 														<>
-															<div
-																className={`${
-																	showItems ? 'font-bold' : 'mb-2 font-normal'
-																} text-xs`}>
+															<div className={`${'mb-2 font-normal'} text-xs`}>
 																<span className="mr-3">
-																	{
-																		(
-																			dates[0] as unknown as {
-																				orderNumber: number
-																			}
-																		).orderNumber
-																	}
+																	{shipo_order_number || 'N/A'}
 																</span>
-																<span>{dates[0].timestamp}</span>
-															</div>
-															<div
-																className="text-xs uppercase text-main-light-blue"
-																onClick={() => toggleItems(user.user_id)}>
-																{showItems && (
-																	<ul className="mb-2 text-main-black">
-																		{dates.slice(1).map((item, index) => (
-																			<li
-																				key={`${item.timestamp}-${index}`}
-																				className="text-xs">
-																				<span className="mr-3">
-																					{
-																						(
-																							item as unknown as {
-																								orderNumber: number
-																							}
-																						).orderNumber
-																					}
-																				</span>
-																				<span>{item.timestamp}</span>
-																			</li>
-																		))}
-																	</ul>
-																)}
-																{showItems
-																	? `Hide items`
-																	: dates.length > 1
-																		? `Show more (${dates.length - 1})`
-																		: null}
+																<span>{date}</span>
 															</div>
 														</>
-													)}
+													}
 												</td>
+												<td className="max-w-sm p-4">
+													{subscriptions?.nuvei_subscription_id}
+												</td>
+
 												<td className={`px-4 py-2 text-base ${statusColors[status]}`}>
 													{status === 'Pending Approve' ? (
 														<CancelOrderButton
@@ -213,7 +172,12 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 							</tbody>
 						</table>
 					</div>
-				) : ordersData.length === 0 && isAdmin ? (
+				) : ordersData?.filter(
+						(order) =>
+							subscriptionId === null ||
+							subscriptionId === undefined ||
+							subscriptionId === order.subscriptions?.nuvei_subscription_id
+				  ).length === 0 && isAdmin ? (
 					<p>There are no current pending payments to show</p>
 				) : !isAdmin ? (
 					<p>Not authorized</p>
@@ -226,7 +190,7 @@ const AdminPage = ({ preview, ordersData }: AdminPageProps) => {
 export const getServerSideProps = async () => {
 	try {
 		// Fetch user data from your API route
-		const response = await fetch(`${env.host}/api/get-stripe-customer`)
+		const response = await fetch(`${env.host}/api/get-customer-orders`)
 
 		if (response.status === 500) {
 			throw new Error('Internal Server Error')

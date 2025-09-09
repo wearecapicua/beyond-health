@@ -11,9 +11,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		try {
 			// 1) Orders + products (include user_id so we can join on the app side)
 			const { data: orders, error: ordersError } = await supabase
-				.from('orders')
+				.from('subscriptions')
 				.select(
-					'id, status, created_at, user_id, user_token_id, transaction_id, user_payment_option_id, products(name, price)'
+					'id, created_at, user_id, active, nuvei_subscription_id, products(name, price, nuvei_plan_id)'
 				)
 				.order('created_at', { ascending: false })
 
@@ -27,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				const { data: profiles, error: profilesError } = await supabase
 					.from('profile')
 					.select(
-						'id, user_id, shipping_address, payments_history, billing_address, phone_number, country, first_name, last_name, customer_code, gender, birthdate, notice_hair_loss, medications, conditions, questions, stage, has_insurance, insurance_image_url'
+						'id, user_id, shipping_address, billing_address, phone_number, country, first_name, last_name, customer_code, gender, birthdate, notice_hair_loss, medications, conditions, questions, stage, has_insurance, insurance_image_url'
 					)
 					.in('user_id', userIds)
 

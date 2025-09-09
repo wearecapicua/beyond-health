@@ -64,8 +64,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 				const orderPayload = {
 					sessionToken,
 					transactionType: 'Auth',
-					merchantId: env.nuveiMerchantId,
-					merchantSiteId: env.nuveiMerchantSiteId,
+					merchantId: env.nextPublicNuveiMerchantId,
+					merchantSiteId: env.nextPublicNuveiMerchantSiteId,
 					clientUniqueId: user_id,
 					clientRequestId: client_request_id,
 					currency: 'USD',
@@ -93,13 +93,13 @@ const FormStep = ({ formData, products }: StepProps) => {
 				}
 
 				const orderChecksumStr =
-					env.nuveiMerchantId +
-					env.nuveiMerchantSiteId +
+					env.nextPublicNuveiMerchantId +
+					env.nextPublicNuveiMerchantSiteId +
 					orderPayload.clientRequestId +
 					orderPayload.amount +
 					orderPayload.currency +
 					ts +
-					env.nuveiMerchantSecretKey
+					env.nextPublicNuveiMerchantSecretKey
 
 				orderPayload.checksum = crypto.createHash('sha256').update(orderChecksumStr).digest('hex')
 
@@ -118,8 +118,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 				const sc = window.SafeCharge({
 					env: 'int', // Use "prod" in production
 					sessionToken: st,
-					merchantId: env.nuveiMerchantId,
-					merchantSiteId: env.nuveiMerchantSiteId,
+					merchantId: env.nextPublicNuveiMerchantId,
+					merchantSiteId: env.nextPublicNuveiMerchantSiteId,
 					logLevel: '6',
 					showAccountCapture: true
 				})

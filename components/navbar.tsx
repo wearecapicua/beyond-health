@@ -87,6 +87,14 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 										</Link>
 									) : null}
 
+									{adminLoggedIn ? (
+										<Link
+											href="/subscriptions"
+											className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
+											Clients Subscriptions
+										</Link>
+									) : null}
+
 									{router.asPath === '/login' ? null : <LoginButton />}
 								</div>
 								{!fullPage && userLoggedIn && formStep && formStep !== 'COMPLETE' ? (

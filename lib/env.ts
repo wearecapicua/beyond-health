@@ -1,7 +1,10 @@
 import { z } from 'zod'
 
 const clientEnv = z.object({
-	stripePublicKey: z.string().nonempty()
+	stripePublicKey: z.string().nonempty(),
+	nextPublicNuveiMerchantId: z.string().nonempty(),
+	nextPublicNuveiMerchantSiteId: z.string().nonempty(),
+	nextPublicNuveiMerchantSecretKey: z.string().nonempty()
 })
 
 const serverEnv = z.object({
@@ -26,10 +29,7 @@ const serverEnv = z.object({
 	bamboraMerchantId: z.string().nonempty(),
 	bamboraApiPasscode: z.string().nonempty(),
 	bamboraApiUrl: z.string().nonempty(),
-	bamboraPaymentPasscode: z.string().nonempty(),
-	nuveiMerchantId: z.string().nonempty(),
-	nuveiMerchantSiteId: z.string().nonempty(),
-	nuveiMerchantSecretKey: z.string().nonempty()
+	bamboraPaymentPasscode: z.string().nonempty()
 })
 
 const mergedEnv = serverEnv.merge(clientEnv)
@@ -61,13 +61,15 @@ const processEnv: Record<keyof z.infer<typeof serverEnv> | keyof z.infer<typeof 
 	bamboraApiPasscode: process.env.BAMBORA_API_PASSCODE,
 	bamboraApiUrl: process.env.BAMBORA_API_URL,
 	bamboraPaymentPasscode: process.env.BAMBORA_PAYMENT_PASSCODE,
-	nuveiMerchantId: process.env.NUVEI_MERCHANT_ID,
-	nuveiMerchantSiteId: process.env.NUVEI_MERCHANT_SITE_ID,
-	nuveiMerchantSecretKey: process.env.NUVEI_MERCHANT_SECRET_KEY
+	nextPublicNuveiMerchantId: process.env.NEXT_PUBLIC_NUVEI_MERCHANT_ID,
+	nextPublicNuveiMerchantSiteId: process.env.NEXT_PUBLIC_NUVEI_MERCHANT_SITE_ID,
+	nextPublicNuveiMerchantSecretKey: process.env.NEXT_PUBLIC_NUVEI_MERCHANT_SECRET_KEY
 }
 type MergedInput = z.input<typeof mergedEnv>
 type MergedOutput = z.infer<typeof mergedEnv>
 type ParsedEnv = z.SafeParseReturnType<MergedInput, MergedOutput>
+
+debugger
 const parsed = (
 	isServer
 		? // on server we can validate all env vars

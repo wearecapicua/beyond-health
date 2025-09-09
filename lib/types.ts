@@ -26,6 +26,7 @@ export type Product = {
 	id: string
 	ingredients: string
 	term: string
+	nuvei_plan_id: string
 }
 
 export type BillingAddress = {
@@ -85,7 +86,7 @@ export type User = {
 		state: string
 		postal_code: string
 	}
-	payments_history: string[]
+	// payments_history: string[]
 	photo_id_url: string
 	profile_image_url: string
 	insurance_image_url: string
