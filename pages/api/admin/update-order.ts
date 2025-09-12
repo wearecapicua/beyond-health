@@ -1,11 +1,30 @@
+import { addDays, addMonths, addYears } from 'date-fns'
 import env from 'lib/env'
 import { supabaseClient } from 'lib/supabaseClient'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 
+// function to calculate next date based on interval
+function getNextPaymentDate(currentDate: string, intervalValue: number, intervalUnit: string) {
+	const date = new Date(currentDate)
+
+	switch (intervalUnit) {
+		case 'day':
+		case 'days':
+			return addDays(date, intervalValue).toISOString().split('T')[0]
+		case 'month':
+		case 'months':
+			return addMonths(date, intervalValue).toISOString().split('T')[0]
+		case 'year':
+		case 'years':
+			return addYears(date, intervalValue).toISOString().split('T')[0]
+		default:
+			throw new Error(`Unsupported interval unit: ${intervalUnit}`)
+	}
+}
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const { orderNumber, orderId, origin, subscriptionId } = req.body
+	const { orderNumber, orderId, origin } = req.body
 
 	console.log('orderId')
 	console.log(orderId)
@@ -21,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	if (req.method === 'POST') {
 		try {
-			const { data: updateOrderData, error: updateOrderError } = await supabase
+			await supabase
 				.from('orders')
 				.update({
 					status: 'Paid',
@@ -31,33 +50,45 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				})
 				.eq('id', orderId)
 
-			console.log(updateOrderData)
-			console.log(updateOrderError)
-
-			const { data: orderData, error: orderError } = await supabase
+			const { data: orderData } = await supabase
 				.from('orders')
-				.select('subscription_id')
+				.select(
+					`subscription_id,
+					subscriptions(
+						user_token_id,
+						transaction_id,
+						user_payment_option_id,
+						product_subscription_types (
+							subscription_types (
+								id,
+								name,
+								interval_value,
+								interval_unit
+							)
+						)
+
+					)`
+				)
 				.eq('id', orderId)
 				.single()
 
-			console.log('orderData')
-			console.log(orderData)
-			console.log(orderError)
+			const newDate = getNextPaymentDate(
+				new Date().toISOString(),
+				// eslint-disable-next-line
+				// @ts-ignore
+				orderData?.subscriptions?.product_subscription_types?.subscription_types?.interval_value,
+				// eslint-disable-next-line
+				// @ts-ignore
+				orderData?.subscriptions?.product_subscription_types?.subscription_types?.interval_unit
+			)
 
-			console.log('orderData.subscription_id')
-			console.log(orderData?.subscription_id)
-
-			if (orderData) {
-				const { data: updateSubscriptionData, error: updateSubscriptionError } = await supabase
-					.from('subscriptions')
-					.update({
-						nuvei_subscription_id: subscriptionId
-					})
-					.eq('id', orderData.subscription_id)
-
-				console.log(updateSubscriptionData)
-				console.log(updateSubscriptionError)
-			}
+			await supabase
+				.from('subscriptions')
+				.update({ active: true, next_payment_date: newDate })
+				// eslint-disable-next-line
+				// @ts-ignore
+				.eq('id', orderData.subscription_id)
+				.select()
 
 			return res.status(200).json(true)
 		} catch (error) {

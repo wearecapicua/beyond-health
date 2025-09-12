@@ -16,15 +16,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		if (ip.startsWith('::ffff:')) {
 			ip = ip.replace('::ffff:', '')
 		}
-		const { transactionId, userPaymentOptionId, userTokenId, product_id, user_id } = req.body
+		const { transactionId, userPaymentOptionId, userTokenId, product_id, user_id, cardName } = req.body
+
+		const { data: productSubscriptionTypesData } = await supabase
+			.from('product_subscription_types')
+			.select('id')
+			.eq('product_id', product_id)
+			.single()
+
+		if (!productSubscriptionTypesData) {
+			return
+		}
 
 		const resultSubscription = await supabase
 			.from('subscriptions')
 			.insert({
-				product_id,
+				product_subscription_type_id: productSubscriptionTypesData.id,
 				user_id,
-				active: true,
-				nuve_subscription_id: null
+				active: false,
+				transaction_id: transactionId,
+				user_payment_option_id: userPaymentOptionId,
+				user_token_id: userTokenId,
+				card_name: cardName
 			})
 			.select('id')
 			.single()
@@ -34,18 +47,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			.insert({
 				product_id,
 				user_id,
-				transaction_id: transactionId,
-				user_payment_option_id: userPaymentOptionId,
 				status: 'Pending Approve',
 				ip,
-				user_token_id: userTokenId,
 				subscription_id: resultSubscription?.data?.id
 			})
 			.select('id')
 			.single()
 
 		const orderId = result?.data?.id
-		console.log('Insert Order orderId:', orderId)
+
 		res.status(200).json({ orderId })
 	} catch (err) {
 		if (err instanceof Error) {

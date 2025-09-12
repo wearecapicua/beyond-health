@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/insert-active-subcriptions-order-task.ts",
+      "schedule": "*/15 * * * *"
+    }
+  ]
+}

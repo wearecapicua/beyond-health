@@ -42,18 +42,12 @@ export async function adminUpdateData(updatedData: Record<string, unknown>, user
 	return response
 }
 
-export async function adminUpdateOrder(
-	origin: string,
-	orderId: number,
-	orderNumber: string,
-	subscriptionId: string
-) {
+export async function adminUpdateOrder(origin: string, orderId: number, orderNumber: string) {
 	const response = await fetchPostJSON('/api/admin/update-order', {
 		method: 'POST',
 		origin,
 		orderId,
-		orderNumber,
-		subscriptionId
+		orderNumber
 	})
 	console.log('res', response)
 
@@ -76,6 +70,17 @@ export async function updateOrder(orderId: number, status: string) {
 		method: 'PUT',
 		orderId,
 		status
+	})
+	console.log('res', response)
+
+	return response
+}
+
+export async function updateSubscription(subscriptionId: string, active: boolean) {
+	const response = await fetchPostJSON('/api/admin/update-subscription', {
+		method: 'PUT',
+		subscriptionId,
+		active
 	})
 	console.log('res', response)
 

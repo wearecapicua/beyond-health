@@ -84,8 +84,11 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 			env.nextPublicNuveiMerchantSecretKey
 
 		const checksum = crypto.createHash('sha256').update(rawString).digest('hex')
-		const el = document.getElementById('card-name')
-		const holderName = el && 'value' in el ? (el as HTMLInputElement).value.trim() : ''
+		const ipData = await fetch('/api/get-user-ip', {
+			method: 'get'
+		})
+
+		const { ip } = await ipData.json()
 
 		const payload2 = {
 			paymentFlow: 'direct',
@@ -108,7 +111,7 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 			transactionType: 'Sale',
 			isRebilling: 1, // ← marks this as MIT
 			relatedTransactionId: transactionId,
-			cardHolderName: holderName,
+			cardHolderName: order.cardName,
 			paymentOption: {
 				userPaymentOptionId
 			},
@@ -124,7 +127,7 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 				zip: postal_code
 			},
 			deviceDetails: {
-				ipAddress: '34.21.9.50' // **IPv4** string
+				ipAddress: ip // **IPv4** string
 			},
 			checksum
 		}
@@ -138,55 +141,11 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 		return responseFinal.json()
 	}
 
-	const createSubscription = async () => {
-		debugger
-		const { userTokenId, transactionId, userPaymentOptionId } = order
-		const ts = getNuveiTimeStamp()
-		const currency = 'USD'
-		const planId = product.nuvei_plan_id.toString()
-
-		const rawString =
-			env.nextPublicNuveiMerchantId +
-			env.nextPublicNuveiMerchantSiteId +
-			userTokenId +
-			planId +
-			userPaymentOptionId +
-			currency +
-			ts +
-			env.nextPublicNuveiMerchantSecretKey
-
-		const checksum = crypto.createHash('sha256').update(rawString).digest('hex')
-
-		debugger
-		// Example client call
-		const responseFinal = await fetch('/api/nuvei-create-subscription', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				merchantId: env.nextPublicNuveiMerchantId,
-				merchantSiteId: env.nextPublicNuveiMerchantSiteId,
-				userTokenId,
-				planId,
-				userPaymentOptionId,
-				currency,
-				transactionId,
-				timeStamp: ts,
-				checksum
-			})
-		})
-
-		debugger
-
-		return responseFinal.json()
-	}
-
 	const handlePayment = async () => {
 		setLoading(true)
 		setBusy(true)
 		try {
 			const dataPayment = await confirmPayment()
-
-			debugger
 
 			const res = await fetch('/api/get-user', {
 				method: 'POST',
@@ -198,12 +157,7 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 				})
 			})
 
-			// const data = await payment.json()
 			const userData = await res.json()
-
-			console.log('Payment response:', dataPayment)
-
-			debugger
 
 			if (dataPayment.status !== 'SUCCESS' || userData === null) {
 				throw new Error('Error creating payment')
@@ -214,26 +168,10 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 				`${product.name}`
 			)) as CreateOrderResponse
 
-			console.log('shippoOrderResponse response:', shippoOrderResponse)
-
-			debugger
-
-			const dataSubscription = await createSubscription()
-
-			if (dataSubscription.status !== 'SUCCESS') {
-				throw new Error('Error creating subscription')
-			}
-
-			debugger
 			if (shippoOrderResponse?.success) {
-				await adminUpdateOrder(
-					'USER',
-					order.orderId,
-					shippoOrderResponse.shippoData?.order_number || '#',
-					dataSubscription.subscriptionId
-				)
+				await adminUpdateOrder('USER', order.orderId, shippoOrderResponse.shippoData?.order_number || '#')
 			} else {
-				await adminUpdateOrder('USER', order.orderId, '#00000', dataSubscription.subscriptionId)
+				await adminUpdateOrder('USER', order.orderId, '#00000')
 			}
 
 			setLoading(false)

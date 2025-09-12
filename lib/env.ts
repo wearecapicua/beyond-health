@@ -69,7 +69,6 @@ type MergedInput = z.input<typeof mergedEnv>
 type MergedOutput = z.infer<typeof mergedEnv>
 type ParsedEnv = z.SafeParseReturnType<MergedInput, MergedOutput>
 
-debugger
 const parsed = (
 	isServer
 		? // on server we can validate all env vars

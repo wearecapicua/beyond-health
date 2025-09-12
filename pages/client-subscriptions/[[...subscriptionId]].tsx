@@ -10,14 +10,11 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import ScreenLoader from 'pages/screenLoader'
+
 type SubscriptionsPageProps = {
 	subscriptionsData: any[]
 	preview: boolean | undefined
 }
-
-// type UserState = {
-// 	[userId: string]: boolean
-// }
 
 const activeColors: Record<string, string> = {
 	Active: 'text-green-600',
@@ -25,12 +22,14 @@ const activeColors: Record<string, string> = {
 }
 
 const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProps) => {
-	const { subscriptionId: filteredIds } = useRouter().query
-	const subscriptionId = filteredIds?.[0]
-
 	const { data: session } = useSession()
 	const [isAdmin, setIsAdmin] = useState(false)
 	const [busy, setBusy] = useState(false)
+
+	// search + pagination
+	const [searchTerm, setSearchTerm] = useState('')
+	const [currentPage, setCurrentPage] = useState(1)
+	const itemsPerPage = 10
 
 	const router = useRouter()
 	useEffect(() => {
@@ -43,33 +42,30 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 
 	const refresh = () => {
 		router.push({
-			pathname: router.pathname, // not router.asPath
+			pathname: router.pathname,
 			query: { confirm: true }
 		})
 	}
 
-	// function formatDates(dateStamps: [], id: number) {
-	// 	return (dateStamps as { orderId: number; timestamp: string }[])
-	// 		.filter((ph) => ph.orderId === id)
-	// 		?.map((dateStamp: { timestamp: string }) => {
-	// 			const newDate = format(new Date(dateStamp.timestamp), 'MM-dd-yyyy HH:mm')
+	// filter subscriptions
+	const filteredSubscriptions = subscriptionsData.filter(
+		({ user, profile, product_subscription_types: { products } }) => {
+			const fullName = `${profile.first_name} ${profile.last_name}`.toLowerCase()
+			const email = user.email.toLowerCase()
+			const productName = products?.name?.toLowerCase() ?? ''
 
-	// 			return {
-	// 				...dateStamp,
-	// 				timestamp: newDate
-	// 			}
-	// 		})
-	// 		.reverse()
-	// }
-	// const [userStates, setUserStates] = useState<UserState>({})
+			return (
+				fullName.includes(searchTerm.toLowerCase()) ||
+				email.includes(searchTerm.toLowerCase()) ||
+				productName.includes(searchTerm.toLowerCase())
+			)
+		}
+	)
 
-	// // Function to toggle the visibility of items for a specific user
-	// const toggleItems = (userId: string) => {
-	// 	setUserStates((prevStates) => ({
-	// 		...prevStates,
-	// 		[userId]: !prevStates[userId]
-	// 	}))
-	// }
+	// pagination
+	const totalPages = Math.ceil(filteredSubscriptions.length / itemsPerPage)
+	const startIndex = (currentPage - 1) * itemsPerPage
+	const currentSubscriptions = filteredSubscriptions.slice(startIndex, startIndex + itemsPerPage)
 
 	return (
 		<Layout preview={preview} fullPage>
@@ -78,15 +74,44 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 			</Head>
 			<Container>
 				<ScreenLoader active={busy} />
-				{subscriptionsData?.filter(
-					(subscription) =>
-						subscriptionId === null ||
-						subscriptionId === undefined ||
-						subscriptionId === subscription?.nuvei_subscription_id
-				).length !== 0 && isAdmin ? (
+				{subscriptionsData?.length !== 0 && isAdmin ? (
 					<div>
 						<h3 className="mb-7 mt-12">Subscriptions</h3>
-						<table className="text-left">
+
+						{/* Search & Pagination controls */}
+						<div className="mb-6 flex items-center justify-between">
+							<input
+								type="text"
+								placeholder="Search by name, email or product..."
+								className="w-80 rounded border px-3 py-2"
+								value={searchTerm}
+								onChange={(e) => {
+									setSearchTerm(e.target.value)
+									setCurrentPage(1)
+								}}
+							/>
+
+							<div className="flex items-center space-x-2">
+								<button
+									disabled={currentPage === 1}
+									onClick={() => setCurrentPage((prev) => prev - 1)}
+									className="rounded border px-3 py-1 disabled:opacity-50">
+									Prev
+								</button>
+								<span>
+									Page {currentPage} of {totalPages || 1}
+								</span>
+								<button
+									disabled={currentPage === totalPages || totalPages === 0}
+									onClick={() => setCurrentPage((prev) => prev + 1)}
+									className="rounded border px-3 py-1 disabled:opacity-50">
+									Next
+								</button>
+							</div>
+						</div>
+
+						{/* Table */}
+						<table className="w-full text-left">
 							<tbody>
 								<tr>
 									<th className="p-4">Download</th>
@@ -95,17 +120,14 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 									<th className="p-4">Product</th>
 									<th className="p-4">Price</th>
 									<th className="p-4">Subscription Status</th>
-									<th className="p-4">Nuvei Subscription Id</th>
-									{/* <th className="p-4">Submit</th>
-									<th className="w-[190px] p-4">Shippo Order</th> */}
+									<th className="p-4">Client Orders</th>
 									<th className="p-4">Stop subscription</th>
 								</tr>
-								{subscriptionsData?.map(
-									({ user, profile, products, active, nuvei_subscription_id, id }, index) => {
-										// const showItems = userStates[user.user_id] || false
-
-										// const dates = formatDates(profile?.payments_history as [], id)
-
+								{currentSubscriptions.map(
+									(
+										{ user, profile, product_subscription_types: { products }, active, id },
+										index
+									) => {
 										return (
 											<tr key={`user-${index}`}>
 												<td className="p-4">
@@ -116,16 +138,16 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 												<td className="max-w-sm p-4">{products?.name}</td>
 												<PriceColumn product={products} />
 												<td className="max-w-sm p-4">{active ? 'Active' : 'Inactive'}</td>
-												<td className="max-w-sm p-4">{nuvei_subscription_id}</td>
+												<td className="max-w-sm p-4">
+													<a href={`/client-orders/${user.id}`}>View Orders</a>
+												</td>
 												<td
 													className={`px-4 py-2 text-base ${
 														activeColors[active ? 'Active' : 'Inactive']
 													}`}>
 													{active ? (
 														<CancelSubscriptionButton
-															subscription={{
-																id
-															}}
+															subscription={{ id }}
 															refresh={refresh}
 															setBusy={setBusy}
 														/>
@@ -140,12 +162,7 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 							</tbody>
 						</table>
 					</div>
-				) : subscriptionsData?.filter(
-						(subscription) =>
-							subscriptionId === null ||
-							subscriptionId === undefined ||
-							subscriptionId === subscription?.nuvei_subscription_id
-				  ).length === 0 && isAdmin ? (
+				) : subscriptionsData?.length === 0 && isAdmin ? (
 					<p>There are no subscriptions to show</p>
 				) : !isAdmin ? (
 					<p>Not authorized</p>
@@ -157,9 +174,7 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 
 export const getServerSideProps = async () => {
 	try {
-		// Fetch user data from your API route
 		const response = await fetch(`${env.host}/api/get-customer-subscriptions`)
-
 		if (response.status === 500) {
 			throw new Error('Internal Server Error')
 		}
@@ -167,7 +182,7 @@ export const getServerSideProps = async () => {
 
 		return {
 			props: {
-				subscriptionsData: data // Pass the fetched user data as props
+				subscriptionsData: data
 			}
 		}
 	} catch (error) {
@@ -175,7 +190,7 @@ export const getServerSideProps = async () => {
 
 		return {
 			props: {
-				subscriptionsData: [] // Return an empty array if there's an error
+				subscriptionsData: []
 			}
 		}
 	}

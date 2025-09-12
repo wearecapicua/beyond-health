@@ -12,9 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			// 1) Orders + products (include user_id so we can join on the app side)
 			const { data: orders, error: ordersError } = await supabase
 				.from('subscriptions')
-				.select(
-					'id, created_at, user_id, active, nuvei_subscription_id, products(name, price, nuvei_plan_id)'
-				)
+				.select('id, created_at, user_id, active, product_subscription_types( products(name, price))')
 				.order('created_at', { ascending: false })
 
 			if (ordersError) throw ordersError
@@ -59,8 +57,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				profile: profileByUserId.get(o.user_id) ?? null,
 				user: userById.get(o.user_id) ?? null
 			}))
-
-			console.log(result)
 
 			res.status(200).json(result)
 		} catch (error) {

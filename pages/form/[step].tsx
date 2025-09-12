@@ -220,9 +220,9 @@ const FormStep = ({ formData, products }: StepProps) => {
 	}
 
 	const handleCheckout = async () => {
+		const { billing_address, card_name } = formStore
 		try {
 			setIsSaving(true)
-			const { billing_address, card_name } = formStore
 			// eslint-disable-next-line
 			// @ts-ignore
 			const { country, line1, city, postal_code, state } = billing_address
@@ -294,7 +294,12 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 					if (response.result === 'APPROVED') {
 						console.log('✅ Approved:', response)
-						insertOrder(response.transactionId, response.userPaymentOptionId, userTokenId)
+						insertOrder(
+							response.transactionId,
+							response.userPaymentOptionId,
+							userTokenId,
+							card_name?.toString() || ''
+						)
 					} else {
 						console.error('❌ Payment failed:', response)
 
@@ -309,7 +314,12 @@ const FormStep = ({ formData, products }: StepProps) => {
 		}
 	}
 
-	const insertOrder = async (transactionId: string, userPaymentOptionId: string, userTokenId: string) => {
+	const insertOrder = async (
+		transactionId: string,
+		userPaymentOptionId: string,
+		userTokenId: string,
+		cardName: string
+	) => {
 		const { user_id } = formStore
 		const product = formStore.product as { price: number; name: string; id: string }
 
@@ -323,7 +333,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 				product_id: product.id,
 				transactionId,
 				userPaymentOptionId,
-				userTokenId
+				userTokenId,
+				cardName
 			})
 		})
 

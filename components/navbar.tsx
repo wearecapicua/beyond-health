@@ -81,17 +81,17 @@ const Navbar = ({ fullPage }: NavbarProps) => {
 
 									{adminLoggedIn ? (
 										<Link
-											href="/admin"
+											href="/client-orders"
 											className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
-											Clients Orders
+											Orders
 										</Link>
 									) : null}
 
 									{adminLoggedIn ? (
 										<Link
-											href="/subscriptions"
+											href="/client-subscriptions"
 											className="inline-flex items-center px-1 pt-1 font-medium hover:text-main-blue">
-											Clients Subscriptions
+											Subscriptions
 										</Link>
 									) : null}
 

@@ -26,7 +26,6 @@ export type Product = {
 	id: string
 	ingredients: string
 	term: string
-	nuvei_plan_id: string
 }
 
 export type BillingAddress = {

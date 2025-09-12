@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { updateOrder } from 'lib/api/supabase'
+import { updateSubscription } from 'lib/api/supabase'
 
 type Props = {
 	subscription: any
@@ -15,7 +15,7 @@ const CancelSubscriptionButton = ({ subscription, refresh, setBusy }: Props) => 
 		setLoading(true)
 		setBusy(true)
 		try {
-			await updateOrder(subscription.id, 'Rejected')
+			await updateSubscription(subscription.id, false)
 			setLoading(false)
 			setBusy(false)
 			refresh()

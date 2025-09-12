@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			const { data: orders, error: ordersError } = await supabase
 				.from('orders')
 				.select(
-					'id, status, origin, created_at, user_id, user_token_id, shipo_order_number, payment_date, transaction_id, user_payment_option_id, products(name, price, nuvei_plan_id), subscriptions(nuvei_subscription_id)'
+					'id, status, origin, created_at, user_id, subscriptions(user_token_id, transaction_id, user_payment_option_id, card_name), shipo_order_number, payment_date, products(name, price)'
 				)
 				.order('created_at', { ascending: false })
 
@@ -59,8 +59,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 				profile: profileByUserId.get(o.user_id) ?? null,
 				user: userById.get(o.user_id) ?? null
 			}))
-
-			console.log(result)
 
 			res.status(200).json(result)
 		} catch (error) {
