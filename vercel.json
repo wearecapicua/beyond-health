@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/insert-active-subcriptions-order-task.ts",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
