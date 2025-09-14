@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/insert-active-subcriptions-order-task.ts",
+      "path": "/api/insert-active-subcriptions-order-task",
       "schedule": "0 0 * * *"
     }
   ]
