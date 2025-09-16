@@ -94,7 +94,7 @@ const confirmPayment = async (
 		checksum: checksum1
 	}
 
-	const response1 = await fetch('https://ppp-test.nuvei.com/ppp/api/v1/getSessionToken.do', {
+	const response1 = await fetch('https://secure.safecharge.com/ppp/api/v1/getSessionToken.do', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload1)
@@ -164,7 +164,7 @@ const confirmPayment = async (
 		checksum
 	}
 
-	const responseFinal = await fetch('https://ppp-test.nuvei.com/ppp/api/v1/payment.do', {
+	const responseFinal = await fetch('https://secure.safecharge.com/ppp/api/v1/payment.do', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload2)

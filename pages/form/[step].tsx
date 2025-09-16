@@ -103,7 +103,7 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 				orderPayload.checksum = crypto.createHash('sha256').update(orderChecksumStr).digest('hex')
 
-				const responseOrders = await fetch('https://ppp-test.safecharge.com/ppp/api/v1/openOrder.do', {
+				const responseOrders = await fetch('https://secure.safecharge.com/ppp/api/v1/openOrder.do', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(orderPayload)
