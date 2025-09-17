@@ -55,117 +55,123 @@ const FormStep = ({ formData, products }: StepProps) => {
 	useEffect(() => {
 		if (activeStep === 'step-19') {
 			const initSafeCharge = async () => {
-				const ts = getNuveiTimeStamp() // current UNIX timestamp in milliseconds
-				const product = formStore.product as { price: number; name: string; id: string }
-				setTimeStamp(ts)
-				const { user_id } = formStore
-				const client_request_id = `mit-${Date.now()}`
+				try {
+					debugger
+					const ts = getNuveiTimeStamp() // current UNIX timestamp in milliseconds
+					const product = formStore.product as { price: number; name: string; id: string }
+					setTimeStamp(ts)
+					const { user_id } = formStore
+					const client_request_id = `mit-${Date.now()}`
 
-				const orderPayload = {
-					sessionToken,
-					transactionType: 'Auth',
-					merchantId: env.nextPublicNuveiMerchantId,
-					merchantSiteId: env.nextPublicNuveiMerchantSiteId,
-					clientUniqueId: user_id,
-					clientRequestId: client_request_id,
-					currency: 'USD',
-					amount: product.price.toString(),
-					isRebilling: 0,
-					timeStamp: ts,
-					paymentOption: {
-						card: {
-							threeD: {
-								v2AdditionalParams: {
-									rebillExpiry: '20260201',
-									rebillFrequency: '90'
+					const orderPayload = {
+						sessionToken,
+						transactionType: 'Auth',
+						merchantId: env.nextPublicNuveiMerchantId,
+						merchantSiteId: env.nextPublicNuveiMerchantSiteId,
+						clientUniqueId: user_id,
+						clientRequestId: client_request_id,
+						currency: 'USD',
+						amount: product.price.toString(),
+						isRebilling: 0,
+						timeStamp: ts,
+						paymentOption: {
+							card: {
+								threeD: {
+									v2AdditionalParams: {
+										rebillExpiry: '20260201',
+										rebillFrequency: '90'
+									}
 								}
 							}
-						}
-					},
-					items: [
-						{
-							name: product.name,
-							quantity: 1,
-							price: product.price.toString()
-						}
-					],
-					checksum: ''
-				}
-
-				const orderChecksumStr =
-					env.nextPublicNuveiMerchantId +
-					env.nextPublicNuveiMerchantSiteId +
-					orderPayload.clientRequestId +
-					orderPayload.amount +
-					orderPayload.currency +
-					ts +
-					env.nextPublicNuveiMerchantSecretKey
-
-				orderPayload.checksum = crypto.createHash('sha256').update(orderChecksumStr).digest('hex')
-
-				const responseOrders = await fetch('https://secure.safecharge.com/ppp/api/v1/openOrder.do', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(orderPayload)
-				})
-
-				const dataOrders = await responseOrders.json()
-
-				const st = dataOrders.sessionToken
-
-				setSessionToken(st)
-
-				const sc = window.SafeCharge({
-					env: 'int', // Use "prod" in production
-					sessionToken: st,
-					merchantId: env.nextPublicNuveiMerchantId,
-					merchantSiteId: env.nextPublicNuveiMerchantSiteId,
-					logLevel: '6',
-					showAccountCapture: true
-				})
-
-				const style = {
-					base: {
-						fontSize: '16px',
-						color: '#000',
-						fontFamily: 'inherit',
-						padding: '12px 16px',
-						border: '1px solid #e5e7eb', // Tailwind border-gray-300
-						borderRadius: '9999px' // fully rounded
-					},
-					focus: {
-						borderColor: '#2563eb' // Tailwind blue-600
-					},
-					invalid: {
-						color: '#dc2626' // Tailwind red-600
+						},
+						items: [
+							{
+								name: product.name,
+								quantity: 1,
+								price: product.price.toString()
+							}
+						],
+						checksum: ''
 					}
-				}
 
-				// eslint-disable-next-line
-				// @ts-ignore
-				const fields = sc.fields({
-					locale: 'en',
-					style,
-					fields: {
-						cardNumber: { id: 'sc-card-number', placeholder: 'Card Number' },
-						expirationDate: { id: 'sc-expiry', placeholder: 'MM / YY' },
-						cvv: { id: 'sc-cvv', placeholder: 'CVV' }
-					}
-				})
+					const orderChecksumStr =
+						env.nextPublicNuveiMerchantId +
+						env.nextPublicNuveiMerchantSiteId +
+						orderPayload.clientRequestId +
+						orderPayload.amount +
+						orderPayload.currency +
+						ts +
+						env.nextPublicNuveiMerchantSecretKey
 
-				const card = fields.create('card', {
-					// This will create card number + expiry + CVV together
-					style: {
+					orderPayload.checksum = crypto.createHash('sha256').update(orderChecksumStr).digest('hex')
+
+					const responseOrders = await fetch('https://secure.safecharge.com/ppp/api/v1/openOrder.do', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(orderPayload)
+					})
+
+					const dataOrders = await responseOrders.json()
+
+					const st = dataOrders.sessionToken
+
+					setSessionToken(st)
+
+					const sc = window.SafeCharge({
+						env: 'int', // Use "prod" in production
+						sessionToken: st,
+						merchantId: env.nextPublicNuveiMerchantId,
+						merchantSiteId: env.nextPublicNuveiMerchantSiteId,
+						logLevel: '6',
+						showAccountCapture: true
+					})
+
+					const style = {
 						base: {
-							color: '#000'
+							fontSize: '16px',
+							color: '#000',
+							fontFamily: 'inherit',
+							padding: '12px 16px',
+							border: '1px solid #e5e7eb', // Tailwind border-gray-300
+							borderRadius: '9999px' // fully rounded
+						},
+						focus: {
+							borderColor: '#2563eb' // Tailwind blue-600
+						},
+						invalid: {
+							color: '#dc2626' // Tailwind red-600
 						}
 					}
-				})
 
-				card.attach(document.getElementById('sc_form'))
+					// eslint-disable-next-line
+					// @ts-ignore
+					const fields = sc.fields({
+						locale: 'en',
+						style,
+						fields: {
+							cardNumber: { id: 'sc-card-number', placeholder: 'Card Number' },
+							expirationDate: { id: 'sc-expiry', placeholder: 'MM / YY' },
+							cvv: { id: 'sc-cvv', placeholder: 'CVV' }
+						}
+					})
 
-				cardRef.current = card
-				scRef.current = sc
+					const card = fields.create('card', {
+						// This will create card number + expiry + CVV together
+						style: {
+							base: {
+								color: '#000'
+							}
+						}
+					})
+
+					card.attach(document.getElementById('sc_form'))
+
+					cardRef.current = card
+					scRef.current = sc
+				} catch (error) {
+					debugger
+					console.log(error)
+				}
 			}
 
 			initSafeCharge()
