@@ -80,21 +80,17 @@ const confirmPayment = async (
 	const ts = getNuveiTimeStamp()
 	const client_request_id = `crid-${Date.now()}`
 
-	const rawString1 =
-		env.nextPublicNuveiMerchantId +
-		env.nextPublicNuveiMerchantSiteId +
-		ts +
-		env.nextPublicNuveiMerchantSecretKey
+	const rawString1 = env.nuveiMerchantId + env.nuveiMerchantSiteId + ts + env.nuveiMerchantSecretKey
 	const checksum1 = crypto.createHash('sha256').update(rawString1).digest('hex')
 
 	const payload1 = {
-		merchantId: env.nextPublicNuveiMerchantId,
-		merchantSiteId: env.nextPublicNuveiMerchantSiteId,
+		merchantId: env.nuveiMerchantId,
+		merchantSiteId: env.nuveiMerchantSiteId,
 		timeStamp: ts,
 		checksum: checksum1
 	}
 
-	const response1 = await fetch('https://secure.safecharge.com/ppp/api/v1/getSessionToken.do', {
+	const response1 = await fetch(env.nuveiDomain + '/ppp/api/v1/getSessionToken.do', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload1)
@@ -108,20 +104,20 @@ const confirmPayment = async (
 	const amount = product.price.toString()
 
 	const rawString =
-		env.nextPublicNuveiMerchantId +
-		env.nextPublicNuveiMerchantSiteId +
+		env.nuveiMerchantId +
+		env.nuveiMerchantSiteId +
 		client_request_id +
 		amount +
 		currency +
 		ts +
-		env.nextPublicNuveiMerchantSecretKey
+		env.nuveiMerchantSecretKey
 
 	const checksum = crypto.createHash('sha256').update(rawString).digest('hex')
 
 	const payload2 = {
 		paymentFlow: 'direct',
-		merchantId: env.nextPublicNuveiMerchantId,
-		merchantSiteId: env.nextPublicNuveiMerchantSiteId,
+		merchantId: env.nuveiMerchantId,
+		merchantSiteId: env.nuveiMerchantSiteId,
 		timeStamp: ts,
 		sessionToken: st,
 		userTokenId,
@@ -164,7 +160,7 @@ const confirmPayment = async (
 		checksum
 	}
 
-	const responseFinal = await fetch('https://secure.safecharge.com/ppp/api/v1/payment.do', {
+	const responseFinal = await fetch(env.nuveiDomain + '/ppp/api/v1/payment.do', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload2)
@@ -174,20 +170,6 @@ const confirmPayment = async (
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	await fetch('https://api.resend.com/emails', {
-		method: 'POST',
-		headers: {
-			Authorization: `Bearer re_GqW4wsPr_MbpTq9P5wuUTfMUcLy7wDGsi`,
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			from: 'ariel@aurorastore.uy', // Must match a verified domain in Resend
-			to: 'ariel@capicua.com.uy',
-			subject: 'Cron call started',
-			html: '<div>Cron call started</div>'
-		})
-	})
-
 	const supabaseAccessToken = env.supabaseServiceRoleKey
 	const supabase = supabaseClient(supabaseAccessToken)
 
@@ -337,19 +319,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			}
 		}
 
-		await fetch('https://api.resend.com/emails', {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer re_GqW4wsPr_MbpTq9P5wuUTfMUcLy7wDGsi`,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				from: 'ariel@aurorastore.uy', // Must match a verified domain in Resend
-				to: 'ariel@capicua.com.uy',
-				subject: 'Cron call ended',
-				html: '<div>Cron call ended</div>'
-			})
-		})
 		res.status(200).send('OK') // Always respond with 200/OK
 	} catch (err: any) {
 		console.error('❌ Error:', err)

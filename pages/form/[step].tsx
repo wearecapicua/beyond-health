@@ -1,5 +1,3 @@
-import crypto from 'crypto'
-
 import { useEffect, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -56,75 +54,34 @@ const FormStep = ({ formData, products }: StepProps) => {
 		if (activeStep === 'step-19') {
 			const initSafeCharge = async () => {
 				try {
-					debugger
 					const ts = getNuveiTimeStamp() // current UNIX timestamp in milliseconds
 					const product = formStore.product as { price: number; name: string; id: string }
 					setTimeStamp(ts)
 					const { user_id } = formStore
 					const client_request_id = `mit-${Date.now()}`
 
-					const orderPayload = {
-						sessionToken,
-						transactionType: 'Auth',
-						merchantId: env.nextPublicNuveiMerchantId,
-						merchantSiteId: env.nextPublicNuveiMerchantSiteId,
-						clientUniqueId: user_id,
-						clientRequestId: client_request_id,
-						currency: 'USD',
-						amount: product.price.toString(),
-						isRebilling: 0,
-						timeStamp: ts,
-						paymentOption: {
-							card: {
-								threeD: {
-									v2AdditionalParams: {
-										rebillExpiry: '20260201',
-										rebillFrequency: '90'
-									}
-								}
-							}
-						},
-						items: [
-							{
-								name: product.name,
-								quantity: 1,
-								price: product.price.toString()
-							}
-						],
-						checksum: ''
-					}
-
-					const orderChecksumStr =
-						env.nextPublicNuveiMerchantId +
-						env.nextPublicNuveiMerchantSiteId +
-						orderPayload.clientRequestId +
-						orderPayload.amount +
-						orderPayload.currency +
-						ts +
-						env.nextPublicNuveiMerchantSecretKey
-
-					orderPayload.checksum = crypto.createHash('sha256').update(orderChecksumStr).digest('hex')
-
-					const responseOrders = await fetch('https://secure.safecharge.com/ppp/api/v1/openOrder.do', {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify(orderPayload)
+					const openOrderData = await fetch('/api/post-nuvei-open-order', {
+						method: 'post',
+						body: JSON.stringify({
+							user_id,
+							client_request_id,
+							price: product.price.toString(),
+							productName: product.name,
+							ts
+						})
 					})
 
-					const dataOrders = await responseOrders.json()
+					// eslint-disable-next-line
+					// @ts-ignore
+					const data = await openOrderData.json()
 
-					const st = dataOrders.sessionToken
+					// eslint-disable-next-line
+					// @ts-ignore
+					const { safeChargeBody, st } = data
 
 					setSessionToken(st)
 
-					const sc = window.SafeCharge({
-						env: 'int', // Use "prod" in production
-						sessionToken: st,
-						merchantId: env.nextPublicNuveiMerchantId,
-						merchantSiteId: env.nextPublicNuveiMerchantSiteId,
-						logLevel: '6',
-						showAccountCapture: true
-					})
+					const sc = window.SafeCharge(safeChargeBody)
 
 					const style = {
 						base: {
@@ -169,7 +126,6 @@ const FormStep = ({ formData, products }: StepProps) => {
 					cardRef.current = card
 					scRef.current = sc
 				} catch (error) {
-					debugger
 					console.log(error)
 				}
 			}
