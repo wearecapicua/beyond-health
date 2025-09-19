@@ -319,9 +319,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			}
 		}
 
+		console.log('✅ Insert Active Subscriptions Order Task')
 		res.status(200).send('OK') // Always respond with 200/OK
 	} catch (err: any) {
-		console.error('❌ Error:', err)
+		if (err instanceof Error) {
+			console.error('❌ Error Insert Active Subscriptions Order Task:', err.message)
+
+			res.status(500).json({ message: err.message })
+		}
+
 		res.status(500).send('Error')
 	}
 }

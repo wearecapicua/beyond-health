@@ -128,10 +128,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		})
 
 		const responseFinalJson = await responseFinal.json()
+		console.log('✅ Post Nuvei Open Order:', JSON.stringify({ responseFinalJson }))
 
 		res.status(200).json(responseFinalJson)
 	} catch (err) {
 		if (err instanceof Error) {
+			console.error('❌ Error Post Nuvei Do Payment:', err.message)
+
 			res.status(500).json({ message: err.message })
 		}
 	}

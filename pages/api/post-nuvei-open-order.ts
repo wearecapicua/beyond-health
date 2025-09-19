@@ -80,9 +80,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			showAccountCapture: true
 		}
 
+		console.log('✅ Post Nuvei Open Order:', JSON.stringify({ safeChargeBody, st }))
+
 		res.status(200).json({ safeChargeBody, st })
 	} catch (err) {
 		if (err instanceof Error) {
+			console.error('❌ Error Post Nuvei Open Order:', err.message)
+
 			res.status(500).json({ message: err.message })
 		}
 	}

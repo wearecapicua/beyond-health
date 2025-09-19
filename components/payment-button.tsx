@@ -45,6 +45,8 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 		try {
 			const dataPayment = await confirmPayment()
 
+			console.log('✅ Confirm Payment Result:', JSON.stringify(dataPayment))
+
 			const res = await fetch('/api/get-user', {
 				method: 'POST',
 				headers: {
