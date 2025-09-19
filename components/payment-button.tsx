@@ -34,7 +34,9 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 			})
 		})
 
-		return responseFinal.json()
+		const data = await responseFinal.json()
+
+		return data
 	}
 
 	const handlePayment = async () => {
