@@ -34,7 +34,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		console.log(body)
 
-		const { product, order, email, profile } = body
+		const { product, order, email, profile } = JSON.parse(body)
+		console.log(body)
 
 		const { first_name, last_name, billing_address } = profile
 		const { country, line1, city, postal_code, state } = billing_address
