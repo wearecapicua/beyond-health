@@ -70,7 +70,7 @@ const confirmPayment = async (
 	userTokenId: string,
 	transactionId: string,
 	userPaymentOptionId: string,
-	product: { price: number },
+	product: { price: number; name: string },
 	cardName: string
 ) => {
 	const { email } = user
@@ -249,11 +249,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						subscriptionData?.user_token_id,
 						subscriptionData?.transaction_id,
 						subscriptionData?.user_payment_option_id,
-						// eslint-disable-next-line
-						// @ts-ignore
-						{ price: subscriptionData?.product_subscription_types?.products.price },
+
+						{
+							// eslint-disable-next-line
+							// @ts-ignore
+							price: subscriptionData?.product_subscription_types?.products.price,
+							// eslint-disable-next-line
+							// @ts-ignore
+							name: subscriptionData?.product_subscription_types?.products.name
+						},
 						subscriptionData?.card_name
 					)
+
+					console.log('confirmPayment: ')
+					console.log(dataPayment)
 
 					if (dataPayment.status !== 'SUCCESS') {
 						throw new Error('Error creating payment')
@@ -339,8 +348,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		console.log('✅ End Insert Active Subscriptions Order Task')
 		res.status(200).send('OK') // Always respond with 200/OK
 	} catch (err: any) {
-		console.error('❌ Error Insert Active Subscriptions Order Task:', JSON.stringify(err))
-
+		console.error('❌ Error Insert Active Subscriptions Order Task:')
+		console.error(err)
 		res.status(500).send('Error')
 	}
 }
