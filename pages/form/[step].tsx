@@ -183,6 +183,39 @@ const FormStep = ({ formData, products }: StepProps) => {
 		return { firstName, lastName }
 	}
 
+	// Helper: Wrap sc.createPayment in a Promise
+	function createPaymentWithRetry(sc: any, paymentData: any, retries = 3): Promise<any> {
+		return new Promise((resolve, reject) => {
+			let attempts = 0
+
+			const attempt = () => {
+				attempts++
+				console.log(`🔁 createPayment attempt ${attempts}...`)
+
+				sc.createPayment(paymentData, (response: any) => {
+					if (response.result === 'APPROVED') {
+						console.log('✅ Payment approved on attempt', attempts, response)
+
+						return resolve(response)
+					} else {
+						console.warn(`⚠️ Payment failed on attempt ${attempts}:`, response)
+
+						if (attempts < retries) {
+							// Retry
+							console.log('Retrying...')
+							attempt()
+						} else {
+							// After max retries, reject
+							reject(new Error(response.errorDescription || 'Payment failed after 3 attempts'))
+						}
+					}
+				})
+			}
+
+			attempt()
+		})
+	}
+
 	const handleCheckout = async () => {
 		const { billing_address, card_name } = formStore
 		try {
@@ -217,59 +250,47 @@ const FormStep = ({ formData, products }: StepProps) => {
 
 			const { ccTempToken } = await sc.getToken(card, { cardHolderName: card_name })
 
-			sc.createPayment(
-				{
-					transactionType: 'Auth',
-					sessionToken,
-					userTokenId,
-					clientUniqueId: id,
-					currency: 'USD',
-					amount: '0.00',
-					items: [
-						{
-							name: 'Tokenization Setup',
-							quantity: 1,
-							price: '0.00'
-						}
-					],
-					isRebilling: 0,
-					authenticationOnlyType: 'addCard',
-					paymentOption: {
-						card: { ccTempToken, cardHolderName: card_name }
-					},
-					paymentFlow: 'redirect',
-					billingAddress: {
-						firstName,
-						lastName,
-						email, // shopper’s e-mail
-						address: line1, // street line 1
-						city,
-						state, // 2-letter for US/CA; full name elsewhere
-						country: country.value, // ISO-2 or ISO-3
-						/* still smart to keep the old risk helpers */
-						zip: postal_code
-					},
-					deviceDetails: {
-						ipAddress: ip // **IPv4** string
+			const paymentResponse = await createPaymentWithRetry(sc, {
+				transactionType: 'Auth',
+				sessionToken,
+				userTokenId,
+				clientUniqueId: id,
+				currency: 'USD',
+				amount: '0.00',
+				items: [
+					{
+						name: 'Tokenization Setup',
+						quantity: 1,
+						price: '0.00'
 					}
+				],
+				isRebilling: 0,
+				authenticationOnlyType: 'addCard',
+				paymentOption: {
+					card: { ccTempToken, cardHolderName: card_name }
 				},
-				(response: any) => {
-					setIsSaving(false)
-
-					if (response.result === 'APPROVED') {
-						console.log('✅ Approved:', response)
-						insertOrder(
-							response.transactionId,
-							response.userPaymentOptionId,
-							userTokenId,
-							card_name?.toString() || ''
-						)
-					} else {
-						console.error('❌ Payment failed:', response)
-
-						toast.error('❌ Payment failed: ' + response.errorDescription)
-					}
+				paymentFlow: 'redirect',
+				billingAddress: {
+					firstName,
+					lastName,
+					email, // shopper’s e-mail
+					address: line1, // street line 1
+					city,
+					state, // 2-letter for US/CA; full name elsewhere
+					country: country.value, // ISO-2 or ISO-3
+					zip: postal_code
+				},
+				deviceDetails: {
+					ipAddress: ip // **IPv4** string
 				}
+			})
+
+			// ✅ If it gets here, the payment was approved
+			insertOrder(
+				paymentResponse.transactionId,
+				paymentResponse.userPaymentOptionId,
+				userTokenId,
+				card_name?.toString() || ''
 			)
 
 			return null

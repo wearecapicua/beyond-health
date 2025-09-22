@@ -131,6 +131,7 @@ const ClientOrders = ({ preview, ordersData }: ClientOrdersProps) => {
 										<th className="p-4">Product</th>
 										<th className="p-4">Price</th>
 										<th className="p-4">Origin</th>
+										<th className="p-4">Transaction Id</th>
 										<th className="p-4">Submit</th>
 										<th className="w-[190px] p-4">Shippo</th>
 										<th className="p-4">Reject</th>
@@ -151,7 +152,8 @@ const ClientOrders = ({ preview, ordersData }: ClientOrdersProps) => {
 												status,
 												payment_date,
 												shipo_order_number,
-												origin
+												origin,
+												transactionId
 											},
 											index
 										) => {
@@ -169,6 +171,7 @@ const ClientOrders = ({ preview, ordersData }: ClientOrdersProps) => {
 													<td className="max-w-sm p-4">{products?.name}</td>
 													<PriceColumn product={products} />
 													<td className="max-w-sm p-4">{origin}</td>
+													<td className="max-w-sm p-4">{transactionId}</td>
 													<td className={`px-4 py-2 text-base ${statusColors[status]}`}>
 														{status === 'Pending Approve' ? (
 															<PaymentButton

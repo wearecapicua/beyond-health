@@ -49,7 +49,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				user_id,
 				status: 'Pending Approve',
 				ip,
-				subscription_id: resultSubscription?.data?.id
+				subscription_id: resultSubscription?.data?.id,
+				transactionId
 			})
 			.select('id')
 			.single()

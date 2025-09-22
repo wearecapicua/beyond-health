@@ -319,7 +319,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 							shipo_order_number: shippoData?.order_number || '#',
 							payment_date: new Date().toISOString(),
 							subscription_id: subscriptionData.id,
-							origin: 'SCHELUDED'
+							origin: 'SCHELUDED',
+							transactionId: dataPayment?.transactionId
 						})
 						.select('id')
 						.single()

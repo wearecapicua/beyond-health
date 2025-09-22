@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			const { data: orders, error: ordersError } = await supabase
 				.from('orders')
 				.select(
-					'id, status, origin, created_at, user_id, subscriptions(user_token_id, transaction_id, user_payment_option_id, card_name), shipo_order_number, payment_date, products(name, price)'
+					'id, status, origin, created_at, transactionId, user_id, subscriptions(user_token_id, transaction_id, user_payment_option_id, card_name), shipo_order_number, payment_date, products(name, price)'
 				)
 				.order('created_at', { ascending: false })
 
