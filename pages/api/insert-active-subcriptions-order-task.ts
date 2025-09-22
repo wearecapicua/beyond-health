@@ -173,6 +173,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const supabaseAccessToken = env.supabaseServiceRoleKey
 	const supabase = supabaseClient(supabaseAccessToken)
 
+	console.log('✅ Insert Active Subscriptions Order Task')
+
 	try {
 		const startOfToday = new Date()
 		startOfToday.setHours(0, 0, 0, 0)
@@ -209,13 +211,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				`
 			)
 			.eq('active', true)
-			.gte('next_payment_date', startOfToday.toISOString())
-			.lte('next_payment_date', tomorrow.toISOString())
+			.gte('next_payment_date', startOfToday.toDateString())
+			.lte('next_payment_date', tomorrow.toDateString())
 
-		console.log('✅ startOfToday: ', startOfToday.toISOString())
-		console.log('✅ tomorrow: ', tomorrow.toISOString())
+		console.log('✅ startOfToday: ', startOfToday.toDateString())
+		console.log('✅ tomorrow: ', tomorrow.toDateString())
 
 		if (dataSubscriptions) {
+			console.log('✅ dataSubscriptions: ', JSON.stringify(dataSubscriptions))
+
 			for (const subscriptionData of dataSubscriptions) {
 				if (subscriptionData) {
 					console.log('✅ subscriptionData: ', JSON.stringify(subscriptionData))
@@ -328,16 +332,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						.select()
 				}
 			}
+		} else {
+			console.log('✅ NO Active Subscriptions')
 		}
 
-		console.log('✅ Insert Active Subscriptions Order Task')
+		console.log('✅ End Insert Active Subscriptions Order Task')
 		res.status(200).send('OK') // Always respond with 200/OK
 	} catch (err: any) {
-		if (err instanceof Error) {
-			console.error('❌ Error Insert Active Subscriptions Order Task:', err.message)
-
-			res.status(500).json({ message: err.message })
-		}
+		console.error('❌ Error Insert Active Subscriptions Order Task:', JSON.stringify(err))
 
 		res.status(500).send('Error')
 	}
