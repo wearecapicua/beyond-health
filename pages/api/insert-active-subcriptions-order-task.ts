@@ -177,8 +177,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		const startOfToday = new Date()
 		startOfToday.setHours(0, 0, 0, 0)
 
-		const endOfToday = new Date()
-		endOfToday.setHours(23, 59, 59, 999)
+		const tomorrow = new Date()
+		tomorrow.setDate(startOfToday.getDate() + 1)
 
 		const { data: dataSubscriptions } = await supabase
 			.from('subscriptions')
@@ -210,11 +210,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			)
 			.eq('active', true)
 			.gte('next_payment_date', startOfToday.toISOString())
-			.lte('next_payment_date', endOfToday.toISOString())
+			.lte('next_payment_date', tomorrow.toISOString())
+
+		console.log('✅ startOfToday: ', startOfToday.toISOString())
+		console.log('✅ tomorrow: ', tomorrow.toISOString())
 
 		if (dataSubscriptions) {
 			for (const subscriptionData of dataSubscriptions) {
 				if (subscriptionData) {
+					console.log('✅ subscriptionData: ', JSON.stringify(subscriptionData))
+
 					const { data: user } = await supabase
 						.schema('next_auth') // requires "next_auth" to be exposed in API & RLS/grants to allow select
 						.from('users')
@@ -230,7 +235,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						.in('user_id', [subscriptionData?.user_id])
 						.single()
 
-					await confirmPayment(
+					const dataPayment = await confirmPayment(
 						// eslint-disable-next-line
 						// @ts-ignore
 						{ email: user.email },
@@ -245,6 +250,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						{ price: subscriptionData?.product_subscription_types?.products.price },
 						subscriptionData?.card_name
 					)
+
+					if (dataPayment.status !== 'SUCCESS') {
+						throw new Error('Error creating payment')
+					}
 
 					const shippoApiKey = env.shippoApiKey
 					const shippoApiUrl = 'https://api.goshippo.com/orders'
@@ -281,6 +290,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					})
 
 					const shippoData = await shippoResponse.json()
+
+					console.log('✅ shippoData: ', shippoData?.order_number || '#')
 
 					//  Insert new order
 					await supabase

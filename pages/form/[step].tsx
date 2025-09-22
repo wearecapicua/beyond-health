@@ -126,6 +126,8 @@ const FormStep = ({ formData, products }: StepProps) => {
 					cardRef.current = card
 					scRef.current = sc
 				} catch (error) {
+					console.error('❌ Something went wrong!')
+
 					console.log(error)
 				}
 			}

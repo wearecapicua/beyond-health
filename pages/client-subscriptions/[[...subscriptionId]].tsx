@@ -48,19 +48,20 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 	}
 
 	// filter subscriptions
-	const filteredSubscriptions = subscriptionsData.filter(
-		({ user, profile, product_subscription_types: { products } }) => {
-			const fullName = `${profile.first_name} ${profile.last_name}`.toLowerCase()
-			const email = user.email.toLowerCase()
-			const productName = products?.name?.toLowerCase() ?? ''
+	const filteredSubscriptions =
+		subscriptionsData?.length > 0
+			? subscriptionsData.filter(({ user, profile, product_subscription_types: { products } }) => {
+					const fullName = `${profile?.first_name} ${profile?.last_name}`.toLowerCase()
+					const email = user?.email?.toLowerCase()
+					const productName = products?.name?.toLowerCase() ?? ''
 
-			return (
-				fullName.includes(searchTerm.toLowerCase()) ||
-				email.includes(searchTerm.toLowerCase()) ||
-				productName.includes(searchTerm.toLowerCase())
-			)
-		}
-	)
+					return (
+						fullName.includes(searchTerm.toLowerCase()) ||
+						email.includes(searchTerm.toLowerCase()) ||
+						productName.includes(searchTerm.toLowerCase())
+					)
+				})
+			: []
 
 	// pagination
 	const totalPages = Math.ceil(filteredSubscriptions.length / itemsPerPage)
