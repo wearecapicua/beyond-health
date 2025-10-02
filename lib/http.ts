@@ -35,6 +35,7 @@ export async function fetchPostJSON<Response = unknown>(
 		origin?: string
 		subscriptionId?: string
 		active?: boolean
+		transactionId?: string
 	}
 ) {
 	const { method } = data

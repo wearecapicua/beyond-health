@@ -9,7 +9,8 @@ import { useSession } from 'next-auth/react'
 const statusColors: Record<string, string> = {
 	Paid: 'text-green-600',
 	'Pending Approve': 'text-yellow-600',
-	Rejected: 'text-red-500'
+	Rejected: 'text-red-500',
+	'Scheduled Charged': 'text-blue-600'
 }
 
 const PER_PAGE = 9
@@ -115,38 +116,47 @@ const MyOrdersPage = () => {
 								<div className="min-h-[28rem] overflow-auto">
 									<table className="w-full table-fixed">
 										<thead className="border-b border-blue-500">
-											<tr>
-												<th className="px-4 py-2 text-left text-base font-medium text-blue-600">
+											<tr className="border-t text-xs">
+												<th className="px-4 py-2 text-left  font-medium text-blue-600">
 													Products
 												</th>
-												<th className="px-4 py-2 text-left text-base font-medium text-blue-600">
+												<th className="px-4 py-2 text-left  font-medium text-blue-600">
 													Status
 												</th>
-												<th className="px-4 py-2 text-left text-base font-medium text-blue-600">
+												<th className="px-4 py-2 text-left  font-medium text-blue-600">
 													Date
+												</th>
+												<th className="px-4 py-2 text-left  font-medium text-blue-600">
+													Next Payment Date
 												</th>
 											</tr>
 										</thead>
 
 										<tbody>
-											{visibleOrders.map((order) => (
-												<tr key={order.id} className="border-b border-gray-200">
-													<td className="px-3 py-2 text-base">{order.products?.name}</td>
-													<td
-														className={`px-4 py-2 text-base ${
-															statusColors[order.status]
-														}`}>
-														{order.status}
-													</td>
-													<td className="px-4 py-2 text-base text-gray-600">
-														{new Date(order.created_at).toLocaleDateString('en-US', {
-															month: 'short',
-															day: 'numeric',
-															year: 'numeric'
-														})}
-													</td>
-												</tr>
-											))}
+											{visibleOrders.map(
+												({
+													id,
+													status,
+													products,
+													created_at,
+													subscriptions: { next_payment_date }
+												}) => (
+													<tr key={id} className="border-t  text-xs">
+														<td className="px-3 py-2 ">{products?.name}</td>
+														<td className={`px-4 py-2  ${statusColors[status]}`}>
+															{status}
+														</td>
+														<td className="px-4 py-2  text-gray-600">
+															{new Date(created_at).toLocaleDateString('en-US', {
+																month: 'short',
+																day: 'numeric',
+																year: 'numeric'
+															})}
+														</td>
+														<td className="px-3 py-2 ">{next_payment_date}</td>
+													</tr>
+												)
+											)}
 										</tbody>
 									</table>
 								</div>

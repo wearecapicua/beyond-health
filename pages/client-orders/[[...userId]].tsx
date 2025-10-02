@@ -124,7 +124,7 @@ const ClientOrders = ({ preview, ordersData }: ClientOrdersProps) => {
 						{filteredOrders.length > 0 ? (
 							<table className="w-full text-left">
 								<tbody>
-									<tr>
+									<tr className="border-t text-xs">
 										<th className="p-4">Download</th>
 										<th className="p-4">Name</th>
 										<th className="p-4">Email</th>
@@ -162,7 +162,7 @@ const ClientOrders = ({ preview, ordersData }: ClientOrdersProps) => {
 												: ''
 
 											return (
-												<tr key={`order-${index}`}>
+												<tr key={`order-${index}`} className="border-t  text-xs">
 													<td className="p-4">
 														<Pdf user={user} profile={profile} products={products} />
 													</td>
@@ -171,8 +171,14 @@ const ClientOrders = ({ preview, ordersData }: ClientOrdersProps) => {
 													<td className="max-w-sm p-4">{products?.name}</td>
 													<PriceColumn product={products} />
 													<td className="max-w-sm p-4">{origin}</td>
-													<td className="max-w-sm p-4">{transactionId}</td>
-													<td className={`px-4 py-2 text-base ${statusColors[status]}`}>
+													<td className="max-w-sm p-4">
+														{transactionId
+															? status === 'Pending Approve'
+																? 'Auth: ' + transactionId
+																: 'Sale: ' + transactionId
+															: '-'}
+													</td>
+													<td className={`px-4 py-2  ${statusColors[status]}`}>
 														{status === 'Pending Approve' ? (
 															<PaymentButton
 																order={{
@@ -197,14 +203,14 @@ const ClientOrders = ({ preview, ordersData }: ClientOrdersProps) => {
 														)}
 													</td>
 													<td className="w-[190px] p-4">
-														<div className="mb-2 text-xs font-normal">
+														<div className="mb-2 font-normal">
 															<span className="mr-3">
 																{shipo_order_number || 'N/A'}
 															</span>
 															<span>{date}</span>
 														</div>
 													</td>
-													<td className={`px-4 py-2 text-base ${statusColors[status]}`}>
+													<td className={`px-4 py-2 ${statusColors[status]}`}>
 														{status === 'Pending Approve' ? (
 															<CancelOrderButton
 																order={{ orderId: id }}

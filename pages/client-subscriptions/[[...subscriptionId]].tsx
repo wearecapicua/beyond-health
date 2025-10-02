@@ -112,56 +112,69 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 						</div>
 
 						{/* Table */}
-						<table className="w-full text-left">
-							<tbody>
-								<tr>
-									<th className="p-4">Download</th>
-									<th className="p-4">Name</th>
-									<th className="p-4">Email</th>
-									<th className="p-4">Product</th>
-									<th className="p-4">Price</th>
-									<th className="p-4">Subscription Status</th>
-									<th className="p-4">Client Orders</th>
-									<th className="p-4">Stop subscription</th>
-								</tr>
-								{currentSubscriptions.map(
-									(
-										{ user, profile, product_subscription_types: { products }, active, id },
-										index
-									) => {
-										return (
-											<tr key={`user-${index}`}>
-												<td className="p-4">
-													<Pdf user={user} profile={profile} products={products} />
-												</td>
-												<td className="p-4">{`${profile.first_name} ${profile.last_name}`}</td>
-												<td className="p-4">{user.email}</td>
-												<td className="max-w-sm p-4">{products?.name}</td>
-												<PriceColumn product={products} />
-												<td className="max-w-sm p-4">{active ? 'Active' : 'Inactive'}</td>
-												<td className="max-w-sm p-4">
-													<a href={`/client-orders/${user.id}`}>View Orders</a>
-												</td>
-												<td
-													className={`px-4 py-2 text-base ${
-														activeColors[active ? 'Active' : 'Inactive']
-													}`}>
-													{active ? (
-														<CancelSubscriptionButton
-															subscription={{ id }}
-															refresh={refresh}
-															setBusy={setBusy}
-														/>
-													) : (
-														'-'
-													)}
-												</td>
-											</tr>
-										)
-									}
-								)}
-							</tbody>
-						</table>
+						<div className="overflow-x-auto">
+							<table className="w-full text-left">
+								<tbody>
+									<tr className="border-t text-xs">
+										<th className="p-4">Download</th>
+										<th className="p-4">Name</th>
+										<th className="p-4">Email</th>
+										<th className="p-4">Product</th>
+										<th className="p-4">Price</th>
+										<th className="p-4">Subscription Status</th>
+										<th className="p-4">Next Payment Date</th>
+										<th className="p-4">Client Orders</th>
+										<th className="p-4">Stop subscription</th>
+									</tr>
+									{currentSubscriptions.map(
+										(
+											{
+												user,
+												profile,
+												product_subscription_types: { products },
+												active,
+												id,
+												next_payment_date
+											},
+											index
+										) => {
+											return (
+												<tr key={`user-${index}`} className="border-t  text-xs">
+													<td className="p-4">
+														<Pdf user={user} profile={profile} products={products} />
+													</td>
+													<td className="p-4">{`${profile.first_name} ${profile.last_name}`}</td>
+													<td className="p-4">{user.email}</td>
+													<td className="max-w-sm p-4">{products?.name}</td>
+													<PriceColumn product={products} />
+													<td className="max-w-sm p-4">
+														{active ? 'Active' : 'Inactive'}
+													</td>
+													<td className="px-3 py-2">{next_payment_date}</td>
+													<td className="max-w-sm p-4">
+														<a href={`/client-orders/${user.id}`}>View Orders</a>
+													</td>
+													<td
+														className={`px-4 py-2  ${
+															activeColors[active ? 'Active' : 'Inactive']
+														}`}>
+														{active ? (
+															<CancelSubscriptionButton
+																subscription={{ id }}
+																refresh={refresh}
+																setBusy={setBusy}
+															/>
+														) : (
+															'-'
+														)}
+													</td>
+												</tr>
+											)
+										}
+									)}
+								</tbody>
+							</table>
+						</div>
 					</div>
 				) : subscriptionsData?.length === 0 && isAdmin ? (
 					<p>There are no subscriptions to show</p>

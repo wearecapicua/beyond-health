@@ -12,7 +12,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			// 1) Orders + products (include user_id so we can join on the app side)
 			const { data: orders, error: ordersError } = await supabase
 				.from('subscriptions')
-				.select('id, created_at, user_id, active, product_subscription_types( products(name, price))')
+				.select(
+					'id, created_at, next_payment_date,  user_id, active, product_subscription_types( products(name, price))'
+				)
 				.order('created_at', { ascending: false })
 
 			if (ordersError) throw ordersError

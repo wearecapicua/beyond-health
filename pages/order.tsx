@@ -57,7 +57,7 @@ const AdminPage = ({ preview }: AdminPageProps) => {
 						<h3 className="mb-7 mt-12">Orders</h3>
 						<table className="text-left">
 							<tbody>
-								<tr>
+								<tr className="border-t text-xs">
 									<th className="p-4">Product Name</th>
 									<th className="p-4">Price</th>
 									<th className="p-4">status</th>
@@ -67,7 +67,7 @@ const AdminPage = ({ preview }: AdminPageProps) => {
 
 								{orders?.map((order, index) => {
 									return (
-										<tr key={`user-${index}`}>
+										<tr key={`user-${index}`} className="border-t  text-xs">
 											<td className="p-4">{order.products.name}</td>
 											<td className="p-4">{order.products.price}</td>
 											<td className="p-4">{order.status}</td>

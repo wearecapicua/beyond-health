@@ -95,6 +95,9 @@ export type ProductOrder = {
 	status: string
 	created_at: string
 	products: { name: string }
+	subscriptions: {
+		next_payment_date: string
+	}
 }
 type SafeChargeFunction = (params: {
 	env: string

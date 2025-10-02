@@ -42,12 +42,18 @@ export async function adminUpdateData(updatedData: Record<string, unknown>, user
 	return response
 }
 
-export async function adminUpdateOrder(origin: string, orderId: number, orderNumber: string) {
+export async function adminUpdateOrder(
+	origin: string,
+	orderId: number,
+	orderNumber: string,
+	transactionId: string
+) {
 	const response = await fetchPostJSON('/api/admin/update-order', {
 		method: 'POST',
 		origin,
 		orderId,
-		orderNumber
+		orderNumber,
+		transactionId
 	})
 
 	console.log('res', response)

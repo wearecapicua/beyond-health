@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		const { data, error } = await supabase
 			.from('orders')
-			.select('id, status, created_at, products(name)')
+			.select('id, status, created_at, products(name), subscriptions(next_payment_date)')
 			.eq('user_id', userId)
 			.order('created_at', { ascending: false })
 

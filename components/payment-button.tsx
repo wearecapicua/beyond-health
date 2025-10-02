@@ -69,9 +69,14 @@ const PaymentButton = ({ user, product, profile, order, refresh, setBusy }: Prop
 			)) as CreateOrderResponse
 
 			if (shippoOrderResponse?.success) {
-				await adminUpdateOrder('USER', order.orderId, shippoOrderResponse.shippoData?.order_number || '#')
+				await adminUpdateOrder(
+					'USER',
+					order.orderId,
+					shippoOrderResponse.shippoData?.order_number || '#',
+					dataPayment.transactionId
+				)
 			} else {
-				await adminUpdateOrder('USER', order.orderId, '#00000')
+				await adminUpdateOrder('USER', order.orderId, '#00000', dataPayment.transactionId)
 			}
 
 			setLoading(false)

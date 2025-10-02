@@ -24,10 +24,7 @@ function getNextPaymentDate(currentDate: string, intervalValue: number, interval
 	}
 }
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const { orderNumber, orderId, origin } = req.body
-
-	console.log('orderId')
-	console.log(orderId)
+	const { orderNumber, orderId, origin, transactionId } = req.body
 
 	const session = await getServerSession(req, res, authOptions)
 
@@ -46,7 +43,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					status: 'Paid',
 					shipo_order_number: orderNumber,
 					payment_date: new Date().toISOString(),
-					origin
+					origin,
+					transactionId
 				})
 				.eq('id', orderId)
 
