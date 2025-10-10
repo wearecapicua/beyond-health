@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import CancelSubscriptionButton from 'components/cancel-subscription-button'
+import ChargeNowButton from 'components/charge-now-button'
 import Container from 'components/container'
 import Layout from 'components/layout'
 import Pdf from 'components/pdf'
@@ -124,7 +124,7 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 										<th className="p-4">Subscription Status</th>
 										<th className="p-4">Next Payment Date</th>
 										<th className="p-4">Client Orders</th>
-										<th className="p-4">Stop subscription</th>
+										<th className="p-4">Charge</th>
 									</tr>
 									{currentSubscriptions.map(
 										(
@@ -159,7 +159,7 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 															activeColors[active ? 'Active' : 'Inactive']
 														}`}>
 														{active ? (
-															<CancelSubscriptionButton
+															<ChargeNowButton
 																subscription={{ id }}
 																refresh={refresh}
 																setBusy={setBusy}
