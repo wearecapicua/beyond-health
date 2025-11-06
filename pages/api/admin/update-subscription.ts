@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const { subscription_id, active } = req.body
+	const { subscriptionId, active } = req.body
 
 	const session = await getServerSession(req, res, authOptions)
 
@@ -16,9 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	const supabase = supabaseClient(supabaseAccessToken)
 
-	if (req.method === 'POST') {
+	if (req.method === 'PUT') {
 		try {
-			await supabase.from('subscriptions').update({ active }).eq('id', subscription_id).select()
+			await supabase.from('subscriptions').update({ active }).eq('id', subscriptionId).select()
 
 			return res.status(200).json(true)
 		} catch (error) {
@@ -26,5 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 			return res.status(500).json({ error: 'Internal server error' })
 		}
+	} else {
+		return res.status(405).json({ error: 'Method not allowed' })
 	}
 }
