@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import CancelSubscriptionButton from 'components/cancel-subscription-button'
 import ChargeNowButton from 'components/charge-now-button'
 import Container from 'components/container'
 import Layout from 'components/layout'
@@ -148,7 +149,18 @@ const SubscriptionsPage = ({ preview, subscriptionsData }: SubscriptionsPageProp
 													<td className="max-w-sm p-4">{products?.name}</td>
 													<PriceColumn product={products} />
 													<td className="max-w-sm p-4">
-														{active ? 'Active' : 'Inactive'}
+														{active ? (
+															<div>
+																Active
+																<CancelSubscriptionButton
+																	subscription={{ id }}
+																	refresh={refresh}
+																	setBusy={setBusy}
+																/>
+															</div>
+														) : (
+															'Inactive'
+														)}
 													</td>
 													<td className="px-3 py-2">{next_payment_date}</td>
 													<td className="max-w-sm p-4">
